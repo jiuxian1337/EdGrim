@@ -1,0 +1,14 @@
+# Включать ли веб-крючок discord
+enabled: false
+webhook: ""
+embed-title: "**Grim Alert**"
+embed-color: "#00FFFF"
+include-timestamp: true
+violation-content:
+    - "**Игрок**: %player%"
+    - "**Проверка**: %check%"
+    - "**Нарушения**: %violations%"
+    - "**Версия Клиента**: %version%"
+    - "**Бренд**: %brand%"
+    - "**Пинг**: %ping%"
+    - "**ТПС**: %tps%"
