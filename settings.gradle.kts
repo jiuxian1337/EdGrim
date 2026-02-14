@@ -43,7 +43,7 @@ develocity {
     }
 }
 
-rootProject.name = "grimac"
+rootProject.name = "edgrimac"
 include("common")
 include("bukkit")
 include("fabric")

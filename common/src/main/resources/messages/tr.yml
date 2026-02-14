@@ -1,5 +1,5 @@
 # \u00BB eşittir » (çift >>), ANSI ve UTF-8 bunu farklı yorumlar. bu nedenle ? bile görebilirsiniz
-prefix: "&bGrim &8\u00BB"
+prefix: "&7[&bEdGrim&7]"
 
 alerts-enabled: "%prefix% &fUyarılar aktif edildi."
 alerts-disabled: "%prefix% &fUyarılar deaktif edildi."
@@ -37,8 +37,9 @@ run-as-player-or-console: "%prefix% &cBu komut yalnızca oyuncular veya konsol t
 # %experimental%
 # %vl% - ihlal uyarıları
 # %verbose% - detaylı olarak verilen tüm uyarılar, checkler tüm bilgileri vermez
-alerts-format: "%prefix% &b%player% &fadlı oyuncuda &f(x&c%vl%&f) &fadet &b%check_name%%experimental% &ftespit edildi: &7%verbose%"
-alerts-format-proxy: "%prefix% &f[&cproxy&f] &b%player% &fadlı oyuncuda &f(x&c%vl%&f) &fadet &b%check_name%%experimental% &ftespit edildi: &7%verbose%"
+alerts-format: "%prefix% &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-hover-format: "&fAçıklama: &b%description%<newline>&fDetaylar: &b&7%verbose%<newline>&fGecikme: &b%ping%<newline>&fVersiyon: &b%version%<newline>&fKullanılan Client: &b%brand%<newline>&fYatay Hassasiyet: &b%h_sensitivity%%<newline>&fDikey Hassasiyet: &b%v_sensitivity%%<newline>&fFastMath: &b%fast_math%"
 experimental-symbol: "*"
 
 profile:
@@ -47,8 +48,8 @@ profile:
     - "&bGecikme: &f%ping%"
     - "&bVersiyon: &f%version%"
     - "&bKullanılan Client: &f%brand%"
-    - "&bDikey Hassasiyet: &f%h_sensitivity%%"
-    - "&bYatay Hassasiyet: &f%v_sensitivity%%"
+    - "&bYatay Hassasiyet: &f%h_sensitivity%%"
+    - "&bDikey Hassasiyet: &f%v_sensitivity%%"
     - "&bFastMath Ayarı: &f%fast_math%"
     - "&7======================"
 help:

@@ -192,6 +192,7 @@ public class GrimExternalAPI implements GrimAbstractAPI, ConfigReloadObserver, S
         variableReplacements.putIfAbsent("%uuid%", user -> user.getUniqueId().toString());
         variableReplacements.putIfAbsent("%ping%", user -> user.getTransactionPing() + "");
         variableReplacements.putIfAbsent("%brand%", GrimUser::getBrand);
+        variableReplacements.putIfAbsent("%client%", GrimUser::getBrand);
         variableReplacements.putIfAbsent("%h_sensitivity%", user -> ((int) Math.round(user.getHorizontalSensitivity() * 200)) + "");
         variableReplacements.putIfAbsent("%v_sensitivity%", user -> ((int) Math.round(user.getVerticalSensitivity() * 200)) + "");
         variableReplacements.putIfAbsent("%fast_math%", user -> !user.isVanillaMath() + "");

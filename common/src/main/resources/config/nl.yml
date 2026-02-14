@@ -15,6 +15,13 @@ alerts:
         # Moeten de waarschuwingen die worden ontvangen van andere servers worden aangekondigd op deze server?
         receive: false
 
+    hover:
+        enabled: true
+
+    click:
+        enabled: true
+        command: "/grim spectate %player%"
+
 verbose:
     print-to-console: false
 
@@ -98,6 +105,11 @@ PositionPlace:
 RotationPlace:
     cancelvl: 5
 
+ScaffoldA:
+    # 检测低cps神桥
+    check-low-cps-god-bridge: true
+    cancelvl: 5
+
 # Op voorspelling gebaseerde NoSlow-controle
 # Grim is verantwoordelijk voor buggy netcode hier... moeilijk om vals te spelen, zelfs als je met rechts klikt en de offhand-knop spamt
 # Veel stabieler dan andere anticheats, maar rapporteer alsjeblieft alle falses... Ik heb hier een heleboel netcode-problemen opgelost.
@@ -111,7 +123,7 @@ NoSlow:
     # Verval treedt op wanneer de speler een voorwerp gebruikt EN erdoor wordt vertraagd
     decay: 0.05
 
-Knockback:
+VelocityA:
     # Met hoeveel moeten we het totale voordeel vermenigvuldigen als de speler legitiem is?
     setback-decay-multiplier: 0.999
     # Hoe groot moet de afwijking van de snelheid van de speler zijn?
@@ -126,9 +138,14 @@ Knockback:
     # Dit is om te voorkomen dat de speler te veel overtredingen verzamelt en ze nooit allemaal kan verwijderen
     max-ceiling: 4
 
-Explosion:
+VelocityB:
     threshold: 0.001
     setbackvl: 3
+
+VelocityC:
+    setbackvl: 3
+    allowed-jump-reset: true
+    min-velocity: 90
 
 TimerA:
     setbackvl: 10

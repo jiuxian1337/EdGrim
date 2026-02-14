@@ -1,5 +1,5 @@
 # » è » (doppia >>), ANSI e UTF-8 lo interpretano in modo diverso... si può anche vedere ? A causa di ciò
-prefix: "&bGrim &8\u00BB"
+prefix: "&7[&bEdGrim&7]"
 
 alerts-enabled: "%prefix% &fAlerts abilitati"
 alerts-disabled: "%prefix% &fAlerts disabilitati"
@@ -29,8 +29,9 @@ disconnect:
 run-as-player: "%prefix% &cQuesto comando può essere utilizzato solo dai giocatori!"
 run-as-player-or-console: "%prefix% &cQuesto comando può essere utilizzato solo dai giocatori o dalla console!"
 
-alerts-format: "%prefix% &f%player% &bfallito &f%check_name% &f(x&c%vl%&f) &7%verbose%"
-alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &bfallito &f%check_name% &f(x&c%vl%&f) &7%verbose%"
+alerts-format: "%prefix% &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-hover-format: "&fDescrizione: &b%description%<newline>&fDettagli: &b&7%verbose%<newline>&fPing: &b%ping%<newline>&fVersione: &b%version%<newline>&fBrand client: &b%brand%<newline>&fSensibilità orizzontale: &b%h_sensitivity%%<newline>&fSensibilità verticale: &b%v_sensitivity%%<newline>&fFastMath: &b%fast_math%"
 experimental-symbol: "*"
 
 profile:

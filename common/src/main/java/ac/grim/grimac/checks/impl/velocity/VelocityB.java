@@ -27,8 +27,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Deque;
 import java.util.LinkedList;
 
-@CheckData(name = "AntiExplosion", configName = "Explosion", setback = 10)
-public class ExplosionHandler extends Check implements PostPredictionCheck {
+@CheckData(name = "VelocityB (Explosion)", configName = "VelocityB", setback = 10)
+public class VelocityB extends Check implements PostPredictionCheck {
     Deque<VelocityData> firstBreadMap = new LinkedList<>();
 
     VelocityData lastExplosionsKnownTaken = null;
@@ -40,7 +40,7 @@ public class ExplosionHandler extends Check implements PostPredictionCheck {
     double offsetToFlag;
     double setbackVL;
 
-    public ExplosionHandler(GrimPlayer player) {
+    public VelocityB(GrimPlayer player) {
         super(player);
     }
 

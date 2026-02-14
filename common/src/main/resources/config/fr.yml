@@ -15,6 +15,13 @@ alerts:
         # Les alertes reçues des autres serveurs doivent-elles être annoncées sur ce serveur ?
         receive: false
 
+    hover:
+        enabled: true
+
+    click:
+        enabled: true
+        command: "/grim spectate %player%"
+
 verbose:
     print-to-console: false
 
@@ -98,6 +105,11 @@ PositionPlace:
 RotationPlace:
     cancelvl: 5
 
+ScaffoldA:
+    # 检测低cps神桥
+    check-low-cps-god-bridge: true
+    cancelvl: 5
+
 # Vérification de no-slow basée sur la prédiction.
 # Grim tient compte des problèmes de netcode ici... difficile à tromper même en spamant le clic droit et le bouton de la main secondaire.
 # Bien plus stable que les autres anti-triche, mais veuillez signaler toute fausse détection... J'ai corrigé de nombreux problèmes de netcode ici.
@@ -111,7 +123,7 @@ NoSlow:
     # Décroissance lorsque le joueur utilise un objet ET est ralenti par celui-ci.
     decay: 0.05
 
-Knockback:
+VelocityA:
     # De combien devons-nous multiplier l'avantage total lorsque le joueur est légitime ?
     setback-decay-multiplier: 0.999
     # Quel est l'écart maximal par rapport au mouvement du joueur pour lequel nous devrions créer une violation ?
@@ -127,9 +139,14 @@ Knockback:
     max-ceiling: 4
 
 
-Explosion:
+VelocityB:
     threshold: 0.001
     setbackvl: 3
+
+VelocityC:
+    setbackvl: 3
+    allowed-jump-reset: true
+    min-velocity: 90
 
 TimerA:
     setbackvl: 10

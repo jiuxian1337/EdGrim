@@ -15,6 +15,13 @@ alerts:
         # Должны ли оповещения, полученные с других серверов, быть объявлены на этом сервере?
         receive: false
 
+    hover:
+        enabled: true
+
+    click:
+        enabled: true
+        command: "/grim spectate %player%"
+
 verbose:
     print-to-console: false
 
@@ -98,6 +105,11 @@ PositionPlace:
 RotationPlace:
     cancelvl: 5
 
+ScaffoldA:
+    # 检测低cps神桥
+    check-low-cps-god-bridge: true
+    cancelvl: 5
+
 # Основанная на предсказаниях проверка на отсутствие замедления
 # Grim учитывает баги неткода здесь... трудно ошибиться, даже если спамить правым кликом и кнопкой оффхенд.
 # Намного стабильнее, чем другие античиты, но, пожалуйста, сообщайте о любых фейлах... Я исправил тонну проблем с неткодом.
@@ -111,7 +123,7 @@ NoSlow:
     # Распад происходит, когда игрок использует предмет И замедляется им
     decay: 0.05
 
-Knockback:
+VelocityA:
     # На сколько мы должны умножить общее преимущество, когда игрок легален.
     setback-decay-multiplier: 0.999
     # Для какого смещения от движения игрока мы должны создать нарушение?
@@ -127,9 +139,14 @@ Knockback:
     max-ceiling: 4
 
 
-Explosion:
+VelocityB:
     threshold: 0.001
     setbackvl: 3
+
+VelocityC:
+    setbackvl: 3
+    allowed-jump-reset: true
+    min-velocity: 90
 
 TimerA:
     setbackvl: 10

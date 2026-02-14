@@ -1,5 +1,5 @@
 # \u00BB is » (double >>), ANSI en UTF-8 interpreteren dit anders... je kunt zelfs "?" zien als gevolg hiervan
-prefix: "&bGrim &8\u00BB"
+prefix: "&7[&bEdGrim&7]"
 
 alerts-enabled: "%prefix% &fMeldingen ingeschakeld"
 alerts-disabled: "%prefix% &fMeldingen uitgeschakeld"
@@ -37,8 +37,9 @@ run-as-player-or-console: "%prefix% &cDit commando kan alleen door spelers of de
 # %experimental%
 # %vl% - overtredingen
 # %verbose% - extra informatie van de controle zoals offsets, niet alle controles voegen informatie toe
-alerts-format: "%prefix% &f%player% &bmislukt &f%check_name%%experimental% &f(x&c%vl%&f) &7%verbose%"
-alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &bmislukt &f%check_name%%experimental% &f(x&c%vl%&f) &7%verbose%"
+alerts-format: "%prefix% &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-hover-format: "&fBeschrijving: &b%description%<newline>&fDetails: &b&7%verbose%<newline>&fPing: &b%ping%<newline>&fVersie: &b%version%<newline>&fClient Merk: &b%brand%<newline>&fHorizontale Gevoeligheid: &b%h_sensitivity%%<newline>&fVerticale Gevoeligheid: &b%v_sensitivity%%<newline>&fFastMath: &b%fast_math%"
 experimental-symbol: "*"
 
 profile:

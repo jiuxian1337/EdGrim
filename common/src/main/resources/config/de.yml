@@ -15,6 +15,13 @@ alerts:
         # Sollen die von anderen Servern empfangenen Alarme diesem Server mitgeteilt werden?
         receive: false
 
+    hover:
+        enabled: true
+
+    click:
+        enabled: true
+        command: "/grim spectate %player%"
+
 verbose:
     print-to-console: false
 
@@ -98,6 +105,11 @@ PositionPlace:
 RotationPlace:
     cancelvl: 5
 
+ScaffoldA:
+    # 检测低cps神桥
+    check-low-cps-god-bridge: true
+    cancelvl: 5
+
 # Prediction-based no slow check
 # Grim ist verantwortlich für den fehlerhaften Netcode hier... schwer zu falsen, selbst wenn man Rechtsklick und Offhand-Taste spammt.
 # Viel stabiler als andere Anticheats, aber bitte melde alle Falses... Ich habe hier eine Menge Netcode-Probleme behoben.
@@ -111,7 +123,7 @@ NoSlow:
     # Verfall ist, wenn der Spieler einen Gegenstand benutzt UND dadurch verlangsamt wird
     decay: 0.05
 
-Knockback:
+VelocityA:
     # Mit wie viel soll der Gesamtvorteil multipliziert werden, wenn der Spieler legitim ist.
     setback-decay-multiplier: 0.999
     # Wie groß sollte der Abstand zur Bewegung des Spielers sein, um eine Verletzung zu erzeugen?
@@ -126,9 +138,14 @@ Knockback:
     # Dies soll verhindern, dass der Spieler zu viele Verstöße sammelt und nie in der Lage ist, sie alle zu beseitigen.
     max-ceiling: 4
 
-Explosion:
+VelocityB:
     threshold: 0.001
     setbackvl: 3
+
+VelocityC:
+    setbackvl: 3
+    allowed-jump-reset: true
+    min-velocity: 90
 
 TimerA:
     setbackvl: 10

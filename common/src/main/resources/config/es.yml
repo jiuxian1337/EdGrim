@@ -15,6 +15,13 @@ alerts:
         # Should the alerts received from other servers be announced to this server?
         receive: false
 
+    hover:
+        enabled: true
+
+    click:
+        enabled: true
+        command: "/grim spectate %player%"
+
 verbose:
     print-to-console: false
 
@@ -99,6 +106,11 @@ PositionPlace:
 RotationPlace:
     cancelvl: 5
 
+ScaffoldA:
+    # 检测低cps神桥
+    check-low-cps-god-bridge: true
+    cancelvl: 5
+
 # Comprobación de NoSlow basado en predicciones
 # Grim compensa por código de red con errores aquí... difícil de sacar un falso positivo incluso haciendo spam del
 # clic derecho y la mano secundaria.
@@ -114,7 +126,7 @@ NoSlow:
     # Decadencia cuando un jugador usa un item Y se ralentiza por el
     decay: 0.05
 
-Knockback:
+VelocityA:
     # Por cuanto deberíamos multiplicar la ventaja total cuando el jugador es legítimo
     setback-decay-multiplier: 0.999
     # ¿Cuánta debería ser la compensacion del movimiento del jugador como para que creemos una violación?
@@ -130,9 +142,14 @@ Knockback:
     max-ceiling: 4
 
 
-Explosion:
+VelocityB:
     threshold: 0.001
     setbackvl: 3
+
+VelocityC:
+    setbackvl: 3
+    allowed-jump-reset: true
+    min-velocity: 90
 
 TimerA:
     setbackvl: 10

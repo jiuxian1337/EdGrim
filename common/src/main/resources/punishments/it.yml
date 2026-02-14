@@ -23,8 +23,9 @@ Punishments:
   Knockback:
     remove-violations-after: 300
     checks:
-      - "Knockback"
-      - "Explosion"
+      - "VelocityA"
+      - "VelocityB"
+      - "VelocityC"
     commands:
       - "5:5 [alert]"
       - "5:5 [log]"
@@ -68,6 +69,15 @@ Punishments:
       - "5:3 [log]"
       - "5:3 [webhook]"
       - "5:3 [proxy]"
+  Scaffold:
+    remove-violations-after: 300
+    checks:
+      - "ScaffoldA"
+    commands:
+      - "10:5 [alert]"
+      - "10:5 [log]"
+      - "20:10 [webhook]"
+      - "20:10 [proxy]"
   Misc:
     remove-violations-after: 300
     checks:

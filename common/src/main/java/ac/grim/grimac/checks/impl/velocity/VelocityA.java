@@ -22,8 +22,8 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 // We are making a velocity sandwich between two pieces of transaction packets (bread)
-@CheckData(name = "AntiKB", alternativeName = "AntiKnockback", configName = "Knockback", setback = 10, decay = 0.025)
-public class KnockbackHandler extends Check implements PostPredictionCheck {
+@CheckData(name = "VelocityA (Prediction)", configName = "VelocityA", setback = 0, decay = 0.025)
+public class VelocityA extends Check implements PostPredictionCheck {
     Deque<VelocityData> firstBreadMap = new LinkedList<>();
 
     Deque<VelocityData> lastKnockbackKnownTaken = new LinkedList<>();
@@ -36,7 +36,7 @@ public class KnockbackHandler extends Check implements PostPredictionCheck {
 
     double threshold;
 
-    public KnockbackHandler(GrimPlayer player) {
+    public VelocityA(GrimPlayer player) {
         super(player);
     }
 

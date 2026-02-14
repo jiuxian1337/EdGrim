@@ -1,4 +1,4 @@
-prefix: "&bGrim &8\u00BB"
+prefix: "&7[&bEdGrim&7]"
 
 alerts-enabled: "%prefix% &fBenachrichtigungen aktiviert"
 alerts-disabled: "%prefix% &fBenachrichtigungen deaktiviert"
@@ -36,8 +36,9 @@ run-as-player-or-console: "%prefix% &cDiesen Befehl können nur Spieler oder die
 # %experimental%
 # %vl% - Verstöße
 # %verbose% - zusätzliche Informationen von der Prüfung, nicht alle Prüfungen liefern zusätzliche Informationen
-alerts-format: "%prefix% &f%player% &bbestand &f%check_name%%experimental% &bnicht &f(x&c%vl%&f) &7%verbose%"
-alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &bbestand &f%check_name%%experimental% &bnicht &f(x&c%vl%&f) &7%verbose%"
+alerts-format: "%prefix% &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-hover-format: "&fBeschreibung: &b%description%<newline>&fDetails: &b&7%verbose%<newline>&fPing: &b%ping%<newline>&fVersion: &b%version%<newline>&fClient-Marke: &b%brand%<newline>&fHorizontale Sensitivität: &b%h_sensitivity%%<newline>&fVertikale Sensitivität: &b%v_sensitivity%%<newline>&fFastMath: &b%fast_math%"
 experimental-symbol: "*"
 
 profile:

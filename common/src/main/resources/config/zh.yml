@@ -15,6 +15,13 @@ alerts:
         # 此服务器是否接收来自其他子服的作弊消息？
         receive: false
 
+    hover:
+        enabled: true
+
+    click:
+        enabled: true
+        command: "/grim spectate %player%"
+
 verbose:
     # 是否在控制台中打印verbose信息
     print-to-console: false
@@ -103,6 +110,14 @@ PositionPlace:
 RotationPlace:
     cancelvl: 5
 
+ScaffoldA:
+    # 检测低cps平搭或keepy (小概率误判)
+    check-low-cps-god-bridge:
+        enable: true
+        # 吞方块
+        cancel: true
+    cancelvl: 5
+
 # 使用模拟移动进行的NoSlow(使用物品时不会减速)检查
 # 在这里解释错误的服务器代码......即使在发送垃圾数据包时右键单击和副手按钮也很分辨
 # 比其他反作弊更稳定，但请报告任何错误......我在这里修复了大量的代码问题。
@@ -115,7 +130,7 @@ NoSlow:
     # 当玩家使用一个物品并被它减慢时衰减多少VL
     decay: 0.05
 
-Knockback:
+VelocityA:
     # 当玩家合法时，我们应该将总优势乘以多少
     setback-decay-multiplier: 0.999
     # 我们应该为玩家的移动创建多大的偏移量？
@@ -131,9 +146,14 @@ Knockback:
     max-ceiling: 4
 
 
-Explosion:
+VelocityB:
     threshold: 0.001
     setbackvl: 3
+
+VelocityC:
+    setbackvl: 3
+    allowed-jump-reset: true
+    min-velocity: 90
 
 TimerA:
     setbackvl: 10

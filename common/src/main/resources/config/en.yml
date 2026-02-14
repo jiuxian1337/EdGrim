@@ -15,6 +15,13 @@ alerts:
         # Should the alerts received from other servers be announced to this server?
         receive: false
 
+    hover:
+        enabled: true
+
+    click:
+        enabled: true
+        command: "/grim spectate %player%"
+
 verbose:
     print-to-console: false
 
@@ -98,6 +105,11 @@ PositionPlace:
 RotationPlace:
     cancelvl: 5
 
+ScaffoldA:
+    # 检测低cps神桥
+    check-low-cps-god-bridge: true
+    cancelvl: 5
+
 # Prediction-based no slow check
 # Grim accounts for buggy netcode here... hard to false even when spamming right click and offhand button
 # Much more stable than other anticheats, but please report any falses... I have fixed a ton of netcode issues here.
@@ -111,7 +123,7 @@ NoSlow:
     # Decay's when the player uses an item AND is slowed by it
     decay: 0.05
 
-Knockback:
+VelocityA:
     # How much should we multiply total advantage by when the player is legit
     setback-decay-multiplier: 0.999
     # How large of an offset from the player's velocity should we create a violation for?
@@ -126,9 +138,14 @@ Knockback:
     # This is to stop the player from gathering too many violations and never being able to clear them all
     max-ceiling: 4
 
-Explosion:
+VelocityB:
     threshold: 0.001
     setbackvl: 3
+
+VelocityC:
+    setbackvl: 3
+    allowed-jump-reset: true
+    min-velocity: 90
 
 TimerA:
     setbackvl: 10

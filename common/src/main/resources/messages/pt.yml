@@ -1,5 +1,5 @@
 # \u00BB é » (>> duplo), ANSI e UTF-8 interpretam isso diferentemente... você pode acabar vendo '?' por conta disso.
-prefix: "&bGrim &8\u00BB"
+prefix: "&7[&bEdGrim&7]"
 
 alerts-enabled: "%prefix% &fAlertas habilitados."
 alerts-disabled: "%prefix% &fAlertas desabilitados."
@@ -36,8 +36,9 @@ run-as-player-or-console: "%prefix% &cEste comando só pode ser usado por jogado
 # %experimental%
 # %vl% - violações
 # %verbose% - Informação extra da verificação, como os desalinhamentos, nem todas as verifiações terão essa informação.
-alerts-format: "%prefix% &f%player% &bfalhou em &f%check_name%%experimental% &f(x&c%vl%&f) &7%verbose%"
-alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &bfalhou em &f%check_name%%experimental% &f(x&c%vl%&f) &7%verbose%"
+alerts-format: "%prefix% &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-hover-format: "&fDescrição: &b%description%<newline>&fDetalhes: &b&7%verbose%<newline>&fPing: &b%ping%<newline>&fVersão: &b%version%<newline>&fNome do Cliente: &b%brand%<newline>&fSensibilidade Horizontal: &b%h_sensitivity%%<newline>&fSensibilidade Vertical: &b%v_sensitivity%%<newline>&fFastMath: &b%fast_math%"
 experimental-symbol: "*"
 profile:
     - "&7======================"

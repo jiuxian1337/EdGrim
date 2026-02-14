@@ -38,8 +38,9 @@ import ac.grim.grimac.checks.impl.scaffolding.*;
 import ac.grim.grimac.checks.impl.sprint.*;
 import ac.grim.grimac.checks.impl.timer.*;
 import ac.grim.grimac.checks.impl.vehicle.*;
-import ac.grim.grimac.checks.impl.velocity.ExplosionHandler;
-import ac.grim.grimac.checks.impl.velocity.KnockbackHandler;
+import ac.grim.grimac.checks.impl.velocity.VelocityB;
+import ac.grim.grimac.checks.impl.velocity.VelocityA;
+import ac.grim.grimac.checks.impl.velocity.VelocityC;
 import ac.grim.grimac.checks.type.*;
 import ac.grim.grimac.events.packets.PacketChangeGameState;
 import ac.grim.grimac.events.packets.PacketEntityReplication;
@@ -154,8 +155,9 @@ public class CheckManager {
 
         postPredictionChecks = new ImmutableClassToInstanceMap.Builder<PostPredictionCheck>()
                 .put(NegativeTimer.class, new NegativeTimer(player))
-                .put(ExplosionHandler.class, new ExplosionHandler(player))
-                .put(KnockbackHandler.class, new KnockbackHandler(player))
+                .put(VelocityB.class, new VelocityB(player))
+                .put(VelocityA.class, new VelocityA(player))
+                .put(VelocityC.class, new VelocityC(player))
                 .put(GhostBlockDetector.class, new GhostBlockDetector(player))
                 .put(Phase.class, new Phase(player))
                 .put(Post.class, new Post(player))
@@ -211,6 +213,7 @@ public class CheckManager {
                 .put(FabricatedPlace.class, new FabricatedPlace(player))
                 .put(PositionPlace.class, new PositionPlace(player))
                 .put(RotationPlace.class, new RotationPlace(player))
+                .put(ScaffoldA.class, new ScaffoldA(player))
                 .put(PacketOrderN.class, new PacketOrderN(player))
                 .put(DuplicateRotPlace.class, new DuplicateRotPlace(player))
                 .put(GhostBlockMitigation.class, new GhostBlockMitigation(player))
@@ -387,8 +390,8 @@ public class CheckManager {
         }
     }
 
-    public ExplosionHandler getExplosionHandler() {
-        return getPostPredictionCheck(ExplosionHandler.class);
+    public VelocityB getExplosionHandler() {
+        return getPostPredictionCheck(VelocityB.class);
     }
 
     @SuppressWarnings("unchecked")
@@ -411,8 +414,8 @@ public class CheckManager {
         return getPacketCheck(NoFall.class);
     }
 
-    public KnockbackHandler getKnockbackHandler() {
-        return getPostPredictionCheck(KnockbackHandler.class);
+    public VelocityA getKnockbackHandler() {
+        return getPostPredictionCheck(VelocityA.class);
     }
 
     public CompensatedCooldown getCompensatedCooldown() {

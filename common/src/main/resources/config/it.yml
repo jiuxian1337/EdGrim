@@ -15,6 +15,13 @@ alerts:
         # Gli avvisi ricevuti da altri server devono essere annunciati a questo server?
         receive: false
 
+    hover:
+        enabled: true
+
+    click:
+        enabled: true
+        command: "/grim spectate %player%"
+
 verbose:
     # Mostra dettagli su console?
     print-to-console: false
@@ -96,6 +103,11 @@ RotationPlace:
     # Livello di violazione per il piazzamento con rotazione specifica
     cancelvl: 5
 
+ScaffoldA:
+    # 检测低cps神桥
+    check-low-cps-god-bridge: true
+    cancelvl: 5
+
 NoSlow:
     # Limite per rilevare l'uso scorretto dell'oggetto
     threshold: 0.001
@@ -104,7 +116,7 @@ NoSlow:
     # Decadimento per l'uso scorretto dell'oggetto
     decay: 0.05
 
-Knockback:
+VelocityA:
     # Riduce gradualmente l'avanzamento totale del giocatore quando è legittimo
     setback-decay-multiplier: 0.999
     # Limite per creare una violazione rispetto alla velocità del giocatore
@@ -116,11 +128,16 @@ Knockback:
     # Limite massimo di vantaggio accumulabile prima di arretrare il giocatore
     max-ceiling: 4
 
-Explosion:
+VelocityB:
     # Limite per rilevare l'esplosione
     threshold: 0.001
     # Livello di violazione per l'esplosione
     setbackvl: 3
+
+VelocityC:
+    setbackvl: 3
+    allowed-jump-reset: true
+    min-velocity: 90
 
 TimerA:
     # Livello di violazione per il timer

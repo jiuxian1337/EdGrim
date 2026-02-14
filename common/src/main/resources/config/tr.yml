@@ -15,6 +15,13 @@ alerts:
         # Diğer sunuculardan alınan uyarılar bu sunucuya duyurulmalı mı?
         receive: false
 
+    hover:
+        enabled: true
+
+    click:
+        enabled: true
+        command: "/grim spectate %player%"
+
 verbose:
     print-to-console: false
 
@@ -98,6 +105,11 @@ PositionPlace:
 RotationPlace:
     cancelvl: 5
 
+ScaffoldA:
+    # 检测低cps神桥
+    check-low-cps-god-bridge: true
+    cancelvl: 5
+
 # Tahmin tabanlı yavaşlama kontrolü
 # Grim burada hatalı ağ kodunu dikkate alır... sağ tıklama ve el yan tuşunu spam yapsanız bile yanlış pozitiflik oluşturması zordur
 # Diğer anti-hilelerden çok daha stabil, ancak herhangi bir yanlış pozitif rapor edin... burada birçok ağ kodu sorununu çözdüm.
@@ -111,7 +123,7 @@ NoSlow:
     # Oyuncu bir eşya kullandığında VE onun tarafından yavaşlatıldığında beklenilen zaman
     decay: 0.05
 
-Knockback:
+VelocityA:
     # Oyuncu legit olduğunda toplam avantajı ne kadarla çarpmalıyız
     setback-decay-multiplier: 0.999
     # Oyuncunun hızından ne kadar büyük bir sapma ihlal oluşturmalıyız?
@@ -126,9 +138,14 @@ Knockback:
     # Bu, oyuncunun çok fazla ihlal toplamasını ve asla hepsini temizleyememesini engellemek içindir
     max-ceiling: 4
 
-Explosion:
+VelocityB:
     threshold: 0.001
     setbackvl: 3
+
+VelocityC:
+    setbackvl: 3
+    allowed-jump-reset: true
+    min-velocity: 90
 
 TimerA:
     setbackvl: 10

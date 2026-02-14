@@ -13,6 +13,8 @@ import ac.grim.grimac.utils.anticheat.LogUtil;
 import ac.grim.grimac.utils.anticheat.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,6 +27,10 @@ public class PunishmentManager implements ConfigReloadable {
     private String alertString;
     private boolean testMode;
     private String proxyAlertString = "";
+    private boolean hoverEnabled;
+    private String hoverFormat;
+    private boolean clickEnabled;
+    private String clickCommand;
 
     public PunishmentManager(GrimPlayer player) {
         this.player = player;
@@ -34,9 +40,13 @@ public class PunishmentManager implements ConfigReloadable {
     public void reload(ConfigManager config) {
         List<String> punish = config.getStringListElse("Punishments", new ArrayList<>());
         experimentalSymbol = config.getStringElse("experimental-symbol", "*");
-        alertString = config.getStringElse("alerts-format", "%prefix% &f%player% &bfailed &f%check_name% &f(x&c%vl%&f) &7%verbose%");
+        alertString = config.getStringElse("alerts-format", "%prefix% &f%player% &bfailed &f%check_name%%experimental% &f(x&c%vl%&f)");
         testMode = config.getBooleanElse("test-mode", false);
-        proxyAlertString = config.getStringElse("alerts-format-proxy", "%prefix% &f[&cproxy&f] &f%player% &bfailed &f%check_name% &f(x&c%vl%&f) &7%verbose%");
+        proxyAlertString = config.getStringElse("alerts-format-proxy", "%prefix% &f[&cproxy&f] &f%player% &bfailed &f%check_name%%experimental% &f(x&c%vl%&f)");
+        hoverEnabled = config.getBooleanElse("alerts.hover.enabled", true);
+        hoverFormat = config.getStringElse("alerts-hover-format", "&7%verbose%");
+        clickEnabled = config.getBooleanElse("alerts.click.enabled", true);
+        clickCommand = config.getStringElse("alerts.click.command", "/grim spectate %player%");
         try {
             groups.clear();
 
@@ -95,15 +105,37 @@ public class PunishmentManager implements ConfigReloadable {
         }
     }
 
-    private String replaceAlertPlaceholders(String original, int vl, Check check, String verbose) {
+    private String replaceAlertPlaceholders(String original, int vl, Check check, String verboseReplacement) {
         return MessageUtil.replacePlaceholders(player, original
                 .replace("[alert]", alertString)
                 .replace("[proxy]", proxyAlertString)
+                .replace("%client%", "%brand%")
                 .replace("%check_name%", check.getDisplayName())
                 .replace("%experimental%", check.isExperimental() ? experimentalSymbol : "")
                 .replace("%vl%", Integer.toString(vl))
                 .replace("%description%", check.getDescription())
-        ).replace("%verbose%", MiniMessage.miniMessage().escapeTags(verbose));
+        ).replace("%verbose%", verboseReplacement);
+    }
+
+    private Component buildInteractiveAlert(int vl, Check check, String verbose, boolean proxy) {
+        String format = proxy ? proxyAlertString : alertString;
+
+        String mainText = replaceAlertPlaceholders(format, vl, check, "");
+        Component component = MessageUtil.miniMessage(mainText);
+
+        if (hoverEnabled) {
+            String escapedVerbose = MiniMessage.miniMessage().escapeTags(verbose);
+            String hoverText = replaceAlertPlaceholders(hoverFormat, vl, check, escapedVerbose);
+            Component hoverComponent = MessageUtil.miniMessage(hoverText);
+            component = component.hoverEvent(HoverEvent.showText(hoverComponent));
+        }
+
+        if (clickEnabled && clickCommand != null && !clickCommand.isBlank()) {
+            String resolvedClickCommand = MessageUtil.replacePlaceholders(player, clickCommand.replace("%client%", "%brand%"));
+            component = component.clickEvent(ClickEvent.runCommand(resolvedClickCommand));
+        }
+
+        return component;
     }
 
     public boolean handleAlert(GrimPlayer player, String verbose, Check check) {
@@ -115,15 +147,25 @@ public class PunishmentManager implements ConfigReloadable {
                 final int vl = getViolations(group, check);
                 final int violationCount = group.violations.size();
                 for (ParsedCommand command : group.commands) {
-                    String cmd = replaceAlertPlaceholders(command.command, vl, check, verbose);
+                    boolean isAlert = command.command.equals("[alert]");
+                    boolean isProxy = command.command.equals("[proxy]");
+                    Component interactive = null;
+                    String cmd;
+
+                    if (isAlert || isProxy) {
+                        interactive = buildInteractiveAlert(vl, check, verbose, isProxy);
+                        cmd = MiniMessage.miniMessage().serialize(interactive);
+                    } else {
+                        String escapedVerbose = MiniMessage.miniMessage().escapeTags(verbose);
+                        cmd = replaceAlertPlaceholders(command.command, vl, check, escapedVerbose);
+                    }
 
                     @Nullable Set<@Nullable PlatformPlayer> verboseListeners = null;
 
                     // Verbose that prints all flags
-                    if (GrimAPI.INSTANCE.getAlertManager().hasVerboseListeners() && command.command.equals("[alert]")) {
+                    if (interactive != null && GrimAPI.INSTANCE.getAlertManager().hasVerboseListeners() && isAlert) {
                         sentDebug = true;
-                        Component component = MessageUtil.miniMessage(cmd);
-                        verboseListeners = GrimAPI.INSTANCE.getAlertManager().sendVerbose(component, null);
+                        verboseListeners = GrimAPI.INSTANCE.getAlertManager().sendVerbose(interactive, null);
                     }
 
                     if (violationCount >= command.threshold) {
@@ -145,13 +187,14 @@ public class PunishmentManager implements ConfigReloadable {
                                 case "[proxy]" -> ProxyAlertMessenger.sendPluginMessage(cmd);
                                 case "[alert]" -> {
                                     sentDebug = true;
-                                    Component message = MessageUtil.miniMessage(cmd);
                                     if (testMode) { // secret test mode
-                                        if (verboseListeners == null || verboseListeners.contains(player.platformPlayer)) {
-                                            player.sendMessage(message);
+                                        if (interactive != null && (verboseListeners == null || verboseListeners.contains(player.platformPlayer))) {
+                                            player.sendMessage(interactive);
                                         }
                                     } else {
-                                        GrimAPI.INSTANCE.getAlertManager().sendAlert(message, verboseListeners);
+                                        if (interactive != null) {
+                                            GrimAPI.INSTANCE.getAlertManager().sendAlert(interactive, verboseListeners);
+                                        }
                                     }
                                 }
                                 default -> GrimAPI.INSTANCE.getScheduler().getGlobalRegionScheduler().run(GrimAPI.INSTANCE.getGrimPlugin(), () ->

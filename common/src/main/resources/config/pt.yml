@@ -15,6 +15,13 @@ alerts:
         # Deviam os alertas ser recebidos de outros servidores conectados no mesmo proxy?
         receive: false
 
+    hover:
+        enabled: true
+
+    click:
+        enabled: true
+        command: "/grim spectate %player%"
+
 verbose:
     print-to-console: false
 
@@ -99,6 +106,11 @@ PositionPlace:
 RotationPlace:
     cancelvl: 5
 
+ScaffoldA:
+    # 检测低cps神桥
+    check-low-cps-god-bridge: true
+    cancelvl: 5
+
 # Verificação de NoSlow por simulação.
 # Grim considera erros no netcode. Difícil de gerar falsos positivos, até mesmo spamando o blotão direito e a offhand.
 # Muito mais estável que outros anticheats, mas por favor, reporte quaisquer falsos positivos. Eu já arrumei diversos
@@ -113,7 +125,7 @@ NoSlow:
     # Decai quando o jogador usa um item e é efetivamente desacelerado.
     decay: 0.05
 
-Knockback:
+VelocityA:
     # Por quanto deve-se multiplicar a vantagem desde a última vez que falhou na verificação?
     setback-decay-multiplier: 0.999
     # O quão longe da área do recuo recebido o jogador deve estar para registrar violações?
@@ -128,9 +140,14 @@ Knockback:
     # Isso serve para previnir o jogador de alcançar violações demais e nunca conseguir se livrar delas.
     max-ceiling: 4
 
-Explosion:
+VelocityB:
     threshold: 0.001
     setbackvl: 3
+
+VelocityC:
+    setbackvl: 3
+    allowed-jump-reset: true
+    min-velocity: 90
 
 TimerA:
     setbackvl: 10

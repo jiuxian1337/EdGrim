@@ -50,6 +50,38 @@ public class GrimMath {
     }
 
     @Contract(pure = true)
+    public static double getAverage(@NotNull List<? extends Number> numbers) {
+        if (numbers.isEmpty()) return 0.0;
+
+        double sum = 0.0;
+        for (Number number : numbers) {
+            sum += number.doubleValue();
+        }
+        return sum / numbers.size();
+    }
+
+    @Contract(pure = true)
+    public static double getStandardDeviation(@NotNull List<? extends Number> numbers) {
+        if (numbers.isEmpty()) return 0.0;
+
+        double mean = getAverage(numbers);
+        double standardDeviation = 0.0;
+        for (Number number : numbers) {
+            double diff = number.doubleValue() - mean;
+            standardDeviation += diff * diff;
+        }
+        return Math.sqrt(standardDeviation / numbers.size());
+    }
+
+    @Contract(pure = true)
+    public static float wrapAngleTo180(float angle) {
+        angle %= 360.0f;
+        if (angle >= 180.0f) angle -= 360.0f;
+        if (angle < -180.0f) angle += 360.0f;
+        return angle;
+    }
+
+    @Contract(pure = true)
     public static int floor(double d) {
         return (int) Math.floor(d);
     }

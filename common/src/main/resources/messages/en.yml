@@ -1,5 +1,5 @@
 # \u00BB is » (double >>), ANSI and UTF-8 interpret this differently... you may even see ? due to this
-prefix: "&bGrim &8\u00BB"
+prefix: "&7[&bEdGrim&7]"
 
 alerts-enabled: "%prefix% &fAlerts enabled"
 alerts-disabled: "%prefix% &fAlerts disabled"
@@ -37,8 +37,9 @@ run-as-player-or-console: "%prefix% &cThis command can only be used by players o
 # %experimental%
 # %vl% - violations
 # %verbose% - extra information from the check such as offsets, not all checks will add information
-alerts-format: "%prefix% &f%player% &bfailed &f%check_name%%experimental% &f(x&c%vl%&f) &7%verbose%"
-alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &bfailed &f%check_name%%experimental% &f(x&c%vl%&f) &7%verbose%"
+alerts-format: "%prefix% &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-hover-format: "&fDescription: &b%description%<newline>&fVerbose: <newline>&b&7%verbose%<newline>&fPing: &b%ping%<newline>&fVersion: &b%version%<newline>&fClient Brand: &b%brand%<newline>&fHorizontal Sensitivity: &b%h_sensitivity%%<newline>&fVertical Sensitivity: &b%v_sensitivity%%<newline>&fFastMath: &b%fast_math%"
 experimental-symbol: "*"
 
 profile:

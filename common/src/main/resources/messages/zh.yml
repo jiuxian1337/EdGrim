@@ -1,5 +1,5 @@
 # \u00BB 表示 » (相当于缩小版的 >>), ANSI和UTF-8的显示方式有所不同,有时你甚至可以看到乱码.
-prefix: "&bGrim &8\u00BB"
+prefix: "&7[&bEdGrim&7]"
 
 alerts-enabled: "%prefix% &f警报 已开启"
 alerts-disabled: "%prefix% &f警报 已禁用"
@@ -37,19 +37,20 @@ run-as-player-or-console: "%prefix% &c此命令只能由玩家或控制台使用
 # %experimental% - 检查是否是实验性
 # %vl% - VL值
 # %verbose% - 检查中的额外信息说明，例如偏移量，并非所有检查都会添加信息
-alerts-format: "%prefix% &f%player% &b触发了 &f%check_name%%experimental% &f(x&c%vl%&f) &7%verbose%"
-alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &b触发了 &f%check_name%%experimental% &f(x&c%vl%&f) &7%verbose%"
+alerts-format: "%prefix% &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-hover-format: "&f检查解释: &b%description%<newline>&f详细信息: <newline>&b&7%verbose%<newline>&f延迟: &b%ping%<newline>&f版本: &b%version%<newline>&f客户端型号: &b%brand%<newline>&f水平灵敏度: &b%h_sensitivity%%<newline>&f垂直灵敏度: &b%v_sensitivity%%<newline>&fFastMath: &b%fast_math%"
 experimental-symbol: "*"
 
 profile:
     - "&7======================"
-    - "%prefix% &f%player% &b 的信息"
-    - "&b延迟: &f%ping%"
-    - "&b版本: &f%version%"
-    - "&b客户端型号: &f%brand%"
-    - "&b水平灵敏度: &f%h_sensitivity%%"
-    - "&b垂直灵敏度: &f%v_sensitivity%%"
-    - "&bFastMath: &f%fast_math%"
+    - "&f%player% &b 的信息"
+    - "&f延迟: &b%ping%"
+    - "&f版本: &b%version%"
+    - "&f客户端型号: &b%brand%"
+    - "&f水平灵敏度: &b%h_sensitivity%%"
+    - "&f垂直灵敏度: &b%v_sensitivity%%"
+    - "&fFastMath: &b%fast_math%"
     - "&7======================"
 help:
     - "&7======================"

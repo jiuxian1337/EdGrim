@@ -1,5 +1,5 @@
 # \u00BB se traduit par » (double >>). Les interprétations diffèrent entre les normes ANSI et UTF-8... vous pouvez même voir ? en raison de cela
-prefix: "&bGrim &8\u00BB"
+prefix: "&7[&bEdGrim&7]"
 
 alerts-enabled: "%prefix% &fAlertes activées"
 alerts-disabled: "%prefix% &fAlertes désactivées"
@@ -37,8 +37,9 @@ run-as-player-or-console: "%prefix% &cCette commande ne peut être utilisée que
 # %experimental%
 # %vl% - violations
 # %verbose% - Informations supplémentaires sur les vérifivations comme les écarts, toutes les vérifications n'ajoutent pas d'information
-alerts-format: "%prefix% &f%player% &ba échoué &f%check_name%%experimental% &f(x&c%vl%&f) &7%verbose%"
-alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &ba échoué &f%check_name%%experimental% &f(x&c%vl%&f) &7%verbose%"
+alerts-format: "%prefix% &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-format-proxy: "%prefix% &f[&cproxy&f] &f%player% &7failed &b%check_name%%experimental% &7[x&b%vl%&7]"
+alerts-hover-format: "&fDescription : &b%description%<newline>&fDétails : &b&7%verbose%<newline>&fPing : &b%ping%<newline>&fVersion : &b%version%<newline>&fClient : &b%brand%<newline>&fSensibilité horizontale : &b%h_sensitivity%%<newline>&fSensibilité verticale : &b%v_sensitivity%%<newline>&fFastMath : &b%fast_math%"
 experimental-symbol: "*"
 
 profile:
