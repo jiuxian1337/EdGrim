@@ -4,7 +4,37 @@ import ac.grim.grimac.GrimAPI;
 import ac.grim.grimac.api.AbstractCheck;
 import ac.grim.grimac.checks.impl.aim.AimDuplicateLook;
 import ac.grim.grimac.checks.impl.aim.AimModulo360;
+import ac.grim.grimac.checks.impl.aim.AimA;
+import ac.grim.grimac.checks.impl.aim.AimB;
+import ac.grim.grimac.checks.impl.aim.AimC;
+import ac.grim.grimac.checks.impl.aim.AimD;
+import ac.grim.grimac.checks.impl.aim.AimE;
+import ac.grim.grimac.checks.impl.aim.AimF;
+import ac.grim.grimac.checks.impl.aim.AimG;
+import ac.grim.grimac.checks.impl.aim.AimH;
+import ac.grim.grimac.checks.impl.aim.AimI;
+import ac.grim.grimac.checks.impl.aim.AimJ;
+import ac.grim.grimac.checks.impl.aim.AimK;
+import ac.grim.grimac.checks.impl.aim.AimL;
+import ac.grim.grimac.checks.impl.aim.AimM;
+import ac.grim.grimac.checks.impl.aim.AimN;
+import ac.grim.grimac.checks.impl.aim.AimO;
+import ac.grim.grimac.checks.impl.aim.AimP;
+import ac.grim.grimac.checks.impl.aim.AimQ;
+import ac.grim.grimac.checks.impl.aim.AimR;
+import ac.grim.grimac.checks.impl.aim.AimS;
+import ac.grim.grimac.checks.impl.aim.AimT;
+import ac.grim.grimac.checks.impl.aim.AimU;
+import ac.grim.grimac.checks.impl.aim.AimV;
+import ac.grim.grimac.checks.impl.aim.AimW;
 import ac.grim.grimac.checks.impl.aim.processor.AimProcessor;
+import ac.grim.grimac.checks.impl.analysis.AnalysisA;
+import ac.grim.grimac.checks.impl.analysis.AnalysisB;
+import ac.grim.grimac.checks.impl.analysis.AnalysisC;
+import ac.grim.grimac.checks.impl.analysis.AnalysisD;
+import ac.grim.grimac.checks.impl.analysis.AnalysisE;
+import ac.grim.grimac.checks.impl.analysis.AnalysisF;
+import ac.grim.grimac.checks.impl.analysis.AnalysisG;
 import ac.grim.grimac.checks.impl.badpackets.*;
 import ac.grim.grimac.checks.impl.breaking.*;
 import ac.grim.grimac.checks.impl.chat.ChatA;
@@ -89,6 +119,7 @@ public class CheckManager {
                 .put(ActionManager.class, player.actionManager)
                 .put(TeamHandler.class, new TeamHandler(player))
                 .put(ClientBrand.class, new ClientBrand(player))
+                .put(AnalysisG.class, new AnalysisG(player))
                 .put(NoFall.class, new NoFall(player))
                 .put(ChatA.class, new ChatA(player))
                 .put(ChatB.class, new ChatB(player))
@@ -148,6 +179,35 @@ public class CheckManager {
                 .put(AimProcessor.class, new AimProcessor(player))
                 .put(AimModulo360.class, new AimModulo360(player))
                 .put(AimDuplicateLook.class, new AimDuplicateLook(player))
+                .put(AimA.class, new AimA(player))
+                .put(AimB.class, new AimB(player))
+                .put(AimC.class, new AimC(player))
+                .put(AimD.class, new AimD(player))
+                .put(AimE.class, new AimE(player))
+                .put(AimF.class, new AimF(player))
+                .put(AimG.class, new AimG(player))
+                .put(AimH.class, new AimH(player))
+                .put(AimI.class, new AimI(player))
+                .put(AimJ.class, new AimJ(player))
+                .put(AimK.class, new AimK(player))
+                .put(AimL.class, new AimL(player))
+                .put(AimM.class, new AimM(player))
+                .put(AimN.class, new AimN(player))
+                .put(AimO.class, new AimO(player))
+                .put(AimP.class, new AimP(player))
+                .put(AimQ.class, new AimQ(player))
+                .put(AimR.class, new AimR(player))
+                .put(AimS.class, new AimS(player))
+                .put(AimT.class, new AimT(player))
+                .put(AimU.class, new AimU(player))
+                .put(AimV.class, new AimV(player))
+                .put(AimW.class, new AimW(player))
+                .put(AnalysisA.class, new AnalysisA(player))
+                .put(AnalysisB.class, new AnalysisB(player))
+                .put(AnalysisC.class, new AnalysisC(player))
+                .put(AnalysisD.class, new AnalysisD(player))
+                .put(AnalysisE.class, new AnalysisE(player))
+                .put(AnalysisF.class, new AnalysisF(player))
                 .build();
         vehicleChecks = new ImmutableClassToInstanceMap.Builder<VehicleCheck>()
                 .put(VehiclePredictionRunner.class, new VehiclePredictionRunner(player))
@@ -307,6 +367,9 @@ public class CheckManager {
         for (BlockBreakCheck check : blockBreakChecks.values()) {
             check.onPacketReceive(packet);
         }
+        for (RotationCheck check : rotationChecks.values()) {
+            check.onPacketReceive(packet);
+        }
     }
 
     public void onPacketSend(final PacketSendEvent packet) {
@@ -323,6 +386,9 @@ public class CheckManager {
             check.onPacketSend(packet);
         }
         for (BlockBreakCheck check : blockBreakChecks.values()) {
+            check.onPacketSend(packet);
+        }
+        for (RotationCheck check : rotationChecks.values()) {
             check.onPacketSend(packet);
         }
     }

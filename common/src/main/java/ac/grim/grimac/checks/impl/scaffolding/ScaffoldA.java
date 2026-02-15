@@ -20,11 +20,10 @@ import java.util.List;
 
 import static com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying.isFlying;
 
-@CheckData(name = "ScaffoldA (Analysis)",
+@CheckData(name = "ScaffoldA",
         configName = "ScaffoldA",
         decay = 0.86,
-        description = "Scaffold analysis",
-        experimental = true)
+        description = "Scaffold analysis")
 public final class ScaffoldA extends BlockPlaceCheck {
     private long checkScaffold;
     private long click;
@@ -66,6 +65,7 @@ public final class ScaffoldA extends BlockPlaceCheck {
     private float deltaYaw;
     private float deltaPitch;
     private float yaw;
+    private float pitch;
 
     private boolean debug;
     private boolean checkGB;
@@ -85,6 +85,7 @@ public final class ScaffoldA extends BlockPlaceCheck {
         this.deltaYaw = rotationUpdate.getDeltaXRotABS();
         this.deltaPitch = rotationUpdate.getDeltaYRotABS();
         this.yaw = rotationUpdate.getTo().getYaw();
+        this.pitch = rotationUpdate.getTo().getPitch();
     }
 
     @Override
@@ -195,10 +196,15 @@ public final class ScaffoldA extends BlockPlaceCheck {
                 }
             }
         } else {
+            if (debug) alert("Auto#1 bypass\n" +
+                    place.getFace().toString() + "\n" +
+                    "buffer1= " + buffer1 + "\n" +
+                    "sides= " + sides.size() + "\n" +
+                    "possibility= " + possibility);
             checkBuffer1 = Math.max(0, buffer1 - 0.1);
         }
 
-        if (!sides.isEmpty() && possibility > 0.5 && lastJump > 5) {
+        if (!sides.isEmpty() && possibility > 0.5 && lastJump > 5 && this.pitch >= 45.0F) {
             if (checkBuffer2++ > 7) {
                 if (flagAndAlert("(Auto#2)\np= " + String.format("%.2f%%", possibility * 100)) && shouldCancel()) {
                     cancelPlace = true;
@@ -206,7 +212,7 @@ public final class ScaffoldA extends BlockPlaceCheck {
             }
         }
 
-        if (sides.size() > 3 && lastSneak > 5 && surfaces.isEmpty()) {
+        if (sides.size() > 3 && lastSneak > 5 && surfaces.isEmpty() && this.pitch >= 45.0F) {
             if (checkBuffer3++ > 5) {
                 if (flagAndAlert("(Sneak)\nls= " + lastSneak + "\nsd= " + sides.size()) && shouldCancel()) {
                     cancelPlace = true;
@@ -214,7 +220,7 @@ public final class ScaffoldA extends BlockPlaceCheck {
             }
         }
 
-        if (sides.size() > 4 && lastSneak > 2 && surfaces.isEmpty() && tooShortSneak > 2.6) {
+        if (sides.size() > 4 && lastSneak > 2 && surfaces.isEmpty() && tooShortSneak > 2.6 && this.pitch >= 45.0F) {
             if (checkBuffer3++ > 5) {
                 if (flagAndAlert("(Sneak#2)\nls= " + lastSneak + "\nsd= " + sides.size() + "\ntss= " + (int) tooShortSneak) && shouldCancel()) {
                     cancelPlace = true;
@@ -224,14 +230,17 @@ public final class ScaffoldA extends BlockPlaceCheck {
 
         if (place.getFace() != BlockFace.OTHER
                 && place.getFace() != BlockFace.UP
-                && place.getFace() != BlockFace.DOWN) {
+                && place.getFace() != BlockFace.DOWN
+        ) {
             if (place.position.getY() == lastPlaceY) {
-                if (lastSneak > 5) {
+                if (lastSneak > 5
+                        && this.pitch >= 45.0F) {
                     godBridge++;
                     if (debug) alert("godBridge++\n" +
                             place.getFace().toString() + "\n" +
-                            "dc= " + dragClick +"\n" +
-                            "placeSpeed= " + placeSpeed);
+                            "dc= " + dragClick + "\n" +
+                            "ls= " + lastSneak + "\n" +
+                            "pitch= " + this.pitch);
                 }
             } else {
                 godBridge = 0;
@@ -239,7 +248,7 @@ public final class ScaffoldA extends BlockPlaceCheck {
             lastPlaceY = place.position.getY();
         }
 
-        if (hasTimeElapsed(click, 50)) {
+        if (hasTimeElapsed(click, 125)) {
             dragClick = 0;
         } else {
             dragClick++;
@@ -247,7 +256,7 @@ public final class ScaffoldA extends BlockPlaceCheck {
                     (time() - click));
         }
 
-        if (dragClick < 30 && godBridge > 3 && checkGB) {
+        if (dragClick < 5 && godBridge > 3 && checkGB) {
 
             if (time() - click > 1000) {
                 if (debug) alert("godBridge = 0\n" +
@@ -255,7 +264,7 @@ public final class ScaffoldA extends BlockPlaceCheck {
                         "dc= " + dragClick +"\n" +
                         "lc= " + (time() - click));
                 godBridge = 0;
-            }else if (godbridgeInARow++ > 3 && flagAndAlert("(GodBridge/KeepY)\ndc= " + dragClick + "\n lc= " + (time() - click)) && shouldCancel() && cancelGB) {
+            } else if (godbridgeInARow++ > 3 && flagAndAlert("(GodBridge/KeepY)\ndc= " + dragClick + "\nlc= " + (time() - click)) && shouldCancel() && cancelGB) {
                 cancelPlace = true;
             }
         } else {
@@ -328,6 +337,9 @@ public final class ScaffoldA extends BlockPlaceCheck {
             buffer1 = Math.max(0, buffer1 - 0.2);
             if (deltaYaw > 20) {
                 buffer1 = Math.min(buffer1 + 1, 5);
+                if (debug) alert("buffer1 + 1\n" +
+                        "buffer1= " + buffer1 +"\n" +
+                        "deltaYaw= " + deltaYaw);
             }
 
             long maxTime = 2000;

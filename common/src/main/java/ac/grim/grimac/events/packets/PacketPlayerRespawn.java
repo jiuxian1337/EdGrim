@@ -82,6 +82,8 @@ public class PacketPlayerRespawn extends PacketListenerAbstract {
 
             GrimPlayer player = GrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
+
+            player.resetRespawnTick();
             //
             if (player.packetStateData.lastFood == health.getFood()
                     && player.packetStateData.lastHealth == health.getHealth()

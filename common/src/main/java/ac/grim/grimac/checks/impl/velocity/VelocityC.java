@@ -23,7 +23,7 @@ import java.util.OptionalInt;
 
 import static com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying.isFlying;
 
-@CheckData(name = "VelocityC (Horizontal)", configName = "VelocityC", decay = 0.85, experimental = true)
+@CheckData(name = "VelocityC (Horizontal)", configName = "VelocityC", decay = 0.85)
 public class VelocityC extends Check implements PostPredictionCheck {
 
     private static final float[][] KEY_COMBOS = {

@@ -146,6 +146,9 @@ public class GrimPlayer implements GrimUser {
     public float yRot;
     public float lastXRot;
     public float lastYRot;
+    private PacketEntity target;
+    private PacketEntity lastTarget;
+    private int respawnTick;
     public boolean onGround;
     public boolean lastOnGround;
     public boolean isSneaking;
@@ -255,6 +258,8 @@ public class GrimPlayer implements GrimUser {
     @Getter private boolean resetItemUsageOnAttack;
     @Getter private boolean resetItemUsageOnItemUpdate;
     @Getter private boolean resetItemUsageOnSlotChange;
+    private boolean mitigateDamageEnabled = true;
+    private boolean mitigateDamagePending;
     // end config
     public boolean noModifyPacketPermission = false;
     public boolean noSetbackPermission = false;
@@ -639,6 +644,75 @@ public class GrimPlayer implements GrimUser {
         return inVehicle() ? getVehicle().type : null;
     }
 
+    public SimpleCollisionBox getBoundingBox() {
+        return boundingBox;
+    }
+
+    public PacketEntity getTarget() {
+        return target;
+    }
+
+    public PacketEntity getLastTarget() {
+        return lastTarget;
+    }
+
+    public void setTarget(PacketEntity target) {
+        this.lastTarget = this.target;
+        this.target = target;
+    }
+
+    public float getPitch() {
+        return xRot;
+    }
+
+    public float getYaw() {
+        return yRot;
+    }
+
+    public float getLastPitch() {
+        return lastXRot;
+    }
+
+    public float getLastYaw() {
+        return lastYRot;
+    }
+
+    public double getDeltaXZ() {
+        double dx = x - lastX;
+        double dz = z - lastZ;
+        return Math.hypot(dx, dz);
+    }
+
+    public boolean isMoving() {
+        return getDeltaXZ() > 0.001;
+    }
+
+    public int calculateSensitivity() {
+        AimProcessor processor = checkManager.getRotationCheck(AimProcessor.class);
+        if (processor == null) return -1;
+        double sensitivity = Math.max(processor.sensitivityX, processor.sensitivityY);
+        if (Double.isNaN(sensitivity) || Double.isInfinite(sensitivity)) return -1;
+        return (int) Math.round(sensitivity * 200);
+    }
+
+    public int getRespawnTick() {
+        return respawnTick;
+    }
+
+    public void resetRespawnTick() {
+        respawnTick = 0;
+    }
+
+    public void incrementRespawnTick() {
+        if (respawnTick < 1000000) {
+            respawnTick++;
+        }
+    }
+
+    public int getSinceRiptideSpinTick() {
+        return riptideSpinAttackTicks > 0 ? 0 : 1000;
+    }
+
     public double[] getPossibleEyeHeights() { // We don't return sleeping eye height
         // 1.8 Players once again ruin my clean switch-case
         if (this.getClientVersion().isOlderThan(ClientVersion.V_1_9)) {
@@ -893,6 +967,8 @@ public class GrimPlayer implements GrimUser {
         resetItemUsageOnAttack = config.getBooleanElse("reset-item-usage-on-attack", true);
         resetItemUsageOnItemUpdate = config.getBooleanElse("reset-item-usage-on-item-update", true);
         resetItemUsageOnSlotChange = config.getBooleanElse("reset-item-usage-on-slot-change", true);
+        mitigateDamageEnabled = config.getBooleanElse("mitigate-damage.enabled", true);
+        mitigateDamagePending = false;
         // reload all checks
         for (AbstractCheck value : checkManager.allChecks.values()) value.reload();
         // reload punishment manager
@@ -907,6 +983,22 @@ public class GrimPlayer implements GrimUser {
     @Override
     public void sendMessage(String message) {
         if (platformPlayer != null) platformPlayer.sendMessage(message);
+    }
+
+    public boolean mitigateDamage() {
+        if (!mitigateDamageEnabled) {
+            return false;
+        }
+        mitigateDamagePending = true;
+        return true;
+    }
+
+    public boolean shouldMitigateDamage() {
+        return mitigateDamageEnabled && mitigateDamagePending;
+    }
+
+    public void consumeMitigateDamage() {
+        mitigateDamagePending = false;
     }
 
     @Override

@@ -129,6 +129,10 @@ public class Check extends GrimProcessor implements AbstractCheck {
         violations = Math.max(0, violations - decay);
     }
 
+    public final double getDecay() {
+        return decay;
+    }
+
     @Override
     public final void reload(ConfigManager configuration) {
         decay = configuration.getDoubleElse(configName + ".decay", decay);

@@ -22,6 +22,21 @@ public class AimProcessor extends Check implements RotationCheck {
     private final RunningMode yRotMode = new RunningMode(TOTAL_SAMPLES_THRESHOLD);
     private float lastXRot;
     private float lastYRot;
+    private float yaw;
+    private float pitch;
+    private float lastYaw;
+    private float lastPitch;
+    private float deltaYaw;
+    private float deltaPitch;
+    private float lastDeltaYaw;
+    private float lastDeltaPitch;
+    private float yawAccel;
+    private float pitchAccel;
+    private float lastYawAccel;
+    private float lastPitchAccel;
+    private double avgYaw;
+    private double avgPitch;
+    public int totalSensitivityClient;
 
     public AimProcessor(GrimPlayer playerData) {
         super(playerData);
@@ -36,6 +51,24 @@ public class AimProcessor extends Check implements RotationCheck {
     @Override
     public void process(final RotationUpdate rotationUpdate) {
         rotationUpdate.setProcessor(this);
+
+        lastYaw = yaw;
+        lastPitch = pitch;
+        yaw = rotationUpdate.getTo().getYaw();
+        pitch = rotationUpdate.getTo().getPitch();
+
+        lastDeltaYaw = deltaYaw;
+        lastDeltaPitch = deltaPitch;
+        deltaYaw = Math.abs(yaw - lastYaw);
+        deltaPitch = Math.abs(pitch - lastPitch);
+
+        lastYawAccel = yawAccel;
+        lastPitchAccel = pitchAccel;
+        yawAccel = Math.abs(deltaYaw - lastDeltaYaw);
+        pitchAccel = Math.abs(deltaPitch - lastDeltaPitch);
+
+        avgYaw = yaw;
+        avgPitch = pitch;
 
         float deltaXRot = rotationUpdate.getDeltaXRotABS();
 
@@ -71,5 +104,59 @@ public class AimProcessor extends Check implements RotationCheck {
 
         this.deltaDotsX = deltaXRot / modeX;
         this.deltaDotsY = deltaYRot / modeY;
+        double sensitivity = Math.max(sensitivityX, sensitivityY);
+        if (Double.isNaN(sensitivity) || Double.isInfinite(sensitivity)) {
+            totalSensitivityClient = -1;
+        } else {
+            totalSensitivityClient = (int) Math.round(sensitivity * 200);
+        }
+    }
+
+    public float getDeltaYaw() {
+        return deltaYaw;
+    }
+
+    public float getDeltaPitch() {
+        return deltaPitch;
+    }
+
+    public float getLastDeltaYaw() {
+        return lastDeltaYaw;
+    }
+
+    public float getLastDeltaPitch() {
+        return lastDeltaPitch;
+    }
+
+    public float getYawAccel() {
+        return yawAccel;
+    }
+
+    public float getPitchAccel() {
+        return pitchAccel;
+    }
+
+    public float getYaw() {
+        return yaw;
+    }
+
+    public float getPitch() {
+        return pitch;
+    }
+
+    public float getLastYaw() {
+        return lastYaw;
+    }
+
+    public float getLastPitch() {
+        return lastPitch;
+    }
+
+    public double getAvgYaw() {
+        return avgYaw;
+    }
+
+    public double getAvgPitch() {
+        return avgPitch;
     }
 }

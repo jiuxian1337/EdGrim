@@ -62,6 +62,9 @@ cancel-duplicate-packet: true
 # Whether or not to ignore the rotation in duplicate packets
 ignore-duplicate-packet-rotation: false
 
+mitigate-damage:
+    enabled: true
+
 Simulation:
     # How much should we multiply total advantage by when the player is legit
     # This is what the default config looks like (x axis = seconds, y axis = 1/1000 block): https://www.desmos.com/calculator/d4ufgxrxer
@@ -190,6 +193,140 @@ Reach:
     # Leaving this disabled will still catch cheaters and will not cause false positives
     # Unless you are a 1.8 PvP focused server, this additional packet is not recommended
     enable-post-packet: false
+
+# Aim series (AimA-AimW)
+# Notes: Default parameters for all Aim checks; unlisted checks use built-in thresholds
+AimA:
+    # Abnormal angle sequence (continuous zero jitter)
+
+AimB:
+    # Higher-order statistics (kurtosis/jerk)
+
+AimC:
+    # Target switch / axis abnormal rotation
+
+AimD:
+    # Repeated rotation sequence / unnatural pattern
+
+AimE:
+    # Rotation randomization anomaly
+
+AimF:
+    # Low acceleration + low angle combo
+    buffer: 7
+    min-deltaX: 0.4
+    max-deltaXAccel: 0.1
+    max-rotation-angle: 5.0
+
+AimG:
+    # Pitch-axis low acceleration
+    buffer: 7
+    min-deltaY: 0.4
+    max-deltaY-accel: 0.1
+
+AimH:
+    # Low horizontal / high vertical dynamic threshold
+    buffer: 7
+    min-deltaY: 1.0
+    max-deltaX: 0.0001
+
+AimI:
+    # Rotation gcd change anomaly
+
+AimJ:
+    # Low horizontal acceleration (respawn/riptide exempt)
+    buffer: 7
+    min-deltaX: 0.4
+    max-deltaX-accel: 0.0001
+
+AimK:
+    # Rounded rotation consistency
+
+AimL:
+    # Variance/outlier anomaly
+    buffer: 4
+
+AimM:
+    # Pitch divisor row statistics
+    buffer: 5
+    sample-size: 25
+    max-invalid-rows: 2
+    min-row-length: 3
+    min-average-rot: 0.4
+    mitigate-vl: 6
+
+AimN:
+    # Continuous small consistent rotation
+
+AimO:
+    # Zero pitch change + high horizontal change
+
+AimP:
+    # GCD + modulo anomaly combo
+
+AimQ:
+    # Target distance / randomization anomaly
+
+AimR:
+    # Horizontal/vertical ratio anomaly
+    buffer: 7
+    min-deltaX: 1.0
+    max-deltaY: 0.0001
+    ratio-threshold: 1000.0
+    window-size: 5
+
+AimS:
+    # Binned variance anomaly
+
+AimT:
+    # Jolt statistics anomaly
+
+AimU:
+    # Pattern repeat / offset path anomaly
+
+AimV:
+    # Stddev anomaly (simplified rotation analysis)
+
+AimW:
+    # Adaptive statistics (experimental)
+
+AnalysisA:
+
+AnalysisB:
+
+AnalysisC:
+
+AnalysisD:
+
+AnalysisE:
+
+AnalysisF:
+    gcd:
+        enabled: true
+        max-buffer: 3.0
+        fail-increase: 1.0
+    sync:
+        enabled: true
+        max-buffer: 5.0
+        fail-increase: 1.0
+    machine:
+        enabled: true
+        max-buffer: 5.0
+        fail-increase: 1.0
+    interpolation:
+        enabled: true
+        max-buffer: 4.0
+        fail-increase: 0.85
+    interpolation_out:
+        enabled: true
+        max-buffer: 6.0
+        fail-increase: 1.0
+    machine_out:
+        enabled: true
+        max-buffer: 6.0
+        fail-increase: 1.0
+
+AnalysisG:
 
 exploit:
     # You can gain high speeds when sprint jumping with an elytra, this prevents the exploit when set to false

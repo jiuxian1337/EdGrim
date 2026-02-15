@@ -1,7 +1,9 @@
 package ac.grim.grimac.utils.anticheat.update;
 
+import ac.grim.grimac.GrimAPI;
 import ac.grim.grimac.checks.impl.aim.processor.AimProcessor;
 import ac.grim.grimac.utils.data.HeadRotation;
+import ac.grim.grimac.utils.math.Vec2f;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,5 +29,13 @@ public final class RotationUpdate {
 
     public float getDeltaYRotABS() {
         return Math.abs(deltaYRot);
+    }
+
+    public Vec2f getDelta() {
+        return new Vec2f(to.getYaw() - from.getYaw(), to.getPitch() - from.getPitch());
+    }
+
+    public long getTick() {
+        return GrimAPI.INSTANCE.getTickManager().currentTick;
     }
 }

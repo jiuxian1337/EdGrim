@@ -28,6 +28,7 @@ public class ActionManager extends Check implements PacketCheck {
             }
         } else if (isTickPacketIncludingNonMovement(event.getPacketType())) {
             player.totalFlyingPacketsSent++;
+            player.incrementRespawnTick();
             attacking = false;
         }
     }

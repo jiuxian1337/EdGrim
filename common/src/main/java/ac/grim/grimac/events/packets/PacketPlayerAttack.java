@@ -55,6 +55,7 @@ public class PacketPlayerAttack extends PacketListenerAbstract {
 
                 ItemStack heldItem = player.inventory.getHeldItem();
                 PacketEntity entity = player.compensatedEntities.getEntity(interact.getEntityId());
+                player.setTarget(entity);
 
                 if (entity != null && (!entity.isLivingEntity || entity.type == EntityTypes.PLAYER || entity.type == EntityTypes.PAINTING
                         || entity.type == EntityTypes.ENDER_DRAGON && player.getClientVersion().isOlderThan(ClientVersion.V_1_21_2))) {

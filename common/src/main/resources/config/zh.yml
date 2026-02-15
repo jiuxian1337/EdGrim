@@ -65,6 +65,9 @@ cancel-duplicate-packet: true
 # 是否忽视重复的数据包中的玩家转头
 ignore-duplicate-packet-rotation: false
 
+mitigate-damage:
+    enabled: true
+
 Simulation:
     # 当玩家合法时，我们应该将总优势乘以多少
     # 这是默认配置的样子（x 轴 = seconds ，y 轴 = 1/1000 方块）: https://www.desmos.com/calculator/d4ufgxrxer
@@ -198,6 +201,141 @@ Reach:
     # 禁用此功能仍会捕获作弊者，不会导致误报
     # 除非你是专注于 1.8 PvP 的服务器，否则不建议使用这个额外的数据包
     enable-post-packet: false
+
+# Aim 系列（AimA-AimW）
+# 说明：以下为所有 Aim 检测的默认参数，未列出的检测仅使用内置阈值
+AimA:
+    # 角度序列异常（连续零抖动）
+
+AimB:
+    # 高阶统计学特征（kurtosis/jerk）检测
+
+AimC:
+    # 目标切换/轴向异常旋转
+
+AimD:
+    # 旋转序列重复/非自然模式
+
+AimE:
+    # 旋转随机化异常
+
+AimF:
+    # 低加速度 + 低角度组合检测
+    buffer: 7
+    min-deltaX: 0.4
+    max-deltaXAccel: 0.1
+    max-rotation-angle: 5.0
+
+AimG:
+    # 俯仰轴低加速度检测
+    buffer: 7
+    min-deltaY: 0.4
+    max-deltaY-accel: 0.1
+
+AimH:
+    # 低水平/高垂直的动态阈值检测
+    buffer: 7
+    min-deltaY: 1.0
+    max-deltaX: 0.0001
+
+AimI:
+    # 旋转 gcd 变化异常
+
+AimJ:
+    # 低水平加速度检测（复活/激流豁免）
+    buffer: 7
+    min-deltaX: 0.4
+    max-deltaX-accel: 0.0001
+
+AimK:
+    # 舍入旋转一致性检测
+
+AimL:
+    # 方差/离群点异常
+    buffer: 4
+
+AimM:
+    # 俯仰除数异常行统计
+    buffer: 5
+    sample-size: 25
+    max-invalid-rows: 2
+    min-row-length: 3
+    min-average-rot: 0.4
+    mitigate-vl: 6
+
+AimN:
+    # 连续小幅一致旋转
+
+AimO:
+    # 零俯仰变化 + 高水平变化
+
+AimP:
+    # gcd + modulo 异常组合
+
+AimQ:
+    # 目标距离/随机化异常
+
+AimR:
+    # 水平/垂直比值异常
+    buffer: 7
+    min-deltaX: 1.0
+    max-deltaY: 0.0001
+    ratio-threshold: 1000.0
+    window-size: 5
+
+AimS:
+    # 分箱方差异常
+
+AimT:
+    # jolt 统计异常
+
+AimU:
+    # 模式重复/偏移路径异常
+
+AimV:
+    # stddev 异常（简化旋转分析）
+
+AimW:
+    # 自适应统计检测（实验性）
+
+AnalysisA:
+
+AnalysisB:
+
+AnalysisC:
+
+AnalysisD:
+
+AnalysisE:
+
+AnalysisF:
+    gcd:
+        enabled: true
+        max-buffer: 3.0
+        fail-increase: 1.0
+    sync:
+        enabled: true
+        max-buffer: 5.0
+        fail-increase: 1.0
+    machine:
+        enabled: true
+        max-buffer: 5.0
+        fail-increase: 1.0
+    interpolation:
+        enabled: true
+        max-buffer: 4.0
+        fail-increase: 0.85
+    interpolation_out:
+        enabled: true
+        max-buffer: 6.0
+        fail-increase: 1.0
+    machine_out:
+        enabled: true
+        max-buffer: 6.0
+        fail-increase: 1.0
+
+AnalysisG:
+
 
 exploit:
     #是否允许玩家在使用鞘翅时候进行的疾跑跳跃
