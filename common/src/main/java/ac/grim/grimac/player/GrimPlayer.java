@@ -455,17 +455,25 @@ public class GrimPlayer implements GrimUser {
     }
 
     public void sendTransaction() {
-        sendTransaction(false);
+        sendTransactionAndGetId(false);
     }
 
     public void sendTransaction(boolean async) {
+        sendTransactionAndGetId(async);
+    }
+
+    public short sendTransactionAndGetId() {
+        return sendTransactionAndGetId(false);
+    }
+
+    public short sendTransactionAndGetId(boolean async) {
         // don't send transactions outside PLAY phase
         // Sending in non-play corrupts the pipeline, don't waste bandwidth when anticheat disabled
-        if (user.getEncoderState() != ConnectionState.PLAY) return;
+        if (user.getEncoderState() != ConnectionState.PLAY) return 0;
 
         // Send a packet once every 15 seconds to avoid any memory leaks
         if (disableGrim && (System.nanoTime() - getPlayerClockAtLeast()) > 15e9) {
-            return;
+            return 0;
         }
 
         lastTransSent = System.currentTimeMillis();
@@ -491,6 +499,7 @@ public class GrimPlayer implements GrimUser {
         } catch (Exception ignored) { // Fix protocollib + viaversion support by ignoring any errors :) // TODO: Fix this
             // recompile
         }
+        return transactionID;
     }
 
     public void addTransactionSend(short id) {

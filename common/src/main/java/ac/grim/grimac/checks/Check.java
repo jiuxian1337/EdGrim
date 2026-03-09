@@ -202,4 +202,23 @@ public class Check extends GrimProcessor implements AbstractCheck {
         return isFlying(packetType);
     }
 
+    protected final int clampAddGlobalVl(int value) {
+        if (value <= 0) return 0;
+        return value;
+    }
+
+    protected final boolean addViolationsAndAlert(int amount, String verbose) {
+        int times = clampAddGlobalVl(amount);
+        if (times == 0) return false;
+        boolean alerted = false;
+        for (int i = 0; i < times; i++) {
+            if (!alerted) {
+                alerted = flagAndAlert(verbose);
+            } else {
+                flag();
+            }
+        }
+        return alerted;
+    }
+
 }

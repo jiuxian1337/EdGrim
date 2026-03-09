@@ -25,18 +25,20 @@ import static com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayC
         decay = 0.86,
         description = "Scaffold analysis")
 public final class ScaffoldA extends BlockPlaceCheck {
-    private long checkScaffold;
-    private long click;
-    private long place;
-    private long lastAnalysisTime;
     private final List<Long> sides = new ArrayList<>();
     private final List<Long> surfaces = new ArrayList<>();
     private final List<Long> failed = new ArrayList<>();
     private final List<Integer> sneakTimer = new ArrayList<>();
     private final List<Integer> placeTimer = new ArrayList<>();
     private final List<Vector3dm> hitLocations = new ArrayList<>();
+    private final int dragClickBuffer = 0;
+    private long checkScaffold;
+    private long click;
+    private long place;
+    private long lastAnalysisTime;
     private boolean checkingScaffold = false;
     private double buffer1 = 0;
+    private double bufferFast = 0;
     private double checkBuffer1 = 0;
     private double checkBuffer2 = 0;
     private double checkBuffer3 = 0;
@@ -48,13 +50,11 @@ public final class ScaffoldA extends BlockPlaceCheck {
     private int lastSneak = 0;
     private int sneakTiming = 0;
     private double godbridgeInARow = 0;
-
     private double diffTooLowInARow = 0;
     private int sneakTick = 0;
     private int placeTick = 0;
-    private int dragClick = 0;
-    private final int dragClickBuffer = 0;
-    private int godBridge = 0;
+    private double dragClick = 0;
+    private double godBridge = 0;
     private double buffer = 0;
     private double buffer2 = 0;
     private double prevScore = 0;
@@ -70,6 +70,7 @@ public final class ScaffoldA extends BlockPlaceCheck {
     private boolean debug;
     private boolean checkGB;
     private boolean cancelGB;
+    private boolean cancelPlace;
 
     public ScaffoldA(GrimPlayer player) {
         super(player);
@@ -78,6 +79,14 @@ public final class ScaffoldA extends BlockPlaceCheck {
         click = now;
         place = now;
         lastAnalysisTime = now;
+    }
+
+    private static long time() {
+        return System.currentTimeMillis();
+    }
+
+    private static boolean hasTimeElapsed(long lastTime, long elapsedMs) {
+        return time() - lastTime > elapsedMs;
     }
 
     @Override
@@ -90,191 +99,180 @@ public final class ScaffoldA extends BlockPlaceCheck {
 
     @Override
     public void onBlockPlace(final BlockPlace place) {
-        if (!place.isBlock) {
-            return;
-        }
+        if (place.isBlock) {
 
-        Vector3dm blockPos;
-        if (place.hitData != null) {
-            blockPos = new Vector3dm(player.x, player.y, player.z).subtract(place.hitData.blockHitLocation());
-        } else {
-            return;
-        }
+            Vector3dm blockPos;
+            if (place.hitData != null) {
+                blockPos = new Vector3dm(player.x, player.y, player.z).subtract(place.hitData.blockHitLocation());
 
-        boolean yaw = deltaYaw >= 0 && deltaYaw < 4;
-        boolean pitch = deltaPitch > 0.2 && deltaPitch < 4;
-        boolean jittered = yaw && pitch;
+                boolean yaw = deltaYaw >= 0 && deltaYaw < 4;
+                boolean pitch = deltaPitch > 0.2 && deltaPitch < 4;
+                boolean jittered = yaw && pitch;
 
-        float pYaw = GrimMath.wrapAngleTo180(this.yaw);
-        float offsetToNear45Deg = Math.abs(pYaw - ((float) (int) pYaw / 45) * 45f);
-        if (offsetToNear45Deg < 1) {
-        }
-
-        hitLocations.add(blockPos);
-        if (hitLocations.size() > 3) {
-            double XMean = 0;
-            double YMean = 0;
-            double ZMean = 0;
-            for (Vector3dm loc : hitLocations) {
-                XMean += loc.getX();
-                YMean += loc.getY();
-                ZMean += loc.getZ();
-            }
-            XMean /= hitLocations.size();
-            YMean /= hitLocations.size();
-            ZMean /= hitLocations.size();
-
-            double XStd = 0;
-            double YStd = 0;
-            double ZStd = 0;
-            for (Vector3dm loc : hitLocations) {
-                XStd += GrimMath.square(loc.getBlockX() - XMean);
-                YStd += GrimMath.square(loc.getBlockY() - YMean);
-                ZStd += GrimMath.square(loc.getBlockZ() - ZMean);
-            }
-            XStd /= hitLocations.size();
-            YStd /= hitLocations.size();
-            ZStd /= hitLocations.size();
-            double combinedStd = GrimMath.square(
-                    XStd * XStd +
-                            YStd * YStd +
-                            ZStd * ZStd
-            );
-            double diff = Math.abs(prevScore - combinedStd);
-            double diff2 = Math.abs(PREVdIFF - diff);
-
-            if (!hasTimeElapsed(lastAnalysisTime, 6000)) {
-                if ((diff < 0.001 || diff2 < 0.01) && diff > 0.00001 && combinedStd > 0.00001) {
-                    diffTooLowInARow += 1;
+                float pYaw = GrimMath.wrapAngleTo180(this.yaw);
+                float offsetToNear45Deg = Math.abs(pYaw - ((float) (int) pYaw / 45) * 45f);
+                if (offsetToNear45Deg < 1) {
                 }
-            }
 
-            prevScore = combinedStd;
-            PREVdIFF = diff;
-            lastAnalysisTime = time();
-            hitLocations.clear();
-        }
+                hitLocations.add(blockPos);
+                if (hitLocations.size() > 3) {
+                    double XMean = 0;
+                    double YMean = 0;
+                    double ZMean = 0;
+                    for (Vector3dm loc : hitLocations) {
+                        XMean += loc.getX();
+                        YMean += loc.getY();
+                        ZMean += loc.getZ();
+                    }
+                    XMean /= hitLocations.size();
+                    YMean /= hitLocations.size();
+                    ZMean /= hitLocations.size();
 
-        if (place.itemStack.getType().getPlacedType() == null) return;
+                    double XStd = 0;
+                    double YStd = 0;
+                    double ZStd = 0;
+                    for (Vector3dm loc : hitLocations) {
+                        XStd += GrimMath.square(loc.getBlockX() - XMean);
+                        YStd += GrimMath.square(loc.getBlockY() - YMean);
+                        ZStd += GrimMath.square(loc.getBlockZ() - ZMean);
+                    }
+                    XStd /= hitLocations.size();
+                    YStd /= hitLocations.size();
+                    ZStd /= hitLocations.size();
+                    double combinedStd = GrimMath.square(
+                            XStd * XStd +
+                                    YStd * YStd +
+                                    ZStd * ZStd
+                    );
+                    double diff = Math.abs(prevScore - combinedStd);
+                    double diff2 = Math.abs(PREVdIFF - diff);
 
-        placeCounter++;
-        checkScaffold = time();
+                    if (!hasTimeElapsed(lastAnalysisTime, 6000)) {
+                        if ((diff < 0.001 || diff2 < 0.01) && diff > 0.00001 && combinedStd > 0.00001) {
+                            diffTooLowInARow += 1;
+                        }
+                    }
 
-        boolean cancelPlace = false;
-
-        switch (place.getFace()) {
-            case WEST, EAST, SOUTH, NORTH -> {
-                placeTimer.add(placeTick);
-                placeTick = 0;
-                sides.add(time());
-            }
-            case UP, DOWN -> {
-                placeTimer.add(placeTick);
-                placeTick = 0;
-                surfaces.add(time());
-            }
-            case OTHER -> failed.add(time());
-        }
-
-        if (placeTimer.size() > 15) {
-            placeTimer.remove(0);
-            double score = GrimMath.getStandardDeviation(placeTimer) * GrimMath.getAverage(placeTimer);
-            if (score < 1.2 && score > 0.7) {
-            } else {
-                buffer2 -= 0.4;
-                if (buffer2 < 0) buffer2 = 0;
-            }
-        }
-
-        int c = surfaces.size() + failed.size();
-        double possibility = sides.isEmpty() ? 0 : Math.min((1 - ((double) c / sides.size())), 1);
-
-        if (buffer1 > 3 && !sides.isEmpty() && possibility > 0.5) {
-            if (checkBuffer1++ > 3) {
-                if (flagAndAlert("(Auto#1)p= " + String.format("%.2f%%", possibility * 100)) && shouldCancel()) {
-                    cancelPlace = true;
+                    prevScore = combinedStd;
+                    PREVdIFF = diff;
+                    lastAnalysisTime = time();
+                    hitLocations.clear();
                 }
-            }
-        } else {
-            if (debug) alert("Auto#1 bypass\n" +
-                    place.getFace().toString() + "\n" +
-                    "buffer1= " + buffer1 + "\n" +
-                    "sides= " + sides.size() + "\n" +
-                    "possibility= " + possibility);
-            checkBuffer1 = Math.max(0, buffer1 - 0.1);
-        }
 
-        if (!sides.isEmpty() && possibility > 0.5 && lastJump > 5 && this.pitch >= 45.0F) {
-            if (checkBuffer2++ > 7) {
-                if (flagAndAlert("(Auto#2)\np= " + String.format("%.2f%%", possibility * 100)) && shouldCancel()) {
-                    cancelPlace = true;
+                if (place.itemStack.getType().getPlacedType() != null) {
+
+                    placeCounter++;
+                    checkScaffold = time();
+
+
+                    switch (place.getFace()) {
+                        case WEST, EAST, SOUTH, NORTH -> {
+                            placeTimer.add(placeTick);
+                            placeTick = 0;
+                            sides.add(time());
+                        }
+                        case UP, DOWN -> {
+                            placeTimer.add(placeTick);
+                            placeTick = 0;
+                            surfaces.add(time());
+                        }
+                        case OTHER -> failed.add(time());
+                    }
+
+                    if (placeTimer.size() > 15) {
+                        placeTimer.remove(0);
+                        double score = GrimMath.getStandardDeviation(placeTimer) * GrimMath.getAverage(placeTimer);
+                        if (score < 1.2 && score > 0.7) {
+                        } else {
+                            buffer2 -= 0.4;
+                            if (buffer2 < 0) buffer2 = 0;
+                        }
+                    }
+
+                    int c = surfaces.size() + failed.size();
+                    double possibility = sides.isEmpty() ? 0 : Math.min((1 - ((double) c / sides.size())), 1);
+
+                    if (buffer1 > 3 && !sides.isEmpty() && possibility > 0.5) {
+                        if (checkBuffer1++ > 3) {
+                            if (flagAndAlert("(Auto#1)p= " + String.format("%.2f%%", possibility * 100)) && shouldCancel()) {
+                                cancelPlace = true;
+                            }
+                        }
+                    } else {
+                        if (debug) alert("Auto#1 bypass\n" +
+                                place.getFace().toString() + "\n" +
+                                "buffer1= " + buffer1 + "\n" +
+                                "sides= " + sides.size() + "\n" +
+                                "possibility= " + possibility);
+                        checkBuffer1 = Math.max(0, buffer1 - 0.1);
+                    }
+
+                    if (!sides.isEmpty() && possibility > 0.5 && lastJump > 5 && this.pitch >= 45.0F) {
+                        if (checkBuffer2++ > 7) {
+                            if (flagAndAlert("(Auto#2)\np= " + String.format("%.2f%%", possibility * 100)) && shouldCancel()) {
+                                cancelPlace = true;
+                            }
+                        }
+                    }
+
+                    if (sides.size() > 3 && lastSneak > 5 && surfaces.isEmpty() && this.pitch >= 45.0F) {
+                        if (checkBuffer3++ > 5) {
+                            if (flagAndAlert("(Sneak)\nls= " + lastSneak + "\nsd= " + sides.size()) && shouldCancel()) {
+                                cancelPlace = true;
+                            }
+                        }
+                    }
+
+                    if (sides.size() > 4 && lastSneak > 2 && surfaces.isEmpty() && tooShortSneak > 2.6 && this.pitch >= 45.0F) {
+                        if (checkBuffer3++ > 5) {
+                            if (flagAndAlert("(Sneak#2)\nls= " + lastSneak + "\nsd= " + sides.size() + "\ntss= " + (int) tooShortSneak) && shouldCancel()) {
+                                cancelPlace = true;
+                            }
+                        }
+                    }
+
+                    if (place.getFace() != BlockFace.OTHER
+                            && place.getFace() != BlockFace.UP
+                            && place.getFace() != BlockFace.DOWN
+                    ) {
+                        if (place.position.getY() == lastPlaceY) {
+                            if (lastSneak > 5 && this.pitch >= 45.0F && dragClick < 2) {
+                                godBridge = Math.min(5, godBridge + 1);
+                                if (debug) alert("godBridge++\n" +
+                                        place.getFace().toString() + "\n" +
+                                        "dc= " + dragClick + "\n" +
+                                        "ls= " + lastSneak + "\n" +
+                                        "pitch= " + this.pitch);
+                            } else if (lastSneak <= 5 || dragClick > 1) godBridge = 0;
+                        } else {
+                            godBridge = Math.max(0, godBridge - 1.5);
+                        }
+                        lastPlaceY = place.position.getY();
+                    }
+
+                    if (dragClick < 5 && godBridge > 3 && checkGB) {
+
+                        if (time() - click > 1000) {
+                            if (debug) alert("godBridge = 0\n" +
+                                    place.getFace().toString() + "\n" +
+                                    "dc= " + dragClick + "\n" +
+                                    "lc= " + (time() - click));
+                            godBridge = 0;
+                        } else if (godbridgeInARow++ > 3 && flagAndAlert("(GodBridge/KeepY)\ndc= " + dragClick + "\nlc= " + (time() - click)) && shouldCancel() && cancelGB) {
+                            cancelPlace = true;
+                        }
+                    } else {
+                        godbridgeInARow = Math.max(godbridgeInARow - (placeSpeed <= 0.6 ? 1 : 0.6), 0);
+                    }
+
+
+                    if (cancelPlace && shouldModifyPackets()) {
+                        place.resync();
+                        cancelPlace = false;
+                    }
                 }
+
             }
-        }
-
-        if (sides.size() > 3 && lastSneak > 5 && surfaces.isEmpty() && this.pitch >= 45.0F) {
-            if (checkBuffer3++ > 5) {
-                if (flagAndAlert("(Sneak)\nls= " + lastSneak + "\nsd= " + sides.size()) && shouldCancel()) {
-                    cancelPlace = true;
-                }
-            }
-        }
-
-        if (sides.size() > 4 && lastSneak > 2 && surfaces.isEmpty() && tooShortSneak > 2.6 && this.pitch >= 45.0F) {
-            if (checkBuffer3++ > 5) {
-                if (flagAndAlert("(Sneak#2)\nls= " + lastSneak + "\nsd= " + sides.size() + "\ntss= " + (int) tooShortSneak) && shouldCancel()) {
-                    cancelPlace = true;
-                }
-            }
-        }
-
-        if (place.getFace() != BlockFace.OTHER
-                && place.getFace() != BlockFace.UP
-                && place.getFace() != BlockFace.DOWN
-        ) {
-            if (place.position.getY() == lastPlaceY) {
-                if (lastSneak > 5
-                        && this.pitch >= 45.0F) {
-                    godBridge++;
-                    if (debug) alert("godBridge++\n" +
-                            place.getFace().toString() + "\n" +
-                            "dc= " + dragClick + "\n" +
-                            "ls= " + lastSneak + "\n" +
-                            "pitch= " + this.pitch);
-                }
-            } else {
-                godBridge = 0;
-            }
-            lastPlaceY = place.position.getY();
-        }
-
-        if (hasTimeElapsed(click, 125)) {
-            dragClick = 0;
-        } else {
-            dragClick++;
-            if (debug) alert("dragClick++\n" +
-                    (time() - click));
-        }
-
-        if (dragClick < 5 && godBridge > 3 && checkGB) {
-
-            if (time() - click > 1000) {
-                if (debug) alert("godBridge = 0\n" +
-                        place.getFace().toString() + "\n" +
-                        "dc= " + dragClick +"\n" +
-                        "lc= " + (time() - click));
-                godBridge = 0;
-            } else if (godbridgeInARow++ > 3 && flagAndAlert("(GodBridge/KeepY)\ndc= " + dragClick + "\nlc= " + (time() - click)) && shouldCancel() && cancelGB) {
-                cancelPlace = true;
-            }
-        } else {
-            godbridgeInARow = Math.max(godbridgeInARow - (placeSpeed <= 0.6 ? 1 : 0.6), 0);
-        }
-
-        click = time();
-
-        if (cancelPlace && shouldModifyPackets()) {
-            place.resync();
         }
     }
 
@@ -335,11 +333,22 @@ public final class ScaffoldA extends BlockPlaceCheck {
             checkBuffer3 = Math.max(0, checkBuffer2 - 0.17);
 
             buffer1 = Math.max(0, buffer1 - 0.2);
-            if (deltaYaw > 20) {
+            if (deltaYaw > 20 && (event.getPacketType() == PacketType.Play.Client.PLAYER_ROTATION || event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION_AND_ROTATION)) {
                 buffer1 = Math.min(buffer1 + 1, 5);
                 if (debug) alert("buffer1 + 1\n" +
-                        "buffer1= " + buffer1 +"\n" +
+                        "buffer1= " + buffer1 + "\n" +
                         "deltaYaw= " + deltaYaw);
+                if (deltaYaw > 125) {
+                    bufferFast = Math.min(++bufferFast, 25);
+                    if (bufferFast >= 25 && flagAndAlert("(FastRot)\n" +
+                            "buffer= " + bufferFast + "\n" +
+                            "deltaYaw= " + deltaYaw) && shouldCancel()) {
+                        cancelPlace = true;
+                    }
+                } else {
+                    bufferFast = Math.max(bufferFast - 0.25, 0);
+
+                }
             }
 
             long maxTime = 2000;
@@ -388,15 +397,17 @@ public final class ScaffoldA extends BlockPlaceCheck {
                     }
                 }
             }
+        } else if (event.getPacketType() == PacketType.Play.Client.PLAYER_BLOCK_PLACEMENT) {
+
+            if (hasTimeElapsed(click, 50)) {
+                dragClick = Math.max(0.0, dragClick - 1);
+            } else {
+                dragClick = Math.min(20,  dragClick + 1);
+                if (debug) alert("dragClick++\n" +
+                        (time() - click));
+            }
+            click = time();
         }
-    }
-
-    private static long time() {
-        return System.currentTimeMillis();
-    }
-
-    private static boolean hasTimeElapsed(long lastTime, long elapsedMs) {
-        return time() - lastTime > elapsedMs;
     }
 
     @Override

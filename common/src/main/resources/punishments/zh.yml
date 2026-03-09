@@ -39,6 +39,7 @@ Punishments:
       - "VelocityA"
       - "VelocityB"
       - "VelocityC"
+      - "VelocityD"
     commands:
       - "5:5 [alert]"
       - "5:5 [log]"
@@ -138,6 +139,10 @@ Punishments:
       - "AimU"
       - "AimV"
       - "AimW"
+      - "AimHeuristic"
+      - "AimComplex"
+      - "AimAnalysis"
+      - "AimStatistics"
       - "AnalysisA"
       - "AnalysisB"
       - "AnalysisC"
@@ -146,8 +151,8 @@ Punishments:
       - "AnalysisF"
       - "AnalysisG"
     commands:
-      - "20:40 [alert]"
-      - "20:40 [log]"
+        - "5:1 [alert]"
+        - "5:1 [log]"
   # Grim2.0.10版本 没有连点器检查，Grim将在未来添加
   Autoclicker:
     remove-violations-after: 300

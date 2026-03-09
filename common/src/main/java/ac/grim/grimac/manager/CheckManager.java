@@ -27,6 +27,10 @@ import ac.grim.grimac.checks.impl.aim.AimT;
 import ac.grim.grimac.checks.impl.aim.AimU;
 import ac.grim.grimac.checks.impl.aim.AimV;
 import ac.grim.grimac.checks.impl.aim.AimW;
+import ac.grim.grimac.checks.impl.aim.AimAnalysis;
+import ac.grim.grimac.checks.impl.aim.AimComplex;
+import ac.grim.grimac.checks.impl.aim.AimHeuristic;
+import ac.grim.grimac.checks.impl.aim.AimStatistics;
 import ac.grim.grimac.checks.impl.aim.processor.AimProcessor;
 import ac.grim.grimac.checks.impl.analysis.AnalysisA;
 import ac.grim.grimac.checks.impl.analysis.AnalysisB;
@@ -71,6 +75,7 @@ import ac.grim.grimac.checks.impl.vehicle.*;
 import ac.grim.grimac.checks.impl.velocity.VelocityB;
 import ac.grim.grimac.checks.impl.velocity.VelocityA;
 import ac.grim.grimac.checks.impl.velocity.VelocityC;
+import ac.grim.grimac.checks.impl.velocity.VelocityD;
 import ac.grim.grimac.checks.type.*;
 import ac.grim.grimac.events.packets.PacketChangeGameState;
 import ac.grim.grimac.events.packets.PacketEntityReplication;
@@ -202,6 +207,10 @@ public class CheckManager {
                 .put(AimU.class, new AimU(player))
                 .put(AimV.class, new AimV(player))
                 .put(AimW.class, new AimW(player))
+                .put(AimHeuristic.class, new AimHeuristic(player))
+                .put(AimComplex.class, new AimComplex(player))
+                .put(AimAnalysis.class, new AimAnalysis(player))
+                .put(AimStatistics.class, new AimStatistics(player))
                 .put(AnalysisA.class, new AnalysisA(player))
                 .put(AnalysisB.class, new AnalysisB(player))
                 .put(AnalysisC.class, new AnalysisC(player))
@@ -218,6 +227,7 @@ public class CheckManager {
                 .put(VelocityB.class, new VelocityB(player))
                 .put(VelocityA.class, new VelocityA(player))
                 .put(VelocityC.class, new VelocityC(player))
+                .put(VelocityD.class, new VelocityD(player))
                 .put(GhostBlockDetector.class, new GhostBlockDetector(player))
                 .put(Phase.class, new Phase(player))
                 .put(Post.class, new Post(player))

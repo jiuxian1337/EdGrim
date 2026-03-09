@@ -158,6 +158,9 @@ VelocityC:
     allowed-jump-reset: true
     min-velocity: 90
 
+VelocityD:
+    delay: 250
+
 TimerA:
     setbackvl: 10
     # 玩家卡顿时可以累积以供以后使用的毫秒数
@@ -298,6 +301,140 @@ AimV:
 AimW:
     # 自适应统计检测（实验性）
 
+AimHeuristic:
+    # 从 MX-Project 的 AimHeuristic 迁移而来。
+    # 该检测使用“Local VL”（局部缓冲）按子模块累计；当超过阈值时会触发 flag 并执行 mitigateDamage()。
+    # 此处仅控制阈值/缓冲；最终惩罚仍由 punishments/*.yml 决定。
+    # basic-component：偏“底层特征采样”的通用组件，会累计 Local VL 并按衰减回落。
+    basic-component:
+        # heuristic-sync-add-local-vl：检测到“同步/锁步式”转头特征时增加的 Local VL。
+        heuristic-sync-add-local-vl: 125
+        # heuristic-aggressive-add-local-vl：检测到“强相关/强约束”特征时增加的 Local VL。
+        heuristic-aggressive-add-local-vl: 50
+        # heuristic-aim-add-local-vl：检测到“瞄准轴向异常”特征时增加的 Local VL。
+        heuristic-aim-add-local-vl: 100
+        # heuristic-constant-add-local-vl：检测到“常量/分段常量”角速度特征时增加的 Local VL。
+        heuristic-constant-add-local-vl: 65
+        # heuristic-interpolation-add-local-vl：检测到“插值/补间”特征时增加的 Local VL。
+        heuristic-interpolation-add-local-vl: 55
+        # pattern-snap-add-local-vl：检测到“snap”类固定步长/固定落点特征时增加的 Local VL。
+        pattern-snap-add-local-vl: 55
+        # pattern-random-add-local-vl：检测到“伪随机但分布异常”特征时增加的 Local VL。
+        pattern-random-add-local-vl: 25
+        # local-vl-limit-component：basic-component 主缓冲的 Local VL 触发阈值（超过则 flag + mitigateDamage）。
+        local-vl-limit-component: 400
+        # local-vl-limit-interpolation：basic-component 中 interpolation 子缓冲的 Local VL 触发阈值。
+        local-vl-limit-interpolation: 400
+        # local-vl-fade-component：basic-component 主缓冲的衰减速度（每次“正常样本”回落的 VL）。
+        local-vl-fade-component: 5
+        # local-vl-fade-interpolation：interpolation 子缓冲的衰减速度（每次“正常样本”回落的 VL）。
+        local-vl-fade-interpolation: 5
+        # randomizer-flaw-add-vl：命中“randomizer flaw”典型缺陷模式时，直接追加的额外缓冲值。
+        randomizer-flaw-add-vl: 25
+    # constant-check：更偏“连续命中门槛”的子检测，达到门槛就会触发 mitigateDamage。
+    constant-check:
+        # constant-1-need-vl：Constant1 触发所需的最小缓冲（越小越敏感）。
+        constant-1-need-vl: 8
+        # constant-2-need-vl：Constant2 触发所需的最小缓冲（越小越敏感）。
+        constant-2-need-vl: 6
+        # constant-3-need-vl：Constant3 触发所需的最小缓冲（越小越敏感）。
+        constant-3-need-vl: 6
+    # invalid-check：直接判定“异常数据形态”的子检测（例如无效 pitch/指数极小变化）。
+    invalid-check:
+        # hit-cancel-time-ms：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
+        hit-cancel-time-ms: 0
+        # add-global-vl：本次命中要增加的 VL（会循环调用 flag 以累计到 Grim violations）。
+        add-global-vl: 25
+    # inconsistent-check：基于样本窗口的离群/重复等统计特征，判断瞄准不一致。
+    inconsistent-check:
+        # hit-cancel-time-ms：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
+        hit-cancel-time-ms: 4000
+        # add-global-vl：本次命中要增加的 VL（会循环调用 flag 以累计到 Grim violations）。
+        add-global-vl: 10
+        # buffer：子检测缓冲阈值（越小越敏感，越大越稳健但更慢触发）。
+        buffer: 2.0
+    # pattern-check：旋转差分模式重复检测（小窗口内 pattern 重复/回放）。
+    pattern-check:
+        # hit-cancel-time-ms：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
+        hit-cancel-time-ms: 5000
+        # add-global-vl：本次命中要增加的 VL（会循环调用 flag 以累计到 Grim violations）。
+        add-global-vl: 20
+        # buffer：pattern 子检测的触发缓冲阈值（越小越敏感）。
+        buffer: 2.5
+        # buffer-fade：当 pattern 不再出现时，每次回落的缓冲值（越大越快恢复正常）。
+        buffer-fade: 0.3
+    # factor-check：倍率/尖峰类检测（典型用于“机器心跳/中心尖峰”特征）。
+    factor-check:
+        # add-global-vl：本次命中要增加的 VL（会循环调用 flag 以累计到 Grim violations）。
+        add-global-vl: 25
+        # buffer：factor 子检测的触发缓冲阈值（越小越敏感）。
+        buffer: 2.5
+        # ticks-to-reset：缓冲重置/回落的 tick 门槛（越大越“记仇”，越小越快恢复）。
+        ticks-to-reset: 2500
+    # smooth-check：平滑角度重复检测（低抖动、重复路径）。
+    smooth-check:
+        # add-global-vl：本次命中要增加的 VL（会循环调用 flag 以累计到 Grim violations）。
+        add-global-vl: 25
+
+AimComplex:
+    # 从 MX-Project 的 AimComplex 迁移而来。包含 entropy/distinct/randomizer 三类 Local VL 缓冲。
+    # add-global-vl-*：本次命中要增加的 VL（会循环调用 flag 以累计到 Grim violations）。
+    # hit-cancel-time-ms-*：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
+    # add-global-vl-entropy：entropy 类命中时增加的 VL。
+    add-global-vl-entropy: 5
+    # add-global-vl-distinct：distinct 类命中时增加的 VL。
+    add-global-vl-distinct: 5
+    # add-global-vl-randomizer：randomizer 类命中时增加的 VL。
+    add-global-vl-randomizer: 25
+    # hit-cancel-time-ms-entropy：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
+    hit-cancel-time-ms-entropy: 5000
+    # hit-cancel-time-ms-distinct：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
+    hit-cancel-time-ms-distinct: 3000
+    # hit-cancel-time-ms-randomizer：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
+    hit-cancel-time-ms-randomizer: 0
+    # local-vl-limit-entropy：entropy Local VL 触发阈值（超过则 flag + mitigateDamage）。
+    local-vl-limit-entropy: 30
+    # local-vl-limit-distinct：distinct Local VL 触发阈值（超过则 flag + mitigateDamage）。
+    local-vl-limit-distinct: 4.0
+    # local-vl-limit-randomizer：randomizer Local VL 触发阈值（超过则 flag + mitigateDamage）。
+    local-vl-limit-randomizer: 2.5
+
+AimAnalysis:
+    # 从 MX-Project 的 AimAnalysis 迁移而来。包含 long-term rank 与线性离群检测。
+    # add-global-vl-linear：线性离群命中时增加的 VL。
+    add-global-vl-linear: 25
+    # add-global-vl-rank：rank 命中时增加的 VL。
+    add-global-vl-rank: 20
+    # add-global-vl-longterm：long-term 命中时增加的 VL。
+    add-global-vl-longterm: 25
+    # local-vl-limit-rank：rank 子检测的 Local VL 触发阈值（超过则 flag + mitigateDamage）。
+    local-vl-limit-rank: 6.0
+
+AimStatistics:
+    # 从 MX-Project 的 AimStatistics 迁移而来。包含 IQR、zFactor 与 improbable 组合评分。
+    # add-global-vl-iqr：IQR 命中时增加的 VL。
+    add-global-vl-iqr: 25
+    # add-global-vl-bot-pattern：bot-pattern 命中时增加的 VL。
+    add-global-vl-bot-pattern: 25
+    # add-global-vl-zfactor：zFactor 命中时增加的 VL。
+    add-global-vl-zfactor: 5
+    # add-global-vl-improbable：improbable 组合命中时增加的 VL。
+    add-global-vl-improbable: 25
+    # hit-cancel-time-ms-iqr：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
+    hit-cancel-time-ms-iqr: 0
+    # hit-cancel-time-ms-bot-pattern：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
+    hit-cancel-time-ms-bot-pattern: 0
+    # hit-cancel-time-ms-zfactor：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
+    hit-cancel-time-ms-zfactor: 5500
+    # hit-cancel-time-ms-improbable：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
+    hit-cancel-time-ms-improbable: 4000
+    # local-vl-limit-iqr：IQR Local VL 触发阈值（超过则 flag + mitigateDamage）。
+    local-vl-limit-iqr: 11.0
+    # local-vl-limit-zfactor：zFactor Local VL 触发阈值（超过则 flag + mitigateDamage）。
+    local-vl-limit-zfactor: 7.0
+    # local-vl-limit-improbable：improbable 组合 Local VL 触发阈值（超过则 flag + mitigateDamage）。
+    local-vl-limit-improbable: 15.0
+
 AnalysisA:
 
 AnalysisB:
@@ -335,8 +472,6 @@ AnalysisF:
         fail-increase: 1.0
 
 AnalysisG:
-
-
 exploit:
     #是否允许玩家在使用鞘翅时候进行的疾跑跳跃
     allow-sprint-jumping-when-using-elytra: true

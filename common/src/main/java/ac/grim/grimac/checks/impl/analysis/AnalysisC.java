@@ -185,7 +185,7 @@ public class AnalysisC extends AnalysisCheck implements RotationCheck {
         } else {
             buffer3 = decayBuffer(buffer3, 0.85, 2.0);
         }
-        if (cons > 0.85) {
+        if (cons > 0.95) {
             if (time() - lastFlag2 < 500L) {
                 return;
             }

@@ -224,7 +224,7 @@ public final class AnalysisE extends AnalysisCheck implements RotationCheck {
             double stdDevX = MathUtil.stdDev(kireikoX);
             Tuple<Double, Double> spikeRange = new Tuple<>(MathUtil.getMin(kireikoX), MathUtil.getMax(kireikoX));
 
-            if (stdDevX > 5 && stdDevX < 22 && spikeRange.getY() < 50) {
+            if (stdDevX > 10 && stdDevX < 22 && spikeRange.getY() < 50) {
                 bufferSpikesRule = modifyBuffer(bufferSpikesRule, MathUtil.getAverage(kireikoX) < 6.0 ? 0 : (stdDevX < 10 ? 1.5 : 1.0));
                 if (bufferSpikesRule > 7.0) {
                     if (flagAndAlert("(Spike Rule) \nstdDevX=" + (int) stdDevX)) {

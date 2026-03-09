@@ -39,6 +39,7 @@ Punishments:
       - "VelocityA"
       - "VelocityB"
       - "VelocityC"
+      - "VelocityD"
     commands:
       - "5:5 [alert]"
       - "5:5 [log]"
@@ -138,6 +139,10 @@ Punishments:
       - "AimU"
       - "AimV"
       - "AimW"
+      - "AimHeuristic"
+      - "AimComplex"
+      - "AimAnalysis"
+      - "AimStatistics"
       - "AnalysisA"
       - "AnalysisB"
       - "AnalysisC"
@@ -146,8 +151,8 @@ Punishments:
       - "AnalysisF"
       - "AnalysisG"
     commands:
-      - "20:40 [alert]"
-      - "20:40 [log]"
+      - "5:1 [alert]"
+      - "5:1 [log]"
   # As of 2.2.10, there are no AutoClicker checks and this is a placeholder. Grim will include AutoClicker checks in the future.
   Autoclicker:
     remove-violations-after: 300

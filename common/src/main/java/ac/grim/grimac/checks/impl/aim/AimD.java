@@ -11,7 +11,7 @@ import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 
 import java.util.List;
 
-@CheckData(name = "AimD", configName = "AimD", decay = 0.95, experimental = true, description = "Detects repeated rotation triplets and unnatural flick patterns")
+@CheckData(name = "AimD", configName = "AimD", decay = 0.95, description = "Detects repeated rotation triplets and unnatural flick patterns")
 public final class AimD extends EdAimCheck {
     private final List<Double> stack = new EvictingList<>(3);
     private boolean lastIsNoRotation = false;

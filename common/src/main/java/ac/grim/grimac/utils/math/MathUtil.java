@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 public final class MathUtil {
     public static final double MINIMUM_DIVISOR = ((Math.pow(0.2f, 3) * 8) * 0.15) - 1e-3;
@@ -328,6 +329,48 @@ public final class MathUtil {
             sum += v;
         }
         return sum;
+    }
+
+    public static int getDuplicates(final Collection<? extends Number> data) {
+        return data.size() - getDistinct(data);
+    }
+
+    public static double kolmogorovSmirnovTest(final List<? extends Number> data, Function<Double, Double> cdfFunction) {
+        List<Double> sorted = new ArrayList<>(data.size());
+        for (Number n : data) {
+            sorted.add(n.doubleValue());
+        }
+        sorted.sort(Double::compareTo);
+        int n = sorted.size();
+        if (n == 0) {
+            return 0.0;
+        }
+        double dStatistic = 0.0;
+        for (int i = 0; i < n; i++) {
+            double empiricalCDF = (i + 1) / (double) n;
+            double theoreticalCDF = cdfFunction.apply(sorted.get(i));
+            dStatistic = Math.max(dStatistic, Math.abs(empiricalCDF - theoreticalCDF));
+        }
+        return dStatistic;
+    }
+
+    public static double getIQR(final Collection<? extends Number> data) {
+        if (data.isEmpty()) {
+            return 0.0;
+        }
+        List<Double> sorted = new ArrayList<>(data.size());
+        for (Number n : data) {
+            sorted.add(n.doubleValue());
+        }
+        sorted.sort(Double::compareTo);
+        return calculatePercentileSorted(sorted, 75) - calculatePercentileSorted(sorted, 25);
+    }
+
+    private static double calculatePercentileSorted(List<Double> sortedValues, double percentile) {
+        int index = (int) Math.ceil(percentile / 100.0 * sortedValues.size()) - 1;
+        if (index < 0) index = 0;
+        if (index >= sortedValues.size()) index = sortedValues.size() - 1;
+        return sortedValues.get(index);
     }
 
     public static double getAngleInDegrees(Vec2f delta) {

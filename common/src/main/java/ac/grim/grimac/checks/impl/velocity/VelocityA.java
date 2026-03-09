@@ -36,8 +36,14 @@ public class VelocityA extends Check implements PostPredictionCheck {
 
     double threshold;
 
+    private volatile short lastPostVelocityTransactionId;
+
     public VelocityA(GrimPlayer player) {
         super(player);
+    }
+
+    short getLastPostVelocityTransactionId() {
+        return lastPostVelocityTransactionId;
     }
 
     @Override
@@ -72,7 +78,7 @@ public class VelocityA extends Check implements PostPredictionCheck {
             // Wrap velocity between two transactions
             player.sendTransaction();
             addPlayerKnockback(entityId, player.lastTransactionSent.get(), new Vector3dm(playerVelocity.getX(), playerVelocity.getY(), playerVelocity.getZ()));
-            event.getTasksAfterSend().add(player::sendTransaction);
+            event.getTasksAfterSend().add(() -> lastPostVelocityTransactionId = player.sendTransactionAndGetId());
         }
     }
 

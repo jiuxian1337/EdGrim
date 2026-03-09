@@ -150,6 +150,9 @@ VelocityC:
     allowed-jump-reset: true
     min-velocity: 90
 
+VelocityD:
+    delay: 250
+
 TimerA:
     setbackvl: 10
     # Milliseconds that the player can accumulate for later use when they fall behind
@@ -290,6 +293,88 @@ AimV:
 AimW:
     # Adaptive statistics (experimental)
 
+AimHeuristic:
+    # Ported from MX-Project AimHeuristic.
+    # This check uses "Local VL" (local buffers) per sub-module; when it exceeds its limit, it will flag and mitigateDamage().
+    # This section only controls thresholds/buffers; punishment routing is still handled by punishments/*.yml.
+    basic-component:
+        # How much Local VL should be added when each heuristic matches (higher = more aggressive).
+        heuristic-sync-add-local-vl: 125
+        heuristic-aggressive-add-local-vl: 50
+        heuristic-aim-add-local-vl: 100
+        heuristic-constant-add-local-vl: 65
+        heuristic-interpolation-add-local-vl: 55
+        pattern-snap-add-local-vl: 55
+        pattern-random-add-local-vl: 25
+        # Local VL thresholds/decay for the two Basic sub-buffers.
+        local-vl-limit-component: 400
+        local-vl-limit-interpolation: 400
+        local-vl-fade-component: 5
+        local-vl-fade-interpolation: 5
+        # Extra fast flag for common "randomizer flaw" patterns.
+        randomizer-flaw-add-vl: 25
+    constant-check:
+        # Required buffer (roughly: consecutive matches) before Constant1/2/3 will mitigateDamage().
+        constant-1-need-vl: 8
+        constant-2-need-vl: 6
+        constant-3-need-vl: 6
+    invalid-check:
+        # Invalid pitch / exponential-small deltas.
+        hit-cancel-time-ms: 0
+        add-global-vl: 25
+    inconsistent-check:
+        # Inconsistent aim patterns based on outliers/duplicates across a sample window.
+        hit-cancel-time-ms: 4000
+        add-global-vl: 10
+        buffer: 2.0
+    pattern-check:
+        # Repeated delta patterns; buffer is a small float that fades when the pattern stops.
+        hit-cancel-time-ms: 5000
+        add-global-vl: 20
+        buffer: 2.5
+        buffer-fade: 0.3
+    factor-check:
+        # Large "centre spike" factors; resets after enough normal ticks.
+        add-global-vl: 25
+        buffer: 2.5
+        ticks-to-reset: 2500
+    smooth-check:
+        # Smooth-angle repeat detection.
+        add-global-vl: 25
+
+AimComplex:
+    # Ported from MX-Project AimComplex. Uses Local VL buffers for entropy/distinct/randomizer.
+    add-global-vl-entropy: 5
+    add-global-vl-distinct: 5
+    add-global-vl-randomizer: 25
+    hit-cancel-time-ms-entropy: 5000
+    hit-cancel-time-ms-distinct: 3000
+    hit-cancel-time-ms-randomizer: 0
+    local-vl-limit-entropy: 30
+    local-vl-limit-distinct: 4.0
+    local-vl-limit-randomizer: 2.5
+
+AimAnalysis:
+    # Ported from MX-Project AimAnalysis. Long-term "rank" analysis + linear outlier heuristic.
+    add-global-vl-linear: 25
+    add-global-vl-rank: 20
+    add-global-vl-longterm: 25
+    local-vl-limit-rank: 6.0
+
+AimStatistics:
+    # Ported from MX-Project AimStatistics. IQR, zFactor, improbable-combo scoring.
+    add-global-vl-iqr: 25
+    add-global-vl-bot-pattern: 25
+    add-global-vl-zfactor: 5
+    add-global-vl-improbable: 25
+    hit-cancel-time-ms-iqr: 0
+    hit-cancel-time-ms-bot-pattern: 0
+    hit-cancel-time-ms-zfactor: 5500
+    hit-cancel-time-ms-improbable: 4000
+    local-vl-limit-iqr: 11.0
+    local-vl-limit-zfactor: 7.0
+    local-vl-limit-improbable: 15.0
+
 AnalysisA:
 
 AnalysisB:
@@ -327,7 +412,6 @@ AnalysisF:
         fail-increase: 1.0
 
 AnalysisG:
-
 exploit:
     # You can gain high speeds when sprint jumping with an elytra, this prevents the exploit when set to false
     # Mojang screwed up netcode by making elytra start client sided and elytra end server sided
