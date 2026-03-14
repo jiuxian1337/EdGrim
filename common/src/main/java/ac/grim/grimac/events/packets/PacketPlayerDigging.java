@@ -2,6 +2,7 @@ package ac.grim.grimac.events.packets;
 
 import ac.grim.grimac.GrimAPI;
 import ac.grim.grimac.checks.impl.movement.NoSlow;
+import ac.grim.grimac.manager.CheckManager;
 import ac.grim.grimac.player.GrimPlayer;
 import ac.grim.grimac.utils.item.ItemBehaviour;
 import ac.grim.grimac.utils.item.ItemBehaviourRegistry;

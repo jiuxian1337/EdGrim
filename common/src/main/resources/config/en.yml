@@ -150,9 +150,6 @@ VelocityC:
     allowed-jump-reset: true
     min-velocity: 90
 
-VelocityD:
-    delay: 250
-
 TimerA:
     setbackvl: 10
     # Milliseconds that the player can accumulate for later use when they fall behind

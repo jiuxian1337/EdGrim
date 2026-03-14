@@ -158,9 +158,6 @@ VelocityC:
     allowed-jump-reset: true
     min-velocity: 90
 
-VelocityD:
-    delay: 250
-
 TimerA:
     setbackvl: 10
     # 玩家卡顿时可以累积以供以后使用的毫秒数

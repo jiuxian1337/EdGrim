@@ -58,10 +58,7 @@ import ac.grim.grimac.checks.impl.misc.ClientBrand;
 import ac.grim.grimac.checks.impl.misc.GhostBlockMitigation;
 import ac.grim.grimac.checks.impl.misc.Post;
 import ac.grim.grimac.checks.impl.misc.TransactionOrder;
-import ac.grim.grimac.checks.impl.movement.NoSlow;
-import ac.grim.grimac.checks.impl.movement.PredictionRunner;
-import ac.grim.grimac.checks.impl.movement.SetbackBlocker;
-import ac.grim.grimac.checks.impl.movement.VehiclePredictionRunner;
+import ac.grim.grimac.checks.impl.movement.*;
 import ac.grim.grimac.checks.impl.multiactions.*;
 import ac.grim.grimac.checks.impl.packetorder.*;
 import ac.grim.grimac.checks.impl.prediction.DebugHandler;
@@ -75,7 +72,6 @@ import ac.grim.grimac.checks.impl.vehicle.*;
 import ac.grim.grimac.checks.impl.velocity.VelocityB;
 import ac.grim.grimac.checks.impl.velocity.VelocityA;
 import ac.grim.grimac.checks.impl.velocity.VelocityC;
-import ac.grim.grimac.checks.impl.velocity.VelocityD;
 import ac.grim.grimac.checks.type.*;
 import ac.grim.grimac.events.packets.PacketChangeGameState;
 import ac.grim.grimac.events.packets.PacketEntityReplication;
@@ -227,7 +223,6 @@ public class CheckManager {
                 .put(VelocityB.class, new VelocityB(player))
                 .put(VelocityA.class, new VelocityA(player))
                 .put(VelocityC.class, new VelocityC(player))
-                .put(VelocityD.class, new VelocityD(player))
                 .put(GhostBlockDetector.class, new GhostBlockDetector(player))
                 .put(Phase.class, new Phase(player))
                 .put(Post.class, new Post(player))
@@ -247,6 +242,7 @@ public class CheckManager {
                 .put(DebugHandler.class, new DebugHandler(player))
                 .put(BadPacketsX.class, new BadPacketsX(player))
                 .put(NoSlow.class, new NoSlow(player))
+                .put(NoSlowB.class, new NoSlowB(player))
                 .put(SprintB.class, new SprintB(player))
                 .put(SprintC.class, new SprintC(player))
                 .put(SprintD.class, new SprintD(player))

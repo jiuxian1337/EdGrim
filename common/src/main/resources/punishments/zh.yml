@@ -39,7 +39,6 @@ Punishments:
       - "VelocityA"
       - "VelocityB"
       - "VelocityC"
-      - "VelocityD"
     commands:
       - "5:5 [alert]"
       - "5:5 [log]"
