@@ -22,6 +22,11 @@ public class NoFall extends Check implements PacketCheck {
 
     public boolean flipPlayerGroundStatus = false;
 
+    // If a client claims onGround=true without sending a position update while they still have
+    // significant fall distance, it's almost always a NoFall attempt to reset server fall distance
+    // without triggering a proper landing.
+    private static final double GROUND_ONLY_FALL_DISTANCE_THRESHOLD = 2.5;
+
     public NoFall(GrimPlayer player) {
         super(player);
     }
@@ -39,6 +44,22 @@ public class NoFall extends Check implements PacketCheck {
             // If the player claims to be on the ground
             // Run this code IFF the player doesn't send the position, as that won't get processed by predictions
             if (wrapper.isOnGround() && !wrapper.hasPositionChanged()) {
+                // Newer NoFall bypass pattern: send an onGround-only packet to reset fall state,
+                // then send the actual landing position with onGround=false.
+                // This should never be needed by a legitimate client when fallDistance is significant.
+                if (!player.exemptOnGround()
+                        && !player.onGround
+                        && player.fallDistance > GROUND_ONLY_FALL_DISTANCE_THRESHOLD) {
+                    if (!GhostBlockDetector.isGhostBlock(player)) {
+                        flagAndAlertWithSetback("ground_only fallDistance=" + formatOffset(player.fallDistance));
+                    }
+                    if (shouldModifyPackets()) {
+                        wrapper.setOnGround(false);
+                        event.markForReEncode(true);
+                    }
+                    return;
+                }
+
                 if (!isNearGround(wrapper.isOnGround())) { // If player isn't near ground
                     // 1.8 boats have a mind on their own... only flag if they're not near a boat or are on 1.9+
                     if (!GhostBlockDetector.isGhostBlock(player)) flagAndAlertWithSetback();
