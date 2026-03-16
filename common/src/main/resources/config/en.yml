@@ -327,6 +327,12 @@ AimHeuristic:
         enabled: true
         # Fast direct flag for common "randomizer flaw" pitch patterns.
         randomizer-flaw: true
+        # Minimum average yaw delta required before the interpolation sub-check starts buffering.
+        interpolation-average-threshold: 6.5
+        # Repeated interpolation hits required before the sub-check flags.
+        interpolation-buffer: 4.0
+        # How quickly the interpolation buffer decays when the pattern stops.
+        interpolation-buffer-decay: 0.75
     constant-check:
         # Required buffer (roughly: consecutive matches) before Constant1/2/3 flags.
         constant-1-buffer: 8

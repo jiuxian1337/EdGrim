@@ -331,6 +331,12 @@ AimHeuristic:
         enabled: true
         # randomizer-flaw：是否启用常见 randomizer flaw 俯仰模式的快速直接 flag。
         randomizer-flaw: true
+        # interpolation-average-threshold：interpolation 子检测开始累计缓冲所需的最小平均偏航变化。
+        interpolation-average-threshold: 6.5
+        # interpolation-buffer：interpolation 子检测触发前需要累计的命中缓冲。
+        interpolation-buffer: 4.0
+        # interpolation-buffer-decay：interpolation 缓冲在未继续命中时的衰减速度。
+        interpolation-buffer-decay: 0.75
     # constant-check：更偏“连续命中门槛”的子检测，达到门槛就会直接 flag。
     constant-check:
         # constant-1-buffer：Constant1 触发所需的最小缓冲（越小越敏感）。

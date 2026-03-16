@@ -27,6 +27,7 @@ public final class AimHeuristic extends EdAimCheck {
     private final List<Float> toPitchHistory = new ArrayList<>(BASIC_SAMPLE_SIZE);
 
     private int basicStreak;
+    private float basicInterpolationBuffer;
 
     private float constantLastDeltaYaw;
     private float constantLastDeltaPitch;
@@ -57,6 +58,9 @@ public final class AimHeuristic extends EdAimCheck {
 
     private boolean basicComponentEnabled = true;
     private boolean randomizerFlawEnabled = true;
+    private double interpolationAverageThreshold = 6.5D;
+    private float interpolationBufferLimit = 4.0f;
+    private float interpolationBufferDecay = 0.75f;
 
     private int constant1NeedVl = 8;
     private int constant2NeedVl = 6;
@@ -85,6 +89,9 @@ public final class AimHeuristic extends EdAimCheck {
     public void onReload(ConfigManager config) {
         basicComponentEnabled = config.getBooleanElse("AimHeuristic.basic-component.enabled", true);
         randomizerFlawEnabled = config.getBooleanElse("AimHeuristic.basic-component.randomizer-flaw", true);
+        interpolationAverageThreshold = config.getDoubleElse("AimHeuristic.basic-component.interpolation-average-threshold", 6.5D);
+        interpolationBufferLimit = (float) config.getDoubleElse("AimHeuristic.basic-component.interpolation-buffer", 4.0D);
+        interpolationBufferDecay = (float) config.getDoubleElse("AimHeuristic.basic-component.interpolation-buffer-decay", 0.75D);
 
         constant1NeedVl = config.getIntElse("AimHeuristic.constant-check.constant-1-buffer", 8);
         constant2NeedVl = config.getIntElse("AimHeuristic.constant-check.constant-2-buffer", 6);
@@ -214,8 +221,18 @@ public final class AimHeuristic extends EdAimCheck {
             if (constantRotations > 6) flagHeuristic("t=BasicComponent reason=heuristic(constant) count=" + constantRotations + " sens=" + sens + " cs=" + clientSens);
         }
 
-        if (infinitives > 1 && averageYaw > 3.2) {
-            flagHeuristic("t=BasicInterpolation reason=heuristic(interpolation) inf=" + infinitives + " avg=" + averageYaw + " sens=" + sens + " cs=" + clientSens);
+        if (infinitives > 1 && averageYaw > interpolationAverageThreshold) {
+            basicInterpolationBuffer = Math.min(
+                    basicInterpolationBuffer + ((averageYaw > (interpolationAverageThreshold + 2.0D)) ? 1.25f : 1.0f),
+                    interpolationBufferLimit + 1.0f
+            );
+            if (basicInterpolationBuffer >= interpolationBufferLimit) {
+                if (flagHeuristic("t=BasicInterpolation reason=heuristic(interpolation) inf=" + infinitives + " avg=" + averageYaw + " buf=" + basicInterpolationBuffer + " sens=" + sens + " cs=" + clientSens)) {
+                    basicInterpolationBuffer = Math.max(0.0f, interpolationBufferLimit - 1.5f);
+                }
+            }
+        } else {
+            basicInterpolationBuffer = Math.max(0.0f, basicInterpolationBuffer - interpolationBufferDecay);
         }
 
         if (gcd > 0) flagHeuristic("t=BasicComponent reason=pattern(gcd) gcd=" + gcd + " sens=" + sens + " cs=" + clientSens);
