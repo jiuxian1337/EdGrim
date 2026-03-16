@@ -19,6 +19,7 @@ public final class AimHeuristic extends EdAimCheck {
     private static final int MIN_PATTERN_START_INDEX_GAP = PATTERN_LENGTH;
     private static final double CONSTANT_MODULO_THRESHOLD = 60.0;
     private static final double CONSTANT_LINEAR_THRESHOLD = 0.1;
+    private static final double INTERPOLATION_CLEAR_NORMAL_FLOOR = 3.0D;
     private static final float CONSTANT_MIN_DELTA = 0.1f;
     private static final float CONSTANT_MAX_DELTA = 20.0f;
     private static final float INVALID_PITCH = 90f + 1e-6f;
@@ -221,7 +222,11 @@ public final class AimHeuristic extends EdAimCheck {
             if (constantRotations > 6) flagHeuristic("t=BasicComponent reason=heuristic(constant) count=" + constantRotations + " sens=" + sens + " cs=" + clientSens);
         }
 
-        if (infinitives > 1 && averageYaw > interpolationAverageThreshold) {
+        final boolean suspiciousInterpolation = infinitives > 1 && averageYaw > interpolationAverageThreshold;
+        final boolean clearNormalInterpolation = infinitives == 0
+                && averageYaw >= Math.max(INTERPOLATION_CLEAR_NORMAL_FLOOR, interpolationAverageThreshold - 2.0D);
+
+        if (suspiciousInterpolation) {
             basicInterpolationBuffer = Math.min(
                     basicInterpolationBuffer + ((averageYaw > (interpolationAverageThreshold + 2.0D)) ? 1.25f : 1.0f),
                     interpolationBufferLimit + 1.0f
@@ -231,7 +236,7 @@ public final class AimHeuristic extends EdAimCheck {
                     basicInterpolationBuffer = Math.max(0.0f, interpolationBufferLimit - 1.5f);
                 }
             }
-        } else {
+        } else if (clearNormalInterpolation) {
             basicInterpolationBuffer = Math.max(0.0f, basicInterpolationBuffer - interpolationBufferDecay);
         }
 
