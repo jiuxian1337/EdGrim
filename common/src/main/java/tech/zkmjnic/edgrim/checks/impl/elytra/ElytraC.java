@@ -1,0 +1,77 @@
+package tech.zkmjnic.edgrim.checks.impl.elytra;
+
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
+import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientEntityAction;
+
+@CheckData(name = "ElytraC", description = "Started gliding too frequently", experimental = true)
+public class ElytraC extends Check implements PostPredictionCheck {
+    private boolean glideThisTick, glideLastTick, setback;
+    private int flags;
+    public boolean exempt;
+
+    public ElytraC(EdGrimPlayer player) {
+        super(player);
+    }
+
+    @Override
+    public void onPacketReceive(PacketReceiveEvent event) {
+        if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_8)) {
+            return;
+        }
+
+        if (player.gamemode == GameMode.SPECTATOR) {
+            glideThisTick = glideLastTick = false;
+        }
+
+        if (event.getPacketType() == PacketType.Play.Client.ENTITY_ACTION && new WrapperPlayClientEntityAction(event).getAction() == WrapperPlayClientEntityAction.Action.START_FLYING_WITH_ELYTRA && !exempt) {
+            if (glideThisTick || glideLastTick) {
+                if (player.canSkipTicks()) {
+                    flags++;
+                } else {
+                    if (flagAndAlert()) {
+                        setback = true;
+                        if (shouldModifyPackets()) {
+                            event.setCancelled(true);
+                            player.onPacketCancel();
+                            player.resyncPose();
+                        }
+                    }
+                }
+            }
+
+            glideThisTick = true;
+        }
+
+        if (isTickPacket(event.getPacketType())) {
+            glideLastTick = glideThisTick;
+            glideThisTick = exempt = false;
+        }
+    }
+
+    @Override
+    public void onPredictionComplete(PredictionComplete predictionComplete) {
+        if (player.canSkipTicks()) {
+            if (player.isTickingReliablyFor(3)) {
+                for (; flags > 0; flags--) {
+                    flagAndAlert();
+                }
+            }
+
+            flags = 0;
+            setback = false;
+        }
+
+        if (setback) {
+            setback = false;
+            setbackIfAboveSetbackVL();
+        }
+    }
+}

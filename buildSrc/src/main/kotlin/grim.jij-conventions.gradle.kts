@@ -151,12 +151,8 @@ fun shouldExcludeDependency(
     val depId = DependencyIdentifier(group, name, version, classifier)
 
     if (group.startsWith("net.minecraft") ||
-        group.startsWith("net.fabricmc") ||
         name == "minecraft" ||
-        name == "fabric-loader" ||
-        name == "fastutil" ||
-        name.startsWith("fabric_") ||
-        name.startsWith("fabric-api")
+        name == "fastutil"
     ) {
         project.logger.debug("Excluding platform dependency: {}", depId)
         return true

@@ -56,10 +56,6 @@ tasks {
         val properties = mapOf(
             "timestamp" to rootProject.ext["timestamp"],
             "version" to project.version.toString(),
-            "git_commit" to rootProject.ext["git_commit"],
-            "git_branch" to rootProject.ext["git_branch"],
-            "git_repo" to rootProject.ext["git_repo"],
-            "git_org" to rootProject.ext["git_org"],
             "build_shade_pe" to BuildConfig.shadePE,
             "build_relocate" to BuildConfig.relocate,
             "build_release" to BuildConfig.release,
@@ -71,7 +67,6 @@ tasks {
             listOf(
                 "bungee.yml",
                 "velocity-plugin.json",
-                "fabric.mod.json",
                 "grimac.properties"
             )
         ) {

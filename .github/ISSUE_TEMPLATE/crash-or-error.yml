@@ -43,11 +43,9 @@ body:
     id: type
     attributes:
         label: Affected Platform(s)
-        description: Which platforms does this issue affect? If you aren't sure, select both.
+        description: Which supported platform does this issue affect?
         options:
             - "Bukkit"
-            - "Fabric"
-        multiple: true
     validations:
         required: true
 

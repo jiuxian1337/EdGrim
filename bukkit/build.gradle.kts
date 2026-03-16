@@ -50,9 +50,9 @@ dependencies {
 }
 
 bukkit {
-    name = "GrimAC"
-    author = "GrimAC"
-    main = "ac.grim.grimac.platform.bukkit.GrimACBukkitLoaderPlugin"
+    name = "EdGrim"
+    author = "EdGrim"
+    main = "tech.zkmjnic.edgrim.platform.bukkit.EdGrimBukkitLoaderPlugin"
     website = "https://grim.ac/"
     apiVersion = "1.13"
     foliaSupported = true
@@ -75,68 +75,68 @@ bukkit {
     )
 
     permissions {
-        register("grim.alerts") {
+        register("edgrim.alerts") {
             description = "Receive alerts for violations"
             default = Permission.Default.OP
         }
 
-        register("grim.alerts.enable-on-join") {
+        register("edgrim.alerts.enable-on-join") {
             description = "Enable alerts on join"
             default = Permission.Default.OP
         }
 
-        register("grim.performance") {
+        register("edgrim.performance") {
             description = "Check performance metrics"
             default = Permission.Default.OP
         }
 
-        register("grim.profile") {
+        register("edgrim.profile") {
             description = "Check user profile"
             default = Permission.Default.OP
         }
 
-        register("grim.brand") {
+        register("edgrim.brand") {
             description = "Show client brands on join"
             default = Permission.Default.OP
         }
 
-        register("grim.brand.enable-on-join") {
+        register("edgrim.brand.enable-on-join") {
             description = "Enable showing client brands on join"
             default = Permission.Default.OP
         }
 
-        register("grim.sendalert") {
+        register("edgrim.sendalert") {
             description = "Send cheater alert"
             default = Permission.Default.OP
         }
 
-        register("grim.nosetback") {
+        register("edgrim.nosetback") {
             description = "Disable setback"
             default = Permission.Default.FALSE
         }
 
-        register("grim.nomodifypacket") {
+        register("edgrim.nomodifypacket") {
             description = "Disable modifying packets"
             default = Permission.Default.FALSE
         }
 
-        register("grim.exempt") {
+        register("edgrim.exempt") {
             description = "Exempt from all checks"
             default = Permission.Default.FALSE
         }
 
-        register("grim.verbose") {
+        register("edgrim.verbose") {
             description = "Receive verbose alerts for violations"
             default = Permission.Default.OP
         }
 
-        register("grim.verbose.enable-on-join") {
+        register("edgrim.verbose.enable-on-join") {
             description =
                 "Enable verbose alerts on join"
             default = Permission.Default.FALSE
         }
 
-        register("grim.list") {
+        register("edgrim.list") {
             description =
                 "Shows lists of specific data"
             default = Permission.Default.FALSE

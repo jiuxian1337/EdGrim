@@ -1,5 +1,5 @@
-# GrimAC main configuration
-# Source code: https://github.com/MWHunter/Grim
+# EdGrim main configuration
+# Source code: https://github.com/MWHunter/edgrim
 # Copyright 2025 DefineOutside and contributors, Licensed under GPLv3.
 # Modified binaries, or plugins with copied grim code, must be private,
 # or with full source code available to buyers at no additional cost.
@@ -20,7 +20,7 @@ alerts:
 
     click:
         enabled: true
-        command: "/grim spectate %player%"
+        command: "/edgrim spectate %player%"
 
 verbose:
     print-to-console: false
@@ -40,7 +40,7 @@ client-brand:
     disconnect-blacklisted-forge-versions: true
 
 spectators:
-    # Hide all spectators with the grim.spectator permission regardless if they are actually actively spectating
+    # Hide all spectators with the edgrim.spectator permission regardless if they are actually actively spectating
     hide-regardless: false
     # Will make spectators hidden only in these worlds, keep blank to allow all worlds
     allowed-worlds:
@@ -109,9 +109,38 @@ RotationPlace:
     cancelvl: 5
 
 ScaffoldA:
+    # Only the GodBridge/KeepY module remains in ScaffoldA
     # 检测低cps神桥
-    check-low-cps-god-bridge: true
+    check-low-cps-god-bridge:
+        # Enable the low-CPS GodBridge/KeepY detector
+        enable: true
+        # Only cancel placements from this sub-check once cancelvl is reached
+        cancel: true
     cancelvl: 5
+    # After reaching cancelvl, cancel all block placements for this many milliseconds
+    cancel-for-ms: 500
+
+ScaffoldB:
+    # Port of the NoCheatPlus scaffold check
+    # Checks if the player is placing while not looking toward the support face
+    angle: true
+    time:
+        # Checks if downward scaffold placements are happening too quickly
+        active: true
+        # Minimum average interval between placements, in ticks
+        average: 2
+    # Checks for sprint-assisted downward placements shortly after sprinting
+    sprint: true
+    rotate:
+        # Checks for a large yaw change on the tick after placing
+        active: true
+        # Minimum yaw difference required to flag
+        difference: 90
+    # Checks if the player switches hotbar slot on the tick after placing
+    tool-switch: true
+    cancelvl: 10
+    # After reaching cancelvl, cancel all block placements for this many milliseconds
+    cancel-for-ms: 500
 
 # Prediction-based no slow check
 # Grim accounts for buggy netcode here... hard to false even when spamming right click and offhand button
@@ -292,85 +321,64 @@ AimW:
 
 AimHeuristic:
     # Ported from MX-Project AimHeuristic.
-    # This check uses "Local VL" (local buffers) per sub-module; when it exceeds its limit, it will flag and mitigateDamage().
-    # This section only controls thresholds/buffers; punishment routing is still handled by punishments/*.yml.
+    # Local/global VL escalation has been removed; once a sub-check reaches its threshold it flags directly.
     basic-component:
-        # How much Local VL should be added when each heuristic matches (higher = more aggressive).
-        heuristic-sync-add-local-vl: 125
-        heuristic-aggressive-add-local-vl: 50
-        heuristic-aim-add-local-vl: 100
-        heuristic-constant-add-local-vl: 65
-        heuristic-interpolation-add-local-vl: 55
-        pattern-snap-add-local-vl: 55
-        pattern-random-add-local-vl: 25
-        # Local VL thresholds/decay for the two Basic sub-buffers.
-        local-vl-limit-component: 400
-        local-vl-limit-interpolation: 400
-        local-vl-fade-component: 5
-        local-vl-fade-interpolation: 5
-        # Extra fast flag for common "randomizer flaw" patterns.
-        randomizer-flaw-add-vl: 25
+        # Enable the basic heuristic sampler.
+        enabled: true
+        # Fast direct flag for common "randomizer flaw" pitch patterns.
+        randomizer-flaw: true
     constant-check:
-        # Required buffer (roughly: consecutive matches) before Constant1/2/3 will mitigateDamage().
-        constant-1-need-vl: 8
-        constant-2-need-vl: 6
-        constant-3-need-vl: 6
+        # Required buffer (roughly: consecutive matches) before Constant1/2/3 flags.
+        constant-1-buffer: 8
+        constant-2-buffer: 6
+        constant-3-buffer: 6
     invalid-check:
-        # Invalid pitch / exponential-small deltas.
-        hit-cancel-time-ms: 0
-        add-global-vl: 25
+        # Enable invalid pitch / exponentially-small delta detection.
+        enabled: true
     inconsistent-check:
         # Inconsistent aim patterns based on outliers/duplicates across a sample window.
-        hit-cancel-time-ms: 4000
-        add-global-vl: 10
+        enabled: true
         buffer: 2.0
     pattern-check:
         # Repeated delta patterns; buffer is a small float that fades when the pattern stops.
-        hit-cancel-time-ms: 5000
-        add-global-vl: 20
+        enabled: true
         buffer: 2.5
         buffer-fade: 0.3
     factor-check:
         # Large "centre spike" factors; resets after enough normal ticks.
-        add-global-vl: 25
+        enabled: true
         buffer: 2.5
         ticks-to-reset: 2500
     smooth-check:
         # Smooth-angle repeat detection.
-        add-global-vl: 25
+        enabled: true
 
 AimComplex:
-    # Ported from MX-Project AimComplex. Uses Local VL buffers for entropy/distinct/randomizer.
-    add-global-vl-entropy: 5
-    add-global-vl-distinct: 5
-    add-global-vl-randomizer: 25
-    hit-cancel-time-ms-entropy: 5000
-    hit-cancel-time-ms-distinct: 3000
-    hit-cancel-time-ms-randomizer: 0
-    local-vl-limit-entropy: 30
-    local-vl-limit-distinct: 4.0
-    local-vl-limit-randomizer: 2.5
+    # Ported from MX-Project AimComplex.
+    # The buffer limits below are stability thresholds only; once reached, the check flags directly.
+    enabled-entropy: true
+    enabled-distinct: true
+    enabled-randomizer: true
+    buffer-limit-entropy: 30
+    buffer-limit-distinct: 4.0
+    buffer-limit-randomizer: 2.5
 
 AimAnalysis:
-    # Ported from MX-Project AimAnalysis. Long-term "rank" analysis + linear outlier heuristic.
-    add-global-vl-linear: 25
-    add-global-vl-rank: 20
-    add-global-vl-longterm: 25
-    local-vl-limit-rank: 6.0
+    # Ported from MX-Project AimAnalysis. Linear and long-term anomalies now flag directly.
+    enabled-linear: true
+    enabled-rank: true
+    enabled-longterm: true
+    buffer-limit-rank: 6.0
 
 AimStatistics:
-    # Ported from MX-Project AimStatistics. IQR, zFactor, improbable-combo scoring.
-    add-global-vl-iqr: 25
-    add-global-vl-bot-pattern: 25
-    add-global-vl-zfactor: 5
-    add-global-vl-improbable: 25
-    hit-cancel-time-ms-iqr: 0
-    hit-cancel-time-ms-bot-pattern: 0
-    hit-cancel-time-ms-zfactor: 5500
-    hit-cancel-time-ms-improbable: 4000
-    local-vl-limit-iqr: 11.0
-    local-vl-limit-zfactor: 7.0
-    local-vl-limit-improbable: 15.0
+    # Ported from MX-Project AimStatistics. Buffers remain as stability thresholds; alerts are direct.
+    enabled-iqr: true
+    enabled-bot-pattern: true
+    enabled-zfactor: true
+    enabled-improbable: true
+    buffer-limit-iqr: 11.0
+    buffer-limit-zfactor: 7.0
+    buffer-limit-improbable: 15.0
 
 AnalysisA:
 
@@ -447,7 +455,7 @@ max-ping-firework-boost: 1000
 
 history:
     enabled: true
-    # How many entries should be shown for each page with /grim history <player>
+    # How many entries should be shown for each page with /edgrim history <player>
     entries-per-page: 15
     # What should the inserted server name be for the history command? This is useful if you use the same database for multiple servers
     server-name: Prison
@@ -462,3 +470,4 @@ history:
         password: ""
 
 config-version: 9
+

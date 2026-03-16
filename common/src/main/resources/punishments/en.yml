@@ -86,6 +86,7 @@ Punishments:
     remove-violations-after: 300
     checks:
       - "ScaffoldA"
+      - "ScaffoldB"
     commands:
       - "10:5 [alert]"
       - "10:5 [log]"

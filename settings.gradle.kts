@@ -12,10 +12,6 @@ dependencyResolutionManagement {
 
 pluginManagement {
     repositories {
-        maven {
-            name = "FabricMC"
-            url = uri("https://maven.fabricmc.net/")
-        }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -46,9 +42,3 @@ develocity {
 rootProject.name = "edgrimac"
 include("common")
 include("bukkit")
-include("fabric")
-include(":fabric:mc1161")
-include(":fabric:mc1171")
-include(":fabric:mc1194")
-include(":fabric:mc1205")
-include(":fabric:mc1216")

@@ -1,5 +1,5 @@
-# config.yml - GrimAC 主要配置
-# 源代码链接: https://github.com/MWHunter/Grim
+﻿# config.yml - EdGrim 主要配置
+# 源代码链接: https://github.com/MWHunter/edgrim
 # 版权所有 © 2025 DefineOutside 及贡献者 / 遵循 GPLv3 开源协议
 # 修改过的二进制文件，或带有复制的Grim代码的插件，必须是私有仓库，不得公开售卖此插件。
 # 中文翻译提供 Regotly / nuym / Dg32z_ , 如有错误请提交 Issues 并@我
@@ -20,7 +20,7 @@ alerts:
 
     click:
         enabled: true
-        command: "/grim spectate %player%"
+        command: "/edgrim spectate %player%"
 
 verbose:
     # 是否在控制台中打印verbose信息
@@ -41,13 +41,13 @@ client-brand:
     disconnect-blacklisted-forge-versions: true
 
 spectators:
-    # 将拥有 grim.spectator 权限的人进行隐藏,不管他是否在观察玩家
+    # 将拥有 edgrim.spectator 权限的人进行隐藏,不管他是否在观察玩家
     hide-regardless: false
     # 观察者在这些世界不会隐藏
     allowed-worlds:
         - ""
 
-# 在玩家无法接收 GrimAC的 transaction 数据包后,多少秒对玩家进行踢出
+# 在玩家无法接收 EdGrim的 transaction 数据包后,多少秒对玩家进行踢出
 # 踢出原因为: disconnect.timeout
 # 玩家超时踢出时间（默认 = 60 秒）
 max-transaction-time: 60
@@ -114,12 +114,37 @@ RotationPlace:
     cancelvl: 5
 
 ScaffoldA:
-    # 检测低cps平搭或keepy (小概率误判)
+    # ScaffoldA 现在只保留低 CPS 的 GodBridge/KeepY 子模块
     check-low-cps-god-bridge:
+        # 是否启用低 CPS GodBridge/KeepY 检测
         enable: true
-        # 吞方块
+        # 达到 cancelvl 后是否吞掉当前放置
         cancel: true
     cancelvl: 5
+    # 达到 cancelvl 后，持续取消后续方块放置的时间（毫秒）
+    cancel-for-ms: 500
+
+ScaffoldB:
+    # NoCheatPlus 的 Scaffold 检测移植
+    # 检查放置时是否明显没有朝向支撑方块面
+    angle: true
+    time:
+        # 检查低头连续搭路时放块间隔是否过快
+        active: true
+        # 低于该平均放置间隔(单位: tick)时开始判定
+        average: 2
+    # 检查玩家在冲刺后短时间内向下放块
+    sprint: true
+    rotate:
+        # 检查放置后的下一 tick 是否出现过大的水平转向变化
+        active: true
+        # 触发判定所需的最小偏航差值
+        difference: 90
+    # 检查放置后的下一 tick 是否切换了快捷栏槽位
+    tool-switch: true
+    cancelvl: 10
+    # 达到 cancelvl 后，持续取消后续方块放置的时间（毫秒）
+    cancel-for-ms: 500
 
 # 使用模拟移动进行的NoSlow(使用物品时不会减速)检查
 # 在这里解释错误的服务器代码......即使在发送垃圾数据包时右键单击和副手按钮也很分辨
@@ -300,137 +325,94 @@ AimW:
 
 AimHeuristic:
     # 从 MX-Project 的 AimHeuristic 迁移而来。
-    # 该检测使用“Local VL”（局部缓冲）按子模块累计；当超过阈值时会触发 flag 并执行 mitigateDamage()。
-    # 此处仅控制阈值/缓冲；最终惩罚仍由 punishments/*.yml 决定。
-    # basic-component：偏“底层特征采样”的通用组件，会累计 Local VL 并按衰减回落。
+    # 已移除本地 VL / 全局 VL 叠加；子检测达到阈值后会直接 flag。
     basic-component:
-        # heuristic-sync-add-local-vl：检测到“同步/锁步式”转头特征时增加的 Local VL。
-        heuristic-sync-add-local-vl: 125
-        # heuristic-aggressive-add-local-vl：检测到“强相关/强约束”特征时增加的 Local VL。
-        heuristic-aggressive-add-local-vl: 50
-        # heuristic-aim-add-local-vl：检测到“瞄准轴向异常”特征时增加的 Local VL。
-        heuristic-aim-add-local-vl: 100
-        # heuristic-constant-add-local-vl：检测到“常量/分段常量”角速度特征时增加的 Local VL。
-        heuristic-constant-add-local-vl: 65
-        # heuristic-interpolation-add-local-vl：检测到“插值/补间”特征时增加的 Local VL。
-        heuristic-interpolation-add-local-vl: 55
-        # pattern-snap-add-local-vl：检测到“snap”类固定步长/固定落点特征时增加的 Local VL。
-        pattern-snap-add-local-vl: 55
-        # pattern-random-add-local-vl：检测到“伪随机但分布异常”特征时增加的 Local VL。
-        pattern-random-add-local-vl: 25
-        # local-vl-limit-component：basic-component 主缓冲的 Local VL 触发阈值（超过则 flag + mitigateDamage）。
-        local-vl-limit-component: 400
-        # local-vl-limit-interpolation：basic-component 中 interpolation 子缓冲的 Local VL 触发阈值。
-        local-vl-limit-interpolation: 400
-        # local-vl-fade-component：basic-component 主缓冲的衰减速度（每次“正常样本”回落的 VL）。
-        local-vl-fade-component: 5
-        # local-vl-fade-interpolation：interpolation 子缓冲的衰减速度（每次“正常样本”回落的 VL）。
-        local-vl-fade-interpolation: 5
-        # randomizer-flaw-add-vl：命中“randomizer flaw”典型缺陷模式时，直接追加的额外缓冲值。
-        randomizer-flaw-add-vl: 25
-    # constant-check：更偏“连续命中门槛”的子检测，达到门槛就会触发 mitigateDamage。
+        # enabled：是否启用基础启发式采样。
+        enabled: true
+        # randomizer-flaw：是否启用常见 randomizer flaw 俯仰模式的快速直接 flag。
+        randomizer-flaw: true
+    # constant-check：更偏“连续命中门槛”的子检测，达到门槛就会直接 flag。
     constant-check:
-        # constant-1-need-vl：Constant1 触发所需的最小缓冲（越小越敏感）。
-        constant-1-need-vl: 8
-        # constant-2-need-vl：Constant2 触发所需的最小缓冲（越小越敏感）。
-        constant-2-need-vl: 6
-        # constant-3-need-vl：Constant3 触发所需的最小缓冲（越小越敏感）。
-        constant-3-need-vl: 6
+        # constant-1-buffer：Constant1 触发所需的最小缓冲（越小越敏感）。
+        constant-1-buffer: 8
+        # constant-2-buffer：Constant2 触发所需的最小缓冲（越小越敏感）。
+        constant-2-buffer: 6
+        # constant-3-buffer：Constant3 触发所需的最小缓冲（越小越敏感）。
+        constant-3-buffer: 6
     # invalid-check：直接判定“异常数据形态”的子检测（例如无效 pitch/指数极小变化）。
     invalid-check:
-        # hit-cancel-time-ms：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
-        hit-cancel-time-ms: 0
-        # add-global-vl：本次命中要增加的 VL（会循环调用 flag 以累计到 Grim violations）。
-        add-global-vl: 25
+        # enabled：是否启用 invalid pitch / 极小指数变化检测。
+        enabled: true
     # inconsistent-check：基于样本窗口的离群/重复等统计特征，判断瞄准不一致。
     inconsistent-check:
-        # hit-cancel-time-ms：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
-        hit-cancel-time-ms: 4000
-        # add-global-vl：本次命中要增加的 VL（会循环调用 flag 以累计到 Grim violations）。
-        add-global-vl: 10
+        # enabled：是否启用 inconsistent 子检测。
+        enabled: true
         # buffer：子检测缓冲阈值（越小越敏感，越大越稳健但更慢触发）。
         buffer: 2.0
     # pattern-check：旋转差分模式重复检测（小窗口内 pattern 重复/回放）。
     pattern-check:
-        # hit-cancel-time-ms：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
-        hit-cancel-time-ms: 5000
-        # add-global-vl：本次命中要增加的 VL（会循环调用 flag 以累计到 Grim violations）。
-        add-global-vl: 20
+        # enabled：是否启用 pattern 子检测。
+        enabled: true
         # buffer：pattern 子检测的触发缓冲阈值（越小越敏感）。
         buffer: 2.5
         # buffer-fade：当 pattern 不再出现时，每次回落的缓冲值（越大越快恢复正常）。
         buffer-fade: 0.3
     # factor-check：倍率/尖峰类检测（典型用于“机器心跳/中心尖峰”特征）。
     factor-check:
-        # add-global-vl：本次命中要增加的 VL（会循环调用 flag 以累计到 Grim violations）。
-        add-global-vl: 25
+        # enabled：是否启用 factor 子检测。
+        enabled: true
         # buffer：factor 子检测的触发缓冲阈值（越小越敏感）。
         buffer: 2.5
         # ticks-to-reset：缓冲重置/回落的 tick 门槛（越大越“记仇”，越小越快恢复）。
         ticks-to-reset: 2500
     # smooth-check：平滑角度重复检测（低抖动、重复路径）。
     smooth-check:
-        # add-global-vl：本次命中要增加的 VL（会循环调用 flag 以累计到 Grim violations）。
-        add-global-vl: 25
+        # enabled：是否启用 smooth 子检测。
+        enabled: true
 
 AimComplex:
-    # 从 MX-Project 的 AimComplex 迁移而来。包含 entropy/distinct/randomizer 三类 Local VL 缓冲。
-    # add-global-vl-*：本次命中要增加的 VL（会循环调用 flag 以累计到 Grim violations）。
-    # hit-cancel-time-ms-*：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
-    # add-global-vl-entropy：entropy 类命中时增加的 VL。
-    add-global-vl-entropy: 5
-    # add-global-vl-distinct：distinct 类命中时增加的 VL。
-    add-global-vl-distinct: 5
-    # add-global-vl-randomizer：randomizer 类命中时增加的 VL。
-    add-global-vl-randomizer: 25
-    # hit-cancel-time-ms-entropy：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
-    hit-cancel-time-ms-entropy: 5000
-    # hit-cancel-time-ms-distinct：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
-    hit-cancel-time-ms-distinct: 3000
-    # hit-cancel-time-ms-randomizer：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
-    hit-cancel-time-ms-randomizer: 0
-    # local-vl-limit-entropy：entropy Local VL 触发阈值（超过则 flag + mitigateDamage）。
-    local-vl-limit-entropy: 30
-    # local-vl-limit-distinct：distinct Local VL 触发阈值（超过则 flag + mitigateDamage）。
-    local-vl-limit-distinct: 4.0
-    # local-vl-limit-randomizer：randomizer Local VL 触发阈值（超过则 flag + mitigateDamage）。
-    local-vl-limit-randomizer: 2.5
+    # 从 MX-Project 的 AimComplex 迁移而来。
+    # 下列 buffer-limit 仅作为稳定性阈值；达到后会直接 flag。
+    # enabled-entropy：是否启用 entropy 子检测。
+    enabled-entropy: true
+    # enabled-distinct：是否启用 distinct 子检测。
+    enabled-distinct: true
+    # enabled-randomizer：是否启用 randomizer 子检测。
+    enabled-randomizer: true
+    # buffer-limit-entropy：entropy 子检测触发所需的缓冲阈值。
+    buffer-limit-entropy: 30
+    # buffer-limit-distinct：distinct 子检测触发所需的缓冲阈值。
+    buffer-limit-distinct: 4.0
+    # buffer-limit-randomizer：randomizer 子检测触发所需的缓冲阈值。
+    buffer-limit-randomizer: 2.5
 
 AimAnalysis:
-    # 从 MX-Project 的 AimAnalysis 迁移而来。包含 long-term rank 与线性离群检测。
-    # add-global-vl-linear：线性离群命中时增加的 VL。
-    add-global-vl-linear: 25
-    # add-global-vl-rank：rank 命中时增加的 VL。
-    add-global-vl-rank: 20
-    # add-global-vl-longterm：long-term 命中时增加的 VL。
-    add-global-vl-longterm: 25
-    # local-vl-limit-rank：rank 子检测的 Local VL 触发阈值（超过则 flag + mitigateDamage）。
-    local-vl-limit-rank: 6.0
+    # 从 MX-Project 的 AimAnalysis 迁移而来。线性与 long-term 异常命中后会直接 flag。
+    # enabled-linear：是否启用 linear 子检测。
+    enabled-linear: true
+    # enabled-rank：是否启用 rank 子检测。
+    enabled-rank: true
+    # enabled-longterm：是否启用 long-term 子检测。
+    enabled-longterm: true
+    # buffer-limit-rank：rank 子检测触发所需的缓冲阈值。
+    buffer-limit-rank: 6.0
 
 AimStatistics:
-    # 从 MX-Project 的 AimStatistics 迁移而来。包含 IQR、zFactor 与 improbable 组合评分。
-    # add-global-vl-iqr：IQR 命中时增加的 VL。
-    add-global-vl-iqr: 25
-    # add-global-vl-bot-pattern：bot-pattern 命中时增加的 VL。
-    add-global-vl-bot-pattern: 25
-    # add-global-vl-zfactor：zFactor 命中时增加的 VL。
-    add-global-vl-zfactor: 5
-    # add-global-vl-improbable：improbable 组合命中时增加的 VL。
-    add-global-vl-improbable: 25
-    # hit-cancel-time-ms-iqr：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
-    hit-cancel-time-ms-iqr: 0
-    # hit-cancel-time-ms-bot-pattern：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
-    hit-cancel-time-ms-bot-pattern: 0
-    # hit-cancel-time-ms-zfactor：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
-    hit-cancel-time-ms-zfactor: 5500
-    # hit-cancel-time-ms-improbable：兼容 MX 字段（毫秒）。当前迁移版本不使用 hitCancel，保留用于后续对齐/调试。
-    hit-cancel-time-ms-improbable: 4000
-    # local-vl-limit-iqr：IQR Local VL 触发阈值（超过则 flag + mitigateDamage）。
-    local-vl-limit-iqr: 11.0
-    # local-vl-limit-zfactor：zFactor Local VL 触发阈值（超过则 flag + mitigateDamage）。
-    local-vl-limit-zfactor: 7.0
-    # local-vl-limit-improbable：improbable 组合 Local VL 触发阈值（超过则 flag + mitigateDamage）。
-    local-vl-limit-improbable: 15.0
+    # 从 MX-Project 的 AimStatistics 迁移而来。缓冲仅用于稳定，达到阈值后会直接 flag。
+    # enabled-iqr：是否启用 IQR 子检测。
+    enabled-iqr: true
+    # enabled-bot-pattern：是否启用 bot-pattern 子检测。
+    enabled-bot-pattern: true
+    # enabled-zfactor：是否启用 zFactor 子检测。
+    enabled-zfactor: true
+    # enabled-improbable：是否启用 improbable 组合检测。
+    enabled-improbable: true
+    # buffer-limit-iqr：IQR 子检测触发所需的缓冲阈值。
+    buffer-limit-iqr: 11.0
+    # buffer-limit-zfactor：zFactor 子检测触发所需的缓冲阈值。
+    buffer-limit-zfactor: 7.0
+    # buffer-limit-improbable：improbable 组合检测触发所需的缓冲阈值。
+    buffer-limit-improbable: 15.0
 
 AnalysisA:
 
@@ -505,7 +487,7 @@ max-ping-firework-boost: 1000
 
 history:
     enabled: true
-    # 使用 /grim history <player> 时每页显示多少条记录
+    # 使用 /edgrim history <player> 时每页显示多少条记录
     entries-per-page: 15
     # history 指令中插入的服务器名称？如果多个服务器共用同一数据库则很有用
     server-name: Prison
