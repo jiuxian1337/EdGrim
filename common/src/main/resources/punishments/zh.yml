@@ -179,3 +179,17 @@ Punishments:
     commands:
       - "5:1 [alert]"
       - "5:1 [log]"
+  Autoclicker:
+    remove-violations-after: 300
+    checks:
+      - "Autoclicker"
+    commands:
+      - "5:1 [alert]"
+      - "5:1 [log]"
+  PingSpoof:
+    remove-violations-after: 300
+    checks:
+      - "Ping"
+    commands:
+      - "5:1 [alert]"
+      - "5:1 [log]"

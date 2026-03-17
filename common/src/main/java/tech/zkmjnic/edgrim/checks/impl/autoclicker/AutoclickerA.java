@@ -25,10 +25,6 @@ import java.util.Map;
  */
 @CheckData(
         name = "AutoclickerA",
-        configName = "AutoclickerA",
-        alternativeName = "Autoclicker",
-        setback = -1,
-        decay = 0.05,
         description = "Detects stable, macro-like clicking patterns during combat"
 )
 public final class AutoclickerA extends Check implements PacketCheck {

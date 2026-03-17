@@ -16,11 +16,7 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
  */
 @CheckData(
         name = "PingA",
-        configName = "PingA",
-        alternativeName = "BadPackets",
         experimental = true,
-        decay = 0.0,
-        setback = -1,
         description = "Detects spoofed keepalive ping vs transaction ping"
 )
 public final class PingA extends Check implements PacketCheck {
