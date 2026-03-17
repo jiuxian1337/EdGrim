@@ -11,7 +11,7 @@ import tech.zkmjnic.edgrim.utils.math.Vec2f;
 import java.util.ArrayList;
 import java.util.List;
 
-@CheckData(name = "AimHeuristic", configName = "AimHeuristic", decay = 0.75, description = "MX heuristic aim checks migrated")
+@CheckData(name = "AimHeuristic", configName = "AimHeuristic", decay = 0.75, description = "heuristic aim checks migrated")
 public final class AimHeuristic extends EdAimCheck {
     private static final int BASIC_SAMPLE_SIZE = 10;
     private static final int PATTERN_SAMPLE_SIZE = 100;

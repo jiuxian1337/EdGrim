@@ -15,10 +15,6 @@ Punishments:
     # 例如, !BadPacketsN
     checks:
       - "Simulation"
-      - "GroundSpoof"
-      - "Timer"
-      - "TimerLimit"
-      - "NoFall"
     # 最大vl:下一次执行需要的vl
     #
     # 这是个例子, 当到达100VL时为了以 "incorrect movement!" 为理由踢出玩家
@@ -33,6 +29,35 @@ Punishments:
       - "100:40 [log]"
       - "100:100 [webhook]"
       - "100:100 [proxy]"
+  Timer:
+    remove-violations-after: 300
+    checks:
+      - "Timer"
+      - "TimerLimit"
+    commands:
+      - "100:40 [alert]"
+      - "100:40 [log]"
+      - "100:100 [webhook]"
+      - "100:100 [proxy]"
+  NoFall:
+    remove-violations-after: 300
+    checks:
+      - "GroundSpoof"
+      - "NoFall"
+    commands:
+      - "5:5 [alert]"
+      - "5:5 [log]"
+      - "20:20 [webhook]"
+      - "20:20 [proxy]"
+  NoSlow:
+    remove-violations-after: 300
+    checks:
+      - "NoSlow"
+    commands:
+      - "5:5 [alert]"
+      - "5:5 [log]"
+      - "20:20 [webhook]"
+      - "20:20 [proxy]"
   Knockback:
     remove-violations-after: 300
     checks:
@@ -44,26 +69,26 @@ Punishments:
       - "5:5 [log]"
       - "20:20 [webhook]"
       - "20:20 [proxy]"
-  Post:
+  BadPackets:
     remove-violations-after: 300
     checks:
+      - "BadPackets"
+      - "PacketOrder"
       - "Post"
     commands:
       - "20:20 [alert]"
       - "20:20 [log]"
       - "40:40 [webhook]"
       - "40:40 [proxy]"
-  BadPackets:
+  Crash:
     remove-violations-after: 300
     checks:
-      - "BadPackets"
-      - "PacketOrder"
       - "Crash"
     commands:
-      - "20:20 [alert]"
-      - "20:20 [log]"
-      - "40:40 [webhook]"
-      - "40:40 [proxy]"
+      - "1:1 [alert]"
+      - "1:1 [log]"
+      - "1:1 [webhook]"
+      - "1:1 [proxy]"
   Reach:
     remove-violations-after: 300
     checks:
@@ -92,17 +117,48 @@ Punishments:
       - "10:5 [log]"
       - "20:10 [webhook]"
       - "20:10 [proxy]"
+  Place:
+    remove-violations-after: 300
+    checks:
+      - "Place"
+    commands:
+      - "10:5 [alert]"
+      - "10:5 [log]"
+      - "20:10 [webhook]"
+      - "20:10 [proxy]"
+  Break:
+    remove-violations-after: 300
+    checks:
+      - "Break"
+    commands:
+      - "10:5 [alert]"
+      - "10:5 [log]"
+      - "20:10 [webhook]"
+      - "20:10 [proxy]"
+  TransactionOrder:
+    remove-violations-after: 300
+    checks:
+      - "TransactionOrder"
+    commands:
+      - "5:2 [alert]"
+      - "5:2 [log]"
+      - "10:5 [webhook]"
+      - "10:5 [proxy]"
+  MultiActions:
+    remove-violations-after: 300
+    checks:
+      - "MultiActions"
+    commands:
+      - "10:5 [alert]"
+      - "10:5 [log]"
+      - "20:10 [webhook]"
+      - "20:10 [proxy]"
   Misc:
     remove-violations-after: 300
     checks:
       - "Vehicle"
-      - "NoSlow"
       - "Sprint"
-      - "MultiActions"
-      - "Place"
       - "Baritone"
-      - "Break"
-      - "TransactionOrder"
       - "Elytra"
       - "Chat"
       - "Exploit"
@@ -111,53 +167,18 @@ Punishments:
       - "10:5 [log]"
       - "20:10 [webhook]"
       - "20:10 [proxy]"
-  Combat:
+  Interact:
     remove-violations-after: 300
     checks:
       - "Interact"
-      - "Aim"
-      - "AimA"
-      - "AimB"
-      - "AimC"
-      - "AimD"
-      - "AimE"
-      - "AimF"
-      - "AimG"
-      - "AimH"
-      - "AimI"
-      - "AimJ"
-      - "AimK"
-      - "AimL"
-      - "AimM"
-      - "AimN"
-      - "AimO"
-      - "AimP"
-      - "AimQ"
-      - "AimR"
-      - "AimS"
-      - "AimT"
-      - "AimU"
-      - "AimV"
-      - "AimW"
-      - "AimHeuristic"
-      - "AimComplex"
-      - "AimAnalysis"
-      - "AimStatistics"
-      - "AnalysisA"
-      - "AnalysisB"
-      - "AnalysisC"
-      - "AnalysisD"
-      - "AnalysisE"
-      - "AnalysisF"
-      - "AnalysisG"
     commands:
-        - "5:1 [alert]"
-        - "5:1 [log]"
-  # Grim2.0.10版本 没有连点器检查，Grim将在未来添加
-  Autoclicker:
+      - "5:1 [alert]"
+      - "5:1 [log]"
+  Aim:
     remove-violations-after: 300
     checks:
-      - "Autoclicker"
+      - "Aim"
+      - "Analysis"
     commands:
-      - "20:40 [alert]"
-      - "20:40 [log]"
+      - "5:1 [alert]"
+      - "5:1 [log]"

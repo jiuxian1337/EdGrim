@@ -239,8 +239,9 @@ public class CheckManager {
                 .put(SuperDebug.class, new SuperDebug(player))
                 .put(DebugHandler.class, new DebugHandler(player))
                 .put(BadPacketsX.class, new BadPacketsX(player))
-                .put(NoSlow.class, new NoSlow(player))
+                .put(NoSlowA.class, new NoSlowA(player))
                 .put(NoSlowB.class, new NoSlowB(player))
+                .put(NoSlowC.class, new NoSlowC(player))
                 .put(SprintB.class, new SprintB(player))
                 .put(SprintC.class, new SprintC(player))
                 .put(SprintD.class, new SprintD(player))
@@ -493,8 +494,8 @@ public class CheckManager {
         return getPositionCheck(CompensatedCooldown.class);
     }
 
-    public NoSlow getNoSlow() {
-        return getPostPredictionCheck(NoSlow.class);
+    public NoSlowA getNoSlow() {
+        return getPostPredictionCheck(NoSlowA.class);
     }
 
     public SetbackTeleportUtil getSetbackUtil() {

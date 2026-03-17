@@ -73,13 +73,13 @@ Simulation:
     # Measured in blocks from the possible movement
     # We account for Optifine by switching trig tables but dropping this to 0.001 will reduce FastMath
     # flagging the anticheat if this compensation doesn't work...
-    threshold: 0.001
+    threshold: 0.03
     # How large of a violation in a tick before the player gets immediately setback?
     # -1 to disable
-    immediate-setback-threshold: 0.1
+    immediate-setback-threshold: 0.03
     # How large of an advantage over all ticks before we start to setback?
     # -1 to disable
-    max-advantage: 1
+    max-advantage: 2.5
     # After 50 seconds with default config, the player will go from 4 blocks -> 1 block of advantage
     # This is to stop the player from gathering too many violations and never being able to clear them all
     # Default advantage ceiling (x axis = seconds, y axis = 1/1000 block): https://www.desmos.com/calculator/4lovswdarj
@@ -109,19 +109,12 @@ RotationPlace:
     cancelvl: 5
 
 ScaffoldA:
-    # Only the GodBridge/KeepY module remains in ScaffoldA
-    # 检测低cps神桥
-    check-low-cps-god-bridge:
-        # Enable the low-CPS GodBridge/KeepY detector
-        enable: true
-        # Only cancel placements from this sub-check once cancelvl is reached
-        cancel: true
+    # low-CPS GodBridge/KeepY detector
     cancelvl: 5
     # After reaching cancelvl, cancel all block placements for this many milliseconds
     cancel-for-ms: 500
 
 ScaffoldB:
-    # Port of the NoCheatPlus scaffold check
     # Checks if the player is placing while not looking toward the support face
     angle: true
     time:
@@ -145,7 +138,7 @@ ScaffoldB:
 # Prediction-based no slow check
 # Grim accounts for buggy netcode here... hard to false even when spamming right click and offhand button
 # Much more stable than other anticheats, but please report any falses... I have fixed a ton of netcode issues here.
-NoSlow:
+NoSlowA:
     # How much of an offset is "cheating"
     # By default this is lower than other offs
     # Flags by 0.03-0.2 consistently with NoSlow on
@@ -169,15 +162,16 @@ VelocityA:
     max-advantage: 1
     # This is to stop the player from gathering too many violations and never being able to clear them all
     max-ceiling: 4
+    setbackvl: 1
 
 VelocityB:
     threshold: 0.001
-    setbackvl: 3
+    setbackvl: 1
 
 VelocityC:
-    setbackvl: 3
     allowed-jump-reset: true
     min-velocity: 90
+    setbackvl: 1
 
 TimerA:
     setbackvl: 10
@@ -225,21 +219,6 @@ Reach:
 
 # Aim series (AimA-AimW)
 # Notes: Default parameters for all Aim checks; unlisted checks use built-in thresholds
-AimA:
-    # Abnormal angle sequence (continuous zero jitter)
-
-AimB:
-    # Higher-order statistics (kurtosis/jerk)
-
-AimC:
-    # Target switch / axis abnormal rotation
-
-AimD:
-    # Repeated rotation sequence / unnatural pattern
-
-AimE:
-    # Rotation randomization anomaly
-
 AimF:
     # Low acceleration + low angle combo
     buffer: 7
@@ -259,17 +238,11 @@ AimH:
     min-deltaY: 1.0
     max-deltaX: 0.0001
 
-AimI:
-    # Rotation gcd change anomaly
-
 AimJ:
     # Low horizontal acceleration (respawn/riptide exempt)
     buffer: 7
     min-deltaX: 0.4
     max-deltaX-accel: 0.0001
-
-AimK:
-    # Rounded rotation consistency
 
 AimL:
     # Variance/outlier anomaly
@@ -284,18 +257,6 @@ AimM:
     min-average-rot: 0.4
     mitigate-vl: 6
 
-AimN:
-    # Continuous small consistent rotation
-
-AimO:
-    # Zero pitch change + high horizontal change
-
-AimP:
-    # GCD + modulo anomaly combo
-
-AimQ:
-    # Target distance / randomization anomaly
-
 AimR:
     # Horizontal/vertical ratio anomaly
     buffer: 7
@@ -304,24 +265,7 @@ AimR:
     ratio-threshold: 1000.0
     window-size: 5
 
-AimS:
-    # Binned variance anomaly
-
-AimT:
-    # Jolt statistics anomaly
-
-AimU:
-    # Pattern repeat / offset path anomaly
-
-AimV:
-    # Stddev anomaly (simplified rotation analysis)
-
-AimW:
-    # Adaptive statistics (experimental)
-
 AimHeuristic:
-    # Ported from MX-Project AimHeuristic.
-    # Local/global VL escalation has been removed; once a sub-check reaches its threshold it flags directly.
     basic-component:
         # Enable the basic heuristic sampler.
         enabled: true
@@ -360,8 +304,6 @@ AimHeuristic:
         enabled: true
 
 AimComplex:
-    # Ported from MX-Project AimComplex.
-    # The buffer limits below are stability thresholds only; once reached, the check flags directly.
     enabled-entropy: true
     enabled-distinct: true
     enabled-randomizer: true
@@ -370,14 +312,12 @@ AimComplex:
     buffer-limit-randomizer: 2.5
 
 AimAnalysis:
-    # Ported from MX-Project AimAnalysis. Linear and long-term anomalies now flag directly.
     enabled-linear: true
     enabled-rank: true
     enabled-longterm: true
     buffer-limit-rank: 6.0
 
 AimStatistics:
-    # Ported from MX-Project AimStatistics. Buffers remain as stability thresholds; alerts are direct.
     enabled-iqr: true
     enabled-bot-pattern: true
     enabled-zfactor: true
@@ -386,43 +326,6 @@ AimStatistics:
     buffer-limit-zfactor: 7.0
     buffer-limit-improbable: 15.0
 
-AnalysisA:
-
-AnalysisB:
-
-AnalysisC:
-
-AnalysisD:
-
-AnalysisE:
-
-AnalysisF:
-    gcd:
-        enabled: true
-        max-buffer: 3.0
-        fail-increase: 1.0
-    sync:
-        enabled: true
-        max-buffer: 5.0
-        fail-increase: 1.0
-    machine:
-        enabled: true
-        max-buffer: 5.0
-        fail-increase: 1.0
-    interpolation:
-        enabled: true
-        max-buffer: 4.0
-        fail-increase: 0.85
-    interpolation_out:
-        enabled: true
-        max-buffer: 6.0
-        fail-increase: 1.0
-    machine_out:
-        enabled: true
-        max-buffer: 6.0
-        fail-increase: 1.0
-
-AnalysisG:
 exploit:
     # You can gain high speeds when sprint jumping with an elytra, this prevents the exploit when set to false
     # Mojang screwed up netcode by making elytra start client sided and elytra end server sided

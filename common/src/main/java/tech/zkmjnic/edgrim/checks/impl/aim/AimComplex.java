@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@CheckData(name = "AimComplex", configName = "AimComplex", decay = 0.75, description = "MX complex aim checks migrated")
+@CheckData(name = "AimComplex", configName = "AimComplex", decay = 0.75, description = "complex aim checks migrated")
 public final class AimComplex extends EdAimCheck {
     private static final int RAW_SAMPLE_SIZE = 10;
     private static final int SPIKE_SAMPLE_SIZE = 10;

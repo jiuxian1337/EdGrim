@@ -21,7 +21,7 @@ import java.util.List;
         name = "ScaffoldB",
         configName = "ScaffoldB",
         decay = 0.0,
-        description = "Port of NoCheatPlus scaffold"
+        description = ""
 )
 public final class ScaffoldB extends ScaffoldCheck {
     private static final double MAX_ANGLE = Math.toRadians(90.0D);

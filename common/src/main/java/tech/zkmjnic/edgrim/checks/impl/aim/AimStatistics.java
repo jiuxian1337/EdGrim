@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
-@CheckData(name = "AimStatistics", configName = "AimStatistics", decay = 0.75, description = "MX aim statistics migrated")
+@CheckData(name = "AimStatistics", configName = "AimStatistics", decay = 0.75, description = "aim statistics migrated")
 public final class AimStatistics extends EdAimCheck {
     private static final int SAMPLE_SIZE = 25;
 

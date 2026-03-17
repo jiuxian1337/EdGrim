@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@CheckData(name = "AimAnalysis", configName = "AimAnalysis", decay = 0.75, description = "MX aim analysis migrated")
+@CheckData(name = "AimAnalysis", configName = "AimAnalysis", decay = 0.75, description = "aim analysis migrated")
 public final class AimAnalysis extends EdAimCheck {
     private static final int SAMPLE_SIZE = 100;
 

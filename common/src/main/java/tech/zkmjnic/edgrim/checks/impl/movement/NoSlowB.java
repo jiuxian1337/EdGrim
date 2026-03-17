@@ -18,7 +18,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientUs
  * @Author: siuxian_baka
  * @Date: 2026/3/12 09:57
  */
-@CheckData(name = "NoSlowB (OffHand)", setback = 0)
+@CheckData(name = "NoSlowB (OffHand)", configName = "NoSlowB", setback = 0)
 public class NoSlowB extends Check implements PostPredictionCheck {
 
     public NoSlowB(EdGrimPlayer player) {

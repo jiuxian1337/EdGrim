@@ -33,9 +33,6 @@ public final class ScaffoldA extends ScaffoldCheck {
     private int lastPlaceY = Integer.MIN_VALUE;
     private float pitch;
 
-    private boolean godBridgeEnabled;
-    private boolean cancelPlacements;
-
     public ScaffoldA(EdGrimPlayer player) {
         super(player);
     }
@@ -55,10 +52,6 @@ public final class ScaffoldA extends ScaffoldCheck {
             return;
         }
 
-        if (!godBridgeEnabled) {
-            return;
-        }
-
         placeCounter++;
         updateGodBridgeBuffer(place);
 
@@ -72,8 +65,7 @@ public final class ScaffoldA extends ScaffoldCheck {
 
             if (godBridgeStreak++ > 3.0
                     && flagAndAlert("(GodBridge/KeepY)\ndc= " + dragClick + "\nlc= " + sinceLastPlacement)
-                    && shouldCancel()
-                    && cancelPlacements) {
+                    && shouldCancel()) {
                 startCancelWindow();
                 if (shouldModifyPackets()) {
                     place.resync();
@@ -136,8 +128,6 @@ public final class ScaffoldA extends ScaffoldCheck {
     @Override
     public void onReload(ConfigManager config) {
         super.onReload(config);
-        godBridgeEnabled = config.getBooleanElse("ScaffoldA.check-low-cps-god-bridge.enable", true);
-        cancelPlacements = config.getBooleanElse("ScaffoldA.check-low-cps-god-bridge.cancel", true);
     }
 
     private static long now() {

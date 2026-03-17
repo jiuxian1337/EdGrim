@@ -75,16 +75,16 @@ Simulation:
     # 玩家移动偏移量判定阈值（单位：方块）
     # 已针对 Optifine 优化三角函数表，若设为 0.001 可减少 FastMath 误报
     # 如果此补偿不起作用，则反作弊记录此玩家作弊
-    threshold: 0.001
+    threshold: 0.03
     # 在玩家受到回弹之前，1 ticks 的判定阈值
     # 假设作弊者与模拟移动的阈值（threshold）是0.0945，该项目设置的是0.07，玩家会立即被回弹到合适的位置
     # -1 关闭
-    immediate-setback-threshold: 0.1
+    immediate-setback-threshold: 0.03
     # 在玩家受到回弹之前，累计回弹的阈值
     # 假设作弊者与模拟移动的阈值（threshold）是0.0945，并且触发了10次，应为0.9450
     # 而你设置的值为0.94 ， 作弊者会受到回弹
     # -1 关闭
-    max-advantage: 1
+    max-advantage: 2.5
     # 在默认配置的50秒后，玩家将从4块跑到1块
     # 这是为了防止玩家收集过多的违规行为，并且永远无法清除所有的违规行为
     # 这是默认配置的样子（x 轴 = seconds ，y 轴 = 1/1000 方块）: https://www.desmos.com/calculator/4lovswdarj
@@ -114,18 +114,12 @@ RotationPlace:
     cancelvl: 5
 
 ScaffoldA:
-    # ScaffoldA 现在只保留低 CPS 的 GodBridge/KeepY 子模块
-    check-low-cps-god-bridge:
-        # 是否启用低 CPS GodBridge/KeepY 检测
-        enable: true
-        # 达到 cancelvl 后是否吞掉当前放置
-        cancel: true
+    # 低 CPS 的 GodBridge/KeepY
     cancelvl: 5
     # 达到 cancelvl 后，持续取消后续方块放置的时间（毫秒）
     cancel-for-ms: 500
 
 ScaffoldB:
-    # NoCheatPlus 的 Scaffold 检测移植
     # 检查放置时是否明显没有朝向支撑方块面
     angle: true
     time:
@@ -149,7 +143,7 @@ ScaffoldB:
 # 使用模拟移动进行的NoSlow(使用物品时不会减速)检查
 # 在这里解释错误的服务器代码......即使在发送垃圾数据包时右键单击和副手按钮也很分辨
 # 比其他反作弊更稳定，但请报告任何错误......我在这里修复了大量的代码问题。
-NoSlow:
+NoSlowA:
     # 有多少偏移量是作弊
     # 标志 0.03-0.2 与 NoSlow 一致
     threshold: 0.001
@@ -172,16 +166,17 @@ VelocityA:
     max-advantage: 1
     # 这是为了防止玩家收集过多的违规行为，并且永远无法清除所有的违规行为
     max-ceiling: 4
+    setbackvl: 1
 
 
 VelocityB:
     threshold: 0.001
-    setbackvl: 3
+    setbackvl: 1
 
 VelocityC:
-    setbackvl: 3
     allowed-jump-reset: true
     min-velocity: 90
+    setbackvl: 1
 
 TimerA:
     setbackvl: 10
@@ -229,20 +224,6 @@ Reach:
 
 # Aim 系列（AimA-AimW）
 # 说明：以下为所有 Aim 检测的默认参数，未列出的检测仅使用内置阈值
-AimA:
-    # 角度序列异常（连续零抖动）
-
-AimB:
-    # 高阶统计学特征（kurtosis/jerk）检测
-
-AimC:
-    # 目标切换/轴向异常旋转
-
-AimD:
-    # 旋转序列重复/非自然模式
-
-AimE:
-    # 旋转随机化异常
 
 AimF:
     # 低加速度 + 低角度组合检测
@@ -263,17 +244,11 @@ AimH:
     min-deltaY: 1.0
     max-deltaX: 0.0001
 
-AimI:
-    # 旋转 gcd 变化异常
-
 AimJ:
     # 低水平加速度检测（复活/激流豁免）
     buffer: 7
     min-deltaX: 0.4
     max-deltaX-accel: 0.0001
-
-AimK:
-    # 舍入旋转一致性检测
 
 AimL:
     # 方差/离群点异常
@@ -288,18 +263,6 @@ AimM:
     min-average-rot: 0.4
     mitigate-vl: 6
 
-AimN:
-    # 连续小幅一致旋转
-
-AimO:
-    # 零俯仰变化 + 高水平变化
-
-AimP:
-    # gcd + modulo 异常组合
-
-AimQ:
-    # 目标距离/随机化异常
-
 AimR:
     # 水平/垂直比值异常
     buffer: 7
@@ -308,24 +271,7 @@ AimR:
     ratio-threshold: 1000.0
     window-size: 5
 
-AimS:
-    # 分箱方差异常
-
-AimT:
-    # jolt 统计异常
-
-AimU:
-    # 模式重复/偏移路径异常
-
-AimV:
-    # stddev 异常（简化旋转分析）
-
-AimW:
-    # 自适应统计检测（实验性）
-
 AimHeuristic:
-    # 从 MX-Project 的 AimHeuristic 迁移而来。
-    # 已移除本地 VL / 全局 VL 叠加；子检测达到阈值后会直接 flag。
     basic-component:
         # enabled：是否启用基础启发式采样。
         enabled: true
@@ -377,8 +323,6 @@ AimHeuristic:
         enabled: true
 
 AimComplex:
-    # 从 MX-Project 的 AimComplex 迁移而来。
-    # 下列 buffer-limit 仅作为稳定性阈值；达到后会直接 flag。
     # enabled-entropy：是否启用 entropy 子检测。
     enabled-entropy: true
     # enabled-distinct：是否启用 distinct 子检测。
@@ -393,7 +337,6 @@ AimComplex:
     buffer-limit-randomizer: 2.5
 
 AimAnalysis:
-    # 从 MX-Project 的 AimAnalysis 迁移而来。线性与 long-term 异常命中后会直接 flag。
     # enabled-linear：是否启用 linear 子检测。
     enabled-linear: true
     # enabled-rank：是否启用 rank 子检测。
@@ -404,7 +347,6 @@ AimAnalysis:
     buffer-limit-rank: 6.0
 
 AimStatistics:
-    # 从 MX-Project 的 AimStatistics 迁移而来。缓冲仅用于稳定，达到阈值后会直接 flag。
     # enabled-iqr：是否启用 IQR 子检测。
     enabled-iqr: true
     # enabled-bot-pattern：是否启用 bot-pattern 子检测。
@@ -420,43 +362,6 @@ AimStatistics:
     # buffer-limit-improbable：improbable 组合检测触发所需的缓冲阈值。
     buffer-limit-improbable: 15.0
 
-AnalysisA:
-
-AnalysisB:
-
-AnalysisC:
-
-AnalysisD:
-
-AnalysisE:
-
-AnalysisF:
-    gcd:
-        enabled: true
-        max-buffer: 3.0
-        fail-increase: 1.0
-    sync:
-        enabled: true
-        max-buffer: 5.0
-        fail-increase: 1.0
-    machine:
-        enabled: true
-        max-buffer: 5.0
-        fail-increase: 1.0
-    interpolation:
-        enabled: true
-        max-buffer: 4.0
-        fail-increase: 0.85
-    interpolation_out:
-        enabled: true
-        max-buffer: 6.0
-        fail-increase: 1.0
-    machine_out:
-        enabled: true
-        max-buffer: 6.0
-        fail-increase: 1.0
-
-AnalysisG:
 exploit:
     #是否允许玩家在使用鞘翅时候进行的疾跑跳跃
     allow-sprint-jumping-when-using-elytra: true
