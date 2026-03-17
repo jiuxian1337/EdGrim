@@ -222,6 +222,24 @@ Reach:
     # 除非你是专注于 1.8 PvP 的服务器，否则不建议使用这个额外的数据包
     enable-post-packet: false
 
+# 连点器
+AutoclickerA:
+    # 总开关（仍需在 punishments.yml 中启用）
+    enabled: true
+    # 收集挥手延迟 ticks=(ms/50)，大于等于该值不计入
+    max-delay-ticks: 25
+    # 收集多少个样本后开始分析
+    stack-size: 100
+    # 每个窗口的样本数（用于峰度/熵分析）
+    window-size: 20
+    # 需要最近有移动包活动
+    require-move-within-ms: 500
+    # 需要最近有攻击包
+    require-attack-within-ms: 7000
+    # 熵 jiff delta 阈值
+    entropy-jiff-min: 0.04
+    entropy-jiff-max: 0.06
+
 # Aim 系列（AimA-AimW）
 # 说明：以下为所有 Aim 检测的默认参数，未列出的检测仅使用内置阈值
 

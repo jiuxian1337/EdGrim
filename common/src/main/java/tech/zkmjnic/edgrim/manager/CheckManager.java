@@ -58,6 +58,7 @@ import tech.zkmjnic.edgrim.checks.impl.combat.Hitboxes;
 import tech.zkmjnic.edgrim.checks.impl.combat.MultiInteractA;
 import tech.zkmjnic.edgrim.checks.impl.combat.MultiInteractB;
 import tech.zkmjnic.edgrim.checks.impl.combat.Reach;
+import tech.zkmjnic.edgrim.checks.impl.autoclicker.AutoclickerA;
 import tech.zkmjnic.edgrim.checks.impl.exploit.ExploitA;
 import tech.zkmjnic.edgrim.checks.impl.exploit.ExploitB;
 import tech.zkmjnic.edgrim.checks.impl.groundspoof.NoFall;
@@ -111,6 +112,7 @@ public class CheckManager {
         packetChecks = new ImmutableClassToInstanceMap.Builder<PacketCheck>()
                 .put(PacketOrderProcessor.class, player.packetOrderProcessor)
                 .put(Reach.class, new Reach(player))
+                .put(AutoclickerA.class, new AutoclickerA(player))
                 .put(PacketEntityReplication.class, new PacketEntityReplication(player))
                 .put(PacketChangeGameState.class, new PacketChangeGameState(player))
                 .put(CompensatedInventory.class, player.inventory)

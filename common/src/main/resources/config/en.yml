@@ -217,6 +217,24 @@ Reach:
     # Unless you are a 1.8 PvP focused server, this additional packet is not recommended
     enable-post-packet: false
 
+# Autoclicker
+AutoclickerA:
+    # Master toggle (check still must be enabled via punishments.yml)
+    enabled: true
+    # Collect swing delay as ticks=(ms/50), ignore delays >= this
+    max-delay-ticks: 25
+    # Number of samples before running analysis
+    stack-size: 100
+    # Per-window sample size for kurtosis/entropy
+    window-size: 20
+    # Require recent activity (movement packets)
+    require-move-within-ms: 500
+    # Require recent combat (attack packet)
+    require-attack-within-ms: 7000
+    # Entropy "jiff delta" thresholds
+    entropy-jiff-min: 0.04
+    entropy-jiff-max: 0.06
+
 # Aim series (AimA-AimW)
 # Notes: Default parameters for all Aim checks; unlisted checks use built-in thresholds
 AimF:
