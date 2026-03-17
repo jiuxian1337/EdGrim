@@ -200,10 +200,6 @@ VehicleTimer:
     # 实体1.0005 检查
     setbackvl: 10
 
-PacketOrderI:
-    # 如果玩家因使用 1.7 动画模组而被标记，则启用此项
-    exempt-placing-while-digging: false
-
 Reach:
     # 我们应该将碰撞箱扩大多少？ 0.0005 应该检测到 3.0005+ reach
     #
@@ -278,7 +274,7 @@ AimHeuristic:
         # randomizer-flaw：是否启用常见 randomizer flaw 俯仰模式的快速直接 flag。
         randomizer-flaw: true
         # interpolation-average-threshold：interpolation 子检测开始累计缓冲所需的最小平均偏航变化。
-        interpolation-average-threshold: 6.5
+        interpolation-average-threshold: 3.2
         # interpolation-buffer：interpolation 子检测触发前需要累计的命中缓冲。
         interpolation-buffer: 4.0
         # interpolation-buffer-decay：interpolation 缓冲在未继续命中时的衰减速度。
@@ -306,7 +302,7 @@ AimHeuristic:
         # enabled：是否启用 pattern 子检测。
         enabled: true
         # buffer：pattern 子检测的触发缓冲阈值（越小越敏感）。
-        buffer: 2.5
+        buffer: 5
         # buffer-fade：当 pattern 不再出现时，每次回落的缓冲值（越大越快恢复正常）。
         buffer-fade: 0.3
     # factor-check：倍率/尖峰类检测（典型用于“机器心跳/中心尖峰”特征）。

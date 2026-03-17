@@ -2,7 +2,7 @@ import versioning.BuildConfig
 
 BuildConfig.init(project)
 
-val baseVersion = "2.3.72"
+val baseVersion = "26.03.18"
 group = "tech.zkmjnic.edgrim"
 version = baseVersion
 description = "Libre simulation anticheat designed for 1.21 with 1.8-1.21 support, powered by PacketEvents 2.0."

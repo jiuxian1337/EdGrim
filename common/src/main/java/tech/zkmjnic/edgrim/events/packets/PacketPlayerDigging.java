@@ -2,7 +2,6 @@ package tech.zkmjnic.edgrim.events.packets;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.impl.movement.NoSlowA;
-import tech.zkmjnic.edgrim.checks.impl.movement.NoSlowC;
 import tech.zkmjnic.edgrim.player.EdGrimPlayer;
 import tech.zkmjnic.edgrim.utils.item.ItemBehaviour;
 import tech.zkmjnic.edgrim.utils.item.ItemBehaviourRegistry;
@@ -62,7 +61,6 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
 
             if (itemBehaviour.canUse(item, player.compensatedWorld, player, hand)) {
                 player.packetStateData.setSlowedByUsingItem(true);
-                player.checkManager.getCheck(NoSlowC.class).onC08();
                 player.packetStateData.itemInUseHand = hand;
             } else {
                 player.packetStateData.setSlowedByUsingItem(false);
@@ -78,7 +76,6 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
         // The food component can override the consumable component, as it provides conditions for using the item
         if (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_21_2) && consumable != null && foodComponent == null) {
             player.packetStateData.setSlowedByUsingItem(true);
-            player.checkManager.getCheck(NoSlowC.class).onC08();
             player.packetStateData.itemInUseHand = hand;
         }
 
@@ -86,7 +83,6 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
         if (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_20_5) && foodComponent != null) {
             if (foodComponent.isCanAlwaysEat() || player.food < 20 || player.gamemode == GameMode.CREATIVE) {
                 player.packetStateData.setSlowedByUsingItem(true);
-                player.checkManager.getCheck(NoSlowC.class).onC08();
                 player.packetStateData.itemInUseHand = hand;
                 return;
             } else {
@@ -113,7 +109,6 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
                     || material == ItemTypes.HONEY_BOTTLE || material == ItemTypes.SUSPICIOUS_STEW ||
                     material == ItemTypes.CHORUS_FRUIT) {
                 player.packetStateData.setSlowedByUsingItem(true);
-                player.checkManager.getCheck(NoSlowC.class).onC08();
                 player.packetStateData.itemInUseHand = hand;
                 return;
             }
@@ -121,7 +116,6 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
             // The other items that do require it
             if (item.getType().hasAttribute(ItemTypes.ItemAttribute.EDIBLE) && ((player.platformPlayer != null && player.food < 20) || player.gamemode == GameMode.CREATIVE)) {
                 player.packetStateData.setSlowedByUsingItem(true);
-                player.checkManager.getCheck(NoSlowC.class).onC08();
                 player.packetStateData.itemInUseHand = hand;
                 return;
             }
@@ -132,7 +126,6 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
 
         if (material == ItemTypes.SHIELD && player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_9)) {
             player.packetStateData.setSlowedByUsingItem(true);
-            player.checkManager.getCheck(NoSlowC.class).onC08();
             player.packetStateData.itemInUseHand = hand;
             return;
         }
@@ -171,13 +164,11 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
 
         if (material == ItemTypes.SPYGLASS && player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_17)) {
             player.packetStateData.setSlowedByUsingItem(true);
-            player.checkManager.getCheck(NoSlowC.class).onC08();
             player.packetStateData.itemInUseHand = hand;
         }
 
         if (material == ItemTypes.GOAT_HORN && player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_19)) {
             player.packetStateData.setSlowedByUsingItem(true);
-            player.checkManager.getCheck(NoSlowC.class).onC08();
             player.packetStateData.itemInUseHand = hand;
         }
 
@@ -185,7 +176,6 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
         if (material.hasAttribute(ItemTypes.ItemAttribute.SWORD)) {
             if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_8) || PacketEvents.getAPI().getServerManager().getVersion().isOlderThan(ServerVersion.V_1_9))
                 player.packetStateData.setSlowedByUsingItem(true);
-            player.checkManager.getCheck(NoSlowC.class).onC08();
 //            else if (PacketEvents.getAPI().getServerManager().getVersion().isOlderThan(ServerVersion.V_1_9)) // ViaVersion stuff
 //                player.packetStateData.setSlowedByUsingItem(false);
         }

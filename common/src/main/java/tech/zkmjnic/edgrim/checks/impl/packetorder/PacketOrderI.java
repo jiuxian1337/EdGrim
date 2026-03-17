@@ -1,6 +1,5 @@
 package tech.zkmjnic.edgrim.checks.impl.packetorder;
 
-import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
@@ -9,20 +8,18 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.nmsutil.BlockBreakSpeed;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerDigging;
 
 import java.util.ArrayDeque;
 
-@CheckData(name = "PacketOrderI", experimental = true)
+@CheckData(name = "PacketOrderI")
 public class PacketOrderI extends Check implements PostPredictionCheck {
     public PacketOrderI(final EdGrimPlayer player) {
         super(player);
     }
 
-    private boolean exemptPlacingWhileDigging;
 
     private boolean setback;
     private boolean digging; // for placing
@@ -98,11 +95,6 @@ public class PacketOrderI extends Check implements PostPredictionCheck {
                     if (damage >= 1 || damage <= 0 && player.gamemode == GameMode.CREATIVE) {
                         return;
                     }
-                case CANCELLED_DIGGING, FINISHED_DIGGING:
-                    if (exemptPlacingWhileDigging || player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_7_10)) {
-                        return;
-                    }
-                    digging = true;
             }
         }
 
@@ -132,10 +124,5 @@ public class PacketOrderI extends Check implements PostPredictionCheck {
 
         flags.clear();
         setback = false;
-    }
-
-    @Override
-    public void onReload(ConfigManager config) {
-        exemptPlacingWhileDigging = config.getBooleanElse(getConfigName() + ".exempt-placing-while-digging", false);
     }
 }

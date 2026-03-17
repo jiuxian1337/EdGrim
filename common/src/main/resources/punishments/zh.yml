@@ -61,9 +61,7 @@ Punishments:
   Knockback:
     remove-violations-after: 300
     checks:
-      - "VelocityA"
-      - "VelocityB"
-      - "VelocityC"
+      - "Velocity"
     commands:
       - "5:5 [alert]"
       - "5:5 [log]"
@@ -110,8 +108,7 @@ Punishments:
   Scaffold:
     remove-violations-after: 300
     checks:
-      - "ScaffoldA"
-      - "ScaffoldB"
+      - "Scaffold"
     commands:
       - "10:5 [alert]"
       - "10:5 [log]"

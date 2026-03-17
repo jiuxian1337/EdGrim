@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@CheckData(name = "AnalysisC", configName = "AnalysisC", decay = 0.85, description = "Entropy and kurtosis based combat rotation analysis")
+@CheckData(name = "AnalysisC", configName = "AnalysisC", decay = 0.85, description = "Entropy and kurtosis based combat rotation analysis", experimental = true)
 public class AnalysisC extends AnalysisCheck implements RotationCheck {
     private static final long COMBAT_COOLDOWN_MS = 100;
     private final List<Double> kurtosisHistory = new ArrayList<>();

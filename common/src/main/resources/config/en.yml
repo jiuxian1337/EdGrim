@@ -195,10 +195,6 @@ VehicleTimer:
     # Target 1.005 timer
     setbackvl: 10
 
-PacketOrderI:
-    # enable if players are getting flagged for using 1.7 animations mods
-    exempt-placing-while-digging: false
-
 Reach:
     # How much should we expand hitboxes by? 0.0005 should detect 3.0005+ reach
     #
@@ -272,7 +268,7 @@ AimHeuristic:
         # Fast direct flag for common "randomizer flaw" pitch patterns.
         randomizer-flaw: true
         # Minimum average yaw delta required before the interpolation sub-check starts buffering.
-        interpolation-average-threshold: 6.5
+        interpolation-average-threshold: 3.2
         # Repeated interpolation hits required before the sub-check flags.
         interpolation-buffer: 4.0
         # How quickly the interpolation buffer decays when the pattern stops.
@@ -292,7 +288,7 @@ AimHeuristic:
     pattern-check:
         # Repeated delta patterns; buffer is a small float that fades when the pattern stops.
         enabled: true
-        buffer: 2.5
+        buffer: 5
         buffer-fade: 0.3
     factor-check:
         # Large "centre spike" factors; resets after enough normal ticks.

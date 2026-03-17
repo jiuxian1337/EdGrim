@@ -7,7 +7,6 @@ import tech.zkmjnic.edgrim.checks.impl.aim.AimModulo360;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimA;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimB;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimC;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimD;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimE;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimF;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimG;
@@ -182,7 +181,6 @@ public class CheckManager {
                 .put(AimA.class, new AimA(player))
                 .put(AimB.class, new AimB(player))
                 .put(AimC.class, new AimC(player))
-                .put(AimD.class, new AimD(player))
                 .put(AimE.class, new AimE(player))
                 .put(AimF.class, new AimF(player))
                 .put(AimG.class, new AimG(player))
@@ -241,7 +239,6 @@ public class CheckManager {
                 .put(BadPacketsX.class, new BadPacketsX(player))
                 .put(NoSlowA.class, new NoSlowA(player))
                 .put(NoSlowB.class, new NoSlowB(player))
-                .put(NoSlowC.class, new NoSlowC(player))
                 .put(SprintB.class, new SprintB(player))
                 .put(SprintC.class, new SprintC(player))
                 .put(SprintD.class, new SprintD(player))
