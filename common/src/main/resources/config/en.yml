@@ -235,6 +235,14 @@ AutoclickerA:
     entropy-jiff-min: 0.04
     entropy-jiff-max: 0.06
 
+PingA:
+    # Compare keepalive ping (async) against transaction ping (sync)
+    suspicious-diff-ms: 150
+    # Only flag when keepalive is higher than transaction by this much
+    allowed-keepalive-over-transaction-ms: 200
+    buffer-threshold: 6.0
+    buffer-decay: 0.25
+
 # Aim series (AimA-AimW)
 # Notes: Default parameters for all Aim checks; unlisted checks use built-in thresholds
 AimF:
