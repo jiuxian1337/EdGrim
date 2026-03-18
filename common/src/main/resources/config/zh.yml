@@ -234,14 +234,6 @@ AutoclickerA:
     entropy-jiff-min: 0.04
     entropy-jiff-max: 0.06
 
-PingA:
-    # 对比 keepalive ping(异步) 与 transaction ping(同步)
-    suspicious-diff-ms: 150
-    # 仅当 keepalive 明显高于 transaction 时才计入
-    allowed-keepalive-over-transaction-ms: 200
-    buffer-threshold: 6.0
-    buffer-decay: 0.25
-
 InventoryMove:
     # 旧版本 OPEN_INVENTORY 的持续时间（毫秒）
     legacy-open-timeout-ms: 5000
@@ -264,55 +256,6 @@ InventoryRotation:
     legacy-open-timeout-ms: 5000
     # 忽略微小浮点噪声；0.0 表示任意变化
     min-rotation-delta: 0.0
-
-# Aim 系列（AimA-AimW）
-# 说明：以下为所有 Aim 检测的默认参数，未列出的检测仅使用内置阈值
-
-AimF:
-    # 低加速度 + 低角度组合检测
-    buffer: 7
-    min-deltaX: 0.4
-    max-deltaXAccel: 0.1
-    max-rotation-angle: 5.0
-
-AimG:
-    # 俯仰轴低加速度检测
-    buffer: 7
-    min-deltaY: 0.4
-    max-deltaY-accel: 0.1
-
-AimH:
-    # 低水平/高垂直的动态阈值检测
-    buffer: 7
-    min-deltaY: 1.0
-    max-deltaX: 0.0001
-
-AimJ:
-    # 低水平加速度检测（复活/激流豁免）
-    buffer: 7
-    min-deltaX: 0.4
-    max-deltaX-accel: 0.0001
-
-AimL:
-    # 方差/离群点异常
-    buffer: 4
-
-AimM:
-    # 俯仰除数异常行统计
-    buffer: 5
-    sample-size: 25
-    max-invalid-rows: 2
-    min-row-length: 3
-    min-average-rot: 0.4
-    mitigate-vl: 6
-
-AimR:
-    # 水平/垂直比值异常
-    buffer: 7
-    min-deltaX: 1.0
-    max-deltaY: 0.0001
-    ratio-threshold: 1000.0
-    window-size: 5
 
 AimHeuristic:
     basic-component:
@@ -351,7 +294,7 @@ AimHeuristic:
         # buffer：pattern 子检测的触发缓冲阈值（越小越敏感）。
         buffer: 5
         # buffer-fade：当 pattern 不再出现时，每次回落的缓冲值（越大越快恢复正常）。
-        buffer-fade: 0.3
+        buffer-fade: 0.25
     # factor-check：倍率/尖峰类检测（典型用于“机器心跳/中心尖峰”特征）。
     factor-check:
         # enabled：是否启用 factor 子检测。

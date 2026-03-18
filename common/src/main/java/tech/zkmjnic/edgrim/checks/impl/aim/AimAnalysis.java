@@ -1,18 +1,20 @@
 package tech.zkmjnic.edgrim.checks.impl.aim;
 
 import ac.grim.grimac.api.config.ConfigManager;
+import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.impl.analysis.AnalysisMathUtil;
+import tech.zkmjnic.edgrim.checks.type.RotationCheck;
 import tech.zkmjnic.edgrim.player.EdGrimPlayer;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.math.MathUtil;
+import tech.zkmjnic.edgrim.utils.math.Statistics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @CheckData(name = "AimAnalysis", configName = "AimAnalysis", decay = 0.75, description = "aim analysis migrated")
-public final class AimAnalysis extends EdAimCheck {
+public final class AimAnalysis extends Check implements RotationCheck {
     private static final int SAMPLE_SIZE = 100;
 
     private final List<Float> rawYaw = new ArrayList<>(SAMPLE_SIZE);
@@ -44,9 +46,14 @@ public final class AimAnalysis extends EdAimCheck {
 
     @Override
     public void process(final RotationUpdate rotationUpdate) {
-        if (!hasAttackedSince(3500L)) return;
+        if (!player.actionManager.hasAttackedSince(3500L)) return;
         if (rotationUpdate.isCinematic()) return;
-        if (isExempt(ExemptType.TELEPORT, ExemptType.SERVER_SENT_PULLBACK, ExemptType.SERVER_SENT_ROTATE, ExemptType.ELYTRA_FLYING, ExemptType.VEHICLE, ExemptType.RESPAWN)) {
+
+        if (player.packetStateData.lastPacketWasTeleport
+                || player.vehicleData.wasVehicleSwitch
+                || player.packetStateData.horseInteractCausedForcedRotation
+                || player.packetStateData.lastPacketWasOnePointSeventeenDuplicate
+                || player.compensatedEntities.self.getRiding() != null) {
             return;
         }
 
@@ -100,7 +107,7 @@ public final class AimAnalysis extends EdAimCheck {
     }
 
     private void checkRaw() {
-        final int sens = calculateSensitivity();
+        final int sens = player.calculateSensitivity();
         final List<Float> yawStack = new ArrayList<>(10);
         final List<Double> resultDeviation = new ArrayList<>();
         int resultDistinct = 0;
@@ -114,7 +121,7 @@ public final class AimAnalysis extends EdAimCheck {
             }
         }
 
-        final List<Double> outliers = AnalysisMathUtil.zScoreOutliers(resultDeviation, 0.5);
+        final List<Double> outliers = Statistics.getZScoreOutliers(resultDeviation, 0.5);
         final float distinctRank = (float) resultDistinct / 60.0f;
 
         if (outliers.isEmpty() || (outliers.size() == 1 && Math.abs(outliers.get(0)) > 10 && Math.abs(outliers.get(0)) < 100)) {
@@ -127,7 +134,7 @@ public final class AimAnalysis extends EdAimCheck {
             linearQuery = false;
         }
 
-        final boolean valid = calculateSensitivity() > 20 && sens < 140;
+        final boolean valid = player.calculateSensitivity() > 20 && sens < 140;
         if (rankEnabled && distinctRank < 1.0f && distinctRank > 0.7f && MathUtil.getAverage(rawYaw) > 1.8 && valid) {
             if (rankBuffer < 0.01f) {
                 if (distinctRank < 0.8f) rankBuffer += 0.2f;
@@ -150,7 +157,7 @@ public final class AimAnalysis extends EdAimCheck {
 
     private boolean flagAnalysis(String verbose) {
         if (flagAndAlert(verbose)) {
-            mitigateDamage();
+            player.mitigateDamage();
             return true;
         }
         return false;

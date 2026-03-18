@@ -175,7 +175,6 @@ Punishments:
     remove-violations-after: 300
     checks:
       - "Aim"
-      - "Analysis"
     commands:
       - "5:1 [alert]"
       - "5:1 [log]"

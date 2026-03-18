@@ -1,5 +1,6 @@
 package tech.zkmjnic.edgrim.checks.impl.aim.processor;
 
+import lombok.Getter;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
 import tech.zkmjnic.edgrim.player.EdGrimPlayer;
@@ -22,19 +23,31 @@ public class AimProcessor extends Check implements RotationCheck {
     private final RunningMode yRotMode = new RunningMode(TOTAL_SAMPLES_THRESHOLD);
     private float lastXRot;
     private float lastYRot;
+    @Getter
     private float yaw;
+    @Getter
     private float pitch;
+    @Getter
     private float lastYaw;
+    @Getter
     private float lastPitch;
+    @Getter
     private float deltaYaw;
+    @Getter
     private float deltaPitch;
+    @Getter
     private float lastDeltaYaw;
+    @Getter
     private float lastDeltaPitch;
+    @Getter
     private float yawAccel;
+    @Getter
     private float pitchAccel;
     private float lastYawAccel;
     private float lastPitchAccel;
+    @Getter
     private double avgYaw;
+    @Getter
     private double avgPitch;
     public int totalSensitivityClient;
 
@@ -112,51 +125,4 @@ public class AimProcessor extends Check implements RotationCheck {
         }
     }
 
-    public float getDeltaYaw() {
-        return deltaYaw;
-    }
-
-    public float getDeltaPitch() {
-        return deltaPitch;
-    }
-
-    public float getLastDeltaYaw() {
-        return lastDeltaYaw;
-    }
-
-    public float getLastDeltaPitch() {
-        return lastDeltaPitch;
-    }
-
-    public float getYawAccel() {
-        return yawAccel;
-    }
-
-    public float getPitchAccel() {
-        return pitchAccel;
-    }
-
-    public float getYaw() {
-        return yaw;
-    }
-
-    public float getPitch() {
-        return pitch;
-    }
-
-    public float getLastYaw() {
-        return lastYaw;
-    }
-
-    public float getLastPitch() {
-        return lastPitch;
-    }
-
-    public double getAvgYaw() {
-        return avgYaw;
-    }
-
-    public double getAvgPitch() {
-        return avgPitch;
-    }
 }

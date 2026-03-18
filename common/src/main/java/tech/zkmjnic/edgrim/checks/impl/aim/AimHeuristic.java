@@ -1,7 +1,9 @@
 package tech.zkmjnic.edgrim.checks.impl.aim;
 
 import ac.grim.grimac.api.config.ConfigManager;
+import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.RotationCheck;
 import tech.zkmjnic.edgrim.player.EdGrimPlayer;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.lists.Tuple;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @CheckData(name = "AimHeuristic", configName = "AimHeuristic", decay = 0.75, description = "heuristic aim checks migrated")
-public final class AimHeuristic extends EdAimCheck {
+public final class AimHeuristic extends Check implements RotationCheck {
     private static final int BASIC_SAMPLE_SIZE = 10;
     private static final int PATTERN_SAMPLE_SIZE = 100;
     private static final int PATTERN_LENGTH = 3;
@@ -116,9 +118,14 @@ public final class AimHeuristic extends EdAimCheck {
 
     @Override
     public void process(final RotationUpdate rotationUpdate) {
-        if (!hasAttackedSince(3500L)) return;
+        if (!player.actionManager.hasAttackedSince(3500L)) return;
         if (rotationUpdate.isCinematic()) return;
-        if (isExempt(ExemptType.TELEPORT, ExemptType.SERVER_SENT_PULLBACK, ExemptType.SERVER_SENT_ROTATE, ExemptType.ELYTRA_FLYING, ExemptType.VEHICLE, ExemptType.RESPAWN)) {
+
+        if (player.packetStateData.lastPacketWasTeleport
+                || player.vehicleData.wasVehicleSwitch
+                || player.packetStateData.horseInteractCausedForcedRotation
+                || player.packetStateData.lastPacketWasOnePointSeventeenDuplicate
+                || player.compensatedEntities.self.getRiding() != null) {
             return;
         }
 
@@ -209,7 +216,7 @@ public final class AimHeuristic extends EdAimCheck {
             oldYawChange = yawChange;
         }
 
-        final int sens = calculateSensitivity();
+        final int sens = player.calculateSensitivity();
         final int clientSens = rotationUpdate.getProcessor().totalSensitivityClient;
         final double averageYaw = Math.abs(MathUtil.getAverage(yawDeltas));
         if (sens > 65) {
@@ -262,7 +269,7 @@ public final class AimHeuristic extends EdAimCheck {
         final float deltaPitch = rotationUpdate.getProcessor().getDeltaPitch();
         if (deltaYaw == 0.0f && deltaPitch == 0.0f) return;
 
-        final int sens = calculateSensitivity();
+        final int sens = player.calculateSensitivity();
         final int clientSens = rotationUpdate.getProcessor().totalSensitivityClient;
         final boolean sensitivityTooLow = (sens < 50 && sens > -1) || (clientSens < 50);
 
@@ -282,7 +289,7 @@ public final class AimHeuristic extends EdAimCheck {
                 constantBuffer1 = Math.min(constantBuffer1 + 1.0f, 200.0f);
                 if (constantBuffer1 > constant1NeedVl + 2) {
                     if (flagAndAlert("t=Constant1 gcd=" + gcd + " dy=" + deltaYaw + " dp=" + deltaPitch + " sens=" + sens + " cs=" + clientSens)) {
-                        mitigateDamage();
+                        player.mitigateDamage();
                         constantBuffer1 = 4.0f;
                     }
                 }
@@ -312,7 +319,7 @@ public final class AimHeuristic extends EdAimCheck {
                     constantBuffer2 = Math.min(constantBuffer2 + 1.0f, 200.0f);
                     if (constantBuffer2 > constant2NeedVl) {
                         if (flagAndAlert("t=Constant2 mx=" + moduloX + " my=" + moduloY + " fx=" + floorModuloX + " fy=" + floorModuloY + " sens=" + sens + " cs=" + clientSens)) {
-                            mitigateDamage();
+                            player.mitigateDamage();
                             constantBuffer2 = 4.0f;
                         }
                     }
@@ -344,7 +351,7 @@ public final class AimHeuristic extends EdAimCheck {
                     final float limit = constant3NeedVl + 1.0f;
                     if (constantBuffer3 > ((sens < 70) ? (limit + 1.0f) : limit)) {
                         if (flagAndAlert("t=Constant3 mx=" + moduloX + " my=" + moduloY + " dy=" + deltaYaw + " dp=" + deltaPitch + " sens=" + sens + " cs=" + clientSens)) {
-                            mitigateDamage();
+                            player.mitigateDamage();
                             constantBuffer3 = 0.0f;
                         }
                     }
@@ -387,7 +394,7 @@ public final class AimHeuristic extends EdAimCheck {
     private void inconsistentTick(RotationUpdate rotationUpdate) {
         if (!inconsistentCheckEnabled) return;
 
-        final int sens = calculateSensitivity();
+        final int sens = player.calculateSensitivity();
         final int clientSens = rotationUpdate.getProcessor().totalSensitivityClient;
         final boolean invalidSensitivity = sens < 75 || sens > 175 || clientSens < 75 || clientSens > 170;
         if (invalidSensitivity) return;
@@ -591,7 +598,7 @@ public final class AimHeuristic extends EdAimCheck {
                     if (++smoothBuffer > 5) {
                         flagHeuristic("t=Smooth m=" + jiff);
                     } else {
-                        rewardBufferAndVL();
+                        reward();
                     }
                     break;
                 }
@@ -604,7 +611,7 @@ public final class AimHeuristic extends EdAimCheck {
 
     private boolean flagHeuristic(String verbose) {
         if (flagAndAlert(verbose)) {
-            mitigateDamage();
+            player.mitigateDamage();
             return true;
         }
         return false;

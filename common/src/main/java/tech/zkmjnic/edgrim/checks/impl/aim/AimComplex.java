@@ -1,8 +1,10 @@
 package tech.zkmjnic.edgrim.checks.impl.aim;
 
 import ac.grim.grimac.api.config.ConfigManager;
+import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.impl.aim.processor.AimProcessor;
+import tech.zkmjnic.edgrim.checks.type.RotationCheck;
 import tech.zkmjnic.edgrim.player.EdGrimPlayer;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.lists.Tuple;
@@ -16,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 @CheckData(name = "AimComplex", configName = "AimComplex", decay = 0.75, description = "complex aim checks migrated")
-public final class AimComplex extends EdAimCheck {
+public final class AimComplex extends Check implements RotationCheck {
     private static final int RAW_SAMPLE_SIZE = 10;
     private static final int SPIKE_SAMPLE_SIZE = 10;
 
@@ -60,9 +62,14 @@ public final class AimComplex extends EdAimCheck {
 
     @Override
     public void process(final RotationUpdate rotationUpdate) {
-        if (!hasAttackedSince(3500L)) return;
+        if (!player.actionManager.hasAttackedSince(3500L)) return;
         if (rotationUpdate.isCinematic()) return;
-        if (isExempt(ExemptType.TELEPORT, ExemptType.SERVER_SENT_PULLBACK, ExemptType.SERVER_SENT_ROTATE, ExemptType.ELYTRA_FLYING, ExemptType.VEHICLE, ExemptType.RESPAWN)) {
+
+        if (player.packetStateData.lastPacketWasTeleport
+                || player.vehicleData.wasVehicleSwitch
+                || player.packetStateData.horseInteractCausedForcedRotation
+                || player.packetStateData.lastPacketWasOnePointSeventeenDuplicate
+                || player.compensatedEntities.self.getRiding() != null) {
             return;
         }
 
@@ -84,7 +91,7 @@ public final class AimComplex extends EdAimCheck {
     }
 
     private void checkRaw() {
-        final int sens = calculateSensitivity();
+        final int sens = player.calculateSensitivity();
         final int clientSens = player.checkManager.getRotationCheck(AimProcessor.class).totalSensitivityClient;
         final boolean valid = sens >= 60 && sens <= 150 && clientSens >= 60 && clientSens < 150;
 
@@ -171,7 +178,7 @@ public final class AimComplex extends EdAimCheck {
         double min = Math.min(devYaw, devPitch);
         double max = Math.max(devYaw, devPitch);
 
-        if (randomizerEnabled && (min < 0.09 && max > 35 && MathUtil.getMin(gcdPitch) != 0.0) && calculateSensitivity() > 50) {
+        if (randomizerEnabled && (min < 0.09 && max > 35 && MathUtil.getMin(gcdPitch) != 0.0) && player.calculateSensitivity() > 50) {
             randomizerBuffer = Math.max(0.0f, randomizerBuffer + 1.0f);
             if (randomizerBuffer > randomizerBufferLimit) {
                 if (flagComplex("t=RandomizerFlaw varYaw=" + devYaw + " varPitch=" + devPitch)) {
@@ -218,7 +225,7 @@ public final class AimComplex extends EdAimCheck {
 
     private boolean flagComplex(String verbose) {
         if (flagAndAlert(verbose)) {
-            mitigateDamage();
+            player.mitigateDamage();
             return true;
         }
         return false;

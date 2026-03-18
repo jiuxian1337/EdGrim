@@ -14,15 +14,14 @@ public class DamageMitigationEvent implements Listener {
         if (!(event.getDamager() instanceof Player player)) {
             return;
         }
-        EdGrimPlayer EdGrimPlayer = findGrimPlayer(player.getUniqueId());
-        if (EdGrimPlayer == null || EdGrimPlayer.disableGrim) {
+        EdGrimPlayer grimPlayerlayer = findGrimPlayer(player.getUniqueId());
+        if (grimPlayerlayer == null || grimPlayerlayer.disableGrim) {
             return;
         }
-        if (!EdGrimPlayer.shouldMitigateDamage()) {
+        if (grimPlayerlayer.getMitigateDamageTime() < System.currentTimeMillis()) {
             return;
         }
-        event.setDamage(0.5);
-        EdGrimPlayer.consumeMitigateDamage();
+        event.setDamage(event.getDamage() * 0.05);
     }
 
     private EdGrimPlayer findGrimPlayer(java.util.UUID uuid) {

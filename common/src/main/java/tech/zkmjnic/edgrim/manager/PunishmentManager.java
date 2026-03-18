@@ -146,6 +146,15 @@ public class PunishmentManager implements ConfigReloadable {
             if (group.checks.contains(check)) {
                 final int vl = getViolations(group, check);
                 final int violationCount = group.violations.size();
+
+                @Nullable Set<@Nullable PlatformPlayer> verboseListeners = null;
+
+                // Verbose that prints all flags
+                if (EdGrimAPI.INSTANCE.getAlertManager().hasVerboseListeners()) {
+                    sentDebug = true;
+                    verboseListeners = EdGrimAPI.INSTANCE.getAlertManager().sendVerbose(buildInteractiveAlert(vl, check, verbose, false), null);
+                }
+
                 for (ParsedCommand command : group.commands) {
                     boolean isAlert = command.command.equals("[alert]");
                     boolean isProxy = command.command.equals("[proxy]");
@@ -153,19 +162,11 @@ public class PunishmentManager implements ConfigReloadable {
                     String cmd;
 
                     if (isAlert || isProxy) {
-                        interactive = buildInteractiveAlert(vl, check, verbose, isProxy);
+                        interactive = buildInteractiveAlert(violationCount, check, verbose, isProxy);
                         cmd = MiniMessage.miniMessage().serialize(interactive);
                     } else {
                         String escapedVerbose = MiniMessage.miniMessage().escapeTags(verbose);
-                        cmd = replaceAlertPlaceholders(command.command, vl, check, escapedVerbose);
-                    }
-
-                    @Nullable Set<@Nullable PlatformPlayer> verboseListeners = null;
-
-                    // Verbose that prints all flags
-                    if (interactive != null && EdGrimAPI.INSTANCE.getAlertManager().hasVerboseListeners() && isAlert) {
-                        sentDebug = true;
-                        verboseListeners = EdGrimAPI.INSTANCE.getAlertManager().sendVerbose(interactive, null);
+                        cmd = replaceAlertPlaceholders(command.command, violationCount, check, escapedVerbose);
                     }
 
                     if (violationCount >= command.threshold) {
@@ -178,23 +179,20 @@ public class PunishmentManager implements ConfigReloadable {
                             if (executeEvent.isCancelled()) continue;
 
                             switch (command.command) {
-                                case "[webhook]" -> EdGrimAPI.INSTANCE.getDiscordManager().sendAlert(player, verbose, check.getDisplayName(), vl);
+                                case "[webhook]" -> EdGrimAPI.INSTANCE.getDiscordManager().sendAlert(player, verbose, check.getDisplayName(), violationCount);
                                 case "[log]" -> {
-                                    int vls = (int) group.violations.values().stream().filter((e) -> e == check).count();
                                     String verboseWithoutGl = verbose.replaceAll(" /gl .*", "");
-                                    EdGrimAPI.INSTANCE.getViolationDatabaseManager().logAlert(player, verboseWithoutGl, check.getDisplayName(), vls);
+                                    EdGrimAPI.INSTANCE.getViolationDatabaseManager().logAlert(player, verboseWithoutGl, check.getDisplayName(), vl);
                                 }
                                 case "[proxy]" -> ProxyAlertMessenger.sendPluginMessage(cmd);
                                 case "[alert]" -> {
                                     sentDebug = true;
                                     if (testMode) { // secret test mode
-                                        if (interactive != null && (verboseListeners == null || verboseListeners.contains(player.platformPlayer))) {
+                                        if (verboseListeners == null || verboseListeners.contains(player.platformPlayer)) {
                                             player.sendMessage(interactive);
                                         }
                                     } else {
-                                        if (interactive != null) {
-                                            EdGrimAPI.INSTANCE.getAlertManager().sendAlert(interactive, verboseListeners);
-                                        }
+                                        EdGrimAPI.INSTANCE.getAlertManager().sendAlert(interactive, verboseListeners);
                                     }
                                 }
                                 default -> EdGrimAPI.INSTANCE.getScheduler().getGlobalRegionScheduler().run(EdGrimAPI.INSTANCE.getGrimPlugin(), () ->

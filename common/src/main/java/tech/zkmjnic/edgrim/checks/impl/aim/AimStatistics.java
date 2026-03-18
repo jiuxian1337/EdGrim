@@ -1,11 +1,13 @@
 package tech.zkmjnic.edgrim.checks.impl.aim;
 
 import ac.grim.grimac.api.config.ConfigManager;
+import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.impl.analysis.AnalysisMathUtil;
+import tech.zkmjnic.edgrim.checks.type.RotationCheck;
 import tech.zkmjnic.edgrim.player.EdGrimPlayer;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.math.MathUtil;
+import tech.zkmjnic.edgrim.utils.math.Statistics;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,7 +16,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 @CheckData(name = "AimStatistics", configName = "AimStatistics", decay = 0.75, description = "aim statistics migrated")
-public final class AimStatistics extends EdAimCheck {
+public final class AimStatistics extends Check implements RotationCheck {
     private static final int SAMPLE_SIZE = 25;
 
     private final List<Float> yaw = new ArrayList<>(SAMPLE_SIZE);
@@ -50,9 +52,14 @@ public final class AimStatistics extends EdAimCheck {
 
     @Override
     public void process(final RotationUpdate rotationUpdate) {
-        if (!hasAttackedSince(3500L)) return;
+        if (!player.actionManager.hasAttackedSince(3500L)) return;
         if (rotationUpdate.isCinematic()) return;
-        if (isExempt(ExemptType.TELEPORT, ExemptType.SERVER_SENT_PULLBACK, ExemptType.SERVER_SENT_ROTATE, ExemptType.ELYTRA_FLYING, ExemptType.VEHICLE, ExemptType.RESPAWN)) {
+
+        if (player.packetStateData.lastPacketWasTeleport
+                || player.vehicleData.wasVehicleSwitch
+                || player.packetStateData.horseInteractCausedForcedRotation
+                || player.packetStateData.lastPacketWasOnePointSeventeenDuplicate
+                || player.compensatedEntities.self.getRiding() != null) {
             return;
         }
 
@@ -68,7 +75,7 @@ public final class AimStatistics extends EdAimCheck {
     private void checkSample() {
         float total = 0.0f;
 
-        final List<Double> zFactorYaw = AnalysisMathUtil.zScoreOutliers(yaw, 2.0);
+        final List<Double> zFactorYaw = Statistics.getZScoreOutliers(yaw, 2.0);
         final List<Float> jiffYaw = MathUtil.getJiffDelta(yaw, 5);
         final List<Float> jiffPitch = MathUtil.getJiffDelta(pitch, 5);
 
@@ -194,7 +201,7 @@ public final class AimStatistics extends EdAimCheck {
 
     private boolean flagStatistics(String verbose) {
         if (flagAndAlert(verbose)) {
-            mitigateDamage();
+            player.mitigateDamage();
             return true;
         }
         return false;

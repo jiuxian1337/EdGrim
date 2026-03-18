@@ -265,7 +265,7 @@ public class EdGrimPlayer implements GrimUser {
     @Getter private boolean resetItemUsageOnItemUpdate;
     @Getter private boolean resetItemUsageOnSlotChange;
     private boolean mitigateDamageEnabled = true;
-    private boolean mitigateDamagePending;
+    @Getter private long mitigateDamageTime;
     // end config
     public boolean noModifyPacketPermission = false;
     public boolean noSetbackPermission = false;
@@ -461,25 +461,17 @@ public class EdGrimPlayer implements GrimUser {
     }
 
     public void sendTransaction() {
-        sendTransactionAndGetId(false);
+        sendTransaction(false);
     }
 
     public void sendTransaction(boolean async) {
-        sendTransactionAndGetId(async);
-    }
-
-    public short sendTransactionAndGetId() {
-        return sendTransactionAndGetId(false);
-    }
-
-    public short sendTransactionAndGetId(boolean async) {
         // don't send transactions outside PLAY phase
         // Sending in non-play corrupts the pipeline, don't waste bandwidth when anticheat disabled
-        if (user.getEncoderState() != ConnectionState.PLAY) return 0;
+        if (user.getEncoderState() != ConnectionState.PLAY) return;
 
         // Send a packet once every 15 seconds to avoid any memory leaks
         if (disableGrim && (System.nanoTime() - getPlayerClockAtLeast()) > 15e9) {
-            return 0;
+            return;
         }
 
         lastTransSent = System.currentTimeMillis();
@@ -505,7 +497,6 @@ public class EdGrimPlayer implements GrimUser {
         } catch (Exception ignored) { // Fix protocollib + viaversion support by ignoring any errors :) // TODO: Fix this
             // recompile
         }
-        return transactionID;
     }
 
     public void addTransactionSend(short id) {
@@ -983,7 +974,6 @@ public class EdGrimPlayer implements GrimUser {
         resetItemUsageOnItemUpdate = config.getBooleanElse("reset-item-usage-on-item-update", true);
         resetItemUsageOnSlotChange = config.getBooleanElse("reset-item-usage-on-slot-change", true);
         mitigateDamageEnabled = config.getBooleanElse("mitigate-damage.enabled", true);
-        mitigateDamagePending = false;
         // reload all checks
         for (AbstractCheck value : checkManager.allChecks.values()) value.reload();
         // reload punishment manager
@@ -1004,16 +994,8 @@ public class EdGrimPlayer implements GrimUser {
         if (!mitigateDamageEnabled) {
             return false;
         }
-        mitigateDamagePending = true;
+        mitigateDamageTime = System.currentTimeMillis() + 2000;
         return true;
-    }
-
-    public boolean shouldMitigateDamage() {
-        return mitigateDamageEnabled && mitigateDamagePending;
-    }
-
-    public void consumeMitigateDamage() {
-        mitigateDamagePending = false;
     }
 
     @Override

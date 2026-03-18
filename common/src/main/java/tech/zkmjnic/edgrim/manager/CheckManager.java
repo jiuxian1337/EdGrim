@@ -4,39 +4,11 @@ import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.AbstractCheck;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimDuplicateLook;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimModulo360;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimA;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimB;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimC;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimE;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimF;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimG;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimH;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimI;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimJ;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimK;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimL;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimM;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimN;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimO;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimP;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimQ;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimR;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimS;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimT;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimU;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimV;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimW;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimAnalysis;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimComplex;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimHeuristic;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimStatistics;
 import tech.zkmjnic.edgrim.checks.impl.aim.processor.AimProcessor;
-import tech.zkmjnic.edgrim.checks.impl.analysis.AnalysisA;
-import tech.zkmjnic.edgrim.checks.impl.analysis.AnalysisB;
-import tech.zkmjnic.edgrim.checks.impl.analysis.AnalysisC;
-import tech.zkmjnic.edgrim.checks.impl.analysis.AnalysisD;
-import tech.zkmjnic.edgrim.checks.impl.analysis.AnalysisE;
-import tech.zkmjnic.edgrim.checks.impl.analysis.AnalysisG;
 import tech.zkmjnic.edgrim.checks.impl.badpackets.*;
 import tech.zkmjnic.edgrim.checks.impl.breaking.*;
 import tech.zkmjnic.edgrim.checks.impl.crash.*;
@@ -128,7 +100,6 @@ public class CheckManager {
                 .put(ActionManager.class, player.actionManager)
                 .put(TeamHandler.class, new TeamHandler(player))
                 .put(ClientBrand.class, new ClientBrand(player))
-                .put(AnalysisG.class, new AnalysisG(player))
                 .put(NoFall.class, new NoFall(player))
                 .put(ChatA.class, new ChatA(player))
                 .put(ChatB.class, new ChatB(player))
@@ -188,37 +159,10 @@ public class CheckManager {
                 .put(AimProcessor.class, new AimProcessor(player))
                 .put(AimModulo360.class, new AimModulo360(player))
                 .put(AimDuplicateLook.class, new AimDuplicateLook(player))
-                .put(AimA.class, new AimA(player))
-                .put(AimB.class, new AimB(player))
-                .put(AimC.class, new AimC(player))
-                .put(AimE.class, new AimE(player))
-                .put(AimF.class, new AimF(player))
-                .put(AimG.class, new AimG(player))
-                .put(AimH.class, new AimH(player))
-                .put(AimI.class, new AimI(player))
-                .put(AimJ.class, new AimJ(player))
-                .put(AimK.class, new AimK(player))
-                .put(AimL.class, new AimL(player))
-                .put(AimM.class, new AimM(player))
-                .put(AimN.class, new AimN(player))
-                .put(AimO.class, new AimO(player))
-                .put(AimP.class, new AimP(player))
-                .put(AimQ.class, new AimQ(player))
-                .put(AimR.class, new AimR(player))
-                .put(AimS.class, new AimS(player))
-                .put(AimT.class, new AimT(player))
-                .put(AimU.class, new AimU(player))
-                .put(AimV.class, new AimV(player))
-                .put(AimW.class, new AimW(player))
                 .put(AimHeuristic.class, new AimHeuristic(player))
                 .put(AimComplex.class, new AimComplex(player))
                 .put(AimAnalysis.class, new AimAnalysis(player))
                 .put(AimStatistics.class, new AimStatistics(player))
-                .put(AnalysisA.class, new AnalysisA(player))
-                .put(AnalysisB.class, new AnalysisB(player))
-                .put(AnalysisC.class, new AnalysisC(player))
-                .put(AnalysisD.class, new AnalysisD(player))
-                .put(AnalysisE.class, new AnalysisE(player))
                 .build();
         vehicleChecks = new ImmutableClassToInstanceMap.Builder<VehicleCheck>()
                 .put(VehiclePredictionRunner.class, new VehiclePredictionRunner(player))
