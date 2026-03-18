@@ -31,6 +31,7 @@ public final class AimHeuristic extends Check implements RotationCheck {
 
     private int basicStreak;
     private float basicInterpolationBuffer;
+    private float basicRandomPatternBuffer;
 
     private float constantLastDeltaYaw;
     private float constantLastDeltaPitch;
@@ -64,6 +65,8 @@ public final class AimHeuristic extends Check implements RotationCheck {
     private double interpolationAverageThreshold = 6.5D;
     private float interpolationBufferLimit = 4.0f;
     private float interpolationBufferDecay = 0.75f;
+    private float randomPatternBufferLimit = 3.0f;
+    private float randomPatternBufferDecay = 0.5f;
 
     private int constant1NeedVl = 8;
     private int constant2NeedVl = 6;
@@ -95,6 +98,8 @@ public final class AimHeuristic extends Check implements RotationCheck {
         interpolationAverageThreshold = config.getDoubleElse("AimHeuristic.basic-component.interpolation-average-threshold", 6.5D);
         interpolationBufferLimit = (float) config.getDoubleElse("AimHeuristic.basic-component.interpolation-buffer", 4.0D);
         interpolationBufferDecay = (float) config.getDoubleElse("AimHeuristic.basic-component.interpolation-buffer-decay", 0.75D);
+        randomPatternBufferLimit = (float) config.getDoubleElse("AimHeuristic.basic-component.random-pattern-buffer", 3.0D);
+        randomPatternBufferDecay = (float) config.getDoubleElse("AimHeuristic.basic-component.random-pattern-buffer-decay", 0.5D);
 
         constant1NeedVl = config.getIntElse("AimHeuristic.constant-check.constant-1-buffer", 8);
         constant2NeedVl = config.getIntElse("AimHeuristic.constant-check.constant-2-buffer", 6);
@@ -118,7 +123,7 @@ public final class AimHeuristic extends Check implements RotationCheck {
 
     @Override
     public void process(final RotationUpdate rotationUpdate) {
-        if (!player.actionManager.hasAttackedSince(3500L)) return;
+        if (!player.actionManager.hasAttackedSince(500L)) return;
         if (rotationUpdate.isCinematic()) return;
 
         if (player.packetStateData.lastPacketWasTeleport
@@ -249,7 +254,14 @@ public final class AimHeuristic extends Check implements RotationCheck {
 
         if (gcd > 0) flagHeuristic("t=BasicComponent reason=pattern(gcd) gcd=" + gcd + " sens=" + sens + " cs=" + clientSens);
         if (aggressivePatternI > 3 && aggressivePatternD > 3) {
-            flagHeuristic("t=BasicInterpolation reason=pattern(random) inc=" + aggressivePatternI + " dec=" + aggressivePatternD + " sens=" + sens + " cs=" + clientSens);
+            basicRandomPatternBuffer = Math.min(basicRandomPatternBuffer + 1.0f, randomPatternBufferLimit + 1.0f);
+            if (basicRandomPatternBuffer >= randomPatternBufferLimit) {
+                if (flagHeuristic("t=BasicInterpolation reason=pattern(random) inc=" + aggressivePatternI + " dec=" + aggressivePatternD + " buf=" + basicRandomPatternBuffer + " sens=" + sens + " cs=" + clientSens)) {
+                    basicRandomPatternBuffer = Math.max(0.0f, randomPatternBufferLimit - 1.5f);
+                }
+            }
+        } else {
+            basicRandomPatternBuffer = Math.max(0.0f, basicRandomPatternBuffer - randomPatternBufferDecay);
         }
         if (aggressivePatternI2 > 3 && aggressivePatternD2 > 3 && (aggressivePatternI2 + aggressivePatternD2) > 8) {
             basicStreak++;

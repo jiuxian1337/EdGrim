@@ -217,6 +217,12 @@ Reach:
     # 禁用此功能仍会捕获作弊者，不会导致误报
     # 除非你是专注于 1.8 PvP 的服务器，否则不建议使用这个额外的数据包
     enable-post-packet: false
+InteractBlock:
+    # 当达到该 VL 后开始取消与被遮挡方块的交互。
+    cancelVL: 5
+InteractEntity:
+    # 用于检测穿过实体与玩家之间实体方块遮挡的攻击。
+    # 目前没有额外可调选项。
 
 # 连点器
 AutoclickerA:
@@ -234,28 +240,11 @@ AutoclickerA:
     entropy-jiff-min: 0.04
     entropy-jiff-max: 0.06
 
-InventoryMove:
-    # 旧版本 OPEN_INVENTORY 的持续时间（毫秒）
-    legacy-open-timeout-ms: 5000
-    # 打开背包后短时间忽略（毫秒）
-    ignore-after-open-ms: 300
-    # 传送/回弹附近忽略（毫秒）
-    ignore-after-teleport-ms: 500
-
 InventoryMultiInteraction:
     min-tps: 17.0
     max-ping: 350
     cancelvl: 25
     cancel: false
-
-InventoryRotation:
-    min-tps: 17.0
-    # 需要背包打开达到该时间才检测（毫秒）
-    min-open-ms: 1000
-    # 旧版本 OPEN_INVENTORY 的持续时间（毫秒）
-    legacy-open-timeout-ms: 5000
-    # 忽略微小浮点噪声；0.0 表示任意变化
-    min-rotation-delta: 0.0
 
 AimHeuristic:
     basic-component:
@@ -266,9 +255,13 @@ AimHeuristic:
         # interpolation-average-threshold：interpolation 子检测开始累计缓冲所需的最小平均偏航变化。
         interpolation-average-threshold: 3.2
         # interpolation-buffer：interpolation 子检测触发前需要累计的命中缓冲。
-        interpolation-buffer: 4.0
+        interpolation-buffer: 5.0
         # interpolation-buffer-decay：interpolation 缓冲在未继续命中时的衰减速度。
-        interpolation-buffer-decay: 0.75
+        interpolation-buffer-decay: 0.3
+        # random-pattern-buffer：pattern(random) 子检测触发前需要累计的命中缓冲。
+        random-pattern-buffer: 2.0
+        # random-pattern-buffer-decay：pattern(random) 缓冲在未继续命中时的衰减速度。
+        random-pattern-buffer-decay: 0.1
     # constant-check：更偏“连续命中门槛”的子检测，达到门槛就会直接 flag。
     constant-check:
         # constant-1-buffer：Constant1 触发所需的最小缓冲（越小越敏感）。
@@ -292,7 +285,7 @@ AimHeuristic:
         # enabled：是否启用 pattern 子检测。
         enabled: true
         # buffer：pattern 子检测的触发缓冲阈值（越小越敏感）。
-        buffer: 5
+        buffer: 2
         # buffer-fade：当 pattern 不再出现时，每次回落的缓冲值（越大越快恢复正常）。
         buffer-fade: 0.25
     # factor-check：倍率/尖峰类检测（典型用于“机器心跳/中心尖峰”特征）。

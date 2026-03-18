@@ -52,7 +52,7 @@ public final class AimStatistics extends Check implements RotationCheck {
 
     @Override
     public void process(final RotationUpdate rotationUpdate) {
-        if (!player.actionManager.hasAttackedSince(3500L)) return;
+        if (!player.actionManager.hasAttackedSince(500L)) return;
         if (rotationUpdate.isCinematic()) return;
 
         if (player.packetStateData.lastPacketWasTeleport

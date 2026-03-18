@@ -212,6 +212,12 @@ Reach:
     # Leaving this disabled will still catch cheaters and will not cause false positives
     # Unless you are a 1.8 PvP focused server, this additional packet is not recommended
     enable-post-packet: false
+InteractBlock:
+    # Cancel the interaction once this many violations have been reached.
+    cancelVL: 5
+InteractEntity:
+    # Look-agnostic visibility check for attacks through solid world geometry.
+    # No extra options are required here at the moment.
 
 # Autoclicker
 AutoclickerA:
@@ -229,28 +235,11 @@ AutoclickerA:
     entropy-jiff-min: 0.04
     entropy-jiff-max: 0.06
 
-InventoryMove:
-    # How long to treat legacy OPEN_INVENTORY as open (ms)
-    legacy-open-timeout-ms: 5000
-    # Ignore movement shortly after opening (ms)
-    ignore-after-open-ms: 300
-    # Ignore around teleports/setbacks (ms)
-    ignore-after-teleport-ms: 500
-
 InventoryMultiInteraction:
     min-tps: 17.0
     max-ping: 350
     cancelvl: 25
     cancel: false
-
-InventoryRotation:
-    min-tps: 17.0
-    # Require inventory to be open for this long (ms)
-    min-open-ms: 1000
-    # Legacy OPEN_INVENTORY hold time (ms)
-    legacy-open-timeout-ms: 5000
-    # Ignore tiny float noise; 0.0 means any change
-    min-rotation-delta: 0.0
 
 AimHeuristic:
     basic-component:
@@ -261,9 +250,13 @@ AimHeuristic:
         # Minimum average yaw delta required before the interpolation sub-check starts buffering.
         interpolation-average-threshold: 3.2
         # Repeated interpolation hits required before the sub-check flags.
-        interpolation-buffer: 4.0
+        interpolation-buffer: 5.0
         # How quickly the interpolation buffer decays when the pattern stops.
-        interpolation-buffer-decay: 0.75
+        interpolation-buffer-decay: 0.3
+        # Repeated pattern(random) hits required before the sub-check flags.
+        random-pattern-buffer: 2.0
+        # How quickly the pattern(random) buffer decays when the pattern stops.
+        random-pattern-buffer-decay: 0.1
     constant-check:
         # Required buffer (roughly: consecutive matches) before Constant1/2/3 flags.
         constant-1-buffer: 8
@@ -279,8 +272,8 @@ AimHeuristic:
     pattern-check:
         # Repeated delta patterns; buffer is a small float that fades when the pattern stops.
         enabled: true
-        buffer: 5
-        buffer-fade: 0.3
+        buffer: 2
+        buffer-fade: 0.25
     factor-check:
         # Large "centre spike" factors; resets after enough normal ticks.
         enabled: true

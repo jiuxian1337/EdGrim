@@ -96,6 +96,24 @@ Punishments:
       - "1:1 [log]"
       - "1:1 [webhook]"
       - "1:1 [proxy]"
+  InteractBlock:
+    remove-violations-after: 300
+    checks:
+      - "InteractBlock"
+    commands:
+      - "1:1 [alert]"
+      - "1:1 [log]"
+      - "1:1 [webhook]"
+      - "1:1 [proxy]"
+  InteractEntity:
+    remove-violations-after: 300
+    checks:
+      - "InteractEntity"
+    commands:
+      - "1:1 [alert]"
+      - "1:1 [log]"
+      - "1:1 [webhook]"
+      - "1:1 [proxy]"
   Hitboxes:
     remove-violations-after: 300
     checks:
