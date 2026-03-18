@@ -220,8 +220,6 @@ Reach:
 
 # 连点器
 AutoclickerA:
-    # 总开关（仍需在 punishments.yml 中启用）
-    enabled: true
     # 收集挥手延迟 ticks=(ms/50)，大于等于该值不计入
     max-delay-ticks: 25
     # 收集多少个样本后开始分析
@@ -245,8 +243,6 @@ PingA:
     buffer-decay: 0.25
 
 InventoryMove:
-    # 从 AntiCheatAddition InventoryMove 移植（基于数据包的近似实现）
-    enabled: true
     # 旧版本 OPEN_INVENTORY 的持续时间（毫秒）
     legacy-open-timeout-ms: 5000
     # 打开背包后短时间忽略（毫秒）
@@ -255,16 +251,12 @@ InventoryMove:
     ignore-after-teleport-ms: 500
 
 InventoryMultiInteraction:
-    # 从 AntiCheatAddition InventoryMultiInteraction 移植（基于数据包的近似实现）
-    enabled: true
     min-tps: 17.0
     max-ping: 350
     cancelvl: 25
     cancel: false
 
 InventoryRotation:
-    # 从 AntiCheatAddition InventoryRotation 移植（基于数据包的近似实现）
-    enabled: true
     min-tps: 17.0
     # 需要背包打开达到该时间才检测（毫秒）
     min-open-ms: 1000

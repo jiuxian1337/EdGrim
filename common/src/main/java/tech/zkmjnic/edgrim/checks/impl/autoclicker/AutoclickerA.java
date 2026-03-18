@@ -62,14 +62,14 @@ public final class AutoclickerA extends Check implements PacketCheck {
 
     @Override
     public void onReload(final ConfigManager config) {
-        enabled = config.getBooleanElse("AutoclickerA.enabled", true);
-        maxDelayTicks = clamp(config.getIntElse("AutoclickerA.max-delay-ticks", DEFAULT_MAX_DELAY_TICKS), 3, 60);
-        stackSize = clamp(config.getIntElse("AutoclickerA.stack-size", DEFAULT_STACK_SIZE), 20, 300);
-        windowSize = clamp(config.getIntElse("AutoclickerA.window-size", DEFAULT_WINDOW_SIZE), 5, 60);
-        requireMoveWithinMs = clamp(config.getLongElse("AutoclickerA.require-move-within-ms", DEFAULT_REQUIRE_MOVE_WITHIN_MS), 0L, 5000L);
-        requireAttackWithinMs = clamp(config.getLongElse("AutoclickerA.require-attack-within-ms", DEFAULT_REQUIRE_ATTACK_WITHIN_MS), 250L, 15000L);
-        entropyJiffMin = config.getDoubleElse("AutoclickerA.entropy-jiff-min", DEFAULT_ENTROPY_JIFF_MIN);
-        entropyJiffMax = config.getDoubleElse("AutoclickerA.entropy-jiff-max", DEFAULT_ENTROPY_JIFF_MAX);
+        enabled = config.getBooleanElse(getConfigName() + ".enabled", true);
+        maxDelayTicks = clamp(config.getIntElse(getConfigName() + ".max-delay-ticks", DEFAULT_MAX_DELAY_TICKS), 3, 60);
+        stackSize = clamp(config.getIntElse(getConfigName() + ".stack-size", DEFAULT_STACK_SIZE), 20, 300);
+        windowSize = clamp(config.getIntElse(getConfigName() + ".window-size", DEFAULT_WINDOW_SIZE), 5, 60);
+        requireMoveWithinMs = clamp(config.getLongElse(getConfigName() + ".require-move-within-ms", DEFAULT_REQUIRE_MOVE_WITHIN_MS), 0L, 5000L);
+        requireAttackWithinMs = clamp(config.getLongElse(getConfigName() + ".require-attack-within-ms", DEFAULT_REQUIRE_ATTACK_WITHIN_MS), 250L, 15000L);
+        entropyJiffMin = config.getDoubleElse(getConfigName() + ".entropy-jiff-min", DEFAULT_ENTROPY_JIFF_MIN);
+        entropyJiffMax = config.getDoubleElse(getConfigName() + ".entropy-jiff-max", DEFAULT_ENTROPY_JIFF_MAX);
     }
 
     @Override

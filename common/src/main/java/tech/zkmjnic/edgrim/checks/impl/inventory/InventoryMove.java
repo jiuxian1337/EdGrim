@@ -22,11 +22,6 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCl
  */
 @CheckData(
         name = "InventoryMove",
-        configName = "InventoryMove",
-        alternativeName = "AC",
-        experimental = true,
-        decay = 0.25,
-        setback = -1,
         description = "Moved while having an inventory open"
 )
 public final class InventoryMove extends Check implements PacketCheck {
@@ -47,10 +42,10 @@ public final class InventoryMove extends Check implements PacketCheck {
 
     @Override
     public void onReload(final ConfigManager config) {
-        enabled = config.getBooleanElse("InventoryMove.enabled", true);
-        legacyOpenTimeoutMs = clamp(config.getLongElse("InventoryMove.legacy-open-timeout-ms", 5000L), 500L, 60000L);
-        ignoreAfterOpenMs = clamp(config.getLongElse("InventoryMove.ignore-after-open-ms", 300L), 0L, 5000L);
-        ignoreAfterTeleportMs = clamp(config.getLongElse("InventoryMove.ignore-after-teleport-ms", 500L), 0L, 5000L);
+        enabled = config.getBooleanElse(getConfigName() + ".enabled", true);
+        legacyOpenTimeoutMs = clamp(config.getLongElse(getConfigName() + ".legacy-open-timeout-ms", 5000L), 500L, 60000L);
+        ignoreAfterOpenMs = clamp(config.getLongElse(getConfigName() + ".ignore-after-open-ms", 300L), 0L, 5000L);
+        ignoreAfterTeleportMs = clamp(config.getLongElse(getConfigName() + ".ignore-after-teleport-ms", 500L), 0L, 5000L);
     }
 
     @Override

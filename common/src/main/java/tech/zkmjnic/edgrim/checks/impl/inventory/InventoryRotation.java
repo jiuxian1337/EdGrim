@@ -22,11 +22,6 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCl
  */
 @CheckData(
         name = "InventoryRotation",
-        configName = "InventoryRotation",
-        alternativeName = "AC",
-        experimental = true,
-        decay = 0.25,
-        setback = -1,
         description = "Rotated while having an inventory open"
 )
 public final class InventoryRotation extends Check implements PacketCheck {
@@ -47,11 +42,11 @@ public final class InventoryRotation extends Check implements PacketCheck {
 
     @Override
     public void onReload(final ConfigManager config) {
-        enabled = config.getBooleanElse("InventoryRotation.enabled", true);
-        minTps = config.getDoubleElse("InventoryRotation.min-tps", 17.0);
-        minOpenMs = clamp(config.getLongElse("InventoryRotation.min-open-ms", 1000L), 0L, 60000L);
-        legacyOpenTimeoutMs = clamp(config.getLongElse("InventoryRotation.legacy-open-timeout-ms", 5000L), 500L, 60000L);
-        minRotationDelta = (float) config.getDoubleElse("InventoryRotation.min-rotation-delta", 0.0);
+        enabled = config.getBooleanElse(getConfigName() + ".enabled", true);
+        minTps = config.getDoubleElse(getConfigName() + ".min-tps", 17.0);
+        minOpenMs = clamp(config.getLongElse(getConfigName() + ".min-open-ms", 1000L), 0L, 60000L);
+        legacyOpenTimeoutMs = clamp(config.getLongElse(getConfigName() + ".legacy-open-timeout-ms", 5000L), 500L, 60000L);
+        minRotationDelta = (float) config.getDoubleElse(getConfigName() + ".min-rotation-delta", 0.0);
     }
 
     @Override

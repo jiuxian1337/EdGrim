@@ -16,7 +16,6 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
  */
 @CheckData(
         name = "PingA",
-        experimental = true,
         description = "Detects spoofed keepalive ping vs transaction ping"
 )
 public final class PingA extends Check implements PacketCheck {
@@ -35,10 +34,10 @@ public final class PingA extends Check implements PacketCheck {
 
     @Override
     public void onReload(final ConfigManager config) {
-        suspiciousDiffMs = clamp(config.getLongElse("PingA.suspicious-diff-ms", 150L), 0L, 2000L);
-        allowedKeepaliveOverTransMs = clamp(config.getLongElse("PingA.allowed-keepalive-over-transaction-ms", 200L), 0L, 5000L);
-        bufferThreshold = clamp(config.getDoubleElse("PingA.buffer-threshold", 6.0), 1.0, 50.0);
-        bufferDecay = clamp(config.getDoubleElse("PingA.buffer-decay", 0.25), 0.0, 5.0);
+        suspiciousDiffMs = clamp(config.getLongElse(getConfigName() + ".suspicious-diff-ms", 150L), 0L, 2000L);
+        allowedKeepaliveOverTransMs = clamp(config.getLongElse(getConfigName() + ".allowed-keepalive-over-transaction-ms", 200L), 0L, 5000L);
+        bufferThreshold = clamp(config.getDoubleElse(getConfigName() + ".buffer-threshold", 6.0), 1.0, 50.0);
+        bufferDecay = clamp(config.getDoubleElse(getConfigName() + ".buffer-decay", 0.25), 0.0, 5.0);
     }
 
     @Override

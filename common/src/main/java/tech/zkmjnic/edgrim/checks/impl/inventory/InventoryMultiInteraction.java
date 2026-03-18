@@ -19,11 +19,6 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCl
  */
 @CheckData(
         name = "InventoryMultiInteraction",
-        configName = "InventoryMultiInteraction",
-        alternativeName = "AC",
-        experimental = true,
-        decay = 0.25,
-        setback = -1,
         description = "Moved items too quickly in inventory"
 )
 public final class InventoryMultiInteraction extends Check implements PacketCheck {
@@ -43,11 +38,11 @@ public final class InventoryMultiInteraction extends Check implements PacketChec
 
     @Override
     public void onReload(final ConfigManager config) {
-        enabled = config.getBooleanElse("InventoryMultiInteraction.enabled", true);
-        minTps = config.getDoubleElse("InventoryMultiInteraction.min-tps", 17.0);
-        maxPingMs = config.getIntElse("InventoryMultiInteraction.max-ping", 350);
-        cancelVl = config.getIntElse("InventoryMultiInteraction.cancelvl", 25);
-        cancelPackets = config.getBooleanElse("InventoryMultiInteraction.cancel", false);
+        enabled = config.getBooleanElse(getConfigName() + ".enabled", true);
+        minTps = config.getDoubleElse(getConfigName() + ".min-tps", 17.0);
+        maxPingMs = config.getIntElse(getConfigName() + ".max-ping", 350);
+        cancelVl = config.getIntElse(getConfigName() + ".cancelvl", 25);
+        cancelPackets = config.getBooleanElse(getConfigName() + ".cancel", false);
     }
 
     @Override

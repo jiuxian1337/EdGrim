@@ -215,8 +215,6 @@ Reach:
 
 # Autoclicker
 AutoclickerA:
-    # Master toggle (check still must be enabled via punishments.yml)
-    enabled: true
     # Collect swing delay as ticks=(ms/50), ignore delays >= this
     max-delay-ticks: 25
     # Number of samples before running analysis
@@ -240,8 +238,6 @@ PingA:
     buffer-decay: 0.25
 
 InventoryMove:
-    # Ported from AntiCheatAddition InventoryMove (packet-based approximation)
-    enabled: true
     # How long to treat legacy OPEN_INVENTORY as open (ms)
     legacy-open-timeout-ms: 5000
     # Ignore movement shortly after opening (ms)
@@ -250,16 +246,12 @@ InventoryMove:
     ignore-after-teleport-ms: 500
 
 InventoryMultiInteraction:
-    # Ported from AntiCheatAddition InventoryMultiInteraction (packet-based approximation)
-    enabled: true
     min-tps: 17.0
     max-ping: 350
     cancelvl: 25
     cancel: false
 
 InventoryRotation:
-    # Ported from AntiCheatAddition InventoryRotation (packet-based approximation)
-    enabled: true
     min-tps: 17.0
     # Require inventory to be open for this long (ms)
     min-open-ms: 1000
