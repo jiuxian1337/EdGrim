@@ -244,6 +244,35 @@ PingA:
     buffer-threshold: 6.0
     buffer-decay: 0.25
 
+InventoryMove:
+    # 从 AntiCheatAddition InventoryMove 移植（基于数据包的近似实现）
+    enabled: true
+    # 旧版本 OPEN_INVENTORY 的持续时间（毫秒）
+    legacy-open-timeout-ms: 5000
+    # 打开背包后短时间忽略（毫秒）
+    ignore-after-open-ms: 300
+    # 传送/回弹附近忽略（毫秒）
+    ignore-after-teleport-ms: 500
+
+InventoryMultiInteraction:
+    # 从 AntiCheatAddition InventoryMultiInteraction 移植（基于数据包的近似实现）
+    enabled: true
+    min-tps: 17.0
+    max-ping: 350
+    cancelvl: 25
+    cancel: false
+
+InventoryRotation:
+    # 从 AntiCheatAddition InventoryRotation 移植（基于数据包的近似实现）
+    enabled: true
+    min-tps: 17.0
+    # 需要背包打开达到该时间才检测（毫秒）
+    min-open-ms: 1000
+    # 旧版本 OPEN_INVENTORY 的持续时间（毫秒）
+    legacy-open-timeout-ms: 5000
+    # 忽略微小浮点噪声；0.0 表示任意变化
+    min-rotation-delta: 0.0
+
 # Aim 系列（AimA-AimW）
 # 说明：以下为所有 Aim 检测的默认参数，未列出的检测仅使用内置阈值
 

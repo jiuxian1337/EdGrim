@@ -194,4 +194,12 @@ Punishments:
       - "5:1 [alert]"
       - "5:1 [log]"
 
+  AC:
+    remove-violations-after: 300
+    checks:
+      - "AC"
+    commands:
+      - "10:5 [alert]"
+      - "10:5 [log]"
+
 

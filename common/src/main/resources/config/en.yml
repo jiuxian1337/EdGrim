@@ -239,6 +239,35 @@ PingA:
     buffer-threshold: 6.0
     buffer-decay: 0.25
 
+InventoryMove:
+    # Ported from AntiCheatAddition InventoryMove (packet-based approximation)
+    enabled: true
+    # How long to treat legacy OPEN_INVENTORY as open (ms)
+    legacy-open-timeout-ms: 5000
+    # Ignore movement shortly after opening (ms)
+    ignore-after-open-ms: 300
+    # Ignore around teleports/setbacks (ms)
+    ignore-after-teleport-ms: 500
+
+InventoryMultiInteraction:
+    # Ported from AntiCheatAddition InventoryMultiInteraction (packet-based approximation)
+    enabled: true
+    min-tps: 17.0
+    max-ping: 350
+    cancelvl: 25
+    cancel: false
+
+InventoryRotation:
+    # Ported from AntiCheatAddition InventoryRotation (packet-based approximation)
+    enabled: true
+    min-tps: 17.0
+    # Require inventory to be open for this long (ms)
+    min-open-ms: 1000
+    # Legacy OPEN_INVENTORY hold time (ms)
+    legacy-open-timeout-ms: 5000
+    # Ignore tiny float noise; 0.0 means any change
+    min-rotation-delta: 0.0
+
 # Aim series (AimA-AimW)
 # Notes: Default parameters for all Aim checks; unlisted checks use built-in thresholds
 AimF:
