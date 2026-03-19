@@ -35,7 +35,6 @@ import tech.zkmjnic.edgrim.checks.impl.combat.MultiInteractB;
 import tech.zkmjnic.edgrim.checks.impl.combat.Reach;
 import tech.zkmjnic.edgrim.checks.impl.autoclicker.AutoclickerA;
 import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingA;
-import tech.zkmjnic.edgrim.checks.impl.inventory.InventoryMultiInteraction;
 import tech.zkmjnic.edgrim.checks.impl.exploit.ExploitA;
 import tech.zkmjnic.edgrim.checks.impl.exploit.ExploitB;
 import tech.zkmjnic.edgrim.checks.impl.groundspoof.NoFall;
@@ -92,7 +91,6 @@ public class CheckManager {
                 .put(InteractEntity.class, new InteractEntity(player))
                 .put(AutoclickerA.class, new AutoclickerA(player))
                 .put(PingA.class, new PingA(player))
-                .put(InventoryMultiInteraction.class, new InventoryMultiInteraction(player))
                 .put(PacketEntityReplication.class, new PacketEntityReplication(player))
                 .put(PacketChangeGameState.class, new PacketChangeGameState(player))
                 .put(CompensatedInventory.class, player.inventory)

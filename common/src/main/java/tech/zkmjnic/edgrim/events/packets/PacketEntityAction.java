@@ -44,12 +44,12 @@ public class PacketEntityAction extends PacketListenerAbstract {
                     break;
                 case START_FLYING_WITH_ELYTRA:
                     if (player.onGround || player.lastOnGround) {
-                        player.getSetbackTeleportUtil().executeForceResync();
-
-                        if (player.platformPlayer != null) {
-                            // Client ignores sneaking, use it to resync
-                            player.platformPlayer.setSneaking(!player.platformPlayer.isSneaking());
-                        }
+//                        player.getSetbackTeleportUtil().executeForceResync();
+//
+//                        if (player.platformPlayer != null) {
+//                            // Client ignores sneaking, use it to resync
+//                            player.platformPlayer.setSneaking(!player.platformPlayer.isSneaking());
+//                        }
 
                         event.setCancelled(true);
                         player.onPacketCancel();
@@ -65,12 +65,12 @@ public class PacketEntityAction extends PacketListenerAbstract {
                         player.isGliding = true;
                         player.pointThreeEstimator.updatePlayerGliding();
                     } else {
-                        // A client is flying with a ghost elytra, resync
-                        player.getSetbackTeleportUtil().executeForceResync();
-                        if (player.platformPlayer != null) {
-                            // Client ignores sneaking, use it to resync
-                            player.platformPlayer.setSneaking(!player.platformPlayer.isSneaking());
-                        }
+//                        // A client is flying with a ghost elytra, resync
+//                        player.getSetbackTeleportUtil().executeForceResync();
+//                        if (player.platformPlayer != null) {
+//                            // Client ignores sneaking, use it to resync
+//                            player.platformPlayer.setSneaking(!player.platformPlayer.isSneaking());
+//                        }
                         event.setCancelled(true);
                         player.onPacketCancel();
                     }
