@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.timer;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 
@@ -15,7 +15,7 @@ public class TickTimer extends Check implements PacketCheck {
     private boolean receivedTickEnd = true;
     private int flyingPackets = 0;
 
-    public TickTimer(EdGrimPlayer player) {
+    public TickTimer(PlayerData player) {
         super(player);
     }
 

@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.badpackets;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
@@ -15,7 +15,7 @@ public class BadPacketsR extends Check implements PacketCheck {
     private long lastTransTime;
     private int oldTransId = 0;
 
-    public BadPacketsR(final EdGrimPlayer player) {
+    public BadPacketsR(final PlayerData player) {
         super(player);
     }
 

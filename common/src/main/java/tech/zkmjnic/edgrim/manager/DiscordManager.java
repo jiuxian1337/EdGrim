@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.manager;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.manager.init.ReloadableInitable;
 import tech.zkmjnic.edgrim.manager.init.start.StartableInitable;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import tech.zkmjnic.edgrim.utils.webhook.Embed;
@@ -92,7 +92,7 @@ public class DiscordManager implements StartableInitable, ReloadableInitable {
         return list;
     }
 
-    public void sendAlert(EdGrimPlayer player, String verbose, String checkName, int violations) {
+    public void sendAlert(PlayerData player, String verbose, String checkName, int violations) {
         if (url == null) {
             return;
         }

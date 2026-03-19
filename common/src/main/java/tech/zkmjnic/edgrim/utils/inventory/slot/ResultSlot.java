@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.inventory.slot;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.inventory.InventoryStorage;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
 
@@ -16,7 +16,7 @@ public class ResultSlot extends Slot {
     }
 
     @Override
-    public void onTake(EdGrimPlayer player, ItemStack itemStack) {
+    public void onTake(PlayerData player, ItemStack itemStack) {
         // Resync the player's inventory
     }
 }

@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks.connecting;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
@@ -50,7 +50,7 @@ public class DynamicConnecting {
         return avoxelshape;
     }
 
-    public boolean connectsTo(EdGrimPlayer player, ClientVersion v, int currX, int currY, int currZ, BlockFace direction) {
+    public boolean connectsTo(PlayerData player, ClientVersion v, int currX, int currY, int currZ, BlockFace direction) {
         WrappedBlockState targetBlock = player.compensatedWorld.getBlock(currX + direction.getModX(), currY + direction.getModY(), currZ + direction.getModZ());
         WrappedBlockState currBlock = player.compensatedWorld.getBlock(currX, currY, currZ);
         StateType target = targetBlock.getType();
@@ -128,7 +128,7 @@ public class DynamicConnecting {
         return i;
     }
 
-    public boolean checkCanConnect(EdGrimPlayer player, WrappedBlockState state, StateType one, StateType two, BlockFace direction) {
+    public boolean checkCanConnect(PlayerData player, WrappedBlockState state, StateType one, StateType two, BlockFace direction) {
         return false;
     }
 

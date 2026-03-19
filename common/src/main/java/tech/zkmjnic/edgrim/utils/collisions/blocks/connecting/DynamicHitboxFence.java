@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks.connecting;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
@@ -44,7 +44,7 @@ public class DynamicHitboxFence extends DynamicConnecting implements HitBoxFacto
     }
 
     @Override
-    public CollisionBox fetch(EdGrimPlayer player, StateType heldItem, ClientVersion version, WrappedBlockState block, boolean isTargetBlock, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, StateType heldItem, ClientVersion version, WrappedBlockState block, boolean isTargetBlock, int x, int y, int z) {
         boolean east;
         boolean north;
         boolean south;
@@ -80,7 +80,7 @@ public class DynamicHitboxFence extends DynamicConnecting implements HitBoxFacto
     }
 
     @Override
-    public boolean checkCanConnect(EdGrimPlayer player, WrappedBlockState state, StateType one, StateType two, BlockFace direction) {
+    public boolean checkCanConnect(PlayerData player, WrappedBlockState state, StateType one, StateType two, BlockFace direction) {
         if (BlockTags.FENCES.contains(one))
             return !(one == StateTypes.NETHER_BRICK_FENCE) && !(two == StateTypes.NETHER_BRICK_FENCE);
         else

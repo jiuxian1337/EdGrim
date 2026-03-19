@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.predictions;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class PredictionEngineNormal extends PredictionEngine {
 
-    public static void staticVectorEndOfTick(EdGrimPlayer player, Vector3dm vector) {
+    public static void staticVectorEndOfTick(PlayerData player, Vector3dm vector) {
         double adjustedY = vector.getY();
         final OptionalInt levitation = player.compensatedEntities.getPotionLevelForPlayer(PotionTypes.LEVITATION);
         if (levitation.isPresent()) {
@@ -36,7 +36,7 @@ public class PredictionEngineNormal extends PredictionEngine {
     }
 
     @Override
-    public void addJumpsToPossibilities(EdGrimPlayer player, Set<VectorData> existingVelocities) {
+    public void addJumpsToPossibilities(PlayerData player, Set<VectorData> existingVelocities) {
         if (player.supportsEndTick() && !player.packetStateData.knownInput.jump()) {
             return;
         }
@@ -69,7 +69,7 @@ public class PredictionEngineNormal extends PredictionEngine {
     }
 
     @Override
-    public void endOfTick(EdGrimPlayer player, double delta) {
+    public void endOfTick(PlayerData player, double delta) {
         super.endOfTick(player, delta);
 
         boolean walkingOnPowderSnow = false;
@@ -97,7 +97,7 @@ public class PredictionEngineNormal extends PredictionEngine {
     }
 
     @Override
-    public Vector3dm handleOnClimbable(Vector3dm vector, EdGrimPlayer player) {
+    public Vector3dm handleOnClimbable(Vector3dm vector, PlayerData player) {
         if (player.isClimbing) {
             // Reset fall distance when climbing
             player.fallDistance = 0;

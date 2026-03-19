@@ -4,7 +4,7 @@ import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.math.MathUtil;
 import tech.zkmjnic.edgrim.utils.math.Statistics;
@@ -32,7 +32,7 @@ public final class AimAnalysis extends Check implements RotationCheck {
     private boolean longtermEnabled = true;
     private float rankBufferLimit = 6.0f;
 
-    public AimAnalysis(EdGrimPlayer player) {
+    public AimAnalysis(PlayerData player) {
         super(player);
     }
 
@@ -46,7 +46,11 @@ public final class AimAnalysis extends Check implements RotationCheck {
 
     @Override
     public void process(final RotationUpdate rotationUpdate) {
-        if (!player.actionManager.hasAttackedSince(500L)) return;
+        if (!player.actionManager.hasAttackedSince(2500L)) {
+            limitedYaw.clear();
+            limitedPitch.clear();
+            return;
+        }
         if (rotationUpdate.isCinematic()) return;
 
         if (player.packetStateData.lastPacketWasTeleport
@@ -54,6 +58,10 @@ public final class AimAnalysis extends Check implements RotationCheck {
                 || player.packetStateData.horseInteractCausedForcedRotation
                 || player.packetStateData.lastPacketWasOnePointSeventeenDuplicate
                 || player.compensatedEntities.self.getRiding() != null) {
+//            rawYaw.clear();
+//            rawPitch.clear();
+//            limitedYaw.clear();
+//            limitedPitch.clear();
             return;
         }
 
@@ -64,6 +72,8 @@ public final class AimAnalysis extends Check implements RotationCheck {
         rawPitch.add(deltaPitch);
         if (rawYaw.size() >= SAMPLE_SIZE) {
             checkRaw();
+            rawYaw.remove(0);
+            rawPitch.remove(0);
         }
 
         if (Math.abs(deltaYaw) > 1.35f || (Math.abs(deltaPitch) > 1.35f && Math.abs(deltaYaw) > 0.32f)) {
@@ -96,7 +106,7 @@ public final class AimAnalysis extends Check implements RotationCheck {
                 if (d > 0.97) normal++;
             }
 
-            if (longtermEnabled && avg < 0.95 && normal < 4) {
+            if (avg < 0.95 && normal < 4 && longtermEnabled) {
                 flagAnalysis("t=LongTerm avg=" + avg + " normal=" + normal + "/10");
             }
             longTermAnalysis.clear();
@@ -150,9 +160,6 @@ public final class AimAnalysis extends Check implements RotationCheck {
         } else {
             rankBuffer = Math.max(0.0f, rankBuffer - 2.25f);
         }
-
-        rawYaw.clear();
-        rawPitch.clear();
     }
 
     private boolean flagAnalysis(String verbose) {

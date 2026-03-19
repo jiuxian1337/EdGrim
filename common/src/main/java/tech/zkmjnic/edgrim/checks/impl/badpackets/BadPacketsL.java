@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.badpackets;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -15,7 +15,7 @@ import java.util.Locale;
 @CheckData(name = "BadPacketsL", description = "Sent impossible dig packet")
 public class BadPacketsL extends Check implements PacketCheck {
 
-    public BadPacketsL(EdGrimPlayer player) {
+    public BadPacketsL(PlayerData player) {
         super(player);
     }
 

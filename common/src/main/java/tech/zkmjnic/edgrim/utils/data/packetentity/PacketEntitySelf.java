@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity;
 
 import tech.zkmjnic.edgrim.checks.impl.sprint.SprintD;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
 import tech.zkmjnic.edgrim.utils.inventory.EnchantmentHelper;
@@ -21,15 +21,15 @@ import java.util.ArrayList;
 
 public class PacketEntitySelf extends PacketEntity {
 
-    private final EdGrimPlayer player;
+    private final PlayerData player;
     public int opLevel;
 
-    public PacketEntitySelf(EdGrimPlayer player) {
+    public PacketEntitySelf(PlayerData player) {
         super(player, EntityTypes.PLAYER);
         this.player = player;
     }
 
-    public PacketEntitySelf(EdGrimPlayer player, PacketEntitySelf old) {
+    public PacketEntitySelf(PlayerData player, PacketEntitySelf old) {
         super(player, EntityTypes.PLAYER);
         this.player = player;
         this.opLevel = old.opLevel;
@@ -37,7 +37,7 @@ public class PacketEntitySelf extends PacketEntity {
     }
 
     @Override
-    protected void initAttributes(EdGrimPlayer player) {
+    protected void initAttributes(PlayerData player) {
         super.initAttributes(player);
         if (player.getClientVersion().isOlderThan(ClientVersion.V_1_8)) {
             setAttribute(Attributes.STEP_HEIGHT, 0.5f);
@@ -161,7 +161,7 @@ public class PacketEntitySelf extends PacketEntity {
     }
 
     @Override
-    public void onFirstTransaction(boolean relative, boolean hasPos, double relX, double relY, double relZ, EdGrimPlayer player) {
+    public void onFirstTransaction(boolean relative, boolean hasPos, double relX, double relY, double relZ, PlayerData player) {
         // Player ignores this
     }
 

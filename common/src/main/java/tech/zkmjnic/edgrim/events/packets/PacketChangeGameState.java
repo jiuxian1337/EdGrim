@@ -3,14 +3,14 @@ package tech.zkmjnic.edgrim.events.packets;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChangeGameState;
 
 public class PacketChangeGameState extends Check implements PacketCheck {
-    public PacketChangeGameState(EdGrimPlayer playerData) {
+    public PacketChangeGameState(PlayerData playerData) {
         super(playerData);
     }
 

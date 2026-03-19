@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.NoCollisionBox;
@@ -11,7 +11,7 @@ import com.github.retrooper.packetevents.protocol.world.states.enums.Half;
 
 public class TrapDoorHandler implements CollisionFactory {
     @Override
-    public CollisionBox fetch(EdGrimPlayer player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
         double var2 = 0.1875;
 
         if (block.isOpen()) {

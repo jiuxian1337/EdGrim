@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.badpackets;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.HeadRotation;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
@@ -20,7 +20,7 @@ import java.util.List;
 public class BadPacketsJ extends Check implements PacketCheck {
     private final List<HeadRotation> rotations = new ArrayList<>();
 
-    public BadPacketsJ(EdGrimPlayer player) {
+    public BadPacketsJ(PlayerData player) {
         super(player);
     }
 

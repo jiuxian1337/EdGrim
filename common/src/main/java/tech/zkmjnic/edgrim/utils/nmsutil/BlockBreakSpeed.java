@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.tags.SyncedTag;
 import tech.zkmjnic.edgrim.utils.data.tags.SyncedTags;
 import tech.zkmjnic.edgrim.utils.enums.FluidTag;
@@ -56,7 +56,7 @@ public class BlockBreakSpeed {
 
     private static final boolean serverUsesComponentsAndRules = PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_20_5);
 
-    public static double getBlockDamage(EdGrimPlayer player, WrappedBlockState block) {
+    public static double getBlockDamage(PlayerData player, WrappedBlockState block) {
         // GET destroy speed
         // Starts with itemstack get destroy speed
         ItemStack tool = player.inventory.getHeldItem();

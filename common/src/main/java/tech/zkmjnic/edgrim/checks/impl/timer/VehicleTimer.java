@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.checks.impl.timer;
 
 import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
 
@@ -9,7 +9,7 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
 public class VehicleTimer extends Timer {
     boolean isDummy = false;
 
-    public VehicleTimer(EdGrimPlayer player) {
+    public VehicleTimer(PlayerData player) {
         super(player);
     }
 

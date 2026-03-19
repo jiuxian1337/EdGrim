@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.platform.bukkit.events;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.platform.bukkit.utils.convert.BukkitConversionUtils;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.PistonData;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
@@ -73,7 +73,7 @@ public class PistonEvent implements Listener {
         final BlockFace blockFace = BukkitConversionUtils.fromBukkitFace(event.getDirection());
         final Vector3i sourcePos = new Vector3i(piston.getX(), piston.getY(), piston.getZ());
 
-        for (EdGrimPlayer player : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
+        for (PlayerData player : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
             if (player.compensatedWorld.isChunkLoaded(chunkX, chunkZ) && isCloseEnough(sourcePos, player.compensatedEntities.self.trackedServerPosition.getPos())) {
                 final int lastTrans = player.lastTransactionSent.get();
                 PistonData data = new PistonData(blockFace, boxes, lastTrans, true, hasSlimeBlock, hasHoneyBlock);
@@ -131,7 +131,7 @@ public class PistonEvent implements Listener {
         final int chunkZ = event.getBlock().getZ() >> 4;
         Vector3i sourcePos = new Vector3i(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
 
-        for (EdGrimPlayer player : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
+        for (PlayerData player : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
             if (player.compensatedWorld.isChunkLoaded(chunkX, chunkZ) && isCloseEnough(sourcePos, player.compensatedEntities.self.trackedServerPosition.getPos())) {
                 int lastTrans = player.lastTransactionSent.get();
                 PistonData data = new PistonData(face, boxes, lastTrans, false, hasSlimeBlock, hasHoneyBlock);

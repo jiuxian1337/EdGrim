@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks.connecting;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
@@ -30,7 +30,7 @@ public class DynamicCollisionWall extends DynamicConnecting implements Collision
      * @deprecated use DynamicHitboxWall
      */
     @Deprecated
-    public CollisionBox fetchRegularBox(EdGrimPlayer player, WrappedBlockState state, ClientVersion version, int x, int y, int z) {
+    public CollisionBox fetchRegularBox(PlayerData player, WrappedBlockState state, ClientVersion version, int x, int y, int z) {
         int north, south, west, east, up;
         north = south = west = east = up = 0;
 
@@ -127,7 +127,7 @@ public class DynamicCollisionWall extends DynamicConnecting implements Collision
      * Lead to simulation falses. Fixing this rare edge case requires lots more effort than worth and is low priority
      */
     @Override
-    public CollisionBox fetch(EdGrimPlayer player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
         boolean isNewClient = version.isNewerThan(ClientVersion.V_1_12_2);
 
         // Fast path for new client + new server
@@ -192,7 +192,7 @@ public class DynamicCollisionWall extends DynamicConnecting implements Collision
     }
 
     @Override
-    public boolean checkCanConnect(EdGrimPlayer player, WrappedBlockState state, StateType one, StateType two, BlockFace direction) {
+    public boolean checkCanConnect(PlayerData player, WrappedBlockState state, StateType one, StateType two, BlockFace direction) {
         return BlockTags.WALLS.contains(one) || CollisionData.getData(one).getMovementCollisionBox(player, player.getClientVersion(), state, 0, 0, 0).isSideFullBlock(direction);
     }
 }

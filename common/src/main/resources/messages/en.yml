@@ -1,5 +1,5 @@
 # \u00BB is » (double >>), ANSI and UTF-8 interpret this differently... you may even see ? due to this
-prefix: "&7[&bEdGrim&7]"
+prefix: "&7[&bPolar&7]"
 
 alerts-enabled: "%prefix% &fAlerts enabled"
 alerts-disabled: "%prefix% &fAlerts disabled"

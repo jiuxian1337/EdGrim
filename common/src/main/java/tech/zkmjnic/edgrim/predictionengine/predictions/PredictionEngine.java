@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.predictions;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.SneakingEstimator;
 import tech.zkmjnic.edgrim.predictionengine.movementtick.MovementTickerPlayer;
 import tech.zkmjnic.edgrim.utils.math.Vec2;
@@ -26,12 +26,12 @@ import java.util.Set;
 
 public class PredictionEngine {
 
-    public static Vector3dm clampMovementToHardBorder(EdGrimPlayer player, Vector3dm outputVel) {
+    public static Vector3dm clampMovementToHardBorder(PlayerData player, Vector3dm outputVel) {
         // TODO: Reimplement
         return outputVel;
     }
 
-    public static Vector3dm transformInputsToVector(EdGrimPlayer player, Vector3dm theoreticalInput) {
+    public static Vector3dm transformInputsToVector(PlayerData player, Vector3dm theoreticalInput) {
         if (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_21_5)) {
             Vec2 moveVector = new Vec2((float) theoreticalInput.getX(), (float) theoreticalInput.getZ()).normalized();
             Vec2 input = modifyInput(player, moveVector);
@@ -68,7 +68,7 @@ public class PredictionEngine {
         return inputVector;
     }
 
-    public static Vec2 modifyInput(EdGrimPlayer player, Vec2 moveVector) {
+    public static Vec2 modifyInput(PlayerData player, Vec2 moveVector) {
         if (moveVector.lengthSquared() == 0.0F) {
             return moveVector;
         } else {
@@ -104,7 +104,7 @@ public class PredictionEngine {
         return GrimMath.sqrt(1.0F + GrimMath.square(additional));
     }
 
-    public void guessBestMovement(float speed, EdGrimPlayer player) {
+    public void guessBestMovement(float speed, PlayerData player) {
         Set<VectorData> init = fetchPossibleStartTickVectors(player);
 
         if (player.uncertaintyHandler.influencedByBouncyBlock()) {
@@ -144,7 +144,7 @@ public class PredictionEngine {
         endOfTick(player, player.gravity);
     }
 
-    private void doPredictions(EdGrimPlayer player, List<VectorData> possibleVelocities, float speed) {
+    private void doPredictions(PlayerData player, List<VectorData> possibleVelocities, float speed) {
         // Computers are actually really fast at sorting, I don't see sorting as a problem
         possibleVelocities.sort((a, b) -> sortVectorData(a, b, player));
 
@@ -258,7 +258,7 @@ public class PredictionEngine {
         }
     }
 
-    private Pair<Vector3dm, Vector3dm> doSeekingWallCollisions(EdGrimPlayer player, Vector3dm primaryPushMovement, Vector3dm originalClientVel, VectorData clientVelAfterInput) {
+    private Pair<Vector3dm, Vector3dm> doSeekingWallCollisions(PlayerData player, Vector3dm primaryPushMovement, Vector3dm originalClientVel, VectorData clientVelAfterInput) {
         boolean vehicleKB = player.inVehicle() && clientVelAfterInput.isKnockback() && clientVelAfterInput.vector.getY() == 0;
         // Extra collision epsilon required for vehicles to be accurate
         double xAdditional = Math.signum(primaryPushMovement.getX()) * SimpleCollisionBox.COLLISION_EPSILON;
@@ -294,7 +294,7 @@ public class PredictionEngine {
     }
 
     // 0.03 has some quite bad interactions with velocity + explosions (one extremely stupid line of code... thanks mojang)
-    private void addZeroPointThreeToPossibilities(float speed, EdGrimPlayer player, List<VectorData> possibleVelocities) {
+    private void addZeroPointThreeToPossibilities(float speed, PlayerData player, List<VectorData> possibleVelocities) {
         Set<VectorData> pointThreePossibilities = new HashSet<>();
 
         // For now just let the player control their Y velocity within 0.03.  Gravity should stop exploits.
@@ -347,13 +347,13 @@ public class PredictionEngine {
         possibleVelocities.addAll(applyInputsToVelocityPossibilities(player, pointThreePossibilities, speed));
     }
 
-    public List<VectorData> applyInputsToVelocityPossibilities(EdGrimPlayer player, Set<VectorData> possibleVectors, float speed) {
+    public List<VectorData> applyInputsToVelocityPossibilities(PlayerData player, Set<VectorData> possibleVectors, float speed) {
         List<VectorData> returnVectors = new ArrayList<>();
         loopVectors(player, possibleVectors, speed, returnVectors);
         return returnVectors;
     }
 
-    public void addFluidPushingToStartingVectors(EdGrimPlayer player, Set<VectorData> data) {
+    public void addFluidPushingToStartingVectors(PlayerData player, Set<VectorData> data) {
         for (VectorData vectorData : data) {
             // Sneaking in water
             if (vectorData.isKnockback() && player.baseTickAddition.lengthSquared() != 0) {
@@ -375,7 +375,7 @@ public class PredictionEngine {
         }
     }
 
-    public Set<VectorData> fetchPossibleStartTickVectors(EdGrimPlayer player) {
+    public Set<VectorData> fetchPossibleStartTickVectors(PlayerData player) {
         // Swim hop, riptide bounce, climbing, slime block bounces, knockback
         Set<VectorData> velocities = player.getPossibleVelocities();
         // Packet stuff is done first
@@ -400,7 +400,7 @@ public class PredictionEngine {
         return velocities;
     }
 
-    private void addNonEffectiveAI(EdGrimPlayer player, Set<VectorData> data) {
+    private void addNonEffectiveAI(PlayerData player, Set<VectorData> data) {
         // For some reason on 1.21.5+ this no longer applies
         if (!player.inVehicle() || player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_21_5)) return;
 
@@ -409,7 +409,7 @@ public class PredictionEngine {
         }
     }
 
-    private void addAttackSlowToPossibilities(EdGrimPlayer player, Set<VectorData> velocities) {
+    private void addAttackSlowToPossibilities(PlayerData player, Set<VectorData> velocities) {
         for (int x = 1; x <= Math.min(player.maxAttackSlow, 5); x++) {
             for (VectorData data : new HashSet<>(velocities)) {
                 if (player.minAttackSlow > 0) {
@@ -427,11 +427,11 @@ public class PredictionEngine {
         }
     }
 
-    public void addJumpsToPossibilities(EdGrimPlayer player, Set<VectorData> existingVelocities) {
+    public void addJumpsToPossibilities(PlayerData player, Set<VectorData> existingVelocities) {
     }
 
     // Renamed from applyPointZeroZeroThree to avoid confusion with applyZeroPointZeroThree
-    public void applyMovementThreshold(EdGrimPlayer player, Set<VectorData> velocities) {
+    public void applyMovementThreshold(PlayerData player, Set<VectorData> velocities) {
         double minimumMovement = 0.003D;
         if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_8)) {
             minimumMovement = 0.005D;
@@ -459,7 +459,7 @@ public class PredictionEngine {
         }
     }
 
-    public void addExplosionToPossibilities(EdGrimPlayer player, Set<VectorData> existingVelocities) {
+    public void addExplosionToPossibilities(PlayerData player, Set<VectorData> existingVelocities) {
         for (VectorData vector : new HashSet<>(existingVelocities)) {
             if (player.likelyExplosions != null) {
                 existingVelocities.add(new VectorData(vector.vector.clone().add(player.likelyExplosions.vector), vector, VectorData.VectorType.Explosion));
@@ -472,7 +472,7 @@ public class PredictionEngine {
         }
     }
 
-    public int sortVectorData(VectorData a, VectorData b, EdGrimPlayer player) {
+    public int sortVectorData(VectorData a, VectorData b, PlayerData player) {
         int aScore = 0;
         int bScore = 0;
 
@@ -532,7 +532,7 @@ public class PredictionEngine {
         return Double.compare(a.vector.distanceSquared(player.actualMovement), b.vector.distanceSquared(player.actualMovement));
     }
 
-    public Vector3dm handleStartingVelocityUncertainty(EdGrimPlayer player, VectorData vector, Vector3dm targetVec) {
+    public Vector3dm handleStartingVelocityUncertainty(PlayerData player, VectorData vector, Vector3dm targetVec) {
         double avgColliding = Collections.max(player.uncertaintyHandler.collidingEntities);
 
         double additionHorizontal = player.uncertaintyHandler.getOffsetHorizontal(vector);
@@ -758,12 +758,12 @@ public class PredictionEngine {
         return VectorUtils.cutBoxToVector(targetVec, minVector, maxVector);
     }
 
-    public void endOfTick(EdGrimPlayer player, double d) {
+    public void endOfTick(PlayerData player, double d) {
         player.canSwimHop = canSwimHop(player);
         player.lastWasClimbing = 0;
     }
 
-    private void loopVectors(EdGrimPlayer player, Set<VectorData> possibleVectors, float speed, List<VectorData> returnVectors) {
+    private void loopVectors(PlayerData player, Set<VectorData> possibleVectors, float speed, List<VectorData> returnVectors) {
         // Stop omni-sprint
         // Optimization - Also cuts down scenarios by 2/3
         // For some reason the player sprints while swimming no matter what
@@ -842,7 +842,7 @@ public class PredictionEngine {
         }
     }
 
-    public boolean canSwimHop(EdGrimPlayer player) {
+    public boolean canSwimHop(PlayerData player) {
         // Boats cannot swim hop, all other living entities should be able to.
         if (player.inVehicle() && player.compensatedEntities.self.getRiding().isBoat)
             return false;
@@ -889,7 +889,7 @@ public class PredictionEngine {
 
     // This is just the vanilla equation, which accepts invalid inputs greater than 1
     // We need it because of collision support when a player is using speed
-    public Vector3dm getMovementResultFromInput(EdGrimPlayer player, Vector3dm inputVector, float f, float f2) {
+    public Vector3dm getMovementResultFromInput(PlayerData player, Vector3dm inputVector, float f, float f2) {
         float f3 = player.trigHandler.sin(f2 * 0.017453292f);
         float f4 = player.trigHandler.cos(f2 * 0.017453292f);
 
@@ -899,11 +899,11 @@ public class PredictionEngine {
         return new Vector3dm(xResult * f, 0, zResult * f);
     }
 
-    public Vector3dm handleOnClimbable(Vector3dm vector, EdGrimPlayer player) {
+    public Vector3dm handleOnClimbable(Vector3dm vector, PlayerData player) {
         return vector;
     }
 
-    public void doJump(EdGrimPlayer player, Vector3dm vector) {
+    public void doJump(PlayerData player, Vector3dm vector) {
         if (!player.lastOnGround || player.onGround)
             return;
 

@@ -6,7 +6,7 @@ import ac.grim.grimac.api.event.events.CompletePredictionEvent;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,7 +24,7 @@ public class OffsetHandler extends Check implements PostPredictionCheck {
     // Current advantage gained
     double advantageGained = 0;
 
-    public OffsetHandler(EdGrimPlayer player) {
+    public OffsetHandler(PlayerData player) {
         super(player);
     }
 

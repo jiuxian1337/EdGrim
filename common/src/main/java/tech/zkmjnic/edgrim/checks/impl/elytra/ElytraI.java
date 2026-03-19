@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.elytra;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -14,7 +14,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientEn
 public class ElytraI extends Check implements PostPredictionCheck {
     private boolean setback;
 
-    public ElytraI(EdGrimPlayer player) {
+    public ElytraI(PlayerData player) {
         super(player);
     }
 

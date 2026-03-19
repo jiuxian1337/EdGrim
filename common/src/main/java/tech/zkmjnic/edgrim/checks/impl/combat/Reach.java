@@ -19,7 +19,7 @@ import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import tech.zkmjnic.edgrim.utils.data.packetentity.dragon.PacketEntityEnderDragonPart;
@@ -59,7 +59,7 @@ public class Reach extends Check implements PacketCheck {
     private double threshold;
     private double cancelBuffer; // For the next 4 hits after using reach, we aggressively cancel reach
 
-    public Reach(EdGrimPlayer player) {
+    public Reach(PlayerData player) {
         super(player);
     }
 

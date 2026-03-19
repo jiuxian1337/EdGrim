@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.events.packets;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngine;
 import tech.zkmjnic.edgrim.utils.math.Vec2;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
@@ -32,7 +32,7 @@ public class PacketPlayerSteer extends PacketListenerAbstract {
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
         if (event.getPacketType() == PacketType.Play.Client.STEER_VEHICLE) {
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             WrapperPlayClientSteerVehicle steer = new WrapperPlayClientSteerVehicle(event);
@@ -45,7 +45,7 @@ public class PacketPlayerSteer extends PacketListenerAbstract {
 
             this.tickPlayerWorld(player);
         } else if (event.getPacketType() == PacketType.Play.Client.PLAYER_INPUT) {
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             WrapperPlayClientPlayerInput input = new WrapperPlayClientPlayerInput(event);
@@ -81,7 +81,7 @@ public class PacketPlayerSteer extends PacketListenerAbstract {
 
             player.packetStateData.knownInput = new KnownInput(input.isForward(), input.isBackward(), input.isLeft(), input.isRight(), input.isJump(), input.isShift(), input.isSprint());
         } else if (event.getPacketType() == PacketType.Play.Client.PLAYER_ROTATION) {
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null || !player.inVehicle() || player.getClientVersion().isOlderThan(ClientVersion.V_1_21_2)) return;
 
             // player_input is not sent every tick, so we need to stick to this packet
@@ -89,7 +89,7 @@ public class PacketPlayerSteer extends PacketListenerAbstract {
         }
     }
 
-    private void tickPlayerWorld(EdGrimPlayer player) {
+    private void tickPlayerWorld(PlayerData player) {
         PacketEntity riding = player.compensatedEntities.self.getRiding();
 
         // Multiple steer vehicles in a row, the player is not in control of their vehicle

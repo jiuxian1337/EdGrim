@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.inventory;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.inventory.inventory.AbstractContainerMenu;
 import tech.zkmjnic.edgrim.utils.inventory.slot.EquipmentSlot;
 import tech.zkmjnic.edgrim.utils.inventory.slot.ResultSlot;
@@ -25,7 +25,7 @@ public class Inventory extends AbstractContainerMenu {
     @Getter
     CorrectingPlayerInventoryStorage inventoryStorage;
 
-    public Inventory(EdGrimPlayer player, CorrectingPlayerInventoryStorage inventoryStorage) {
+    public Inventory(PlayerData player, CorrectingPlayerInventoryStorage inventoryStorage) {
         super(player);
         this.setPlayerInventory(this);
         this.inventoryStorage = inventoryStorage;

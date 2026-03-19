@@ -55,6 +55,7 @@ dependencies {
     compileOnly(libs.floodgate.api)
     compileOnly(libs.via.version.api)
     compileOnly(libs.netty)
+    compileOnly(libs.paper.api)
 }
 
 publishing.publications.create<MavenPublication>("maven") {

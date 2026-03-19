@@ -1,13 +1,13 @@
 package tech.zkmjnic.edgrim.predictionengine.movementtick;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityRideable;
 import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 
 public class MovementTickerRideable extends MovementTickerLivingVehicle {
 
-    public MovementTickerRideable(EdGrimPlayer player) {
+    public MovementTickerRideable(PlayerData player) {
         super(player);
 
         // If the player has carrot/fungus on a stick, otherwise the player has no control

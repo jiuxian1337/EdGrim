@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.badpackets;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
@@ -22,7 +22,7 @@ public class BadPacketsT extends Check implements PacketCheck {
     private final double minVerticalDisplacement = -0.0001 - (hasLegacyExpansion ? 0.1 : 0);
     private final double maxVerticalDisplacement = 1.8001 + (hasLegacyExpansion ? 0.1 : 0);
 
-    public BadPacketsT(final EdGrimPlayer player) {
+    public BadPacketsT(final PlayerData player) {
         super(player);
     }
 

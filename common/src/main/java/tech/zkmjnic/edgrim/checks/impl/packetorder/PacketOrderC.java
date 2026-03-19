@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.packetorder;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
@@ -22,7 +22,7 @@ public class PacketOrderC extends Check implements PacketCheck {
     private InteractionHand requiredHand;
     private boolean requiredSneaking;
 
-    public PacketOrderC(final EdGrimPlayer player) {
+    public PacketOrderC(final PlayerData player) {
         super(player);
     }
 

@@ -4,7 +4,7 @@ import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import tech.zkmjnic.edgrim.utils.data.TrackerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
@@ -80,7 +80,7 @@ public class PacketEntityReplication extends Check implements PacketCheck {
     // Maximum ping when a firework boost is removed from the player.
     private int maxFireworkBoostPing = 1000;
 
-    public PacketEntityReplication(EdGrimPlayer player) {
+    public PacketEntityReplication(PlayerData player) {
         super(player);
     }
 
@@ -529,7 +529,7 @@ public class PacketEntityReplication extends Check implements PacketCheck {
         });
     }
 
-    private boolean isDirectlyAffectingPlayer(EdGrimPlayer player, int entityID) {
+    private boolean isDirectlyAffectingPlayer(PlayerData player, int entityID) {
         // The attributes for this entity is active, currently
         return (player.compensatedEntities.serverPlayerVehicle == null && entityID == player.entityID) ||
                 (player.compensatedEntities.serverPlayerVehicle != null && entityID == player.compensatedEntities.serverPlayerVehicle);

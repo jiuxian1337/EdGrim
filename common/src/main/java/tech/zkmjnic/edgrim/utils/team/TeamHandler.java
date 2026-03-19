@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.utils.team;
 
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
@@ -34,7 +34,7 @@ public class TeamHandler extends Check implements PacketCheck {
 
     private @Getter @Setter @Nullable EntityTeam playerTeam = null;
 
-    public TeamHandler(EdGrimPlayer player) {
+    public TeamHandler(PlayerData player) {
         super(player);
     }
 

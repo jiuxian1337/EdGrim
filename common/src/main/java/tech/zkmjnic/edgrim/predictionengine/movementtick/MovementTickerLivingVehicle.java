@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.movementtick;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.predictions.rideable.PredictionEngineRideableLava;
 import tech.zkmjnic.edgrim.predictionengine.predictions.rideable.PredictionEngineRideableNormal;
 import tech.zkmjnic.edgrim.predictionengine.predictions.rideable.PredictionEngineRideableWater;
@@ -12,7 +12,7 @@ import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 public class MovementTickerLivingVehicle extends MovementTicker {
     Vector3dm movementInput = new Vector3dm();
 
-    public MovementTickerLivingVehicle(EdGrimPlayer player) {
+    public MovementTickerLivingVehicle(PlayerData player) {
         super(player);
     }
 

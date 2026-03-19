@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.groundspoof;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.GhostBlockDetector;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
@@ -22,7 +22,7 @@ public class NoFall extends Check implements PacketCheck {
 
     public boolean flipPlayerGroundStatus = false;
 
-    public NoFall(EdGrimPlayer player) {
+    public NoFall(PlayerData player) {
         super(player);
     }
 

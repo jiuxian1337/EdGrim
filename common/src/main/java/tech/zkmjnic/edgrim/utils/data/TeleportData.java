@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.data;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import com.github.retrooper.packetevents.protocol.teleport.RelativeFlag;
 import com.github.retrooper.packetevents.util.Vector3d;
@@ -19,7 +19,7 @@ public class TeleportData {
     @Setter
     int teleportId;
 
-    public void modifyVector(EdGrimPlayer player, Vector3dm vector) {
+    public void modifyVector(PlayerData player, Vector3dm vector) {
         final boolean isStupidTeleportSystem = player.supportsEndTick();
         if (!isStupidTeleportSystem) {
             if (!isRelativeX()) {

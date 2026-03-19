@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.checks.impl.badpackets;
 
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import com.github.retrooper.packetevents.PacketEvents;
@@ -17,7 +17,7 @@ public class BadPacketsH extends BlockPlaceCheck {
     private int lastSequence;
     private final boolean isSupportedVersion = player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_19) && PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_19);
 
-    public BadPacketsH(final EdGrimPlayer player) {
+    public BadPacketsH(final PlayerData player) {
         super(player);
     }
 

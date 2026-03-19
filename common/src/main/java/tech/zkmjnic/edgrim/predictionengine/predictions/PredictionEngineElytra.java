@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.predictions;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import tech.zkmjnic.edgrim.utils.nmsutil.ReachUtils;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 public class PredictionEngineElytra extends PredictionEngine {
-    public static Vector3dm getElytraMovement(EdGrimPlayer player, Vector3dm vector, Vector3dm lookVector) {
+    public static Vector3dm getElytraMovement(PlayerData player, Vector3dm vector, Vector3dm lookVector) {
         float yRotRadians = player.yRot * 0.017453292F;
         double horizontalSqrt = Math.sqrt(lookVector.getX() * lookVector.getX() + lookVector.getZ() * lookVector.getZ());
         double horizontalLength = vector.clone().setY(0).length();
@@ -55,7 +55,7 @@ public class PredictionEngineElytra extends PredictionEngine {
 
     // Inputs have no effect on movement
     @Override
-    public List<VectorData> applyInputsToVelocityPossibilities(EdGrimPlayer player, Set<VectorData> possibleVectors, float speed) {
+    public List<VectorData> applyInputsToVelocityPossibilities(PlayerData player, Set<VectorData> possibleVectors, float speed) {
         List<VectorData> results = new ArrayList<>();
 
         // We must bruteforce Optifine ShitMath
@@ -79,7 +79,7 @@ public class PredictionEngineElytra extends PredictionEngine {
 
     // Yes... you can jump while using an elytra as long as you are on the ground
     @Override
-    public void addJumpsToPossibilities(EdGrimPlayer player, Set<VectorData> existingVelocities) {
+    public void addJumpsToPossibilities(PlayerData player, Set<VectorData> existingVelocities) {
         new PredictionEngineNormal().addJumpsToPossibilities(player, existingVelocities);
     }
 }

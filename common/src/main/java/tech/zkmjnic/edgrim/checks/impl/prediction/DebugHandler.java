@@ -4,7 +4,7 @@ import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.debug.AbstractDebugHandler;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
 import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.lists.EvictingQueue;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
@@ -22,7 +22,7 @@ public class DebugHandler extends AbstractDebugHandler implements PostPrediction
     private static final Component A_PREFIX = MiniMessage.miniMessage().deserialize("<reset>A: </reset>");
     private static final Component O_PREFIX = MiniMessage.miniMessage().deserialize("<reset>O: </reset>");
 
-    private Set<EdGrimPlayer> listeners = new CopyOnWriteArraySet<>(new HashSet<>());
+    private Set<PlayerData> listeners = new CopyOnWriteArraySet<>(new HashSet<>());
     private boolean outputToConsole = false;
     private boolean enabledFlags = false;
     private boolean lastMovementIsFlag = false;
@@ -31,7 +31,7 @@ public class DebugHandler extends AbstractDebugHandler implements PostPrediction
     private final EvictingQueue<Component> actually = new EvictingQueue<>(5);
     private final EvictingQueue<Component> offset = new EvictingQueue<>(5);
 
-    public DebugHandler(EdGrimPlayer player) {
+    public DebugHandler(PlayerData player) {
         super(player);
     }
 
@@ -102,7 +102,7 @@ public class DebugHandler extends AbstractDebugHandler implements PostPrediction
             }
         }
 
-        for (EdGrimPlayer listener : listeners) {
+        for (PlayerData listener : listeners) {
             Component listenerPrefix = listener == getPlayer() ? Component.empty() : prefixComponent;
             listener.sendMessage(listenerPrefix.append(p));
             listener.sendMessage(listenerPrefix.append(a));
@@ -133,7 +133,7 @@ public class DebugHandler extends AbstractDebugHandler implements PostPrediction
     }
 
     @Override
-    public void toggleListener(EdGrimPlayer player) {
+    public void toggleListener(PlayerData player) {
         if (!listeners.remove(player)) listeners.add(player);
     }
 

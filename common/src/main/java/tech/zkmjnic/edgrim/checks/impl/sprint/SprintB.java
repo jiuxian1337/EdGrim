@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.sprint;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.enums.Pose;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -12,7 +12,7 @@ import java.util.Collections;
 
 @CheckData(name = "SprintB", description = "Sprinting while sneaking or crawling", setback = 5, experimental = true)
 public class SprintB extends Check implements PostPredictionCheck {
-    public SprintB(EdGrimPlayer player) {
+    public SprintB(PlayerData player) {
         super(player);
     }
 

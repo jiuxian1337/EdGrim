@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.badpackets;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -16,7 +16,7 @@ import java.util.LinkedList;
 public class BadPacketsO extends Check implements PacketCheck {
     private final LinkedList<Long> keepalives = new LinkedList<>();
 
-    public BadPacketsO(EdGrimPlayer player) {
+    public BadPacketsO(PlayerData player) {
         super(player);
     }
 

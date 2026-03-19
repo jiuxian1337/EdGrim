@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.inventory.inventory;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import tech.zkmjnic.edgrim.utils.inventory.ClickAction;
 import tech.zkmjnic.edgrim.utils.inventory.Inventory;
@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public abstract class AbstractContainerMenu {
-    protected final EdGrimPlayer player;
+    protected final PlayerData player;
     // Quick crafting/dragging
     private int quickcraftStatus = 0;
     private int quickcraftType = -1;
@@ -36,12 +36,12 @@ public abstract class AbstractContainerMenu {
     @NotNull
     ItemStack carriedItem = ItemStack.EMPTY;
 
-    public AbstractContainerMenu(EdGrimPlayer player, Inventory playerInventory) {
+    public AbstractContainerMenu(PlayerData player, Inventory playerInventory) {
         this.player = player;
         this.playerInventory = playerInventory;
     }
 
-    public AbstractContainerMenu(EdGrimPlayer player) {
+    public AbstractContainerMenu(PlayerData player) {
         this.player = player;
     }
 

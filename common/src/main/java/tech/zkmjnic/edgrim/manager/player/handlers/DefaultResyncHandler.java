@@ -4,7 +4,7 @@ import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.handler.ResyncHandler;
 import tech.zkmjnic.edgrim.platform.api.world.PlatformChunk;
 import tech.zkmjnic.edgrim.platform.api.world.PlatformWorld;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.util.Vector3d;
@@ -17,9 +17,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DefaultResyncHandler implements ResyncHandler {
 
-    private final EdGrimPlayer player;
+    private final PlayerData player;
 
-    private static void resyncPositions(EdGrimPlayer player, int minBlockX, int mY, int minBlockZ, int maxBlockX, int mxY, int maxBlockZ) {
+    private static void resyncPositions(PlayerData player, int minBlockX, int mY, int minBlockZ, int maxBlockX, int mxY, int maxBlockZ) {
         // Check the 4 corners of the player world for loaded chunks before calling event
         if (!player.compensatedWorld.isChunkLoaded(minBlockX >> 4, minBlockZ >> 4) || !player.compensatedWorld.isChunkLoaded(minBlockX >> 4, maxBlockZ >> 4)
                 || !player.compensatedWorld.isChunkLoaded(maxBlockX >> 4, minBlockZ >> 4) || !player.compensatedWorld.isChunkLoaded(maxBlockX >> 4, maxBlockZ >> 4))
@@ -97,7 +97,7 @@ public class DefaultResyncHandler implements ResyncHandler {
     }
 
     // TODO (Cross-platform) make this use player.resyncHandler instead
-    private static void resyncPosition(EdGrimPlayer player, int x, int y, int z, int sequence) {
+    private static void resyncPosition(PlayerData player, int x, int y, int z, int sequence) {
         if (player.platformPlayer == null) return;
 
         final int chunkX = x >> 4;

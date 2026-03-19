@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.combat;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
@@ -20,7 +20,7 @@ public class MultiInteractB extends Check implements PostPredictionCheck {
     private Vector3f lastPos;
     private boolean hasInteracted = false;
 
-    public MultiInteractB(final EdGrimPlayer player) {
+    public MultiInteractB(final PlayerData player) {
         super(player);
     }
 

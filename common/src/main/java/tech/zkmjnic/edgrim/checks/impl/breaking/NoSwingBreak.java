@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.breaking;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -14,7 +14,7 @@ public class NoSwingBreak extends Check implements BlockBreakCheck {
     private boolean sentAnimation;
     private boolean sentBreak;
 
-    public NoSwingBreak(EdGrimPlayer playerData) {
+    public NoSwingBreak(PlayerData playerData) {
         super(playerData);
     }
 

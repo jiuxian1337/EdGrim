@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.events.packets;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.impl.movement.NoSlowA;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.item.ItemBehaviour;
 import tech.zkmjnic.edgrim.utils.item.ItemBehaviourRegistry;
 import com.github.retrooper.packetevents.PacketEvents;
@@ -40,7 +40,7 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
     private static final boolean RELIABLE_COMPONENT_SYSTEM = PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_21_4);
     private static final boolean SERVER_HAS_OFFHAND = PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_9);
 
-    public static void handleUseItem(@NotNull EdGrimPlayer player, @NotNull InteractionHand hand) {
+    public static void handleUseItem(@NotNull PlayerData player, @NotNull InteractionHand hand) {
         ItemStack item = player.inventory.getItemInHand(hand);
 
         if (item == null) {
@@ -187,7 +187,7 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
             WrapperPlayClientPlayerDigging dig = new WrapperPlayClientPlayerDigging(event);
 
             if (dig.getAction() == DiggingAction.RELEASE_USE_ITEM) {
-                final EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+                final PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
                 if (player == null) return;
 
                 player.packetStateData.setSlowedByUsingItem(false);
@@ -204,7 +204,7 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
         }
 
         if (WrapperPlayClientPlayerFlying.isFlying(event.getPacketType()) || event.getPacketType() == PacketType.Play.Client.CLIENT_TICK_END) {
-            final EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            final PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player != null && player.packetStateData.isSlowedByUsingItem()
                     && !player.packetStateData.lastPacketWasTeleport
                     && !player.packetStateData.lastPacketWasOnePointSeventeenDuplicate) {
@@ -223,7 +223,7 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
             // Stop people from spamming the server with out of bounds exceptions
             if (slot > 8 || slot < 0) return;
 
-            final EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            final PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             // do we need to do this with block breaks too?
@@ -244,7 +244,7 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
         }
 
         if (event.getPacketType() == PacketType.Play.Client.USE_ITEM || (event.getPacketType() == PacketType.Play.Client.PLAYER_BLOCK_PLACEMENT && new WrapperPlayClientPlayerBlockPlacement(event).getFace() == BlockFace.OTHER)) {
-            final EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            final PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             if (PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_8)

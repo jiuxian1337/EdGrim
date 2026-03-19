@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.utils.latency;
 
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PositionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PositionUpdate;
 import tech.zkmjnic.edgrim.utils.data.CooldownData;
 import com.github.retrooper.packetevents.PacketEvents;
@@ -26,7 +26,7 @@ public class CompensatedCooldown extends Check implements PositionCheck {
 
     private final ConcurrentHashMap<ResourceLocation, CooldownData> itemCooldownMap = new ConcurrentHashMap<>();
 
-    public CompensatedCooldown(EdGrimPlayer playerData) {
+    public CompensatedCooldown(PlayerData playerData) {
         super(playerData);
     }
 

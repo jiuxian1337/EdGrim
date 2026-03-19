@@ -5,7 +5,7 @@ import tech.zkmjnic.edgrim.command.BuildableCommand;
 import tech.zkmjnic.edgrim.platform.api.command.PlayerSelector;
 import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
 import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -36,7 +36,7 @@ public class GrimProfile implements BuildableCommand {
             return;
         }
 
-        EdGrimPlayer EdGrimPlayer = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(targetPlatformPlayer.getUniqueId());
+        PlayerData EdGrimPlayer = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(targetPlatformPlayer.getUniqueId());
         if (EdGrimPlayer == null) {
             sender.sendMessage(MessageUtil.getParsedComponent(sender, "player-not-found", "%prefix% &cPlayer is exempt or offline!"));
             return;

@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.events.packets;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.nmsutil.WatchableIndexUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
@@ -32,7 +32,7 @@ public class PacketSelfMetadataListener extends PacketListenerAbstract {
         if (event.getPacketType() == PacketType.Play.Server.ENTITY_METADATA) {
             WrapperPlayServerEntityMetadata entityMetadata = new WrapperPlayServerEntityMetadata(event);
 
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null)
                 return;
 
@@ -220,7 +220,7 @@ public class PacketSelfMetadataListener extends PacketListenerAbstract {
         if (event.getPacketType() == PacketType.Play.Server.USE_BED) {
             WrapperPlayServerUseBed bed = new WrapperPlayServerUseBed(event);
 
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player != null && player.entityID == bed.getEntityId()) {
                 // Split so packet received after transaction
                 player.latencyUtils.addRealTimeTask(player.lastTransactionSent.get(), () -> {
@@ -233,7 +233,7 @@ public class PacketSelfMetadataListener extends PacketListenerAbstract {
         if (event.getPacketType() == PacketType.Play.Server.ENTITY_ANIMATION) {
             WrapperPlayServerEntityAnimation animation = new WrapperPlayServerEntityAnimation(event);
 
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player != null && player.entityID == animation.getEntityId()
                     && animation.getType() == WrapperPlayServerEntityAnimation.EntityAnimationType.WAKE_UP) {
                 // Split so packet received before transaction

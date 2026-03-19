@@ -7,8 +7,10 @@ import tech.zkmjnic.edgrim.checks.impl.aim.AimModulo360;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimAnalysis;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimComplex;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimHeuristic;
+import tech.zkmjnic.edgrim.checks.impl.aim.AimNoise;
 import tech.zkmjnic.edgrim.checks.impl.aim.AimStatistics;
 import tech.zkmjnic.edgrim.checks.impl.aim.processor.AimProcessor;
+import tech.zkmjnic.edgrim.checks.impl.aim.processor.Cinematic;
 import tech.zkmjnic.edgrim.checks.impl.badpackets.*;
 import tech.zkmjnic.edgrim.checks.impl.breaking.*;
 import tech.zkmjnic.edgrim.checks.impl.crash.*;
@@ -54,7 +56,7 @@ import tech.zkmjnic.edgrim.events.packets.PacketPlayerAbilities;
 import tech.zkmjnic.edgrim.events.packets.PacketWorldBorder;
 import tech.zkmjnic.edgrim.manager.init.start.SuperDebug;
 import tech.zkmjnic.edgrim.platform.api.permissions.PermissionDefaultValue;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.GhostBlockDetector;
 import tech.zkmjnic.edgrim.predictionengine.SneakingEstimator;
 import tech.zkmjnic.edgrim.utils.anticheat.update.*;
@@ -83,7 +85,7 @@ public class CheckManager {
     private final ClassToInstanceMap<PostPredictionCheck> postPredictionChecks;
     private PacketEntityReplication packetEntityReplication = null;
 
-    public CheckManager(EdGrimPlayer player) {
+    public CheckManager(PlayerData player) {
         packetChecks = new ImmutableClassToInstanceMap.Builder<PacketCheck>()
                 .put(PacketOrderProcessor.class, player.packetOrderProcessor)
                 .put(Reach.class, new Reach(player))
@@ -156,9 +158,11 @@ public class CheckManager {
                 .build();
         rotationChecks = new ImmutableClassToInstanceMap.Builder<RotationCheck>()
                 .put(AimProcessor.class, new AimProcessor(player))
+                .put(Cinematic.class, new Cinematic(player))
                 .put(AimModulo360.class, new AimModulo360(player))
                 .put(AimDuplicateLook.class, new AimDuplicateLook(player))
                 .put(AimHeuristic.class, new AimHeuristic(player))
+                .put(AimNoise.class, new AimNoise(player))
                 .put(AimComplex.class, new AimComplex(player))
                 .put(AimAnalysis.class, new AimAnalysis(player))
                 .put(AimStatistics.class, new AimStatistics(player))

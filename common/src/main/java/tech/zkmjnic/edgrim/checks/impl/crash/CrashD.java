@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.crash;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.inventory.inventory.MenuType;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
@@ -19,7 +19,7 @@ public class CrashD extends Check implements PacketCheck {
     private MenuType type = MenuType.UNKNOWN;
     private int lecternId = -1;
 
-    public CrashD(EdGrimPlayer playerData) {
+    public CrashD(PlayerData playerData) {
         super(playerData);
     }
 

@@ -4,7 +4,7 @@ import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.AbstractCheck;
 import ac.grim.grimac.api.config.ConfigManager;
 import ac.grim.grimac.api.event.events.FlagEvent;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -19,7 +19,7 @@ import static com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayC
 // Class from https://github.com/Tecnio/AntiCheatBase/blob/master/src/main/java/me/tecnio/anticheat/check/Check.java
 @Getter
 public class Check extends GrimProcessor implements AbstractCheck {
-    protected @NotNull final EdGrimPlayer player;
+    protected @NotNull final PlayerData player;
 
     public double violations;
     private double decay;
@@ -39,7 +39,7 @@ public class Check extends GrimProcessor implements AbstractCheck {
     private boolean noModifyPacketPermission;
     private long lastViolationTime;
 
-    public Check(final @NotNull EdGrimPlayer player) {
+    public Check(final @NotNull PlayerData player) {
         this.player = Objects.requireNonNull(player);
 
         final CheckData checkData = this.getClass().getAnnotation(CheckData.class);

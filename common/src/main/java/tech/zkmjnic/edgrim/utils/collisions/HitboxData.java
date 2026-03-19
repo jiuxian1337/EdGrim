@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicHitboxFence;
 import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicHitboxPane;
 import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicHitboxWall;
@@ -682,7 +682,7 @@ public enum HitboxData implements HitBoxFactory {
     }
 
     @Override
-    public CollisionBox fetch(EdGrimPlayer player, StateType heldItem, ClientVersion version, WrappedBlockState block, boolean isTargetBlock, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, StateType heldItem, ClientVersion version, WrappedBlockState block, boolean isTargetBlock, int x, int y, int z) {
         return box != null ? box.copy() : dynamic.fetch(player, heldItem, version, block, isTargetBlock, x, y, z);
     }
 
@@ -690,7 +690,7 @@ public enum HitboxData implements HitBoxFactory {
         return lookup.get(material);
     }
 
-    public static CollisionBox getBlockHitbox(EdGrimPlayer player, StateType heldItem, ClientVersion version, WrappedBlockState block, boolean isTargetBlock, int x, int y, int z) {
+    public static CollisionBox getBlockHitbox(PlayerData player, StateType heldItem, ClientVersion version, WrappedBlockState block, boolean isTargetBlock, int x, int y, int z) {
         HitboxData data = getData(block.getType());
 
         if (data == null) {

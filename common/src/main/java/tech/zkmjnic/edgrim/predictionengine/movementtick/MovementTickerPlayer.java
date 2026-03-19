@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.movementtick;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngineLava;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngineNormal;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngineWater;
@@ -9,7 +9,7 @@ import tech.zkmjnic.edgrim.utils.nmsutil.BlockProperties;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 
 public class MovementTickerPlayer extends MovementTicker {
-    public MovementTickerPlayer(EdGrimPlayer player) {
+    public MovementTickerPlayer(PlayerData player) {
         super(player);
     }
 

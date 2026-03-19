@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityType;
 
 import java.util.UUID;
@@ -13,7 +13,7 @@ public class PacketEntitySizeable extends PacketEntity {
     // as the default size; I'm not sure if we still need to do this. Will change behaviour if issues reported
     public int size = 1;
 
-    public PacketEntitySizeable(EdGrimPlayer player, UUID uuid, EntityType type, double x, double y, double z) {
+    public PacketEntitySizeable(PlayerData player, UUID uuid, EntityType type, double x, double y, double z) {
         super(player, uuid, type, x, y, z);
     }
 }

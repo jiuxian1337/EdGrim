@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.badpackets;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -16,7 +16,7 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDe
 
 @CheckData(name = "BadPacketsM", description = "Tried to respawn while alive", experimental = true)
 public class BadPacketsM extends Check implements PacketCheck {
-    public BadPacketsM(final EdGrimPlayer player) {
+    public BadPacketsM(final PlayerData player) {
         super(player);
     }
 

@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
 import tech.zkmjnic.edgrim.utils.collisions.blocks.DoorHandler;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
@@ -14,7 +14,7 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class FluidTypeFlowing {
-    public static Vector3dm getFlow(EdGrimPlayer player, int originalX, int originalY, int originalZ) {
+    public static Vector3dm getFlow(PlayerData player, int originalX, int originalY, int originalZ) {
         float fluidLevel = (float) Math.min(player.compensatedWorld.getFluidLevelAt(originalX, originalY, originalZ), 8 / 9D);
         ClientVersion version = player.getClientVersion();
 
@@ -71,11 +71,11 @@ public class FluidTypeFlowing {
         return normalizeVectorWithoutNaN(vec3d);
     }
 
-    private static boolean affectsFlow(EdGrimPlayer player, int originalX, int originalY, int originalZ, int x2, int y2, int z2) {
+    private static boolean affectsFlow(PlayerData player, int originalX, int originalY, int originalZ, int x2, int y2, int z2) {
         return isEmpty(player, x2, y2, z2) || isSame(player, originalX, originalY, originalZ, x2, y2, z2);
     }
 
-    private static boolean isSolidFace(EdGrimPlayer player, int originalX, int y, int originalZ, BlockFace direction) {
+    private static boolean isSolidFace(PlayerData player, int originalX, int y, int originalZ, BlockFace direction) {
         int x = originalX + direction.getModX();
         int z = originalZ + direction.getModZ();
 
@@ -157,13 +157,13 @@ public class FluidTypeFlowing {
         return var0 < 1.0E-4 ? new Vector3dm() : vector.multiply(1 / var0);
     }
 
-    public static boolean isEmpty(EdGrimPlayer player, int x, int y, int z) {
+    public static boolean isEmpty(PlayerData player, int x, int y, int z) {
         return player.compensatedWorld.getFluidLevelAt(x, y, z) == 0;
     }
 
     // Check if both are a type of water or both are a type of lava
     // This is a bit slow... but I don't see a better way to do it with the bukkit api and no nms
-    public static boolean isSame(EdGrimPlayer player, int x1, int y1, int z1, int x2, int y2, int z2) {
+    public static boolean isSame(PlayerData player, int x1, int y1, int z1, int x2, int y2, int z2) {
         return player.compensatedWorld.getWaterFluidLevelAt(x1, y1, z1) > 0 &&
                 player.compensatedWorld.getWaterFluidLevelAt(x2, y2, z2) > 0 ||
                 player.compensatedWorld.getLavaFluidLevelAt(x1, y1, z1) > 0 &&

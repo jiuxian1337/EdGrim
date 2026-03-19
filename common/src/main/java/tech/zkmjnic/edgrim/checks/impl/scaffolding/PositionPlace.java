@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.checks.impl.scaffolding;
 
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
@@ -10,7 +10,7 @@ import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 @CheckData(name = "PositionPlace", description = "Placed a block against a hidden face")
 public class PositionPlace extends BlockPlaceCheck {
 
-    public PositionPlace(EdGrimPlayer player) {
+    public PositionPlace(PlayerData player) {
         super(player);
     }
 

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package tech.zkmjnic.edgrim.utils.data.packetentity;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.ReachInterpolationData;
 import tech.zkmjnic.edgrim.utils.data.TrackedPosition;
@@ -61,14 +61,14 @@ public class PacketEntity extends TypedPacketEntity {
     public boolean trackEntityEquipment = false;
     private EnumMap<EquipmentSlot, ItemStack> equipment = null;
 
-    public PacketEntity(EdGrimPlayer player, EntityType type) {
+    public PacketEntity(PlayerData player, EntityType type) {
         super(type);
         this.uuid = null;
         initAttributes(player);
         this.trackedServerPosition = new TrackedPosition();
     }
 
-    public PacketEntity(EdGrimPlayer player, UUID uuid, EntityType type, double x, double y, double z) {
+    public PacketEntity(PlayerData player, UUID uuid, EntityType type, double x, double y, double z) {
         super(type);
         this.uuid = uuid;
         initAttributes(player);
@@ -88,7 +88,7 @@ public class PacketEntity extends TypedPacketEntity {
         attributeMap.put(valuedAttribute.attribute(), valuedAttribute);
     }
 
-    protected void initAttributes(EdGrimPlayer player) {
+    protected void initAttributes(PlayerData player) {
         trackAttribute(ValuedAttribute.ranged(Attributes.SCALE, 1.0, 0.0625, 16)
                 .requiredVersion(player, ClientVersion.V_1_20_5));
         trackAttribute(ValuedAttribute.ranged(Attributes.STEP_HEIGHT, 0.6f, 0, 10)
@@ -124,7 +124,7 @@ public class PacketEntity extends TypedPacketEntity {
 
     // Set the old packet location to the new one
     // Set the new packet location to the updated packet location
-    public void onFirstTransaction(boolean relative, boolean hasPos, double relX, double relY, double relZ, EdGrimPlayer player) {
+    public void onFirstTransaction(boolean relative, boolean hasPos, double relX, double relY, double relZ, PlayerData player) {
         if (hasPos) {
             if (relative) {
                 // This only matters for 1.9+ clients, but it won't hurt 1.8 clients either... align for imprecision
@@ -204,7 +204,7 @@ public class PacketEntity extends TypedPacketEntity {
     }
 
     // This is for handling riding and entities attached to one another.
-    public void setPositionRaw(EdGrimPlayer player, SimpleCollisionBox box) {
+    public void setPositionRaw(PlayerData player, SimpleCollisionBox box) {
         // I'm disappointed in you mojang.  Please don't set the packet position as it desyncs it...
         // But let's follow this flawed client-sided logic!
         this.trackedServerPosition.setPos(new Vector3d((box.maxX - box.minX) / 2 + box.minX, box.minY, (box.maxZ - box.minZ) / 2 + box.minZ));

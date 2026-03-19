@@ -8,7 +8,7 @@ import ac.grim.grimac.api.event.events.CommandExecuteEvent;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.events.packets.ProxyAlertMessenger;
 import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class PunishmentManager implements ConfigReloadable {
-    EdGrimPlayer player;
+    PlayerData player;
     List<PunishGroup> groups = new ArrayList<>();
     String experimentalSymbol = "*";
     private String alertString;
@@ -32,7 +32,7 @@ public class PunishmentManager implements ConfigReloadable {
     private boolean clickEnabled;
     private String clickCommand;
 
-    public PunishmentManager(EdGrimPlayer player) {
+    public PunishmentManager(PlayerData player) {
         this.player = player;
     }
 
@@ -138,7 +138,7 @@ public class PunishmentManager implements ConfigReloadable {
         return component;
     }
 
-    public boolean handleAlert(EdGrimPlayer player, String verbose, Check check) {
+    public boolean handleAlert(PlayerData player, String verbose, Check check) {
         boolean sentDebug = false;
 
         // Check commands

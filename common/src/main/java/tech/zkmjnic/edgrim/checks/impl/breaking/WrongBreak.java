@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.breaking;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import com.github.retrooper.packetevents.PacketEvents;
@@ -21,7 +21,7 @@ public class WrongBreak extends Check implements BlockBreakCheck {
     private boolean lastBlockWasInstantBreak = false;
     private Vector3i lastBlock, lastCancelledBlock, lastLastBlock = null;
 
-    public WrongBreak(final EdGrimPlayer player) {
+    public WrongBreak(final PlayerData player) {
         super(player);
     }
 

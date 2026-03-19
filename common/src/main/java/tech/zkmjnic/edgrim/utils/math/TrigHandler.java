@@ -1,16 +1,16 @@
 package tech.zkmjnic.edgrim.utils.math;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import lombok.Getter;
 
 public class TrigHandler {
-    private final EdGrimPlayer player;
+    private final PlayerData player;
     private double buffer = 0;
     @Getter
     private boolean isVanillaMath = true;
 
-    public TrigHandler(EdGrimPlayer player) {
+    public TrigHandler(PlayerData player) {
         this.player = player;
     }
 

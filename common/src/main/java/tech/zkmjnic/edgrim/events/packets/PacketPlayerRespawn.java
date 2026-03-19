@@ -6,7 +6,7 @@ import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsF;
 import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsG;
 import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsH;
 import tech.zkmjnic.edgrim.checks.impl.elytra.ElytraC;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.KnownInput;
 import tech.zkmjnic.edgrim.utils.data.TrackerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntitySelf;
@@ -80,7 +80,7 @@ public class PacketPlayerRespawn extends PacketListenerAbstract {
         if (event.getPacketType() == PacketType.Play.Server.UPDATE_HEALTH) {
             WrapperPlayServerUpdateHealth health = new WrapperPlayServerUpdateHealth(event);
 
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             player.resetRespawnTick();
@@ -113,7 +113,7 @@ public class PacketPlayerRespawn extends PacketListenerAbstract {
         }
 
         if (event.getPacketType() == PacketType.Play.Server.JOIN_GAME) {
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             WrapperPlayServerJoinGame joinGame = new WrapperPlayServerJoinGame(event);
@@ -130,7 +130,7 @@ public class PacketPlayerRespawn extends PacketListenerAbstract {
         if (event.getPacketType() == PacketType.Play.Server.RESPAWN) {
             WrapperPlayServerRespawn respawn = new WrapperPlayServerRespawn(event);
 
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             List<Runnable> tasks = event.getTasksAfterSend();
@@ -226,7 +226,7 @@ public class PacketPlayerRespawn extends PacketListenerAbstract {
         }
     }
 
-    private boolean isWorldChange(EdGrimPlayer player, WrapperPlayServerRespawn respawn) {
+    private boolean isWorldChange(PlayerData player, WrapperPlayServerRespawn respawn) {
         if (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_16) && PacketEvents.getAPI().getServerManager().getVersion().isNewerThan(ServerVersion.V_1_16)) {
             return !Objects.equals(respawn.getWorldName().orElse(null), player.worldName);
         }

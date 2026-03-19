@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.predictions;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 
@@ -11,7 +11,7 @@ public class PredictionEngineWaterLegacy extends PredictionEngine {
     private float swimmingSpeed;
     private float swimmingFriction;
 
-    public void guessBestMovement(float swimmingSpeed, EdGrimPlayer player, float swimmingFriction) {
+    public void guessBestMovement(float swimmingSpeed, PlayerData player, float swimmingFriction) {
         this.swimmingSpeed = swimmingSpeed;
         this.swimmingFriction = swimmingFriction;
         super.guessBestMovement(swimmingSpeed, player);
@@ -19,7 +19,7 @@ public class PredictionEngineWaterLegacy extends PredictionEngine {
 
     // This is just the vanilla equation for legacy water movement
     @Override
-    public Vector3dm getMovementResultFromInput(EdGrimPlayer player, Vector3dm inputVector, float f, float f2) {
+    public Vector3dm getMovementResultFromInput(PlayerData player, Vector3dm inputVector, float f, float f2) {
         float lengthSquared = (float) inputVector.lengthSquared();
 
         if (lengthSquared >= 1.0E-4F) {
@@ -43,7 +43,7 @@ public class PredictionEngineWaterLegacy extends PredictionEngine {
 
 
     @Override
-    public void addJumpsToPossibilities(EdGrimPlayer player, Set<VectorData> existingVelocities) {
+    public void addJumpsToPossibilities(PlayerData player, Set<VectorData> existingVelocities) {
         for (VectorData vector : new HashSet<>(existingVelocities)) {
             existingVelocities.add(new VectorData(vector.vector.clone().add(new Vector3dm(0, 0.04f, 0)), vector, VectorData.VectorType.Jump));
 
@@ -54,7 +54,7 @@ public class PredictionEngineWaterLegacy extends PredictionEngine {
     }
 
     @Override
-    public void endOfTick(EdGrimPlayer player, double playerGravity) {
+    public void endOfTick(PlayerData player, double playerGravity) {
         super.endOfTick(player, playerGravity);
 
         for (VectorData vector : player.getPossibleVelocitiesMinusKnockback()) {

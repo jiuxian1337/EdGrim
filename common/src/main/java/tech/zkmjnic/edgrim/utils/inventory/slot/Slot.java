@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.inventory.slot;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.inventory.InventoryStorage;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
 
@@ -46,13 +46,13 @@ public class Slot {
         return true;
     }
 
-    public ItemStack safeTake(int p_150648_, int p_150649_, EdGrimPlayer p_150650_) {
+    public ItemStack safeTake(int p_150648_, int p_150649_, PlayerData p_150650_) {
         Optional<ItemStack> optional = this.tryRemove(p_150648_, p_150649_, p_150650_);
         optional.ifPresent((p_150655_) -> this.onTake(p_150650_, p_150655_));
         return optional.orElse(ItemStack.EMPTY);
     }
 
-    public Optional<ItemStack> tryRemove(int p_150642_, int p_150643_, EdGrimPlayer player) {
+    public Optional<ItemStack> tryRemove(int p_150642_, int p_150643_, PlayerData player) {
         if (!this.mayPickup(player)) {
             return Optional.empty();
         } else if (!this.allowModification(player) && p_150643_ < this.getItem().getAmount()) {
@@ -91,16 +91,16 @@ public class Slot {
         return this.container.removeItem(this.inventoryStorageSlot, p_40227_);
     }
 
-    public void onTake(EdGrimPlayer player, ItemStack itemStack) {
+    public void onTake(PlayerData player, ItemStack itemStack) {
 
     }
 
     // No override
-    public boolean allowModification(EdGrimPlayer player) {
+    public boolean allowModification(PlayerData player) {
         return this.mayPickup(player) && this.mayPlace(this.getItem());
     }
 
-    public boolean mayPickup(EdGrimPlayer player) {
+    public boolean mayPickup(PlayerData player) {
         return true;
     }
 }

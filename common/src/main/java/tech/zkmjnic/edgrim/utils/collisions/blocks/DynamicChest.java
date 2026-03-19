@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
@@ -16,7 +16,7 @@ import com.github.retrooper.packetevents.protocol.world.states.enums.Type;
 // With 1.12 clients on 1.13+ servers, the client checks NORTH and WEST for chests before SOUTH and EAST
 // With 1.13+ clients on 1.12 servers, ViaVersion checks NORTH and WEST for chests before SOUTH and EAST
 public class DynamicChest implements CollisionFactory {
-    public CollisionBox fetch(EdGrimPlayer player, ClientVersion version, WrappedBlockState chest, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, ClientVersion version, WrappedBlockState chest, int x, int y, int z) {
         // 1.13+ clients on 1.13+ servers
         if (PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_13)
                 && version.isNewerThanOrEquals(ClientVersion.V_1_13)) {

@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
 import com.github.retrooper.packetevents.protocol.world.states.enums.Thickness;
 import com.github.retrooper.packetevents.protocol.world.states.enums.VerticalDirection;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
 public class Dripstone {
-    public static void update(@NotNull EdGrimPlayer player, @NotNull WrappedBlockState toPlace, int x, int y, int z, boolean secondaryUse) {
+    public static void update(@NotNull PlayerData player, @NotNull WrappedBlockState toPlace, int x, int y, int z, boolean secondaryUse) {
         VerticalDirection primaryDirection = toPlace.getVerticalDirection();
         VerticalDirection opposite = toPlace.getVerticalDirection() == VerticalDirection.UP ? VerticalDirection.DOWN : VerticalDirection.UP;
 

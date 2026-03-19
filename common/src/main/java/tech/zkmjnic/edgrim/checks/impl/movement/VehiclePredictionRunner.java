@@ -2,12 +2,12 @@ package tech.zkmjnic.edgrim.checks.impl.movement;
 
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.VehicleCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PositionUpdate;
 import tech.zkmjnic.edgrim.utils.anticheat.update.VehiclePositionUpdate;
 
 public class VehiclePredictionRunner extends Check implements VehicleCheck {
-    public VehiclePredictionRunner(EdGrimPlayer playerData) {
+    public VehiclePredictionRunner(PlayerData playerData) {
         super(playerData);
     }
 

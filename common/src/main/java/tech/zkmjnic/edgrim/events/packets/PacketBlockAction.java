@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.events.packets;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.ShulkerData;
 import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
@@ -26,7 +26,7 @@ public class PacketBlockAction extends PacketListenerAbstract {
     @Override
     public void onPacketSend(PacketSendEvent event) {
         if (event.getPacketType() == PacketType.Play.Server.BLOCK_ACTION) {
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             WrapperPlayServerBlockAction blockAction = new WrapperPlayServerBlockAction(event);

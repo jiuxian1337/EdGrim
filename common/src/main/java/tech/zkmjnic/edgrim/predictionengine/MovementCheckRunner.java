@@ -6,7 +6,7 @@ import tech.zkmjnic.edgrim.checks.impl.prediction.Phase;
 import tech.zkmjnic.edgrim.checks.impl.vehicle.VehicleC;
 import tech.zkmjnic.edgrim.checks.type.PositionCheck;
 import tech.zkmjnic.edgrim.manager.SetbackTeleportUtil;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.movementtick.MovementTickerCamel;
 import tech.zkmjnic.edgrim.predictionengine.movementtick.MovementTickerHappyGhast;
 import tech.zkmjnic.edgrim.predictionengine.movementtick.MovementTickerHorse;
@@ -53,7 +53,7 @@ public class MovementCheckRunner extends Check implements PositionCheck {
     public static double longPredictionNanos = 0.3 * 1e6;
     private boolean allowSprintJumpingWithElytra = true;
 
-    public MovementCheckRunner(EdGrimPlayer player) {
+    public MovementCheckRunner(PlayerData player) {
         super(player);
     }
 

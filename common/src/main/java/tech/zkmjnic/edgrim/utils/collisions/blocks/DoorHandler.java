@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
@@ -20,7 +20,7 @@ public class DoorHandler implements CollisionFactory {
     protected static final CollisionBox EAST_AABB = new HexCollisionBox(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
 
     @Override
-    public CollisionBox fetch(EdGrimPlayer player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
         return switch (fetchDirection(player, version, block, x, y, z)) {
             case NORTH -> NORTH_AABB.copy();
             case SOUTH -> SOUTH_AABB.copy();
@@ -31,7 +31,7 @@ public class DoorHandler implements CollisionFactory {
 
     }
 
-    public BlockFace fetchDirection(EdGrimPlayer player, ClientVersion version, WrappedBlockState door, int x, int y, int z) {
+    public BlockFace fetchDirection(PlayerData player, ClientVersion version, WrappedBlockState door, int x, int y, int z) {
         BlockFace facingDirection;
         boolean isClosed;
         boolean isRightHinge;

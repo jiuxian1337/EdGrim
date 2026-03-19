@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.datatypes;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DynamicCollisionBox implements CollisionBox {
 
-    private final EdGrimPlayer player;
+    private final PlayerData player;
     private final CollisionFactory box;
     @Setter
     private ClientVersion version;
@@ -17,7 +17,7 @@ public class DynamicCollisionBox implements CollisionBox {
     private WrappedBlockState block;
     private int x, y, z;
 
-    public DynamicCollisionBox(EdGrimPlayer player, ClientVersion version, CollisionFactory box, WrappedBlockState block) {
+    public DynamicCollisionBox(PlayerData player, ClientVersion version, CollisionFactory box, WrappedBlockState block) {
         this.player = player;
         this.version = version;
         this.box = box;

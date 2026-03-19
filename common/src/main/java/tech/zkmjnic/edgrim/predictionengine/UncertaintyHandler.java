@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.LastInstance;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class UncertaintyHandler {
-    private final EdGrimPlayer player;
+    private final PlayerData player;
     // Handles uncertainty when a piston could have pushed a player in a direction
     // Only the required amount of uncertainty is given
     public EvictingQueue<Double> pistonX = new EvictingQueue<>(5);
@@ -92,7 +92,7 @@ public class UncertaintyHandler {
     public double lastHorizontalOffset = 0;
     public double lastVerticalOffset = 0;
 
-    public UncertaintyHandler(EdGrimPlayer player) {
+    public UncertaintyHandler(PlayerData player) {
         this.player = player;
         this.lastFlyingTicks = new LastInstance(player);
         this.lastFlyingStatusChange = new LastInstance(player);

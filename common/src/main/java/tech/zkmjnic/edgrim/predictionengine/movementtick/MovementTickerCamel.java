@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.predictionengine.movementtick;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityCamel;
 
 public class MovementTickerCamel extends MovementTickerHorse {
 
-    public MovementTickerCamel(EdGrimPlayer player) {
+    public MovementTickerCamel(PlayerData player) {
         super(player);
     }
 

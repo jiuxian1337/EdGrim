@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.inventory.inventory;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.inventory.Inventory;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
@@ -80,7 +80,7 @@ public enum MenuType {
         return MENU_BY_ID_ARRAY[id];
     }
 
-    public static AbstractContainerMenu getMenuFromID(EdGrimPlayer player, Inventory playerInventory, MenuType type) {
+    public static AbstractContainerMenu getMenuFromID(PlayerData player, Inventory playerInventory, MenuType type) {
         return switch (type) {
             case GENERIC_9x1, GENERIC_9x2, GENERIC_9x3, GENERIC_9x4, GENERIC_9x5, GENERIC_9x6 ->
                     new BasicInventoryMenu(player, playerInventory, type.getId() + 1);
@@ -90,7 +90,7 @@ public enum MenuType {
         };
     }
 
-    public static AbstractContainerMenu getMenuFromString(EdGrimPlayer player, Inventory inventory, String legacyType, int slots, int horse) {
+    public static AbstractContainerMenu getMenuFromString(PlayerData player, Inventory inventory, String legacyType, int slots, int horse) {
         return switch (legacyType) {
             case "minecraft:chest", "minecraft:container" ->
                     new BasicInventoryMenu(player, inventory, slots / 9);

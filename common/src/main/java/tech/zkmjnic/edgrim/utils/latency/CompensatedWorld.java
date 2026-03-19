@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.utils.latency;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.change.BlockModification;
 import tech.zkmjnic.edgrim.utils.chunks.Column;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
@@ -66,7 +66,7 @@ import java.util.Set;
 public class CompensatedWorld {
     public static final ClientVersion blockVersion = PacketEvents.getAPI().getServerManager().getVersion().toClientVersion();
     private static final WrappedBlockState airData = WrappedBlockState.getByGlobalId(blockVersion, 0);
-    public final EdGrimPlayer player;
+    public final PlayerData player;
     public final Long2ObjectMap<Column> chunks;
     // Packet locations for blocks
     public final Set<PistonData> activePistons = new HashSet<>();
@@ -91,7 +91,7 @@ public class CompensatedWorld {
 
     private final boolean noNegativeBlocks;
 
-    public CompensatedWorld(EdGrimPlayer player) {
+    public CompensatedWorld(PlayerData player) {
         this.player = player;
         chunks = new Long2ObjectOpenHashMap<>(81, 0.5f);
         noNegativeBlocks = player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_16_4);

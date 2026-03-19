@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.prediction;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
@@ -12,7 +12,7 @@ import com.github.retrooper.packetevents.protocol.player.GameMode;
 @CheckData(name = "GroundSpoof", setback = 10, decay = 0.01)
 public class GroundSpoof extends Check implements PostPredictionCheck {
 
-    public GroundSpoof(EdGrimPlayer player) {
+    public GroundSpoof(PlayerData player) {
         super(player);
     }
 

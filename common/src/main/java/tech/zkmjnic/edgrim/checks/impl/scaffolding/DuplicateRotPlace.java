@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.checks.impl.scaffolding;
 
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 
@@ -15,7 +15,7 @@ public class DuplicateRotPlace extends BlockPlaceCheck {
     private double deltaDotsX;
     private boolean rotated = false;
 
-    public DuplicateRotPlace(EdGrimPlayer player) {
+    public DuplicateRotPlace(PlayerData player) {
         super(player);
     }
 

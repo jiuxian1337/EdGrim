@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.checks.impl.timer;
 
 import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 
 // This works around 1.3 timer, to prevent too high abuse - maybe there's a better solution?
@@ -12,7 +12,7 @@ public class TimerLimit extends Timer {
     // At what ping should we start to limit the balance advantage? (nanos)
     private long limitAbuseOverPing;
 
-    public TimerLimit(EdGrimPlayer player) {
+    public TimerLimit(PlayerData player) {
         super(player);
     }
 

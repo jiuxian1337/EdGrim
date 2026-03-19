@@ -1,12 +1,10 @@
 package tech.zkmjnic.edgrim.utils.latency;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.ShulkerData;
 import tech.zkmjnic.edgrim.utils.data.TrackerData;
 import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
-import tech.zkmjnic.edgrim.utils.data.packetentity.*;
-import tech.zkmjnic.edgrim.utils.data.packetentity.*;
 import tech.zkmjnic.edgrim.utils.data.packetentity.*;
 import tech.zkmjnic.edgrim.utils.data.packetentity.dragon.PacketEntityEnderDragon;
 import tech.zkmjnic.edgrim.utils.nmsutil.BoundingBoxSize;
@@ -52,9 +50,9 @@ public class CompensatedEntities {
     public boolean hasSprintingAttributeEnabled = false;
     public TrackerData selfTrackedEntity;
     public PacketEntitySelf self;
-    private final EdGrimPlayer player;
+    private final PlayerData player;
 
-    public CompensatedEntities(EdGrimPlayer player) {
+    public CompensatedEntities(PlayerData player) {
         this.player = player;
         this.self = new PacketEntitySelf(player);
         this.selfTrackedEntity = new TrackerData(0, 0, 0, 0, 0, EntityTypes.PLAYER, player.lastTransactionSent.get());

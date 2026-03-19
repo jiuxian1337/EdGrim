@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.MainSupportingBlockData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityHorse;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityStrider;
@@ -19,7 +19,7 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class BlockProperties {
-    public static float getFrictionInfluencedSpeed(float f, EdGrimPlayer player) {
+    public static float getFrictionInfluencedSpeed(float f, PlayerData player) {
         if (player.lastOnGround) {
             return (float) (player.speed * (0.21600002f / (f * f * f)));
         }
@@ -60,7 +60,7 @@ public class BlockProperties {
      * For soul speed (server-sided only)
      * (we don't account for this and instead remove this debuff) And powder snow block attribute
      */
-    public static StateType getOnPos(EdGrimPlayer player, MainSupportingBlockData mainSupportingBlockData, Vector3d playerPos) {
+    public static StateType getOnPos(PlayerData player, MainSupportingBlockData mainSupportingBlockData, Vector3d playerPos) {
         if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_19_4)) {
             return BlockProperties.getOnBlock(player, playerPos.getX(), playerPos.getY(), playerPos.getZ());
         }
@@ -69,7 +69,7 @@ public class BlockProperties {
         return player.compensatedWorld.getBlockType(pos.x, pos.y, pos.z);
     }
 
-    public static float getFriction(EdGrimPlayer player, MainSupportingBlockData mainSupportingBlockData, Vector3d playerPos) {
+    public static float getFriction(PlayerData player, MainSupportingBlockData mainSupportingBlockData, Vector3d playerPos) {
         if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_19_4)) {
             double searchBelowAmount = 0.5000001;
 
@@ -84,7 +84,7 @@ public class BlockProperties {
         return getMaterialFriction(player, underPlayer);
     }
 
-    public static float getBlockSpeedFactor(EdGrimPlayer player, MainSupportingBlockData mainSupportingBlockData, Vector3d playerPos) {
+    public static float getBlockSpeedFactor(PlayerData player, MainSupportingBlockData mainSupportingBlockData, Vector3d playerPos) {
         // This system was introduces in 1.15 players to add support for honey blocks slowing players down
         if (player.getClientVersion().isOlderThan(ClientVersion.V_1_15)) return 1.0f;
         if (player.isGliding || player.isFlying) return 1.0f;
@@ -103,7 +103,7 @@ public class BlockProperties {
         return getModernVelocityMultiplier(player, getBlockSpeedFactor(player, underPlayer));
     }
 
-    public static boolean onHoneyBlock(EdGrimPlayer player, MainSupportingBlockData mainSupportingBlockData, Vector3d playerPos) {
+    public static boolean onHoneyBlock(PlayerData player, MainSupportingBlockData mainSupportingBlockData, Vector3d playerPos) {
         if (player.getClientVersion().isOlderThan(ClientVersion.V_1_15)) return false;
 
         StateType inBlock = player.compensatedWorld.getBlockType(playerPos.getX(), playerPos.getY(), playerPos.getZ());
@@ -117,14 +117,14 @@ public class BlockProperties {
      * <p>
      * On soul speed block (server-sided only)
      */
-    private static StateType getBlockPosBelowThatAffectsMyMovement(EdGrimPlayer player, MainSupportingBlockData mainSupportingBlockData, Vector3d playerPos) {
+    private static StateType getBlockPosBelowThatAffectsMyMovement(PlayerData player, MainSupportingBlockData mainSupportingBlockData, Vector3d playerPos) {
         Vector3i pos = player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_19_4)
                 ? new Vector3i(GrimMath.floor(playerPos.getX()), GrimMath.floor(playerPos.getY() - 0.5000001), GrimMath.floor(playerPos.getZ()))
                 : getOnPos(player, playerPos, mainSupportingBlockData, 0.500001F);
         return player.compensatedWorld.getBlockType(pos.x, pos.y, pos.z);
     }
 
-    private static Vector3i getOnPos(EdGrimPlayer player, Vector3d playerPos, MainSupportingBlockData mainSupportingBlockData, float searchBelowPlayer) {
+    private static Vector3i getOnPos(PlayerData player, Vector3d playerPos, MainSupportingBlockData mainSupportingBlockData, float searchBelowPlayer) {
         Vector3i mainBlockPos = mainSupportingBlockData.blockPos();
         if (mainBlockPos != null) {
             StateType blockstate = player.compensatedWorld.getBlockType(mainBlockPos.x, mainBlockPos.y, mainBlockPos.z);
@@ -140,7 +140,7 @@ public class BlockProperties {
         }
     }
 
-    public static float getMaterialFriction(EdGrimPlayer player, StateType material) {
+    public static float getMaterialFriction(PlayerData player, StateType material) {
         float friction = 0.6f;
 
         if (material == StateTypes.ICE) friction = 0.98f;
@@ -160,7 +160,7 @@ public class BlockProperties {
         return friction;
     }
 
-    private static StateType getOnBlock(EdGrimPlayer player, double x, double y, double z) {
+    private static StateType getOnBlock(PlayerData player, double x, double y, double z) {
         StateType block1 = player.compensatedWorld.getBlockType(GrimMath.floor(x), GrimMath.floor(y - 0.2F), GrimMath.floor(z));
 
         if (block1.isAir()) {
@@ -174,7 +174,7 @@ public class BlockProperties {
         return block1;
     }
 
-    private static float getBlockSpeedFactorLegacy(EdGrimPlayer player, Vector3d pos) {
+    private static float getBlockSpeedFactorLegacy(PlayerData player, Vector3d pos) {
         StateType block = player.compensatedWorld.getBlockType(pos.getX(), pos.getY(), pos.getZ());
 
         // This is the 1.16.0 and 1.16.1 method for detecting if the player is on soul speed
@@ -192,7 +192,7 @@ public class BlockProperties {
         return getBlockSpeedFactor(player, block2);
     }
 
-    private static float getBlockSpeedFactor(EdGrimPlayer player, StateType type) {
+    private static float getBlockSpeedFactor(PlayerData player, StateType type) {
         if (type == StateTypes.HONEY_BLOCK) return 0.4f;
         if (type == StateTypes.SOUL_SAND) {
             // Soul speed is a 1.16+ enchantment
@@ -207,7 +207,7 @@ public class BlockProperties {
         return 1.0f;
     }
 
-    private static float getModernVelocityMultiplier(EdGrimPlayer player, float blockSpeedFactor) {
+    private static float getModernVelocityMultiplier(PlayerData player, float blockSpeedFactor) {
         if (player.getClientVersion().isOlderThan(ClientVersion.V_1_21)) return blockSpeedFactor;
         return (float) GrimMath.lerp((float) player.compensatedEntities.self.getAttributeValue(Attributes.MOVEMENT_EFFICIENCY), blockSpeedFactor, 1.0F);
     }

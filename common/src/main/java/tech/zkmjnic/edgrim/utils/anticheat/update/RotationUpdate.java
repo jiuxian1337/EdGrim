@@ -14,6 +14,7 @@ public final class RotationUpdate {
     private AimProcessor processor;
     private float deltaYRot, deltaXRot;
     private boolean isCinematic;
+    private boolean isCinematic2;
     private double sensitivityX, sensitivityY;
 
     public RotationUpdate(HeadRotation from, HeadRotation to, float deltaXRot, float deltaYRot) {

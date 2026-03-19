@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.checks.type;
 
 import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.collisions.HitboxData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
@@ -44,7 +44,7 @@ public class BlockPlaceCheck extends Check implements RotationCheck, BlockBreakC
     private final SimpleCollisionBox[] boxes = new SimpleCollisionBox[ComplexCollisionBox.DEFAULT_MAX_COLLISION_BOX_SIZE];
     protected int cancelVL;
 
-    public BlockPlaceCheck(EdGrimPlayer player) {
+    public BlockPlaceCheck(PlayerData player) {
         super(player);
     }
 

@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.breaking;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
@@ -23,7 +23,7 @@ public class MultiBreak extends Check implements BlockBreakCheck {
     private BlockFace lastFace;
     private Vector3i lastPos;
 
-    public MultiBreak(EdGrimPlayer player) {
+    public MultiBreak(PlayerData player) {
         super(player);
     }
 

@@ -2,14 +2,14 @@ package tech.zkmjnic.edgrim.checks.impl.scaffolding;
 
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 
 @CheckData(name = "InvalidPlaceB", description = "Sent impossible block face id")
 public class InvalidPlaceB extends BlockPlaceCheck {
-    public InvalidPlaceB(EdGrimPlayer player) {
+    public InvalidPlaceB(PlayerData player) {
         super(player);
     }
 

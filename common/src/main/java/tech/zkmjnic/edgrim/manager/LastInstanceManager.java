@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.manager;
 
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.data.LastInstance;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class LastInstanceManager extends Check implements PostPredictionCheck {
     private final List<LastInstance> instances = new ArrayList<>();
 
-    public LastInstanceManager(EdGrimPlayer player) {
+    public LastInstanceManager(PlayerData player) {
         super(player);
     }
 

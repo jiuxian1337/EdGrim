@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class CheckIfChunksLoaded {
-    public static boolean isChunksUnloadedAt(EdGrimPlayer player, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+    public static boolean isChunksUnloadedAt(PlayerData player, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
         if (maxY < player.compensatedWorld.getMinHeight() || minY >= player.compensatedWorld.getMaxHeight()) {
             return true;
         }

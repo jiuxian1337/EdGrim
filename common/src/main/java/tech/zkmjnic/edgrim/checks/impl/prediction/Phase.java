@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.prediction;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
@@ -19,7 +19,7 @@ import java.util.List;
 public class Phase extends Check implements PostPredictionCheck {
     SimpleCollisionBox oldBB;
 
-    public Phase(EdGrimPlayer player) {
+    public Phase(PlayerData player) {
         super(player);
         oldBB = player.boundingBox;
     }

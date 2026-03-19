@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.checks.impl.packetorder;
 
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
@@ -13,7 +13,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPl
 
 @CheckData(name = "PacketOrderN", experimental = true)
 public class PacketOrderN extends BlockPlaceCheck {
-    public PacketOrderN(final EdGrimPlayer player) {
+    public PacketOrderN(final PlayerData player) {
         super(player);
     }
 

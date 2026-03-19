@@ -386,4 +386,42 @@ public final class MathUtil {
         double scale2 = Math.pow(10, scale);
         return Math.ceil(value * scale2) / scale2;
     }
+
+    public static double gcd(double a, double b) {
+        if (a == 0) return 0;
+        if (a < b) {
+            double tmp = a;
+            a = b;
+            b = tmp;
+        }
+        while (b > MINIMUM_DIVISOR) {
+            double tmp = a - Math.floor(a / b) * b;
+            a = b;
+            b = tmp;
+        }
+        return a;
+    }
+
+    public static float getGCDValue(double s) {
+        return getGCD(s) * 0.15F;
+    }
+
+    public static double getShannonEntropy(final Collection<? extends Number> data) {
+        Map<Double, Long> freq = new HashMap<>();
+        for (Number n : data) {
+            double v = n.doubleValue();
+            freq.put(v, freq.getOrDefault(v, 0L) + 1);
+        }
+        double total = data.size();
+        double entropy = 0.0;
+        for (long c : freq.values()) {
+            double p = c / total;
+            entropy -= p * (Math.log(p) / Math.log(2));
+        }
+        return entropy;
+    }
+
+    public static boolean isExponentiallySmall(final Number number) {
+        return number.doubleValue() < 1 && String.valueOf(number.doubleValue()).contains("E");
+    }
 }

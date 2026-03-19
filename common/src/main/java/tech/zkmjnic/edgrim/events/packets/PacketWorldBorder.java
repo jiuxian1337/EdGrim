@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.events.packets;
 
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -26,7 +26,7 @@ public class PacketWorldBorder extends Check implements PacketCheck {
     private long startTime = 1;
     private long endTime = 1;
 
-    public PacketWorldBorder(EdGrimPlayer playerData) {
+    public PacketWorldBorder(PlayerData playerData) {
         super(playerData);
     }
 

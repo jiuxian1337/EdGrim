@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.manager.init.start;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.UncertaintyHandler;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngine;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
@@ -36,7 +36,7 @@ public final class SuperDebug extends Check implements PostPredictionCheck {
     List<Vector3dm> baseTickAddition = new EvictingQueue<>(60);
     List<Vector3dm> baseTickWater = new EvictingQueue<>(60);
 
-    public SuperDebug(EdGrimPlayer player) {
+    public SuperDebug(PlayerData player) {
         super(player);
     }
 
@@ -273,7 +273,7 @@ public final class SuperDebug extends Check implements PostPredictionCheck {
         sb.append("\n\n");
     }
 
-    private Vector3dm getPlayerMathMovement(EdGrimPlayer player, Vector3dm wantedMovement, float f2) {
+    private Vector3dm getPlayerMathMovement(PlayerData player, Vector3dm wantedMovement, float f2) {
         float f3 = player.trigHandler.sin(f2 * 0.017453292f);
         float f4 = player.trigHandler.cos(f2 * 0.017453292f);
 

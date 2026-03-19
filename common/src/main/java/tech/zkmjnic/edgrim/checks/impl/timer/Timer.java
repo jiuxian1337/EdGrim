@@ -4,7 +4,7 @@ import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
@@ -50,7 +50,7 @@ public class Timer extends Check implements PacketCheck {
     //
     // We then take the last transaction before this to increase stability with these lag spikes and
     // to guarantee that we are at least 50 ms back before adding the time
-    public Timer(EdGrimPlayer player) {
+    public Timer(PlayerData player) {
         super(player);
     }
 

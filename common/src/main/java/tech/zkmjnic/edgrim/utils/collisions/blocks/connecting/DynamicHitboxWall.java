@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks.connecting;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
@@ -21,7 +21,7 @@ import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 
 public class DynamicHitboxWall extends DynamicConnecting implements HitBoxFactory {
     @Override
-    public CollisionBox fetch(EdGrimPlayer player, StateType heldItem, ClientVersion version, WrappedBlockState state, boolean isTargetBlock, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, StateType heldItem, ClientVersion version, WrappedBlockState state, boolean isTargetBlock, int x, int y, int z) {
         int[] connections = getConnections(player, version, state, x, y, z);
         int north = connections[0], south = connections[1], west = connections[2], east = connections[3], up = connections[4];
 
@@ -32,7 +32,7 @@ public class DynamicHitboxWall extends DynamicConnecting implements HitBoxFactor
         }
     }
 
-    private int[] getConnections(EdGrimPlayer player, ClientVersion version, WrappedBlockState state, int x, int y, int z) {
+    private int[] getConnections(PlayerData player, ClientVersion version, WrappedBlockState state, int x, int y, int z) {
         int north, south, west, east, up;
 
         if (isModernServer()) {
@@ -109,7 +109,7 @@ public class DynamicHitboxWall extends DynamicConnecting implements HitBoxFactor
     }
 
     @Override
-    public boolean checkCanConnect(EdGrimPlayer player, WrappedBlockState state, StateType one, StateType two, BlockFace direction) {
+    public boolean checkCanConnect(PlayerData player, WrappedBlockState state, StateType one, StateType two, BlockFace direction) {
         return BlockTags.WALLS.contains(one) ||
                 CollisionData.getData(one).getMovementCollisionBox(player, player.getClientVersion(), state, 0, 0, 0).isSideFullBlock(direction);
     }

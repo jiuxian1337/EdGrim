@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.checks.impl.scaffolding;
 
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
@@ -23,7 +23,7 @@ public class MultiPlace extends BlockPlaceCheck {
     private Vector3f lastCursor;
     private Vector3i lastPos;
 
-    public MultiPlace(EdGrimPlayer player) {
+    public MultiPlace(PlayerData player) {
         super(player);
     }
 

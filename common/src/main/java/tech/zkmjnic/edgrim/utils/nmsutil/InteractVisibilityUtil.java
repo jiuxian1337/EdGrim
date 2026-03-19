@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
@@ -21,11 +21,11 @@ public class InteractVisibilityUtil {
     private static final int DEFAULT_SAMPLES_PER_AXIS = 3;
     private static final double SAMPLE_INSET = 1.0E-4D;
 
-    public static boolean isBlockVisible(EdGrimPlayer player, Vector3i blockPos) {
+    public static boolean isBlockVisible(PlayerData player, Vector3i blockPos) {
         return isBoxVisible(player, new SimpleCollisionBox(blockPos));
     }
 
-    public static boolean isBoxVisible(EdGrimPlayer player, SimpleCollisionBox targetBox) {
+    public static boolean isBoxVisible(PlayerData player, SimpleCollisionBox targetBox) {
         final double[] eyeHeights = player.getPossibleEyeHeights();
         final SimpleCollisionBox eyes = getEyeBox(player, eyeHeights);
         if (eyes.isIntersected(targetBox)) {
@@ -45,7 +45,7 @@ public class InteractVisibilityUtil {
         return false;
     }
 
-    private static boolean hasLineOfSight(EdGrimPlayer player, Vector3dm eye, Vector3dm target, SimpleCollisionBox targetBox) {
+    private static boolean hasLineOfSight(PlayerData player, Vector3dm eye, Vector3dm target, SimpleCollisionBox targetBox) {
         final Vector3i eyeBlock = SimpleCollisionBox.containing(eye.getX(), eye.getY(), eye.getZ());
         final Vector3d start = new Vector3d(eye.getX(), eye.getY(), eye.getZ());
         final Vector3d end = new Vector3d(target.getX(), target.getY(), target.getZ());
@@ -61,7 +61,7 @@ public class InteractVisibilityUtil {
         }) == null;
     }
 
-    private static boolean segmentHitsBlock(EdGrimPlayer player, WrappedBlockState state, Vector3i pos, Vector3dm start, Vector3dm end) {
+    private static boolean segmentHitsBlock(PlayerData player, WrappedBlockState state, Vector3i pos, Vector3dm start, Vector3dm end) {
         final CollisionBox collisionBox = CollisionData.getData(state.getType()).getMovementCollisionBox(
                 player,
                 player.getClientVersion(),
@@ -90,7 +90,7 @@ public class InteractVisibilityUtil {
         return false;
     }
 
-    private static SimpleCollisionBox getEyeBox(EdGrimPlayer player, double[] eyeHeights) {
+    private static SimpleCollisionBox getEyeBox(PlayerData player, double[] eyeHeights) {
         double minEyeHeight = Double.MAX_VALUE;
         double maxEyeHeight = Double.MIN_VALUE;
         for (double height : eyeHeights) {

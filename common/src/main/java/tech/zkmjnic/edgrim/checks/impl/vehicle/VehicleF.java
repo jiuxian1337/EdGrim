@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.vehicle;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.KnownInput;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
@@ -12,7 +12,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSt
 
 @CheckData(name = "VehicleF", experimental = true, description = "Sent incorrect boat paddle states")
 public class VehicleF extends Check implements PacketCheck {
-    public VehicleF(EdGrimPlayer player) {
+    public VehicleF(PlayerData player) {
         super(player);
     }
 

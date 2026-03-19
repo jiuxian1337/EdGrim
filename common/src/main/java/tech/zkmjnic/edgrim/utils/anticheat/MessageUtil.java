@@ -4,7 +4,7 @@ import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.GrimUser;
 import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
 import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.util.Vector3f;
 import com.github.retrooper.packetevents.util.Vector3i;
 import lombok.experimental.UtilityClass;
@@ -35,11 +35,11 @@ public class MessageUtil {
         return vec == null ? "null" : vec.x + ", " + vec.y + ", " + vec.z;
     }
 
-    public @NotNull String replacePlaceholders(@Nullable EdGrimPlayer player, @NotNull String string, boolean removeFormatting) {
+    public @NotNull String replacePlaceholders(@Nullable PlayerData player, @NotNull String string, boolean removeFormatting) {
         return replacePlaceholders(player, player == null ? null : player.platformPlayer, string, removeFormatting);
     }
 
-    public @NotNull String replacePlaceholders(@Nullable EdGrimPlayer player, @NotNull String string) {
+    public @NotNull String replacePlaceholders(@Nullable PlayerData player, @NotNull String string) {
         return replacePlaceholders(player, player == null ? null : player.platformPlayer, string, false);
     }
 
@@ -51,7 +51,7 @@ public class MessageUtil {
         return replacePlaceholders(player == null ? null : EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(player.getUniqueId()), player, string, false);
     }
 
-    private @NotNull String replacePlaceholders(@Nullable EdGrimPlayer EdGrimPlayer, @Nullable PlatformPlayer platformPlayer, @NotNull String string, boolean removeFormatting) {
+    private @NotNull String replacePlaceholders(@Nullable PlayerData EdGrimPlayer, @Nullable PlatformPlayer platformPlayer, @NotNull String string, boolean removeFormatting) {
         for (Map.Entry<String, String> entry : EdGrimAPI.INSTANCE.getExternalAPI().getStaticReplacements().entrySet()) {
             string = string.replace(entry.getKey(), entry.getValue());
         }
@@ -96,7 +96,7 @@ public class MessageUtil {
         return sb.toString();
     }
 
-    public @NotNull Component replacePlaceholders(@NotNull EdGrimPlayer player, @NotNull Component component) {
+    public @NotNull Component replacePlaceholders(@NotNull PlayerData player, @NotNull Component component) {
         // Replacement config that forces any placeholder replacement to be pure text
         final TextReplacementConfig safeReplacement = TextReplacementConfig.builder()
                 .match("%[a-zA-Z0-9_]+%") // Match placeholders

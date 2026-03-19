@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.team;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import lombok.Getter;
@@ -15,11 +15,11 @@ public final class EntityTeam {
 
     public final String name;
     public final Set<String> entries = new HashSet<>();
-    private final EdGrimPlayer player;
+    private final PlayerData player;
     @Getter
     private WrapperPlayServerTeams.CollisionRule collisionRule;
 
-    public EntityTeam(EdGrimPlayer player, String name) {
+    public EntityTeam(PlayerData player, String name) {
         this.player = player;
         this.name = name;
     }

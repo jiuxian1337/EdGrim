@@ -4,7 +4,7 @@ import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 
@@ -17,7 +17,7 @@ public class NoSlowA extends Check implements PostPredictionCheck {
     double offsetToFlag;
     double bestOffset = 1;
 
-    public NoSlowA(EdGrimPlayer player) {
+    public NoSlowA(PlayerData player) {
         super(player);
     }
 

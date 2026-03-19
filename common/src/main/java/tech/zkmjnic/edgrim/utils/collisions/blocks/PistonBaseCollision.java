@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
@@ -11,7 +11,7 @@ import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState
 public class PistonBaseCollision implements CollisionFactory {
 
     @Override
-    public CollisionBox fetch(EdGrimPlayer player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
         if (!block.isExtended()) return new SimpleCollisionBox(0, 0, 0, 1, 1, 1, true);
 
         return switch (block.getFacing()) {

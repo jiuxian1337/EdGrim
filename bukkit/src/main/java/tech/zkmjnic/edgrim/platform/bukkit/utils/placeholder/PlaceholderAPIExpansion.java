@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.platform.bukkit.utils.placeholder;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.GrimUser;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -61,7 +61,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
         }
 
         if (offlinePlayer instanceof Player player) {
-            EdGrimPlayer EdGrimPlayer = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(player.getUniqueId());
+            PlayerData EdGrimPlayer = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(player.getUniqueId());
             if (EdGrimPlayer == null) return null;
 
             for (Map.Entry<String, Function<GrimUser, String>> entry : EdGrimAPI.INSTANCE.getExternalAPI().getVariableReplacements().entrySet()) {

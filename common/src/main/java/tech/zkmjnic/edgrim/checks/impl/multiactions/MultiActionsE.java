@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.multiactions;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -15,7 +15,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPl
 public class MultiActionsE extends Check implements PacketCheck {
     private boolean dropping;
 
-    public MultiActionsE(EdGrimPlayer player) {
+    public MultiActionsE(PlayerData player) {
         super(player);
     }
 

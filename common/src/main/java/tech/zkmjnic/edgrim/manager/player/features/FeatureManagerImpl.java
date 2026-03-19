@@ -5,9 +5,7 @@ import ac.grim.grimac.api.config.ConfigManager;
 import ac.grim.grimac.api.feature.FeatureManager;
 import ac.grim.grimac.api.feature.FeatureState;
 import tech.zkmjnic.edgrim.manager.player.features.types.*;
-import tech.zkmjnic.edgrim.manager.player.features.types.*;
-import tech.zkmjnic.edgrim.manager.player.features.types.*;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.common.ConfigReloadObserver;
 import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
@@ -33,9 +31,9 @@ public class FeatureManagerImpl implements FeatureManager, ConfigReloadObserver 
 
     private final Map<String, FeatureState> states = new HashMap<>();
 
-    private final EdGrimPlayer player;
+    private final PlayerData player;
 
-    public FeatureManagerImpl(EdGrimPlayer player) {
+    public FeatureManagerImpl(PlayerData player) {
         this.player = player;
         for (GrimFeature value : FEATURES.values()) states.put(value.getName(), FeatureState.UNSET);
     }

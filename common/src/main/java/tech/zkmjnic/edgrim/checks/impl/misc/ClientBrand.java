@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.misc;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
@@ -23,7 +23,7 @@ public class ClientBrand extends Check implements PacketCheck {
     private String brand = "vanilla";
     private boolean hasBrand = false;
 
-    public ClientBrand(EdGrimPlayer player) {
+    public ClientBrand(PlayerData player) {
         super(player);
     }
 

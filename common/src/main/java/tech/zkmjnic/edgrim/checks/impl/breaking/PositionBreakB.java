@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.breaking;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.DiggingAction;
@@ -14,7 +14,7 @@ public class PositionBreakB extends Check implements BlockBreakCheck {
     private final int releaseFace = player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_8) ? 0 : 255;
     private BlockFace lastFace;
 
-    public PositionBreakB(EdGrimPlayer player) {
+    public PositionBreakB(PlayerData player) {
         super(player);
     }
 

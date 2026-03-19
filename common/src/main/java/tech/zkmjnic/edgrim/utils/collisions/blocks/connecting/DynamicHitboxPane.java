@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks.connecting;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.HitBoxFactory;
@@ -23,7 +23,7 @@ public class DynamicHitboxPane extends DynamicConnecting implements HitBoxFactor
     private static final CollisionBox[] COLLISION_BOXES = makeShapes(1.0F, 1.0F, 16.0F, 0.0F, 16.0F, true, 1);
 
     @Override
-    public CollisionBox fetch(EdGrimPlayer player, StateType item, ClientVersion version, WrappedBlockState block, boolean isTargetBlock, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, StateType item, ClientVersion version, WrappedBlockState block, boolean isTargetBlock, int x, int y, int z) {
         boolean east, north, south, west;
 
         // 1.13+ servers on 1.13+ clients send the full fence data
@@ -102,7 +102,7 @@ public class DynamicHitboxPane extends DynamicConnecting implements HitBoxFactor
     }
 
     @Override
-    public boolean checkCanConnect(EdGrimPlayer player, WrappedBlockState state, StateType one, StateType two, BlockFace direction) {
+    public boolean checkCanConnect(PlayerData player, WrappedBlockState state, StateType one, StateType two, BlockFace direction) {
         if (BlockTags.GLASS_PANES.contains(one) || one == StateTypes.IRON_BARS) {
             return true;
         } else {

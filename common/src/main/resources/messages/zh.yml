@@ -1,5 +1,5 @@
 ﻿# \u00BB 表示 » (相当于缩小版的 >>), ANSI和UTF-8的显示方式有所不同,有时你甚至可以看到乱码.
-prefix: "&7[&bEdGrim&7]"
+prefix: "&7[&bPolar&7]"
 
 alerts-enabled: "%prefix% &f警报 已开启"
 alerts-disabled: "%prefix% &f警报 已禁用"

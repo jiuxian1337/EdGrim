@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.movementtick;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityStrider;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
@@ -20,12 +20,12 @@ public class MovementTickerStrider extends MovementTickerRideable {
     private static final WrapperPlayServerUpdateAttributes.PropertyModifier SUFFOCATING_MODIFIER = new WrapperPlayServerUpdateAttributes.PropertyModifier(
             ResourceLocation.minecraft("suffocating"), -0.34F, WrapperPlayServerUpdateAttributes.PropertyModifier.Operation.MULTIPLY_BASE);
 
-    public MovementTickerStrider(EdGrimPlayer player) {
+    public MovementTickerStrider(PlayerData player) {
         super(player);
         movementInput = new Vector3dm(0, 0, 1);
     }
 
-    public static void floatStrider(EdGrimPlayer player) {
+    public static void floatStrider(PlayerData player) {
         if (player.wasTouchingLava) {
             if (isAbove(player) && player.compensatedWorld.getLavaFluidLevelAt((int) Math.floor(player.x), (int) Math.floor(player.y + 1), (int) Math.floor(player.z)) == 0) {
                 player.onGround = true;
@@ -35,7 +35,7 @@ public class MovementTickerStrider extends MovementTickerRideable {
         }
     }
 
-    public static boolean isAbove(EdGrimPlayer player) {
+    public static boolean isAbove(PlayerData player) {
         return player.y > Math.floor(player.y) + 0.5 - 1.0E-5F;
     }
 

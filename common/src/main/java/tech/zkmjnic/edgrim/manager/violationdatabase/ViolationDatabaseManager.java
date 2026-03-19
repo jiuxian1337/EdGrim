@@ -7,7 +7,7 @@ import tech.zkmjnic.edgrim.manager.init.ReloadableInitable;
 import tech.zkmjnic.edgrim.manager.init.start.StartableInitable;
 import tech.zkmjnic.edgrim.manager.violationdatabase.mysql.MySQLViolationDatabase;
 import tech.zkmjnic.edgrim.manager.violationdatabase.sqlite.SQLiteViolationDatabase;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -103,7 +103,7 @@ public class ViolationDatabaseManager implements StartableInitable, ReloadableIn
         }
     }
 
-    public void logAlert(EdGrimPlayer player, String verbose, String checkName, int vls) {
+    public void logAlert(PlayerData player, String verbose, String checkName, int vls) {
         String grimVersion = EdGrimAPI.INSTANCE.getExternalAPI().getGrimVersion();
         EdGrimAPI.INSTANCE.getScheduler().getAsyncScheduler().runNow(plugin, () -> database.logAlert(player, grimVersion, verbose, checkName, vls));
     }

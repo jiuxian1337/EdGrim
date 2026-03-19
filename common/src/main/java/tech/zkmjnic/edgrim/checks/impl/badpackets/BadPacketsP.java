@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.badpackets;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -17,7 +17,7 @@ public class BadPacketsP extends Check implements PacketCheck {
     private int containerType = -1;
     private int containerId = -1;
 
-    public BadPacketsP(EdGrimPlayer playerData) {
+    public BadPacketsP(PlayerData playerData) {
         super(playerData);
     }
 

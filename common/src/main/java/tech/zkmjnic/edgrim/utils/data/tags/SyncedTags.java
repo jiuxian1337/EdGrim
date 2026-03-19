@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.data.tags;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -30,10 +30,10 @@ public final class SyncedTags {
     public static final ResourceLocation SWORD_EFFICIENT = ResourceLocation.minecraft("sword_efficient");
     private static final ServerVersion VERSION = PacketEvents.getAPI().getServerManager().getVersion();
     private static final ResourceLocation BLOCK = VERSION.isNewerThanOrEquals(ServerVersion.V_1_21) ? ResourceLocation.minecraft("block") : ResourceLocation.minecraft("blocks");
-    private final EdGrimPlayer player;
+    private final PlayerData player;
     private final Map<ResourceLocation, Map<ResourceLocation, SyncedTag<?>>> synced;
 
-    public SyncedTags(EdGrimPlayer player) {
+    public SyncedTags(PlayerData player) {
         this.player = player;
         this.synced = new HashMap<>();
         ClientVersion version = player.getClientVersion();

@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.utils.lists;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.inventory.Inventory;
 import tech.zkmjnic.edgrim.utils.inventory.InventoryStorage;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
@@ -45,7 +45,7 @@ public class CorrectingPlayerInventoryStorage extends InventoryStorage {
     private static final Set<String> SUPPORTED_INVENTORIES = new HashSet<>(
             Arrays.asList("CHEST", "DISPENSER", "DROPPER", "PLAYER", "ENDER_CHEST", "SHULKER_BOX", "BARREL", "CRAFTING", "CREATIVE")
     );
-    private final EdGrimPlayer player;
+    private final PlayerData player;
     // The key for this map is the inventory slot ID
     // The value for this map is the transaction that we care about
     // Returns -1 if the entry is null
@@ -54,7 +54,7 @@ public class CorrectingPlayerInventoryStorage extends InventoryStorage {
     // Remove if the server rejects these changes
     private final Map<Integer, Integer> pendingFinalizedSlot = new ConcurrentHashMap<>();
 
-    public CorrectingPlayerInventoryStorage(EdGrimPlayer player, int size) {
+    public CorrectingPlayerInventoryStorage(PlayerData player, int size) {
         super(size);
         this.player = player;
     }

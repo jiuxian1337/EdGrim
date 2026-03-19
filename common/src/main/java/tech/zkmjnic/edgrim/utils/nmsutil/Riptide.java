@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
@@ -10,7 +10,7 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Riptide {
-    public static Vector3dm getRiptideVelocity(EdGrimPlayer player) {
+    public static Vector3dm getRiptideVelocity(PlayerData player) {
         ItemStack main = player.inventory.getHeldItem();
         ItemStack off = player.inventory.getOffHand();
 

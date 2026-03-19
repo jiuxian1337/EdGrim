@@ -4,7 +4,7 @@ import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.ScaffoldCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
@@ -45,7 +45,7 @@ public final class ScaffoldB extends ScaffoldCheck {
     private boolean cancelNextPlace;
     private int cancelNextPlaceSourceTick = -1;
 
-    public ScaffoldB(EdGrimPlayer player) {
+    public ScaffoldB(PlayerData player) {
         super(player);
     }
 

@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.multiactions;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -14,12 +14,12 @@ import java.util.StringJoiner;
 
 @CheckData(name = "MultiActionsC", description = "Clicked in inventory while moving", experimental = true)
 public class MultiActionsC extends Check implements PacketCheck {
-    public MultiActionsC(EdGrimPlayer player) {
+    public MultiActionsC(PlayerData player) {
         super(player);
     }
 
     @Contract(pure = true)
-    public static String getVerbose(@NotNull EdGrimPlayer player) {
+    public static String getVerbose(@NotNull PlayerData player) {
         StringJoiner verbose = new StringJoiner(", ");
         if (player.isSprinting && (!player.isSwimming || !player.clientClaimsLastOnGround)) {
             verbose.add("sprinting");

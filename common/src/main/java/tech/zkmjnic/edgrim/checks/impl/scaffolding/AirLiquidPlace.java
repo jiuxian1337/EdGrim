@@ -4,7 +4,7 @@ import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.change.BlockModification;
 import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
@@ -14,7 +14,7 @@ import com.github.retrooper.packetevents.util.Vector3i;
 
 @CheckData(name = "AirLiquidPlace", description = "Placed a block against an invalid support")
 public class AirLiquidPlace extends BlockPlaceCheck {
-    public AirLiquidPlace(EdGrimPlayer player) {
+    public AirLiquidPlace(PlayerData player) {
         super(player);
     }
 

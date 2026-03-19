@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
@@ -27,11 +27,11 @@ import java.util.Optional;
 @UtilityClass
 public final class PlayerBaseTick {
 
-    public static boolean canEnterPose(EdGrimPlayer player, Pose pose, double x, double y, double z) {
+    public static boolean canEnterPose(PlayerData player, Pose pose, double x, double y, double z) {
         return Collisions.isEmpty(player, getBoundingBoxForPose(player, pose, x, y, z).expand(-1.0E-7D));
     }
 
-    private static SimpleCollisionBox getBoundingBoxForPose(EdGrimPlayer player, Pose pose, double x, double y, double z) {
+    private static SimpleCollisionBox getBoundingBoxForPose(PlayerData player, Pose pose, double x, double y, double z) {
         final float scale = (float) player.compensatedEntities.self.getAttributeValue(Attributes.SCALE);
         final float width = pose.width * scale;
         final float height = pose.height * scale;
@@ -39,7 +39,7 @@ public final class PlayerBaseTick {
         return new SimpleCollisionBox(x - radius, y, z - radius, x + radius, y + height, z + radius, false);
     }
 
-    public static void doBaseTick(EdGrimPlayer player) {
+    public static void doBaseTick(PlayerData player) {
         // Keep track of basetick stuff
         player.baseTickAddition = new Vector3dm();
         player.baseTickWaterPushing = new Vector3dm();
@@ -103,7 +103,7 @@ public final class PlayerBaseTick {
 
     // 1.16 eye in water is a tick behind
     // 1.15 eye in water is the most recent result
-    private static void updateFluidOnEyes(EdGrimPlayer player) {
+    private static void updateFluidOnEyes(PlayerData player) {
         player.wasEyeInWater = player.fluidOnEyes == FluidTag.WATER;
         player.fluidOnEyes = null;
 
@@ -131,7 +131,7 @@ public final class PlayerBaseTick {
         }
     }
 
-    private static void updateInWaterStateAndDoFluidPushing(EdGrimPlayer player) {
+    private static void updateInWaterStateAndDoFluidPushing(PlayerData player) {
         updateInWaterStateAndDoWaterCurrentPushing(player);
         final double multiplier = player.dimensionType.isUltraWarm() ? 0.007 : 0.0023333333333333335;
         // 1.15 and below clients use block collisions to check for being in lava
@@ -144,7 +144,7 @@ public final class PlayerBaseTick {
         }
     }
 
-    public static void updatePowderSnow(EdGrimPlayer player) {
+    public static void updatePowderSnow(PlayerData player) {
         // Pre-1.17 clients don't have powder snow and therefore don't desync
         if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_16_4)) return;
 
@@ -176,7 +176,7 @@ public final class PlayerBaseTick {
     }
 
     // 1.14
-    public static void updatePlayerPose(EdGrimPlayer player) {
+    public static void updatePlayerPose(PlayerData player) {
         if (canEnterPose(player, Pose.SWIMMING, player.x, player.y, player.z)) {
             Pose pose;
             if (player.isGliding) {
@@ -212,7 +212,7 @@ public final class PlayerBaseTick {
     }
 
     // 1.13 and below
-    private static void updatePlayerSize(EdGrimPlayer player) {
+    private static void updatePlayerSize(PlayerData player) {
         Pose pose;
         if (player.isGliding) {
             pose = Pose.FALL_FLYING;
@@ -246,7 +246,7 @@ public final class PlayerBaseTick {
         player.boundingBox = GetBoundingBox.getCollisionBoxForPlayer(player, player.lastX, player.lastY, player.lastZ);
     }
 
-    private static void updateSwimming(EdGrimPlayer player) {
+    private static void updateSwimming(PlayerData player) {
         // This doesn't seem like the right place for determining swimming, but it's fine for now
         if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_12_2)) {
             player.isSwimming = false;
@@ -267,7 +267,7 @@ public final class PlayerBaseTick {
         }
     }
 
-    private static void moveTowardsClosestSpace(EdGrimPlayer player, double xPosition, double zPosition) {
+    private static void moveTowardsClosestSpace(PlayerData player, double xPosition, double zPosition) {
         double movementThreshold = player.getMovementThreshold();
         player.boundingBox = player.boundingBox.expand(movementThreshold, 0, movementThreshold); // 0.03... thanks mojang!
         if (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_14)) {
@@ -279,7 +279,7 @@ public final class PlayerBaseTick {
     }
 
     // Mojang is incompetent and this will push the player out a lot when using elytras
-    private static void moveTowardsClosestSpaceLegacy(EdGrimPlayer player, double x, double z) {
+    private static void moveTowardsClosestSpaceLegacy(PlayerData player, double x, double z) {
         int floorX = GrimMath.floor(x);
         int floorZ = GrimMath.floor(z);
         int floorY = GrimMath.floor(player.lastY + 0.5);
@@ -345,7 +345,7 @@ public final class PlayerBaseTick {
     }
 
     // 1.14+
-    private static void moveTowardsClosestSpaceModern(EdGrimPlayer player, double xPosition, double zPosition) {
+    private static void moveTowardsClosestSpaceModern(PlayerData player, double xPosition, double zPosition) {
         int blockX = (int) Math.floor(xPosition);
         int blockZ = (int) Math.floor(zPosition);
 
@@ -386,7 +386,7 @@ public final class PlayerBaseTick {
         }
     }
 
-    public static void updateInWaterStateAndDoWaterCurrentPushing(EdGrimPlayer player) {
+    public static void updateInWaterStateAndDoWaterCurrentPushing(PlayerData player) {
         final PacketEntity riding = player.compensatedEntities.self.getRiding();
         player.wasWasTouchingWater = player.wasTouchingWater;
         player.wasTouchingWater = updateFluidHeightAndDoFluidPushing(player, FluidTag.WATER, 0.014) && !(riding != null && riding.isBoat);
@@ -394,7 +394,7 @@ public final class PlayerBaseTick {
             player.fallDistance = 0;
     }
 
-    private static boolean updateFluidHeightAndDoFluidPushing(EdGrimPlayer player, FluidTag tag, double multiplier) {
+    private static boolean updateFluidHeightAndDoFluidPushing(PlayerData player, FluidTag tag, double multiplier) {
         if (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_13)) {
             return updateFluidHeightAndDoFluidPushingModern(player, tag, multiplier);
         }
@@ -402,7 +402,7 @@ public final class PlayerBaseTick {
         return updateFluidHeightAndDoFluidPushingLegacy(player, tag, multiplier);
     }
 
-    private static boolean updateFluidHeightAndDoFluidPushingLegacy(EdGrimPlayer player, FluidTag tag, double multiplier) {
+    private static boolean updateFluidHeightAndDoFluidPushingLegacy(PlayerData player, FluidTag tag, double multiplier) {
         SimpleCollisionBox aABB = player.boundingBox.copy().expand(0, -0.4, 0).expand(-0.001);
 
         int floorX = GrimMath.floor(aABB.minX);
@@ -452,7 +452,7 @@ public final class PlayerBaseTick {
         return hasPushed;
     }
 
-    private static boolean updateFluidHeightAndDoFluidPushingModern(EdGrimPlayer player, FluidTag tag, double multiplier) {
+    private static boolean updateFluidHeightAndDoFluidPushingModern(PlayerData player, FluidTag tag, double multiplier) {
         SimpleCollisionBox aABB = player.boundingBox.copy().expand(-0.001);
 
         int floorX = GrimMath.floor(aABB.minX);
@@ -537,12 +537,12 @@ public final class PlayerBaseTick {
         return hasTouched;
     }
 
-    private static boolean suffocatesAt(EdGrimPlayer player, int x, int z) {
+    private static boolean suffocatesAt(PlayerData player, int x, int z) {
         SimpleCollisionBox axisAlignedBB = new SimpleCollisionBox(x, player.boundingBox.minY, z, x + 1.0, player.boundingBox.maxY, z + 1.0, false).expand(-1.0E-7);
         return Collisions.suffocatesAt(player, axisAlignedBB);
     }
 
-    private static boolean clearAbove(EdGrimPlayer player, int x, int y, int z) {
+    private static boolean clearAbove(PlayerData player, int x, int y, int z) {
         return !Collisions.doesBlockSuffocate(player, x, y, z) && !Collisions.doesBlockSuffocate(player, x, y + 1, z);
     }
 }

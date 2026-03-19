@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
@@ -16,7 +16,7 @@ public class PistonHeadCollision implements CollisionFactory {
     // 1.7 and 1.8 clients always have short pistons
     // 1.9 - 1.12 clients always have long pistons
     @Override
-    public CollisionBox fetch(EdGrimPlayer player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
         // 1.13+ clients differentiate short and long, and the short vs long data is stored
         // This works correctly in 1.12-, as in the piston returns as always long
         //

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package tech.zkmjnic.edgrim.utils.data;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.NoCollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
@@ -30,7 +30,7 @@ import com.github.retrooper.packetevents.util.Vector3d;
 // You may not copy the check unless you are licensed under GPL
 public class ReachInterpolationData {
     private final SimpleCollisionBox targetLocation;
-    private final EdGrimPlayer player;
+    private final PlayerData player;
     private final PacketEntity entity;
     public SimpleCollisionBox startingLocation;
     private int interpolationStepsLowBound = 0;
@@ -39,7 +39,7 @@ public class ReachInterpolationData {
     private boolean expandNonRelative = false;
     private int cancelledLerpInterpolationStepsLowBound = Integer.MAX_VALUE;
 
-    public ReachInterpolationData(EdGrimPlayer player, SimpleCollisionBox startingLocation, TrackedPosition position, PacketEntity entity) {
+    public ReachInterpolationData(PlayerData player, SimpleCollisionBox startingLocation, TrackedPosition position, PacketEntity entity) {
         final boolean isPointNine = !player.inVehicle() && player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_9);
 
         this.startingLocation = startingLocation;
@@ -70,7 +70,7 @@ public class ReachInterpolationData {
     }
 
     // While riding entities, there is no interpolation.
-    public ReachInterpolationData(EdGrimPlayer player, SimpleCollisionBox finishedLoc, PacketEntity entity) {
+    public ReachInterpolationData(PlayerData player, SimpleCollisionBox finishedLoc, PacketEntity entity) {
         this.startingLocation = finishedLoc;
         this.targetLocation = finishedLoc;
         this.entity = entity;

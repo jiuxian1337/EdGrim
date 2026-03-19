@@ -1,5 +1,7 @@
 package tech.zkmjnic.edgrim.player;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.AbstractCheck;
 import ac.grim.grimac.api.GrimUser;
@@ -11,8 +13,6 @@ import tech.zkmjnic.edgrim.checks.impl.misc.ClientBrand;
 import tech.zkmjnic.edgrim.checks.impl.misc.TransactionOrder;
 import tech.zkmjnic.edgrim.checks.impl.packetorder.PacketOrderProcessor;
 import tech.zkmjnic.edgrim.events.packets.CheckManagerListener;
-import tech.zkmjnic.edgrim.manager.*;
-import tech.zkmjnic.edgrim.manager.*;
 import tech.zkmjnic.edgrim.manager.*;
 import tech.zkmjnic.edgrim.manager.player.features.FeatureManagerImpl;
 import tech.zkmjnic.edgrim.manager.player.handlers.DefaultResyncHandler;
@@ -26,8 +26,6 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import tech.zkmjnic.edgrim.utils.change.PlayerBlockHistory;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.*;
-import tech.zkmjnic.edgrim.utils.data.*;
-import tech.zkmjnic.edgrim.utils.data.*;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityHappyGhast;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntitySelf;
@@ -35,12 +33,8 @@ import tech.zkmjnic.edgrim.utils.data.tags.SyncedTags;
 import tech.zkmjnic.edgrim.utils.enums.FluidTag;
 import tech.zkmjnic.edgrim.utils.enums.Pose;
 import tech.zkmjnic.edgrim.utils.latency.*;
-import tech.zkmjnic.edgrim.utils.latency.*;
-import tech.zkmjnic.edgrim.utils.latency.*;
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
-import tech.zkmjnic.edgrim.utils.math.Location;
-import tech.zkmjnic.edgrim.utils.math.TrigHandler;
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
+import tech.zkmjnic.edgrim.utils.lists.EvictingList;
+import tech.zkmjnic.edgrim.utils.math.*;
 import tech.zkmjnic.edgrim.utils.nmsutil.BlockProperties;
 import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
 import tech.zkmjnic.edgrim.utils.nmsutil.GetBoundingBox;
@@ -98,11 +92,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 // Put variables sync'd to the netty thread in PacketStateData
 // Variables that need lag compensation should have their own class
 // Soon there will be a generic class for lag compensation
-public class EdGrimPlayer implements GrimUser {
+public class PlayerData implements GrimUser {
     public final UUID uuid;
     public final User user;
     public int entityID;
     public @Nullable PlatformPlayer platformPlayer;
+    public @Nullable Player bukkitPlayer;
     // Start transaction handling stuff
     // Determining player ping
     // The difference between keepalive and transactions is that keepalive is async while transactions are sync
@@ -279,8 +274,9 @@ public class EdGrimPlayer implements GrimUser {
     public boolean wasLastPredictionCompleteChecked;
     public boolean isJumping;
     public boolean lastJumping;
+    @Getter private final List<Integer> sensitivity = new EvictingList<>(14);
 
-    public EdGrimPlayer(@NonNull User user) {
+    public PlayerData(@NonNull User user) {
         this.user = user;
         this.uuid = user.getUUID();
         fireworks = new CompensatedFireworks(this); // Must be before checkmanager
@@ -557,6 +553,7 @@ public class EdGrimPlayer implements GrimUser {
 
         if (uuid != null && this.platformPlayer == null) {
             this.platformPlayer = EdGrimAPI.INSTANCE.getPlatformPlayerFactory().getFromUUID(uuid);
+            this.bukkitPlayer = Bukkit.getPlayer(uuid);
             updatePermissions();
         }
     }
@@ -694,11 +691,16 @@ public class EdGrimPlayer implements GrimUser {
     }
 
     public int calculateSensitivity() {
-        AimProcessor processor = checkManager.getRotationCheck(AimProcessor.class);
-        if (processor == null) return -1;
-        double sensitivity = Math.max(processor.sensitivityX, processor.sensitivityY);
-        if (Double.isNaN(sensitivity) || Double.isInfinite(sensitivity)) return -1;
-        return (int) Math.round(sensitivity * 200);
+        if (MathUtil.getDistinct(getSensitivity()) != getSensitivity().size()) {
+            final Set<Integer> prev = new HashSet<>();
+            for (int i : getSensitivity()) {
+                if (prev.contains(i / 5)) {
+                    return i;
+                } else prev.add(i / 5);
+            }
+        }
+
+        return -1;
     }
 
     public int getRespawnTick() {
@@ -1024,11 +1026,11 @@ public class EdGrimPlayer implements GrimUser {
                 GrimMath.ceil(box.maxX), GrimMath.ceil(box.maxY), GrimMath.ceil(box.maxZ));
     }
 
-    public void addMovementThisTick(EdGrimPlayer.Movement movement) {
+    public void addMovementThisTick(PlayerData.Movement movement) {
         if (this.movementThisTick.size() >= 100) {
-            EdGrimPlayer.Movement movement1 = this.movementThisTick.removeFirst();
-            EdGrimPlayer.Movement movement2 = this.movementThisTick.removeFirst();
-            EdGrimPlayer.Movement movement3 = new EdGrimPlayer.Movement(movement1.from(), movement2.to(), false);
+            PlayerData.Movement movement1 = this.movementThisTick.removeFirst();
+            PlayerData.Movement movement2 = this.movementThisTick.removeFirst();
+            PlayerData.Movement movement3 = new PlayerData.Movement(movement1.from(), movement2.to(), false);
             this.movementThisTick.addFirst(movement3);
         }
 

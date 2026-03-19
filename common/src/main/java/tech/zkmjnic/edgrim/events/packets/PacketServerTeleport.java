@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.events.packets;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.Pair;
 import tech.zkmjnic.edgrim.utils.data.RotationData;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
@@ -30,7 +30,7 @@ public class PacketServerTeleport extends PacketListenerAbstract {
     @Override
     public void onPacketSend(PacketSendEvent event) {
         if (event.getPacketType() == PacketType.Play.Server.PLAYER_POSITION_AND_LOOK) {
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             WrapperPlayServerPlayerPositionAndLook teleport = new WrapperPlayServerPlayerPositionAndLook(event);
@@ -131,7 +131,7 @@ public class PacketServerTeleport extends PacketListenerAbstract {
         }
 
         if (event.getPacketType() == PacketType.Play.Server.PLAYER_ROTATION) {
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             WrapperPlayServerPlayerRotation packet = new WrapperPlayServerPlayerRotation(event);
@@ -152,7 +152,7 @@ public class PacketServerTeleport extends PacketListenerAbstract {
         }
 
         if (event.getPacketType() == PacketType.Play.Server.VEHICLE_MOVE) {
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             player.sendTransaction();

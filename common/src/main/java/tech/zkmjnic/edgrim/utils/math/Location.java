@@ -1,5 +1,6 @@
 package tech.zkmjnic.edgrim.utils.math;
 
+import org.bukkit.entity.Player;
 import tech.zkmjnic.edgrim.platform.api.world.PlatformWorld;
 import lombok.Getter;
 import lombok.Setter;
@@ -231,5 +232,12 @@ public class Location implements Cloneable {
 
     public Vector3dm toVector() {
         return new Vector3dm(x, y, z);
+    }
+
+    public org.bukkit.Location toLocation(Player player) {
+        if (player != null) {
+            return new org.bukkit.Location(player.getWorld(), x, y, z, yaw, pitch);
+        }
+        return null;
     }
 }

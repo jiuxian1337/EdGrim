@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.checks.impl.packetorder;
 
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Contract;
 
 @Getter
 public final class PacketOrderProcessor extends Check implements PacketCheck {
-    public PacketOrderProcessor(final EdGrimPlayer player) {
+    public PacketOrderProcessor(final PlayerData player) {
         super(player);
     }
 

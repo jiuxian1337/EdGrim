@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.anticheat.update;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import tech.zkmjnic.edgrim.utils.collisions.AxisSelect;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
@@ -49,7 +49,7 @@ public class BlockPlace {
     public final InteractionHand hand;
     public boolean replaceClicked;
     @Getter private boolean isCancelled;
-    private final EdGrimPlayer player;
+    private final PlayerData player;
     public final ItemStack itemStack;
     public final StateType material;
     public final @Nullable HitData hitData;
@@ -59,7 +59,7 @@ public class BlockPlace {
     public Vector3f cursor;
     public final int sequence;
 
-    public BlockPlace(EdGrimPlayer player, InteractionHand hand, Vector3i position, int faceId, BlockFace face, ItemStack itemStack, @Nullable HitData hitData, int sequence) {
+    public BlockPlace(PlayerData player, InteractionHand hand, Vector3i position, int faceId, BlockFace face, ItemStack itemStack, @Nullable HitData hitData, int sequence) {
         this.player = player;
         this.hand = hand;
         this.position = position;

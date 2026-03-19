@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
@@ -13,7 +13,7 @@ import java.util.OptionalInt;
 
 @UtilityClass
 public class JumpPower {
-    public static void jumpFromGround(EdGrimPlayer player, Vector3dm vector) {
+    public static void jumpFromGround(PlayerData player, Vector3dm vector) {
         float jumpPower = getJumpPower(player);
 
         final OptionalInt jumpBoost = player.compensatedEntities.getPotionLevelForPlayer(PotionTypes.JUMP_BOOST);
@@ -32,11 +32,11 @@ public class JumpPower {
         }
     }
 
-    public static float getJumpPower(EdGrimPlayer player) {
+    public static float getJumpPower(PlayerData player) {
         return (float) player.compensatedEntities.self.getAttributeValue(Attributes.JUMP_STRENGTH) * getPlayerJumpFactor(player);
     }
 
-    public static float getPlayerJumpFactor(EdGrimPlayer player) {
+    public static float getPlayerJumpFactor(PlayerData player) {
         return BlockProperties.onHoneyBlock(player, player.mainSupportingBlockData, new Vector3d(player.lastX, player.lastY, player.lastZ)) ? 0.5f : 1f;
     }
 }

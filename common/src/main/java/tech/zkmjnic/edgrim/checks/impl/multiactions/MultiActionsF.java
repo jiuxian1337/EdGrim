@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.checks.impl.multiactions;
 
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
@@ -18,7 +18,7 @@ public class MultiActionsF extends BlockPlaceCheck {
     private final List<String> flags = new ArrayList<>();
     boolean entity, block;
 
-    public MultiActionsF(EdGrimPlayer player) {
+    public MultiActionsF(PlayerData player) {
         super(player);
     }
 

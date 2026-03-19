@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.events.packets.worldreader;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
@@ -18,7 +18,7 @@ public class PacketWorldReaderEighteen extends BasePacketWorldReader {
 
     // Mojang decided to include lighting in this packet.  It's inefficient to read it, so we replace PacketEvents logic.
     @Override
-    public void handleMapChunk(EdGrimPlayer player, PacketSendEvent event) {
+    public void handleMapChunk(PlayerData player, PacketSendEvent event) {
         PacketWrapper<?> wrapper = new PacketWrapper<>(event);
 
         int x = wrapper.readInt();

@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.item;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
 import com.github.retrooper.packetevents.protocol.component.ComponentTypes;
 import com.github.retrooper.packetevents.protocol.component.builtin.item.FoodProperties;
@@ -16,7 +16,7 @@ public class ItemBehaviour {
 
     public static final ItemBehaviour INSTANCE = new ItemBehaviour();
 
-    public boolean canUse(ItemStack item, CompensatedWorld world, EdGrimPlayer player, InteractionHand hand) {
+    public boolean canUse(ItemStack item, CompensatedWorld world, PlayerData player, InteractionHand hand) {
         ItemConsumable consumable = item.getComponentOr(ComponentTypes.CONSUMABLE, null);
         if (consumable != null) {
             return this.testConsumableComponent(item, world, player, hand, consumable);
@@ -32,7 +32,7 @@ public class ItemBehaviour {
         }
     }
 
-    protected boolean testConsumableComponent(ItemStack item, CompensatedWorld world, EdGrimPlayer player, InteractionHand hand, ItemConsumable consumable) {
+    protected boolean testConsumableComponent(ItemStack item, CompensatedWorld world, PlayerData player, InteractionHand hand, ItemConsumable consumable) {
         if (!this.testFoodComponent(item, world, player, hand)) {
             return false;
         }
@@ -40,7 +40,7 @@ public class ItemBehaviour {
         return (consumable.getConsumeSeconds() * 20.0F) > 0;
     }
 
-    protected boolean testFoodComponent(ItemStack item, CompensatedWorld world, EdGrimPlayer player, InteractionHand hand) {
+    protected boolean testFoodComponent(ItemStack item, CompensatedWorld world, PlayerData player, InteractionHand hand) {
         FoodProperties foodProperties = item.getComponentOr(ComponentTypes.FOOD, null);
         return foodProperties != null ? foodProperties.isCanAlwaysEat() || player.food < 20 || player.gamemode == GameMode.CREATIVE : true;
     }

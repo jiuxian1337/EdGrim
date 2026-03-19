@@ -3,9 +3,8 @@ package tech.zkmjnic.edgrim.platform.bukkit.initables;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.manager.init.start.AbstractTickEndEvent;
 import tech.zkmjnic.edgrim.platform.api.Platform;
-import tech.zkmjnic.edgrim.platform.bukkit.player.BukkitPlatformPlayer;
 import tech.zkmjnic.edgrim.platform.bukkit.utils.reflection.PaperUtils;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import tech.zkmjnic.edgrim.utils.lists.HookedListWrapper;
 import com.github.retrooper.packetevents.PacketEvents;
@@ -45,17 +44,17 @@ public class BukkitTickEndEvent extends AbstractTickEndEvent implements Listener
     }
 
     private void tickAllPlayers() {
-        for (EdGrimPlayer player : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
+        for (PlayerData player : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
             if (player.disableGrim) continue;
             super.onEndOfTick(player);
         }
     }
 
     private void tickAllFoliaPlayers() {
-        for (EdGrimPlayer player : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
+        for (PlayerData player : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
             if (player.disableGrim) continue;
             if (player.platformPlayer == null) continue;
-            Player p = ((BukkitPlatformPlayer) player.platformPlayer).getNative();
+            Player p = player.bukkitPlayer;
             if (!Bukkit.isOwnedByCurrentRegion(p)) continue;
             super.onEndOfTick(player);
         }

@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.breaking;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
@@ -14,7 +14,7 @@ import com.github.retrooper.packetevents.protocol.player.GameMode;
 
 @CheckData(name = "FarBreak", description = "Breaking blocks too far away", experimental = true)
 public class FarBreak extends Check implements BlockBreakCheck {
-    public FarBreak(EdGrimPlayer player) {
+    public FarBreak(PlayerData player) {
         super(player);
     }
 

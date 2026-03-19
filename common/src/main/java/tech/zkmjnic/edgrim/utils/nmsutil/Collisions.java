@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
 import tech.zkmjnic.edgrim.events.packets.PacketWorldBorder;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.chunks.Column;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
@@ -61,7 +61,7 @@ public final class Collisions {
             Arrays.asList(Axis.Y, Axis.X, Axis.Z),
             Arrays.asList(Axis.Y, Axis.Z, Axis.X));
 
-    public static boolean slowCouldPointThreeHitGround(EdGrimPlayer player, double x, double y, double z) {
+    public static boolean slowCouldPointThreeHitGround(PlayerData player, double x, double y, double z) {
         SimpleCollisionBox oldBB = player.boundingBox;
         player.boundingBox = GetBoundingBox.getBoundingBoxFromPosAndSize(player, x, y, z, 0.6f, 0.06f);
 
@@ -76,11 +76,11 @@ public final class Collisions {
     }
 
     // Call this when there isn't uncertainty on the Y axis
-    public static Vector3dm collide(EdGrimPlayer player, double desiredX, double desiredY, double desiredZ) {
+    public static Vector3dm collide(PlayerData player, double desiredX, double desiredY, double desiredZ) {
         return collide(player, desiredX, desiredY, desiredZ, desiredY, null);
     }
 
-    public static Vector3dm collide(EdGrimPlayer player, double desiredX, double desiredY, double desiredZ, double clientVelY, VectorData data) {
+    public static Vector3dm collide(PlayerData player, double desiredX, double desiredY, double desiredZ, double clientVelY, VectorData data) {
         if (desiredX == 0 && desiredY == 0 && desiredZ == 0) return new Vector3dm();
 
         final SimpleCollisionBox grabBoxesBB = player.boundingBox.copy();
@@ -209,7 +209,7 @@ public final class Collisions {
         return fs;
     }
 
-    public static boolean addWorldBorder(EdGrimPlayer player, SimpleCollisionBox wantedBB, List<SimpleCollisionBox> listOfBlocks, boolean onlyCheckCollide) {
+    public static boolean addWorldBorder(PlayerData player, SimpleCollisionBox wantedBB, List<SimpleCollisionBox> listOfBlocks, boolean onlyCheckCollide) {
         // Worldborders were added in 1.8
         // Don't add to border unless the player is colliding with it and is near it
         if (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_8)) {
@@ -261,7 +261,7 @@ public final class Collisions {
     }
 
     // This is mostly taken from Tuinity collisions
-    public static boolean getCollisionBoxes(EdGrimPlayer player, SimpleCollisionBox wantedBB, List<SimpleCollisionBox> listOfBlocks, boolean onlyCheckCollide) {
+    public static boolean getCollisionBoxes(PlayerData player, SimpleCollisionBox wantedBB, List<SimpleCollisionBox> listOfBlocks, boolean onlyCheckCollide) {
         SimpleCollisionBox expandedBB = wantedBB.copy();
 
         boolean collided = addWorldBorder(player, wantedBB, listOfBlocks, onlyCheckCollide);
@@ -380,7 +380,7 @@ public final class Collisions {
         return new Vector3dm(x, y, z);
     }
 
-    public static boolean isEmpty(EdGrimPlayer player, SimpleCollisionBox playerBB) {
+    public static boolean isEmpty(PlayerData player, SimpleCollisionBox playerBB) {
         return !getCollisionBoxes(player, playerBB, null, true);
     }
 
@@ -388,7 +388,7 @@ public final class Collisions {
         return vector.getX() * vector.getX() + vector.getZ() * vector.getZ();
     }
 
-    public static Vector3dm maybeBackOffFromEdge(Vector3dm vec3, EdGrimPlayer player, boolean overrideVersion) {
+    public static Vector3dm maybeBackOffFromEdge(Vector3dm vec3, PlayerData player, boolean overrideVersion) {
         if (!player.isFlying && player.isSneaking && isAboveGround(player)) {
             double x = vec3.getX();
             double z = vec3.getZ();
@@ -436,13 +436,13 @@ public final class Collisions {
         return vec3;
     }
 
-    public static boolean isAboveGround(EdGrimPlayer player) {
+    public static boolean isAboveGround(PlayerData player) {
         // https://bugs.mojang.com/browse/MC-2404
         return player.lastOnGround || (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_16_2) && (player.fallDistance < player.getMaxUpStep() &&
                 !isEmpty(player, player.boundingBox.copy().offset(0.0, player.fallDistance - player.getMaxUpStep(), 0.0))));
     }
 
-    public static void handleInsideBlocks(EdGrimPlayer player) {
+    public static void handleInsideBlocks(PlayerData player) {
         // Mojang rewrote this whole logic in 1.21.2 (see Collisions#applyEffectsFromBlocks)
         if (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_21_2)) return;
         // Use the bounding box for after the player's movement is applied
@@ -473,7 +473,7 @@ public final class Collisions {
         }
     }
 
-    public static void onInsideBlock(EdGrimPlayer player, StateType blockType, WrappedBlockState block, int blockX, int blockY, int blockZ) {
+    public static void onInsideBlock(PlayerData player, StateType blockType, WrappedBlockState block, int blockX, int blockY, int blockZ) {
         if (blockType == StateTypes.COBWEB) {
             if (player.compensatedEntities.hasPotionEffect(PotionTypes.WEAVING)) {
                 player.stuckSpeedMultiplier = new Vector3dm(0.5, 0.25, 0.5);
@@ -554,8 +554,8 @@ public final class Collisions {
     }
 
     // Implementation of Collisions#handleInsideBlocks for >= 1.21.2
-    public static void applyEffectsFromBlocks(EdGrimPlayer player) {
-        for (EdGrimPlayer.Movement movement : player.finalMovementsThisTick) {
+    public static void applyEffectsFromBlocks(PlayerData player) {
+        for (PlayerData.Movement movement : player.finalMovementsThisTick) {
             Vector3d from = movement.from();
             Vector3d to = movement.to().subtract(movement.from());
             if (movement.axisIndependant() && to.lengthSquared() > 0.0) {
@@ -575,7 +575,7 @@ public final class Collisions {
         player.visitedBlocks.clear();
     }
 
-    public static void checkInsideBlocks(EdGrimPlayer player, Vector3d from, Vector3d to) {
+    public static void checkInsideBlocks(PlayerData player, Vector3d from, Vector3d to) {
         SimpleCollisionBox boundingBox = (player.getClientVersion() == ClientVersion.V_1_21_2 ?
                 player.boundingBox.copy() : GetBoundingBox.getCollisionBoxForPlayer(player, to.x, to.y, to.z)).expand(-1.0E-5F);
 
@@ -593,7 +593,7 @@ public final class Collisions {
         }
     }
 
-    public static Iterable<Vector3i> boxTraverseBlocks(EdGrimPlayer player, Vector3d start, Vector3d end, SimpleCollisionBox boundingBox) {
+    public static Iterable<Vector3i> boxTraverseBlocks(PlayerData player, Vector3d start, Vector3d end, SimpleCollisionBox boundingBox) {
         Vector3d direction = end.subtract(start);
         Iterable<Vector3i> initialBlocks = SimpleCollisionBox.betweenClosed(boundingBox);
         if (direction.lengthSquared() < (double) GrimMath.square(0.99999F)) {
@@ -769,15 +769,15 @@ public final class Collisions {
         );
     }
 
-    private static double getOldDeltaY(EdGrimPlayer player, double value) {
+    private static double getOldDeltaY(PlayerData player, double value) {
         return player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_21_2) ? value / 0.98F + 0.08 : value;
     }
 
-    private static double getNewDeltaY(EdGrimPlayer player, double value) {
+    private static double getNewDeltaY(PlayerData player, double value) {
         return player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_21_2) ? (value - 0.08) * 0.98F : value;
     }
 
-    private static boolean isSlidingDown(Vector3dm vector, EdGrimPlayer player, int locationX, int locationY,
+    private static boolean isSlidingDown(Vector3dm vector, PlayerData player, int locationX, int locationY,
                                          int locationZ) {
         if (player.onGround) {
             return false;
@@ -795,7 +795,7 @@ public final class Collisions {
     }
 
     // 0.03 hack
-    public static boolean checkStuckSpeed(EdGrimPlayer player, double expand) {
+    public static boolean checkStuckSpeed(PlayerData player, double expand) {
         // Use the bounding box for after the player's movement is applied
         SimpleCollisionBox aABB = GetBoundingBox.getCollisionBoxForPlayer(player, player.x, player.y, player.z).expand(expand);
 
@@ -829,7 +829,7 @@ public final class Collisions {
         return false;
     }
 
-    public static boolean suffocatesAt(EdGrimPlayer player, SimpleCollisionBox playerBB) {
+    public static boolean suffocatesAt(PlayerData player, SimpleCollisionBox playerBB) {
         // Blocks are stored in YZX order
         for (int y = (int) Math.floor(playerBB.minY); y < Math.ceil(playerBB.maxY); y++) {
             for (int z = (int) Math.floor(playerBB.minZ); z < Math.ceil(playerBB.maxZ); z++) {
@@ -853,7 +853,7 @@ public final class Collisions {
         return false;
     }
 
-    public static boolean doesBlockSuffocate(EdGrimPlayer player, int x, int y, int z) {
+    public static boolean doesBlockSuffocate(PlayerData player, int x, int y, int z) {
         WrappedBlockState data = player.compensatedWorld.getBlock(x, y, z);
         StateType mat = data.getType();
 
@@ -895,7 +895,7 @@ public final class Collisions {
     }
 
     // Thanks Tuinity
-    public static boolean hasMaterial(EdGrimPlayer player, SimpleCollisionBox checkBox, Predicate<Pair<WrappedBlockState, Vector3d>> searchingFor) {
+    public static boolean hasMaterial(PlayerData player, SimpleCollisionBox checkBox, Predicate<Pair<WrappedBlockState, Vector3d>> searchingFor) {
         int minBlockX = (int) Math.floor(checkBox.minX);
         int maxBlockX = (int) Math.floor(checkBox.maxX);
         int minBlockY = (int) Math.floor(checkBox.minY);
@@ -960,7 +960,7 @@ public final class Collisions {
     }
 
     // Thanks Tuinity
-    public static void forEachCollisionBox(EdGrimPlayer player, SimpleCollisionBox checkBox, Consumer<Vector3d> searchingFor) {
+    public static void forEachCollisionBox(PlayerData player, SimpleCollisionBox checkBox, Consumer<Vector3d> searchingFor) {
         int minBlockX = (int) Math.floor(checkBox.minX - COLLISION_EPSILON) - 1;
         int maxBlockX = (int) Math.floor(checkBox.maxX + COLLISION_EPSILON) + 1;
         int minBlockY = (int) Math.floor(checkBox.minY - COLLISION_EPSILON) - 1;
@@ -1038,7 +1038,7 @@ public final class Collisions {
         }
     }
 
-    public static boolean onClimbable(EdGrimPlayer player, double x, double y, double z) {
+    public static boolean onClimbable(PlayerData player, double x, double y, double z) {
         WrappedBlockState blockState = player.compensatedWorld.getBlock(x, y, z);
         StateType blockMaterial = blockState.getType();
 
@@ -1059,7 +1059,7 @@ public final class Collisions {
         return trapdoorUsableAsLadder(player, x, y, z, blockState);
     }
 
-    public static boolean trapdoorUsableAsLadder(EdGrimPlayer player, double x, double y, double z, WrappedBlockState blockData) {
+    public static boolean trapdoorUsableAsLadder(PlayerData player, double x, double y, double z, WrappedBlockState blockData) {
         if (!BlockTags.TRAPDOORS.contains(blockData.getType())) return false;
         // Feature implemented in 1.9
         if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_8)) return false;

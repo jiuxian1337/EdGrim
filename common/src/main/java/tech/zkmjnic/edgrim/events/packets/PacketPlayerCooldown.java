@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.events.packets;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
@@ -19,7 +19,7 @@ public class PacketPlayerCooldown extends PacketListenerAbstract {
         if (event.getPacketType() == PacketType.Play.Server.SET_COOLDOWN) {
             WrapperPlayServerSetCooldown cooldown = new WrapperPlayServerSetCooldown(event);
 
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             int lastTransactionSent = player.lastTransactionSent.get();

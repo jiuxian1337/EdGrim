@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.breaking;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.Pair;
@@ -28,7 +28,7 @@ public class RotationBreak extends Check implements BlockBreakCheck {
     private double flagBuffer = 0; // If the player flags once, force them to play legit, or we will cancel the tick before.
     private boolean ignorePost = false;
 
-    public RotationBreak(EdGrimPlayer player) {
+    public RotationBreak(PlayerData player) {
         super(player);
     }
 

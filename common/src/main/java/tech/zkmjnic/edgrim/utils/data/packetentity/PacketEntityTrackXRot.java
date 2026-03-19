@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityType;
 
 import java.util.UUID;
@@ -11,7 +11,7 @@ public class PacketEntityTrackXRot extends PacketEntity {
     public float interpYaw;
     public int steps = 0;
 
-    public PacketEntityTrackXRot(EdGrimPlayer player, UUID uuid, EntityType type, double x, double y, double z, float xRot) {
+    public PacketEntityTrackXRot(PlayerData player, UUID uuid, EntityType type, double x, double y, double z, float xRot) {
         super(player, uuid, type, x, y, z);
         this.packetYaw = xRot;
         this.interpYaw = xRot;

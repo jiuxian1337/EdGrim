@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.packetorder;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
@@ -33,7 +33,7 @@ public class PacketOrderB extends Check implements PacketCheck {
     private boolean sentAnimationSinceLastAttack = player.getClientVersion().isNewerThan(ClientVersion.V_1_8);
     private boolean sentAttack, sentAnimation, sentSlotSwitch;
 
-    public PacketOrderB(final EdGrimPlayer player) {
+    public PacketOrderB(final PlayerData player) {
         super(player);
     }
 

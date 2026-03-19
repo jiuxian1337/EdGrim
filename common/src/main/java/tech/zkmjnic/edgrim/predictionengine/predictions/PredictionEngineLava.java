@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.predictions;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class PredictionEngineLava extends PredictionEngine {
     @Override
-    public void addJumpsToPossibilities(EdGrimPlayer player, Set<VectorData> existingVelocities) {
+    public void addJumpsToPossibilities(PlayerData player, Set<VectorData> existingVelocities) {
         for (VectorData vector : new HashSet<>(existingVelocities)) {
             if (player.couldSkipTick && vector.isZeroPointZeroThree()) {
                 double extraVelFromVertTickSkipUpwards = GrimMath.clamp(player.actualMovement.getY(), vector.vector.clone().getY(), vector.vector.clone().getY() + 0.05f);

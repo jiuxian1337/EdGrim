@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.utils.data;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 public class LastInstance {
     int lastInstance = 100;
 
-    public LastInstance(EdGrimPlayer player) {
+    public LastInstance(PlayerData player) {
         player.lastInstanceManager.addInstance(this);
     }
 

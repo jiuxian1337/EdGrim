@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
@@ -33,7 +33,7 @@ public class DynamicStair implements CollisionFactory {
     protected static final CollisionBox[] BOTTOM_SHAPES = makeShapes(BOTTOM_AABB, OCTET_NPN, OCTET_PPN, OCTET_NPP, OCTET_PPP);
     private static final int[] SHAPE_BY_STATE = new int[]{12, 5, 3, 10, 14, 13, 7, 11, 13, 7, 11, 14, 8, 4, 1, 2, 4, 1, 2, 8};
 
-    public static EnumShape getStairsShape(EdGrimPlayer player, WrappedBlockState originalStairs, int x, int y, int z) {
+    public static EnumShape getStairsShape(PlayerData player, WrappedBlockState originalStairs, int x, int y, int z) {
         BlockFace facing = originalStairs.getFacing();
         WrappedBlockState offsetOne = player.compensatedWorld.getBlock(x + facing.getModX(), y + facing.getModY(), z + facing.getModZ());
 
@@ -66,7 +66,7 @@ public class DynamicStair implements CollisionFactory {
         return EnumShape.STRAIGHT;
     }
 
-    private static boolean canTakeShape(EdGrimPlayer player, WrappedBlockState stairOne, int x, int y, int z) {
+    private static boolean canTakeShape(PlayerData player, WrappedBlockState stairOne, int x, int y, int z) {
         WrappedBlockState otherStair = player.compensatedWorld.getBlock(x, y, z);
         return !(BlockTags.STAIRS.contains(otherStair.getType())) ||
                 (stairOne.getFacing() != otherStair.getFacing() ||
@@ -112,7 +112,7 @@ public class DynamicStair implements CollisionFactory {
     }
 
     @Override
-    public CollisionBox fetch(EdGrimPlayer player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
         int shapeOrdinal;
         // If server is 1.13+ and client is also 1.13+, we can read the block's data directly
         if (PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_13)

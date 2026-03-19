@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.platform.bukkit.events;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,7 +14,7 @@ public class DamageMitigationEvent implements Listener {
         if (!(event.getDamager() instanceof Player player)) {
             return;
         }
-        EdGrimPlayer grimPlayerlayer = findGrimPlayer(player.getUniqueId());
+        PlayerData grimPlayerlayer = findGrimPlayer(player.getUniqueId());
         if (grimPlayerlayer == null || grimPlayerlayer.disableGrim) {
             return;
         }
@@ -24,8 +24,8 @@ public class DamageMitigationEvent implements Listener {
         event.setDamage(event.getDamage() * 0.05);
     }
 
-    private EdGrimPlayer findGrimPlayer(java.util.UUID uuid) {
-        for (EdGrimPlayer entry : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
+    private PlayerData findGrimPlayer(java.util.UUID uuid) {
+        for (PlayerData entry : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
             if (uuid.equals(entry.getUniqueId())) {
                 return entry;
             }

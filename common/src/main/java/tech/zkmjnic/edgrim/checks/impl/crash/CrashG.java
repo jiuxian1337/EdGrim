@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.checks.impl.crash;
 
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import com.github.retrooper.packetevents.PacketEvents;
@@ -15,7 +15,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientUs
 @CheckData(name = "CrashG", description = "Sent negative sequence id")
 public class CrashG extends BlockPlaceCheck {
 
-    public CrashG(EdGrimPlayer player) {
+    public CrashG(PlayerData player) {
         super(player);
     }
 

@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.utils.latency;
 
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.inventory.EquipmentType;
 import tech.zkmjnic.edgrim.utils.inventory.Inventory;
@@ -56,7 +56,7 @@ public class CompensatedInventory extends Check implements PacketCheck {
     // Unsupported inventory is -2
     private int packetSendingInventorySize = PLAYER_INVENTORY_CASE;
 
-    public CompensatedInventory(EdGrimPlayer playerData) {
+    public CompensatedInventory(PlayerData playerData) {
         super(playerData);
 
         CorrectingPlayerInventoryStorage storage = new CorrectingPlayerInventoryStorage(player, 46);

@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.sprint;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 
@@ -11,7 +11,7 @@ import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 public class SprintC extends Check implements PostPredictionCheck {
     private boolean flaggedLastTick = false;
 
-    public SprintC(EdGrimPlayer player) {
+    public SprintC(PlayerData player) {
         super(player);
     }
 

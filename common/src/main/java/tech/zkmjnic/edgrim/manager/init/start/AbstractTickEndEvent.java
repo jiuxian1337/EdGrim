@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.manager.init.start;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 // Intended for future events we inject all platforms at the end of a tick
 public abstract class AbstractTickEndEvent implements StartableInitable {
@@ -11,7 +11,7 @@ public abstract class AbstractTickEndEvent implements StartableInitable {
 
     }
 
-    protected void onEndOfTick(EdGrimPlayer player) {
+    protected void onEndOfTick(PlayerData player) {
         player.checkManager.getEntityReplication().onEndOfTickEvent();
     }
 

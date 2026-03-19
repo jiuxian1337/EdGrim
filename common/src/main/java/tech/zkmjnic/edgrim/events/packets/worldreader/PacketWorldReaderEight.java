@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.events.packets.worldreader;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.world.chunk.impl.v1_16.Chunk_v1_9;
 import com.github.retrooper.packetevents.protocol.world.chunk.palette.DataPalette;
@@ -14,7 +14,7 @@ import java.util.BitSet;
 
 public class PacketWorldReaderEight extends BasePacketWorldReader {
     @Override
-    public void handleMapChunkBulk(final EdGrimPlayer player, final PacketSendEvent event) {
+    public void handleMapChunkBulk(final PlayerData player, final PacketSendEvent event) {
         PacketWrapper<?> wrapper = new PacketWrapper<>(event);
         ByteBuf buffer = (ByteBuf) wrapper.getBuffer();
 
@@ -46,7 +46,7 @@ public class PacketWorldReaderEight extends BasePacketWorldReader {
     }
 
     @Override
-    public void handleMapChunk(final EdGrimPlayer player, final PacketSendEvent event) {
+    public void handleMapChunk(final PlayerData player, final PacketSendEvent event) {
         PacketWrapper<?> wrapper = new PacketWrapper<>(event);
 
         final int chunkX = wrapper.readInt();

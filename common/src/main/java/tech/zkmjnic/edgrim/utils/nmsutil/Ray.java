@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.Pair;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import lombok.Getter;
@@ -17,14 +17,14 @@ public class Ray implements Cloneable {
         this.direction = direction;
     }
 
-    public Ray(EdGrimPlayer player, double x, double y, double z, float xRot, float yRot) {
+    public Ray(PlayerData player, double x, double y, double z, float xRot, float yRot) {
         this.origin = new Vector3dm(x, y, z);
         this.direction = calculateDirection(player, xRot, yRot);
     }
 
     // Account for FastMath by using player's trig handler
     // Copied from hawk which probably copied it from NMS
-    public static Vector3dm calculateDirection(EdGrimPlayer player, float xRot, float yRot) {
+    public static Vector3dm calculateDirection(PlayerData player, float xRot, float yRot) {
         Vector3dm vector = new Vector3dm();
         float rotX = (float) Math.toRadians(xRot);
         float rotY = (float) Math.toRadians(yRot);

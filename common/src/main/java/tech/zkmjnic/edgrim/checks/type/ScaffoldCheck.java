@@ -1,14 +1,14 @@
 package tech.zkmjnic.edgrim.checks.type;
 
 import ac.grim.grimac.api.config.ConfigManager;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 
 public class ScaffoldCheck extends BlockPlaceCheck {
     protected long cancelForMs;
     private long cancelPlacementsUntil;
 
-    public ScaffoldCheck(EdGrimPlayer player) {
+    public ScaffoldCheck(PlayerData player) {
         super(player);
     }
 

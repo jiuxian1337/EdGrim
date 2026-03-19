@@ -5,7 +5,7 @@ import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.data.Pair;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
@@ -36,7 +36,7 @@ public class VelocityA extends Check implements PostPredictionCheck {
 
     double threshold;
 
-    public VelocityA(EdGrimPlayer player) {
+    public VelocityA(PlayerData player) {
         super(player);
     }
 
@@ -46,7 +46,7 @@ public class VelocityA extends Check implements PostPredictionCheck {
             WrapperPlayServerEntityVelocity velocity = new WrapperPlayServerEntityVelocity(event);
             int entityId = velocity.getEntityId();
 
-            EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (player == null) return;
 
             // Detect whether this knockback packet affects the player or if it is useless

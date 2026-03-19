@@ -8,7 +8,7 @@ import ac.grim.grimac.api.config.ConfigReloadable;
 import tech.zkmjnic.edgrim.manager.init.start.StartableInitable;
 import tech.zkmjnic.edgrim.platform.api.PlatformServer;
 import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -97,7 +97,7 @@ public final class AlertManagerImpl implements AlertManager, ConfigReloadable, S
     private PlatformPlayer requirePlatformPlayerFromUser(@NonNull GrimUser user) {
         Objects.requireNonNull(user, "user cannot be null"); // Should be guaranteed by interface contract, but good practice
 
-        if (!(user instanceof EdGrimPlayer EdGrimPlayer)) {
+        if (!(user instanceof PlayerData EdGrimPlayer)) {
             // Throw a specific exception if the type is wrong
             throw new IllegalArgumentException("AlertManager action called with non-EdGrimPlayer user: " + user.getName());
         }
@@ -141,7 +141,7 @@ public final class AlertManagerImpl implements AlertManager, ConfigReloadable, S
 
     @Override
     public boolean hasBrandsEnabled(@NonNull GrimUser player) {
-        EdGrimPlayer EdGrimPlayer = (EdGrimPlayer) player;
+        PlayerData EdGrimPlayer = (PlayerData) player;
         // Some proxies break packet order in sending brand and send the data too early for performance
         // which causes us to iterate over all players with this method
         // before platformPlayer is intialized; while generally packet order is important to maintain

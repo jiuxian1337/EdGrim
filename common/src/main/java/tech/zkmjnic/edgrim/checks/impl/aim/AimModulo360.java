@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.aim;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 
 // Based on Kauri AimA,
@@ -14,7 +14,7 @@ public class AimModulo360 extends Check implements RotationCheck {
 
     private float lastDeltaYaw;
 
-    public AimModulo360(EdGrimPlayer playerData) {
+    public AimModulo360(PlayerData playerData) {
         super(playerData);
     }
 

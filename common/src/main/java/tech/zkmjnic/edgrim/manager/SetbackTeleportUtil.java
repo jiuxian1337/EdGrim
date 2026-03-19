@@ -5,7 +5,7 @@ import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsN;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
 import tech.zkmjnic.edgrim.platform.api.entity.GrimEntity;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngine;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngineElytra;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngineNormal;
@@ -67,7 +67,7 @@ public class SetbackTeleportUtil extends Check implements PostPredictionCheck {
     private SetBackData requiredSetBack = null;
     private long lastWorldResync = 0;
 
-    public SetbackTeleportUtil(EdGrimPlayer player) {
+    public SetbackTeleportUtil(PlayerData player) {
         super(player);
     }
 

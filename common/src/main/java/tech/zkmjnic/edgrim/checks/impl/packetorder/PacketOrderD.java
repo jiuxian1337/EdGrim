@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.packetorder;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -13,7 +13,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientIn
 
 @CheckData(name = "PacketOrderD", experimental = true)
 public class PacketOrderD extends Check implements PacketCheck {
-    public PacketOrderD(final EdGrimPlayer player) {
+    public PacketOrderD(final PlayerData player) {
         super(player);
     }
 

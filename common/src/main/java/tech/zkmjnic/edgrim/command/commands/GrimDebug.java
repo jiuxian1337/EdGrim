@@ -4,7 +4,7 @@ import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.command.BuildableCommand;
 import tech.zkmjnic.edgrim.platform.api.command.PlayerSelector;
 import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.User;
@@ -45,13 +45,13 @@ public class GrimDebug implements BuildableCommand {
         Sender sender = context.sender();
         PlayerSelector playerSelector = context.getOrDefault("target", null);
 
-        EdGrimPlayer targetGrimPlayer = parseTarget(sender, playerSelector == null ? sender : playerSelector.getSinglePlayer());
+        PlayerData targetGrimPlayer = parseTarget(sender, playerSelector == null ? sender : playerSelector.getSinglePlayer());
         if (targetGrimPlayer == null) return;
 
         if (sender.isConsole()) {
             targetGrimPlayer.checkManager.getDebugHandler().toggleConsoleOutput();
         } else if (sender.isPlayer()) {
-            EdGrimPlayer senderGrimPlayer = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(sender.getUniqueId());
+            PlayerData senderGrimPlayer = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(sender.getUniqueId());
             targetGrimPlayer.checkManager.getDebugHandler().toggleListener(senderGrimPlayer);
         } else {
             sender.sendMessage(MessageUtil.getParsedComponent(sender,
@@ -65,7 +65,7 @@ public class GrimDebug implements BuildableCommand {
         Sender sender = context.sender();
         PlayerSelector targetName = context.getOrDefault("target", null);
 
-        EdGrimPlayer EdGrimPlayer = parseTarget(sender, targetName.getSinglePlayer());
+        PlayerData EdGrimPlayer = parseTarget(sender, targetName.getSinglePlayer());
         if (EdGrimPlayer == null) return;
 
         boolean isOutput = EdGrimPlayer.checkManager.getDebugHandler().toggleConsoleOutput();
@@ -81,14 +81,14 @@ public class GrimDebug implements BuildableCommand {
         sender.sendMessage(message);
     }
 
-    private @Nullable EdGrimPlayer parseTarget(@NonNull Sender sender, @Nullable Sender t) {
+    private @Nullable PlayerData parseTarget(@NonNull Sender sender, @Nullable Sender t) {
         if (sender.isConsole() && t == null) {
             sender.sendMessage(MessageUtil.getParsedComponent(sender, "console-specify-target", "%prefix% &cYou must specify a target as the console!"));
             return null;
         }
         Sender target = t == null ? sender : t;
 
-        EdGrimPlayer EdGrimPlayer = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(target.getUniqueId());
+        PlayerData EdGrimPlayer = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(target.getUniqueId());
         if (EdGrimPlayer == null) {
             User user = PacketEvents.getAPI().getPlayerManager().getUser(sender.getPlatformPlayer().getNative());
             sender.sendMessage(MessageUtil.getParsedComponent(sender, "player-not-found", "%prefix% &cPlayer is exempt or offline!"));

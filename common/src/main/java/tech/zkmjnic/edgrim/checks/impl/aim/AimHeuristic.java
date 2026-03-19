@@ -4,7 +4,7 @@ import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.lists.Tuple;
 import tech.zkmjnic.edgrim.utils.math.MathUtil;
@@ -15,23 +15,14 @@ import java.util.List;
 
 @CheckData(name = "AimHeuristic", configName = "AimHeuristic", decay = 0.75, description = "heuristic aim checks migrated")
 public final class AimHeuristic extends Check implements RotationCheck {
-    private static final int BASIC_SAMPLE_SIZE = 10;
-    private static final int PATTERN_SAMPLE_SIZE = 100;
+    private static final int PATTERN_SAMPLE_SIZE = 10;
     private static final int PATTERN_LENGTH = 3;
     private static final int MIN_PATTERN_START_INDEX_GAP = PATTERN_LENGTH;
     private static final double CONSTANT_MODULO_THRESHOLD = 60.0;
     private static final double CONSTANT_LINEAR_THRESHOLD = 0.1;
-    private static final double INTERPOLATION_CLEAR_NORMAL_FLOOR = 3.0D;
     private static final float CONSTANT_MIN_DELTA = 0.1f;
     private static final float CONSTANT_MAX_DELTA = 20.0f;
     private static final float INVALID_PITCH = 90f + 1e-6f;
-
-    private final List<Float> toYawHistory = new ArrayList<>(BASIC_SAMPLE_SIZE);
-    private final List<Float> toPitchHistory = new ArrayList<>(BASIC_SAMPLE_SIZE);
-
-    private int basicStreak;
-    private float basicInterpolationBuffer;
-    private float basicRandomPatternBuffer;
 
     private float constantLastDeltaYaw;
     private float constantLastDeltaPitch;
@@ -62,11 +53,6 @@ public final class AimHeuristic extends Check implements RotationCheck {
 
     private boolean basicComponentEnabled = true;
     private boolean randomizerFlawEnabled = true;
-    private double interpolationAverageThreshold = 6.5D;
-    private float interpolationBufferLimit = 4.0f;
-    private float interpolationBufferDecay = 0.75f;
-    private float randomPatternBufferLimit = 3.0f;
-    private float randomPatternBufferDecay = 0.5f;
 
     private int constant1NeedVl = 8;
     private int constant2NeedVl = 6;
@@ -87,7 +73,7 @@ public final class AimHeuristic extends Check implements RotationCheck {
 
     private boolean smoothCheckEnabled = true;
 
-    public AimHeuristic(EdGrimPlayer player) {
+    public AimHeuristic(PlayerData player) {
         super(player);
     }
 
@@ -95,11 +81,6 @@ public final class AimHeuristic extends Check implements RotationCheck {
     public void onReload(ConfigManager config) {
         basicComponentEnabled = config.getBooleanElse("AimHeuristic.basic-component.enabled", true);
         randomizerFlawEnabled = config.getBooleanElse("AimHeuristic.basic-component.randomizer-flaw", true);
-        interpolationAverageThreshold = config.getDoubleElse("AimHeuristic.basic-component.interpolation-average-threshold", 6.5D);
-        interpolationBufferLimit = (float) config.getDoubleElse("AimHeuristic.basic-component.interpolation-buffer", 4.0D);
-        interpolationBufferDecay = (float) config.getDoubleElse("AimHeuristic.basic-component.interpolation-buffer-decay", 0.75D);
-        randomPatternBufferLimit = (float) config.getDoubleElse("AimHeuristic.basic-component.random-pattern-buffer", 3.0D);
-        randomPatternBufferDecay = (float) config.getDoubleElse("AimHeuristic.basic-component.random-pattern-buffer-decay", 0.5D);
 
         constant1NeedVl = config.getIntElse("AimHeuristic.constant-check.constant-1-buffer", 8);
         constant2NeedVl = config.getIntElse("AimHeuristic.constant-check.constant-2-buffer", 6);
@@ -123,7 +104,9 @@ public final class AimHeuristic extends Check implements RotationCheck {
 
     @Override
     public void process(final RotationUpdate rotationUpdate) {
-        if (!player.actionManager.hasAttackedSince(500L)) return;
+        if (!player.actionManager.hasAttackedSince(2500L)) {
+            return;
+        }
         if (rotationUpdate.isCinematic()) return;
 
         if (player.packetStateData.lastPacketWasTeleport
@@ -144,136 +127,12 @@ public final class AimHeuristic extends Check implements RotationCheck {
                 && (toPitch == 0.0f || (toPitch % 0.01f) == 0.0f))) {
             flagHeuristic("t=RandomizerFlaw dy=" + deltaYaw + " dp=" + deltaPitch + " toPitch=" + toPitch);
         }
-
-        if (basicComponentEnabled) {
-            basicTick(rotationUpdate);
-        }
         constantTick(rotationUpdate);
         invalidTick(rotationUpdate);
         inconsistentTick(rotationUpdate);
         patternTick(rotationUpdate);
         factorTick(rotationUpdate);
         smoothTick(rotationUpdate);
-    }
-
-    private void basicTick(RotationUpdate rotationUpdate) {
-        toYawHistory.add(rotationUpdate.getTo().getYaw());
-        toPitchHistory.add(rotationUpdate.getTo().getPitch());
-        if (toYawHistory.size() < BASIC_SAMPLE_SIZE) return;
-
-        final List<Float> yawDeltas = new ArrayList<>(BASIC_SAMPLE_SIZE);
-        {
-            float oldYaw = toYawHistory.get(0);
-            for (float yaw : toYawHistory) {
-                yawDeltas.add(Math.abs(yaw - oldYaw));
-                oldYaw = yaw;
-            }
-        }
-
-        float oldYawResult = toYawHistory.get(0);
-        float oldPitchResult = toPitchHistory.get(0);
-        float oldYawChange = Math.abs(toYawHistory.get(0) - oldYawResult);
-        float yawChangeFirst = Math.abs(toYawHistory.get(0) - toYawHistory.get(1));
-
-        int machineKnownMovement = 0;
-        int constantRotations = 0;
-        int gcd = 0;
-        int aggressivePatternI = 0;
-        int aggressivePatternD = 0;
-        int aggressivePatternI2 = 0;
-        int aggressivePatternD2 = 0;
-        int robotizedAmount = 0;
-        int aggressiveAim = 0;
-        int infinitives = 0;
-
-        for (int i = 0; i < BASIC_SAMPLE_SIZE; i++) {
-            float yaw = toYawHistory.get(i);
-            float pitch = toPitchHistory.get(i);
-
-            float yawChange = Math.abs(yaw - oldYawResult);
-            float pitchChange = Math.abs(pitch - oldPitchResult);
-            float robotized = Math.abs(yawChange - yawChangeFirst);
-            float diffBetweenYawChanges = yawChange - oldYawChange;
-
-            if (robotized < 2.0f && yawChange > 2.5f) robotizedAmount += 1;
-            if (robotized < 0.99f && yawChange > 4.0f) machineKnownMovement++;
-            if (robotized < 0.02f && yawChange > 3.0f) constantRotations++;
-            if (robotized < 2.0f && yawChange > 3.0f) aggressiveAim++;
-
-            double interpolation = MathUtil.scaleVal(yawChange / robotized, 2);
-            if (Double.isInfinite(interpolation) && yawChange > 0.0f) {
-                infinitives++;
-                if (infinitives > 1 && yawChange < 0.4f) {
-                    infinitives--;
-                }
-            }
-
-            if (yawChange == 0.1f || pitchChange == 0.1f) gcd++;
-            if (yawChange == 0.01f || pitchChange == 0.01f) gcd++;
-
-            if ((diffBetweenYawChanges > 0.01f && diffBetweenYawChanges < 2.0f)) aggressivePatternI++;
-            if ((diffBetweenYawChanges < -0.01f && diffBetweenYawChanges > -2.0f)) aggressivePatternD++;
-            if (diffBetweenYawChanges > 2.0f) aggressivePatternI2++;
-            if (diffBetweenYawChanges < -2.0f) aggressivePatternD2++;
-
-            oldYawResult = yaw;
-            oldPitchResult = pitch;
-            oldYawChange = yawChange;
-        }
-
-        final int sens = player.calculateSensitivity();
-        final int clientSens = rotationUpdate.getProcessor().totalSensitivityClient;
-        final double averageYaw = Math.abs(MathUtil.getAverage(yawDeltas));
-        if (sens > 65) {
-            if (robotizedAmount > 8) flagHeuristic("t=BasicComponent reason=heuristic(sync) robot=" + robotizedAmount + " sens=" + sens + " cs=" + clientSens);
-            if (aggressiveAim > 8) flagHeuristic("t=BasicComponent reason=heuristic(aggressive) aim=" + aggressiveAim + " sens=" + sens + " cs=" + clientSens);
-            if (machineKnownMovement > 7) flagHeuristic("t=BasicComponent reason=heuristic(aim) machine=" + machineKnownMovement + " sens=" + sens + " cs=" + clientSens);
-            if (constantRotations > 3) flagHeuristic("t=BasicComponent reason=heuristic(constant) count=" + constantRotations + " sens=" + sens + " cs=" + clientSens);
-        } else {
-            if (machineKnownMovement > 8) flagHeuristic("t=BasicComponent reason=heuristic(aim) machine=" + machineKnownMovement + " sens=" + sens + " cs=" + clientSens);
-            if (constantRotations > 6) flagHeuristic("t=BasicComponent reason=heuristic(constant) count=" + constantRotations + " sens=" + sens + " cs=" + clientSens);
-        }
-
-        final boolean suspiciousInterpolation = infinitives > 1 && averageYaw > interpolationAverageThreshold;
-        final boolean clearNormalInterpolation = infinitives == 0
-                && averageYaw >= Math.max(INTERPOLATION_CLEAR_NORMAL_FLOOR, interpolationAverageThreshold - 2.0D);
-
-        if (suspiciousInterpolation) {
-            basicInterpolationBuffer = Math.min(
-                    basicInterpolationBuffer + ((averageYaw > (interpolationAverageThreshold + 2.0D)) ? 1.25f : 1.0f),
-                    interpolationBufferLimit + 1.0f
-            );
-            if (basicInterpolationBuffer >= interpolationBufferLimit) {
-                if (flagHeuristic("t=BasicInterpolation reason=heuristic(interpolation) inf=" + infinitives + " avg=" + averageYaw + " buf=" + basicInterpolationBuffer + " sens=" + sens + " cs=" + clientSens)) {
-                    basicInterpolationBuffer = Math.max(0.0f, interpolationBufferLimit - 1.5f);
-                }
-            }
-        } else if (clearNormalInterpolation) {
-            basicInterpolationBuffer = Math.max(0.0f, basicInterpolationBuffer - interpolationBufferDecay);
-        }
-
-        if (gcd > 0) flagHeuristic("t=BasicComponent reason=pattern(gcd) gcd=" + gcd + " sens=" + sens + " cs=" + clientSens);
-        if (aggressivePatternI > 3 && aggressivePatternD > 3) {
-            basicRandomPatternBuffer = Math.min(basicRandomPatternBuffer + 1.0f, randomPatternBufferLimit + 1.0f);
-            if (basicRandomPatternBuffer >= randomPatternBufferLimit) {
-                if (flagHeuristic("t=BasicInterpolation reason=pattern(random) inc=" + aggressivePatternI + " dec=" + aggressivePatternD + " buf=" + basicRandomPatternBuffer + " sens=" + sens + " cs=" + clientSens)) {
-                    basicRandomPatternBuffer = Math.max(0.0f, randomPatternBufferLimit - 1.5f);
-                }
-            }
-        } else {
-            basicRandomPatternBuffer = Math.max(0.0f, basicRandomPatternBuffer - randomPatternBufferDecay);
-        }
-        if (aggressivePatternI2 > 3 && aggressivePatternD2 > 3 && (aggressivePatternI2 + aggressivePatternD2) > 8) {
-            basicStreak++;
-            if (basicStreak > 2) {
-                flagHeuristic("t=BasicComponent reason=pattern(snap) streak=" + basicStreak + " bigInc=" + aggressivePatternI2 + " bigDec=" + aggressivePatternD2 + " sens=" + sens + " cs=" + clientSens);
-            }
-        } else {
-            basicStreak = 0;
-        }
-
-        toYawHistory.clear();
-        toPitchHistory.clear();
     }
 
     private void constantTick(RotationUpdate rotationUpdate) {
@@ -443,8 +302,8 @@ public final class AimHeuristic extends Check implements RotationCheck {
                     inconsistentBuffer -= 0.5f;
                 }
             }
-            inconsistentSamplesYaw.clear();
-            inconsistentSamplesPitch.clear();
+            inconsistentSamplesYaw.remove(0);
+            inconsistentSamplesPitch.remove(0);
         }
 
         inconsistentLastDeltaYaw = deltaYaw;
@@ -513,7 +372,7 @@ public final class AimHeuristic extends Check implements RotationCheck {
                     if ((x > 1.0f || y > 1.0f) && (x > 0.26f && y > 0.26f)) {
                         flagged = true;
                         if (patternBuffer++ >= patternBufferLimit) {
-                            if (flagHeuristic("t=Pattern repeat vec=" + p)) {
+                            if (flagHeuristic("t=Pattern repeat vec=" + p + " buf=" + patternBuffer)) {
                                 patternBuffer -= 1.0f;
                             }
                         }
@@ -523,7 +382,7 @@ public final class AimHeuristic extends Check implements RotationCheck {
             }
 
             if (!flagged) patternBuffer = Math.max(0.0f, patternBuffer - patternBufferFade);
-            patternSamples.clear();
+            patternSamples.remove(0);
         }
 
         patternOldDelta = delta;
@@ -617,7 +476,7 @@ public final class AimHeuristic extends Check implements RotationCheck {
                 prePrev = prev;
                 prev = f;
             }
-            smoothAngles.clear();
+            smoothAngles.remove(0);
         }
     }
 

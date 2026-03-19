@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.checks.impl.scaffolding;
 
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.Pair;
@@ -27,7 +27,7 @@ public class RotationPlace extends BlockPlaceCheck {
     double flagBuffer = 0; // If the player flags once, force them to play legit, or we will cancel the tick before.
     boolean ignorePost = false;
 
-    public RotationPlace(EdGrimPlayer player) {
+    public RotationPlace(PlayerData player) {
         super(player);
     }
 

@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.MainSupportingBlockData;
 import com.github.retrooper.packetevents.util.Vector3d;
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @UtilityClass
 public class MainSupportingBlockPosFinder {
-    public MainSupportingBlockData findMainSupportingBlockPos(EdGrimPlayer player, MainSupportingBlockData lastSupportingBlock, Vector3d lastMovement, SimpleCollisionBox maxPose, boolean isOnGround) {
+    public MainSupportingBlockData findMainSupportingBlockPos(PlayerData player, MainSupportingBlockData lastSupportingBlock, Vector3d lastMovement, SimpleCollisionBox maxPose, boolean isOnGround) {
         if (!isOnGround) {
             return new MainSupportingBlockData(null, false);
         }
@@ -34,7 +34,7 @@ public class MainSupportingBlockPosFinder {
         return new MainSupportingBlockData(null, true);
     }
 
-    private Optional<Vector3i> findSupportingBlock(EdGrimPlayer player, SimpleCollisionBox searchBox) {
+    private Optional<Vector3i> findSupportingBlock(PlayerData player, SimpleCollisionBox searchBox) {
         Vector3d playerPos = new Vector3d(player.x, player.y, player.z);
 
         AtomicReference<Vector3i> bestBlockPos = new AtomicReference<>();

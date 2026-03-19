@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.predictions.rideable;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngine;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 public class PredictionEngineBoat extends PredictionEngine {
-    public PredictionEngineBoat(EdGrimPlayer player) {
+    public PredictionEngineBoat(PlayerData player) {
         player.uncertaintyHandler.collidingEntities.add(0); // We don't do collisions like living entities
         player.vehicleData.midTickY = 0;
 
@@ -31,7 +31,7 @@ public class PredictionEngineBoat extends PredictionEngine {
         player.vehicleData.status = getStatus(player);
     }
 
-    private static BoatEntityStatus getStatus(EdGrimPlayer player) {
+    private static BoatEntityStatus getStatus(PlayerData player) {
         BoatEntityStatus status = isUnderwater(player);
         if (status != null) {
             player.vehicleData.waterLevel = player.boundingBox.maxY;
@@ -49,7 +49,7 @@ public class PredictionEngineBoat extends PredictionEngine {
         }
     }
 
-    private static @Nullable BoatEntityStatus isUnderwater(@NotNull EdGrimPlayer player) {
+    private static @Nullable BoatEntityStatus isUnderwater(@NotNull PlayerData player) {
         SimpleCollisionBox axisalignedbb = player.boundingBox;
         double d0 = axisalignedbb.maxY + 0.001D;
         int i = GrimMath.floor(axisalignedbb.minX);
@@ -78,7 +78,7 @@ public class PredictionEngineBoat extends PredictionEngine {
         return flag ? BoatEntityStatus.UNDER_WATER : null;
     }
 
-    private static boolean checkInWater(EdGrimPlayer EdGrimPlayer) {
+    private static boolean checkInWater(PlayerData EdGrimPlayer) {
         SimpleCollisionBox axisalignedbb = EdGrimPlayer.boundingBox;
         int i = GrimMath.floor(axisalignedbb.minX);
         int j = GrimMath.ceil(axisalignedbb.maxX);
@@ -105,7 +105,7 @@ public class PredictionEngineBoat extends PredictionEngine {
         return flag;
     }
 
-    public static float getGroundFriction(EdGrimPlayer player) {
+    public static float getGroundFriction(PlayerData player) {
         SimpleCollisionBox axisalignedbb = player.boundingBox;
         SimpleCollisionBox axisalignedbb1 = new SimpleCollisionBox(axisalignedbb.minX, axisalignedbb.minY - 0.001D, axisalignedbb.minZ, axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ, false);
         int i = (int) (Math.floor(axisalignedbb1.minX) - 1);
@@ -141,7 +141,7 @@ public class PredictionEngineBoat extends PredictionEngine {
     }
 
     @Override
-    public List<VectorData> applyInputsToVelocityPossibilities(EdGrimPlayer player, Set<VectorData> possibleVectors, float speed) {
+    public List<VectorData> applyInputsToVelocityPossibilities(PlayerData player, Set<VectorData> possibleVectors, float speed) {
         List<VectorData> vectors = new ArrayList<>();
 
         for (VectorData data : possibleVectors) {
@@ -171,7 +171,7 @@ public class PredictionEngineBoat extends PredictionEngine {
     }
 
     @Override
-    public Set<VectorData> fetchPossibleStartTickVectors(EdGrimPlayer player) {
+    public Set<VectorData> fetchPossibleStartTickVectors(PlayerData player) {
         Set<VectorData> vectors = player.getPossibleVelocities();
         addFluidPushingToStartingVectors(player, vectors);
 
@@ -183,17 +183,17 @@ public class PredictionEngineBoat extends PredictionEngine {
     }
 
     @Override
-    public void endOfTick(EdGrimPlayer player, double d) {
+    public void endOfTick(PlayerData player, double d) {
         super.endOfTick(player, d);
         Collisions.handleInsideBlocks(player);
     }
 
     @Override
-    public boolean canSwimHop(EdGrimPlayer player) {
+    public boolean canSwimHop(PlayerData player) {
         return false;
     }
 
-    private void floatBoat(EdGrimPlayer player, Vector3dm vector) {
+    private void floatBoat(PlayerData player, Vector3dm vector) {
         double d1 = player.hasGravity ? -0.04f : 0;
         double d2 = 0.0D;
         float invFriction = 0.05F;
@@ -236,7 +236,7 @@ public class PredictionEngineBoat extends PredictionEngine {
         }
     }
 
-    public float getWaterLevelAbove(EdGrimPlayer player) {
+    public float getWaterLevelAbove(PlayerData player) {
         SimpleCollisionBox axisalignedbb = player.boundingBox;
         int i = (int) Math.floor(axisalignedbb.minX);
         int j = (int) Math.ceil(axisalignedbb.maxX);
@@ -269,7 +269,7 @@ public class PredictionEngineBoat extends PredictionEngine {
         return (float) (l + 1);
     }
 
-    private void controlBoat(EdGrimPlayer player, Vector3dm vector, boolean intermediate) {
+    private void controlBoat(PlayerData player, Vector3dm vector, boolean intermediate) {
         float f = 0.0F;
         if (player.vehicleData.vehicleHorizontal != 0 && (!intermediate && player.vehicleData.vehicleForward == 0)) {
             f += 0.005F;

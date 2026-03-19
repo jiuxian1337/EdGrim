@@ -7,7 +7,7 @@ import tech.zkmjnic.edgrim.manager.violationdatabase.DatabaseDialect;
 import tech.zkmjnic.edgrim.manager.violationdatabase.DatabaseUtils;
 import tech.zkmjnic.edgrim.manager.violationdatabase.Violation;
 import tech.zkmjnic.edgrim.manager.violationdatabase.ViolationDatabase;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 
 import com.github.retrooper.packetevents.PacketEvents;
@@ -164,7 +164,7 @@ public class SQLiteViolationDatabase implements ViolationDatabase {
 
     @Override
     // Update signature to match the 4 new string parameters
-    public synchronized void logAlert(EdGrimPlayer player, String grimVersion, String verbose, String checkName, int vls) {
+    public synchronized void logAlert(PlayerData player, String grimVersion, String verbose, String checkName, int vls) {
         try (
                 Connection connection = getConnection();
                 PreparedStatement insertLog = connection.prepareStatement(

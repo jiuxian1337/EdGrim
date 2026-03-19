@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.predictions;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
 import tech.zkmjnic.edgrim.utils.enums.FluidTag;
@@ -19,7 +19,7 @@ public class PredictionEngineWater extends PredictionEngine {
     private double playerGravity;
     private float swimmingFriction;
 
-    public static void staticVectorEndOfTick(EdGrimPlayer player, Vector3dm vector, float swimmingFriction, double playerGravity, boolean isFalling) {
+    public static void staticVectorEndOfTick(PlayerData player, Vector3dm vector, float swimmingFriction, double playerGravity, boolean isFalling) {
         vector.multiply(new Vector3dm(swimmingFriction, 0.8F, swimmingFriction));
         Vector3dm fluidVector = FluidFallingAdjustedMovement.getFluidFallingAdjustedMovement(player, playerGravity, isFalling, vector);
         vector.setX(fluidVector.getX());
@@ -27,7 +27,7 @@ public class PredictionEngineWater extends PredictionEngine {
         vector.setZ(fluidVector.getZ());
     }
 
-    public static Set<VectorData> transformSwimmingVectors(EdGrimPlayer player, Set<VectorData> base) {
+    public static Set<VectorData> transformSwimmingVectors(PlayerData player, Set<VectorData> base) {
         Set<VectorData> swimmingVelocities = new HashSet<>();
 
         // Vanilla checks for swimming
@@ -62,7 +62,7 @@ public class PredictionEngineWater extends PredictionEngine {
         return base;
     }
 
-    public void guessBestMovement(float swimmingSpeed, EdGrimPlayer player, boolean isFalling, double playerGravity, float swimmingFriction) {
+    public void guessBestMovement(float swimmingSpeed, PlayerData player, boolean isFalling, double playerGravity, float swimmingFriction) {
         this.isFalling = isFalling;
         this.playerGravity = playerGravity;
         this.swimmingFriction = swimmingFriction;
@@ -70,7 +70,7 @@ public class PredictionEngineWater extends PredictionEngine {
     }
 
     @Override
-    public void addJumpsToPossibilities(EdGrimPlayer player, Set<VectorData> existingVelocities) {
+    public void addJumpsToPossibilities(PlayerData player, Set<VectorData> existingVelocities) {
         for (VectorData vector : new HashSet<>(existingVelocities)) {
             if (player.couldSkipTick && vector.isZeroPointZeroThree()) {
                 double extraVelFromVertTickSkipUpwards = GrimMath.clamp(player.actualMovement.getY(), vector.vector.clone().getY(), vector.vector.clone().getY() + 0.05f);
@@ -88,7 +88,7 @@ public class PredictionEngineWater extends PredictionEngine {
     }
 
     @Override
-    public void endOfTick(EdGrimPlayer player, double playerGravity) {
+    public void endOfTick(PlayerData player, double playerGravity) {
         super.endOfTick(player, playerGravity);
 
         for (VectorData vector : player.getPossibleVelocitiesMinusKnockback()) {
@@ -97,7 +97,7 @@ public class PredictionEngineWater extends PredictionEngine {
     }
 
     @Override
-    public Set<VectorData> fetchPossibleStartTickVectors(EdGrimPlayer player) {
+    public Set<VectorData> fetchPossibleStartTickVectors(PlayerData player) {
         // "hacky" climbing where player enters ladder within 0.03 movement (WHY DOES 0.03 EXIST???)
         if (player.lastWasClimbing == 0 && player.pointThreeEstimator.isNearClimbable() && (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_14) || !Collisions.isEmpty(player, player.boundingBox.copy().expand(
                 player.clientVelocity.getX(), 0, player.clientVelocity.getZ()).expand(0.5, -SimpleCollisionBox.COLLISION_EPSILON, 0.5)))) {

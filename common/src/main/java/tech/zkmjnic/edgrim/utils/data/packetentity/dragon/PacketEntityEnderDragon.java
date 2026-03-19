@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity.dragon;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -15,7 +15,7 @@ public final class PacketEntityEnderDragon extends PacketEntity {
 
     private final List<PacketEntityEnderDragonPart> parts = new ArrayList<>();
 
-    public PacketEntityEnderDragon(EdGrimPlayer player, UUID uuid, int entityID, double x, double y, double z) {
+    public PacketEntityEnderDragon(PlayerData player, UUID uuid, int entityID, double x, double y, double z) {
         super(player, uuid, EntityTypes.ENDER_DRAGON, x, y, z);
         final Int2ObjectOpenHashMap<PacketEntity> entityMap = player.compensatedEntities.entityMap;
         parts.add(new PacketEntityEnderDragonPart(player, DragonPart.HEAD, x, y, z, 1.0F, 1.0F));

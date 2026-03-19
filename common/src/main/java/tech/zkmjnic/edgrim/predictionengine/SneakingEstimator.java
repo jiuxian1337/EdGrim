@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.predictionengine;
 
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
@@ -32,7 +32,7 @@ public class SneakingEstimator extends Check implements PostPredictionCheck {
     SimpleCollisionBox sneakingPotentialHiddenVelocity = new SimpleCollisionBox();
     List<VectorData> possible = new ArrayList<>();
 
-    public SneakingEstimator(EdGrimPlayer player) {
+    public SneakingEstimator(PlayerData player) {
         super(player);
     }
 

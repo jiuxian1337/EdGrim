@@ -4,7 +4,7 @@ import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.lists.EvictingQueue;
 import com.github.retrooper.packetevents.PacketEvents;
@@ -40,7 +40,7 @@ public class Post extends Check implements PacketCheck, PostPredictionCheck {
     private boolean sentFlying = false;
     private int isExemptFromSwingingCheck = Integer.MIN_VALUE;
 
-    public Post(EdGrimPlayer playerData) {
+    public Post(PlayerData playerData) {
         super(playerData);
     }
 

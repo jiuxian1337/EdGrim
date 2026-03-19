@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.utils.latency;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import tech.zkmjnic.edgrim.utils.common.GrimArguments;
@@ -13,13 +13,13 @@ import java.util.ListIterator;
 
 public class LatencyUtils {
     private final LinkedList<Pair<Integer, Runnable>> transactionMap = new LinkedList<>();
-    private final EdGrimPlayer player;
+    private final PlayerData player;
 
     // Built from transactionMap and cleared at start of every handleNettySyncTransaction() call
     // The actual usage scope of this variable's use is limited to within the synchronized block of handleNettySyncTransaction
     private final ArrayList<Runnable> tasksToRun = new ArrayList<>();
 
-    public LatencyUtils(EdGrimPlayer player) {
+    public LatencyUtils(PlayerData player) {
         this.player = player;
     }
 

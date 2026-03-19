@@ -8,7 +8,7 @@ import ac.grim.grimac.api.event.EventBus;
 import ac.grim.grimac.api.event.events.GrimReloadEvent;
 import tech.zkmjnic.edgrim.manager.config.ConfigManagerFileImpl;
 import tech.zkmjnic.edgrim.manager.init.start.StartableInitable;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import tech.zkmjnic.edgrim.utils.common.ConfigReloadObserver;
@@ -182,7 +182,7 @@ public class EdGrimExternalAPI implements GrimAbstractAPI, ConfigReloadObserver,
         // Don't reload players if the plugin hasn't started yet
         if (!started) return;
         // Reload checks for all players
-        for (EdGrimPlayer player : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
+        for (PlayerData player : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
             player.runSafely(() -> player.reload(configManager));
         }
     }

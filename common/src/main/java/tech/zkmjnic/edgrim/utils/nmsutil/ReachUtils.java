@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.Pair;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
@@ -139,7 +139,7 @@ public class ReachUtils {
     }
 
     // Look vector accounting for optifine FastMath, and client version differences
-    public static Vector3dm getLook(EdGrimPlayer player, float yaw, float pitch) {
+    public static Vector3dm getLook(PlayerData player, float yaw, float pitch) {
         if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_12_2)) {
             float f = player.trigHandler.cos(GrimMath.radians(-yaw) - (float) Math.PI);
             float f1 = player.trigHandler.sin(GrimMath.radians(-yaw) - (float) Math.PI);
@@ -161,7 +161,7 @@ public class ReachUtils {
         return vec.getX() > self.minX && vec.getX() < self.maxX && (vec.getY() > self.minY && vec.getY() < self.maxY && vec.getZ() > self.minZ && vec.getZ() < self.maxZ);
     }
 
-    public static double getMinReachToBox(EdGrimPlayer player, SimpleCollisionBox targetBox) {
+    public static double getMinReachToBox(PlayerData player, SimpleCollisionBox targetBox) {
         boolean giveMovementThresholdLenience = !player.packetStateData.didLastMovementIncludePosition || player.canSkipTicks();
         if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_8))
             targetBox.expand(0.1);

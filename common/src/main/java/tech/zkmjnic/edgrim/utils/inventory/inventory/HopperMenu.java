@@ -1,13 +1,13 @@
 package tech.zkmjnic.edgrim.utils.inventory.inventory;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.inventory.Inventory;
 import tech.zkmjnic.edgrim.utils.inventory.InventoryStorage;
 import tech.zkmjnic.edgrim.utils.inventory.slot.Slot;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
 
 public class HopperMenu extends AbstractContainerMenu {
-    public HopperMenu(EdGrimPlayer player, Inventory playerInventory) {
+    public HopperMenu(PlayerData player, Inventory playerInventory) {
         super(player, playerInventory);
 
         InventoryStorage containerStorage = new InventoryStorage(5);

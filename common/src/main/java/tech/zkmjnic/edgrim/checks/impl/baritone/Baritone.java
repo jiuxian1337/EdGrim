@@ -4,7 +4,7 @@ import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.impl.aim.processor.AimProcessor;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.data.HeadRotation;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
@@ -14,7 +14,7 @@ import tech.zkmjnic.edgrim.utils.math.GrimMath;
 public class Baritone extends Check implements RotationCheck {
     private int verbose;
 
-    public Baritone(EdGrimPlayer playerData) {
+    public Baritone(PlayerData playerData) {
         super(playerData);
     }
 

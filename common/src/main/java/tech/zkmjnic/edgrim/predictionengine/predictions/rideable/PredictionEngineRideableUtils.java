@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.predictions.rideable;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngine;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngineNormal;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
@@ -23,7 +23,7 @@ import java.util.Set;
 @UtilityClass
 public final class PredictionEngineRideableUtils {
 
-    public static Set<VectorData> handleJumps(EdGrimPlayer player, Set<VectorData> possibleVectors) {
+    public static Set<VectorData> handleJumps(PlayerData player, Set<VectorData> possibleVectors) {
         if (!(player.compensatedEntities.self.getRiding() instanceof PacketEntityHorse horse))
             return possibleVectors;
 
@@ -42,7 +42,7 @@ public final class PredictionEngineRideableUtils {
         return possibleVectors;
     }
 
-    private static void handleCamelDash(EdGrimPlayer player, Set<VectorData> possibleVectors, PacketEntityCamel camel) {
+    private static void handleCamelDash(PlayerData player, Set<VectorData> possibleVectors, PacketEntityCamel camel) {
         final boolean wantsToJump = player.vehicleData.horseJump > 0.0F && !player.vehicleData.horseJumping && player.lastOnGround;
         if (!wantsToJump) return;
 
@@ -68,7 +68,7 @@ public final class PredictionEngineRideableUtils {
         player.vehicleData.camelDashCooldown = 55;
     }
 
-    private static void handleHorseJumping(EdGrimPlayer player, Set<VectorData> possibleVectors, PacketEntityHorse horse) {
+    private static void handleHorseJumping(PlayerData player, Set<VectorData> possibleVectors, PacketEntityHorse horse) {
         // If the player wants to jump on a horse
         // Listen to Entity Action -> start jump with horse, stop jump with horse
         final boolean wantsToJump = player.vehicleData.horseJump > 0.0F && !player.vehicleData.horseJumping && player.lastOnGround;
@@ -109,11 +109,11 @@ public final class PredictionEngineRideableUtils {
         player.vehicleData.horseJump = 0.0F;
     }
 
-    public static List<VectorData> applyInputsToVelocityPossibilities(Vector3dm movementVector, EdGrimPlayer player, Set<VectorData> possibleVectors, float speed) {
+    public static List<VectorData> applyInputsToVelocityPossibilities(Vector3dm movementVector, PlayerData player, Set<VectorData> possibleVectors, float speed) {
         return applyInputsToVelocityPossibilities(new PredictionEngine(), movementVector, player, possibleVectors, speed);
     }
 
-    public static List<VectorData> applyInputsToVelocityPossibilities(PredictionEngine predictionEngine, Vector3dm movementVector, EdGrimPlayer player, Set<VectorData> possibleVectors, float speed) {
+    public static List<VectorData> applyInputsToVelocityPossibilities(PredictionEngine predictionEngine, Vector3dm movementVector, PlayerData player, Set<VectorData> possibleVectors, float speed) {
         List<VectorData> returnVectors = new ArrayList<>();
 
         for (VectorData possibleLastTickOutput : possibleVectors) {

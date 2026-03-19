@@ -6,7 +6,7 @@ import tech.zkmjnic.edgrim.command.BuildableCommand;
 import tech.zkmjnic.edgrim.command.CommandUtils;
 import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
 import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -88,7 +88,7 @@ public class GrimList implements BuildableCommand {
         boolean after = false;
         builder.append(Component.text("Players = [", NamedTextColor.GRAY));
         //
-        for (EdGrimPlayer entry : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
+        for (PlayerData entry : EdGrimAPI.INSTANCE.getPlayerDataManager().getEntries()) {
             if (after) {
                 builder.append(Component.text(", ").color(NamedTextColor.GRAY));
             } else {

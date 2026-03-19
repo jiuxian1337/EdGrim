@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngine;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
@@ -86,7 +86,7 @@ import java.util.Set;
  * increase bandwidth usage.  At least it only causes falses occasionally, and not bypasses.
  */
 public class PointThreeEstimator {
-    private final EdGrimPlayer player;
+    private final PlayerData player;
     // If the player was within 0.03 of water between now and the last movement
     public boolean isNearFluid = false;
     // The one thing we don't need to store is if the player 0.03'd to the ground, as this sends a packet
@@ -118,7 +118,7 @@ public class PointThreeEstimator {
     @Getter
     private boolean wasAlwaysCertain = true;
 
-    public PointThreeEstimator(EdGrimPlayer player) {
+    public PointThreeEstimator(PlayerData player) {
         this.player = player;
     }
 
@@ -462,7 +462,7 @@ public class PointThreeEstimator {
         return maxYTraveled;
     }
 
-    private double iterateGravity(EdGrimPlayer player, double y) {
+    private double iterateGravity(PlayerData player, double y) {
         final OptionalInt levitation = player.compensatedEntities.getPotionLevelForPlayer(PotionTypes.LEVITATION);
         if (levitation.isPresent()) {
             // This supports both positive and negative levitation

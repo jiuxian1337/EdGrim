@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.data.attribute;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import com.github.retrooper.packetevents.protocol.attribute.Attribute;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -59,7 +59,7 @@ public final class ValuedAttribute {
      * @param requiredVersion the required version for the attribute
      * @return this instance for chaining
      */
-    public ValuedAttribute requiredVersion(EdGrimPlayer player, ClientVersion requiredVersion) {
+    public ValuedAttribute requiredVersion(PlayerData player, ClientVersion requiredVersion) {
         withSetRewriter((oldValue, newValue) -> {
             if (player.getClientVersion().isOlderThan(requiredVersion)) {
                 return oldValue;

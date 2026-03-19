@@ -5,7 +5,7 @@ import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientClickWindow;
@@ -32,7 +32,7 @@ public final class InventoryMultiInteraction extends Check implements PacketChec
     private long lastClickMs;
     private int lastSlot = Integer.MIN_VALUE;
 
-    public InventoryMultiInteraction(final EdGrimPlayer player) {
+    public InventoryMultiInteraction(final PlayerData player) {
         super(player);
     }
 

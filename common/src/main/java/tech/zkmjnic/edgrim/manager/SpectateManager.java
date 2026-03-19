@@ -4,7 +4,7 @@ import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.manager.init.ReloadableInitable;
 import tech.zkmjnic.edgrim.manager.init.start.StartableInitable;
 import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.math.Location;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
@@ -43,13 +43,13 @@ public class SpectateManager implements StartableInitable, ReloadableInitable {
         return spectatingPlayers.containsKey(uuid);
     }
 
-    public boolean shouldHidePlayer(EdGrimPlayer receiver, WrapperPlayServerPlayerInfo.PlayerData playerData) {
+    public boolean shouldHidePlayer(PlayerData receiver, WrapperPlayServerPlayerInfo.PlayerData playerData) {
         return playerData.getUser() != null
                 && playerData.getUser().getUUID() != null
                 && shouldHidePlayer(receiver, playerData.getUser().getUUID());
     }
 
-    public boolean shouldHidePlayer(EdGrimPlayer receiver, UUID uuid) {
+    public boolean shouldHidePlayer(PlayerData receiver, UUID uuid) {
         return !Objects.equals(uuid, receiver.uuid) // don't hide to yourself
                 && (spectatingPlayers.containsKey(uuid) || hiddenPlayers.contains(uuid)) //hide if you are a spectator
                 && !(receiver.uuid != null && (spectatingPlayers.containsKey(receiver.uuid) || hiddenPlayers.contains(receiver.uuid))) // don't hide to other spectators

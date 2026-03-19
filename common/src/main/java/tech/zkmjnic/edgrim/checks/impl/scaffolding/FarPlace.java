@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.checks.impl.scaffolding;
 
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
@@ -14,7 +14,7 @@ import com.github.retrooper.packetevents.util.Vector3i;
 
 @CheckData(name = "FarPlace", description = "Placing blocks from too far away")
 public class FarPlace extends BlockPlaceCheck {
-    public FarPlace(EdGrimPlayer player) {
+    public FarPlace(PlayerData player) {
         super(player);
     }
 

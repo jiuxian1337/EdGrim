@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.interact;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import tech.zkmjnic.edgrim.utils.data.packetentity.dragon.PacketEntityEnderDragonPart;
@@ -16,7 +16,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientIn
 @CheckData(name = "InteractEntity", description = "Attacking entities through occluding geometry")
 public final class InteractEntity extends Check implements PacketCheck {
 
-    public InteractEntity(EdGrimPlayer player) {
+    public InteractEntity(PlayerData player) {
         super(player);
     }
 

@@ -4,7 +4,7 @@ import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.math.MathUtil;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -56,7 +56,7 @@ public final class AutoclickerA extends Check implements PacketCheck {
     private final List<Long> stack = new ArrayList<>(DEFAULT_STACK_SIZE + 10);
     private boolean entropyQuery;
 
-    public AutoclickerA(final EdGrimPlayer player) {
+    public AutoclickerA(final PlayerData player) {
         super(player);
     }
 

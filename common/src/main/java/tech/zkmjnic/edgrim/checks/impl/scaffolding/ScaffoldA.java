@@ -6,7 +6,7 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.ScaffoldCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 
@@ -33,7 +33,7 @@ public final class ScaffoldA extends ScaffoldCheck {
     private int lastPlaceY = Integer.MIN_VALUE;
     private float pitch;
 
-    public ScaffoldA(EdGrimPlayer player) {
+    public ScaffoldA(PlayerData player) {
         super(player);
     }
 
@@ -63,7 +63,7 @@ public final class ScaffoldA extends ScaffoldCheck {
                 return;
             }
 
-            if (godBridgeStreak++ > 3.0
+            if (godBridgeStreak++ > 2.0
                     && flagAndAlert("(GodBridge/KeepY)\ndc= " + dragClick + "\nlc= " + sinceLastPlacement)
                     && shouldCancel()) {
                 startCancelWindow();
@@ -87,7 +87,7 @@ public final class ScaffoldA extends ScaffoldCheck {
             if (lastSneakTicks > 5 && pitch >= 45.0F && dragClick < 2.0) {
                 godBridgeBuffer = Math.min(5.0, godBridgeBuffer + 1.0);
             } else if (lastSneakTicks <= 5 || dragClick > 1.0) {
-                godBridgeBuffer = 0.0;
+                godBridgeBuffer = Math.max(0.0, godBridgeBuffer - 1);
             }
         } else {
             godBridgeBuffer = Math.max(0.0, godBridgeBuffer - 1.5);

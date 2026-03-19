@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
@@ -56,7 +56,7 @@ public class DynamicChorusPlant implements CollisionFactory {
     }
 
     @Override
-    public CollisionBox fetch(EdGrimPlayer player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
         // ViaVersion replacement block (Purple wool)
         if (version.isOlderThanOrEquals(ClientVersion.V_1_8))
             return new SimpleCollisionBox(0, 0, 0, 1, 1, 1, true);
@@ -86,7 +86,7 @@ public class DynamicChorusPlant implements CollisionFactory {
         return modernShapes[getAABBIndex(directions)].copy();
     }
 
-    public CollisionBox getLegacyBoundingBox(EdGrimPlayer player, ClientVersion version, int x, int y, int z) {
+    public CollisionBox getLegacyBoundingBox(PlayerData player, ClientVersion version, int x, int y, int z) {
         Set<BlockFace> faces = getLegacyStates(player, version, x, y, z);
 
         float f1 = faces.contains(BlockFace.WEST) ? 0.0F : 0.1875F;
@@ -99,7 +99,7 @@ public class DynamicChorusPlant implements CollisionFactory {
         return new SimpleCollisionBox(f1, f2, f3, f4, f5, f6);
     }
 
-    public Set<BlockFace> getLegacyStates(EdGrimPlayer player, ClientVersion version, int x, int y, int z) {
+    public Set<BlockFace> getLegacyStates(PlayerData player, ClientVersion version, int x, int y, int z) {
         Set<BlockFace> faces = new HashSet<>();
 
         // 1.13 clients on 1.12 servers don't see chorus flowers attached to chorus because of a ViaVersion bug

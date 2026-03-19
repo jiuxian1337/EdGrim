@@ -4,7 +4,7 @@ import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.math.MathUtil;
 import tech.zkmjnic.edgrim.utils.math.Statistics;
@@ -17,7 +17,7 @@ import java.util.function.Function;
 
 @CheckData(name = "AimStatistics", configName = "AimStatistics", decay = 0.75, description = "aim statistics migrated")
 public final class AimStatistics extends Check implements RotationCheck {
-    private static final int SAMPLE_SIZE = 25;
+    private static final int SAMPLE_SIZE = 10;
 
     private final List<Float> yaw = new ArrayList<>(SAMPLE_SIZE);
     private final List<Float> pitch = new ArrayList<>(SAMPLE_SIZE);
@@ -35,7 +35,7 @@ public final class AimStatistics extends Check implements RotationCheck {
     private float zFactorBufferLimit = 7.0f;
     private float improbableBufferLimit = 15.0f;
 
-    public AimStatistics(EdGrimPlayer player) {
+    public AimStatistics(PlayerData player) {
         super(player);
     }
 
@@ -52,7 +52,11 @@ public final class AimStatistics extends Check implements RotationCheck {
 
     @Override
     public void process(final RotationUpdate rotationUpdate) {
-        if (!player.actionManager.hasAttackedSince(500L)) return;
+        if (!player.actionManager.hasAttackedSince(2500L)) {
+//            yaw.clear();
+//            pitch.clear();
+            return;
+        }
         if (rotationUpdate.isCinematic()) return;
 
         if (player.packetStateData.lastPacketWasTeleport
@@ -60,6 +64,8 @@ public final class AimStatistics extends Check implements RotationCheck {
                 || player.packetStateData.horseInteractCausedForcedRotation
                 || player.packetStateData.lastPacketWasOnePointSeventeenDuplicate
                 || player.compensatedEntities.self.getRiding() != null) {
+//            yaw.clear();
+//            pitch.clear();
             return;
         }
 
@@ -111,7 +117,7 @@ public final class AimStatistics extends Check implements RotationCheck {
         if (shannonAnalysis.size() > 9) {
             Set<Double> uniq = new HashSet<>(shannonAnalysis);
             double diff = Math.abs(Math.abs(MathUtil.getMin(uniq)) - Math.abs(MathUtil.getMax(uniq)));
-            shannonAnalysis.clear();
+            shannonAnalysis.remove(0);
         }
 
         int jiffPatterns = 0;
@@ -162,8 +168,8 @@ public final class AimStatistics extends Check implements RotationCheck {
             }
         }
 
-        yaw.clear();
-        pitch.clear();
+        yaw.remove(0);
+        pitch.remove(0);
     }
 
     private static double shannonEntropy(List<Float> values) {

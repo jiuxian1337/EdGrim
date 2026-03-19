@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.anticheat.update;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.HitboxData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
@@ -20,11 +20,11 @@ public final class BlockBreak {
     public final DiggingAction action;
     public final int sequence;
     public final WrappedBlockState block;
-    private final EdGrimPlayer player;
+    private final PlayerData player;
     @Getter
     private boolean cancelled;
 
-    public BlockBreak(EdGrimPlayer player, Vector3i position, BlockFace face, int faceId, DiggingAction action, int sequence, WrappedBlockState block) {
+    public BlockBreak(PlayerData player, Vector3i position, BlockFace face, int faceId, DiggingAction action, int sequence, WrappedBlockState block) {
         this.player = player;
         this.position = position;
         this.face = face;

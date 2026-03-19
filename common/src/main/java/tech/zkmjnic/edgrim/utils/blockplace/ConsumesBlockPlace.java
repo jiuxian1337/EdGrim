@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.blockplace;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.collisions.AxisUtil;
 import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 // HOW DIFFICULT CAN IT BE TO TELL THE SERVER THAT YOU RANG A BELL, AND NOT CREATE A GHOST BLOCK???
 @UtilityClass
 public class ConsumesBlockPlace {
-    public static boolean consumesPlace(@NotNull EdGrimPlayer player, @NotNull WrappedBlockState state, @NotNull BlockPlace place) {
+    public static boolean consumesPlace(@NotNull PlayerData player, @NotNull WrappedBlockState state, @NotNull BlockPlace place) {
         // Hey look, it's another DESYNC MOJANG
         if (state.getType() == StateTypes.BELL) {
             return goodBellHit(state, place);

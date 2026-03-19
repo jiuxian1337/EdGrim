@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.movementtick;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.PlayerBaseTick;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngine;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngineElytra;
@@ -34,13 +34,13 @@ import com.viaversion.viaversion.api.Via;
 
 
 public class MovementTicker {
-    public final EdGrimPlayer player;
+    public final PlayerData player;
 
-    public MovementTicker(EdGrimPlayer player) {
+    public MovementTicker(PlayerData player) {
         this.player = player;
     }
 
-    public static void handleEntityCollisions(EdGrimPlayer player) {
+    public static void handleEntityCollisions(PlayerData player) {
         // 1.7 and 1.8 do not have player collision
         final boolean serverSupported = PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_9);
         boolean hasEntityPushing = !(player.getClientVersion().isOlderThan(ClientVersion.V_1_9)
@@ -229,7 +229,7 @@ public class MovementTicker {
             Vector3d from = new Vector3d(player.lastX, player.lastY, player.lastZ);
             Vector3d to = new Vector3d(player.x, player.y, player.z);
 
-            player.addMovementThisTick(new EdGrimPlayer.Movement(from, to, true));
+            player.addMovementThisTick(new PlayerData.Movement(from, to, true));
         }
 
         // This is where vanilla moves the bounding box and sets it
@@ -498,15 +498,15 @@ public class MovementTicker {
 
             ClientVersion clientVersion = player.getClientVersion();
             if (clientVersion.isOlderThan(ClientVersion.V_1_21_5)) {
-                player.finalMovementsThisTick.add(new EdGrimPlayer.Movement(from, to, false));
+                player.finalMovementsThisTick.add(new PlayerData.Movement(from, to, false));
             } else if (clientVersion.isNewerThanOrEquals(ClientVersion.V_1_21_5)) {
                 player.finalMovementsThisTick.addAll(player.movementThisTick);
                 player.movementThisTick.clear();
 
                 if (player.finalMovementsThisTick.isEmpty()) {
-                    player.finalMovementsThisTick.add(new EdGrimPlayer.Movement(from, to, false));
+                    player.finalMovementsThisTick.add(new PlayerData.Movement(from, to, false));
                 } else if (player.finalMovementsThisTick.get(player.finalMovementsThisTick.size() - 1).to().distanceSquared(to) > 9.9999994E-11F) {
-                    player.finalMovementsThisTick.add(new EdGrimPlayer.Movement(player.finalMovementsThisTick.get(player.finalMovementsThisTick.size() - 1).to(), to, false));
+                    player.finalMovementsThisTick.add(new PlayerData.Movement(player.finalMovementsThisTick.get(player.finalMovementsThisTick.size() - 1).to(), to, false));
                 }
             }
 

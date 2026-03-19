@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.events.packets;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
@@ -30,7 +30,7 @@ public class PacketHidePlayerInfo extends PacketListenerAbstract {
             if (PacketEvents.getAPI().getServerManager().getVersion().isOlderThanOrEquals(ServerVersion.V_1_12_2))
                 return;
 
-            EdGrimPlayer receiver = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData receiver = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
 
             if (receiver == null) { // Exempt
                 return;
@@ -58,7 +58,7 @@ public class PacketHidePlayerInfo extends PacketListenerAbstract {
                 }
             }
         } else if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_UPDATE) {
-            EdGrimPlayer receiver = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            PlayerData receiver = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
             if (receiver == null) return;
             //create wrappers
             WrapperPlayServerPlayerInfoUpdate wrapper = new WrapperPlayServerPlayerInfoUpdate(event);

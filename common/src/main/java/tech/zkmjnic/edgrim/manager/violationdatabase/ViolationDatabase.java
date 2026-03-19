@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.manager.violationdatabase;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -10,7 +10,7 @@ public interface ViolationDatabase {
 
     void connect() throws SQLException;
 
-    void logAlert(EdGrimPlayer player, String grimVersion, String verbose, String checkName, int vls);
+    void logAlert(PlayerData player, String grimVersion, String verbose, String checkName, int vls);
 
     int getLogCount(UUID player);
 

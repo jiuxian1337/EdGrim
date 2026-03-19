@@ -242,21 +242,6 @@ InventoryMultiInteraction:
     cancel: false
 
 AimHeuristic:
-    basic-component:
-        # Enable the basic heuristic sampler.
-        enabled: true
-        # Fast direct flag for common "randomizer flaw" pitch patterns.
-        randomizer-flaw: true
-        # Minimum average yaw delta required before the interpolation sub-check starts buffering.
-        interpolation-average-threshold: 3.2
-        # Repeated interpolation hits required before the sub-check flags.
-        interpolation-buffer: 5.0
-        # How quickly the interpolation buffer decays when the pattern stops.
-        interpolation-buffer-decay: 0.3
-        # Repeated pattern(random) hits required before the sub-check flags.
-        random-pattern-buffer: 2.0
-        # How quickly the pattern(random) buffer decays when the pattern stops.
-        random-pattern-buffer-decay: 0.1
     constant-check:
         # Required buffer (roughly: consecutive matches) before Constant1/2/3 flags.
         constant-1-buffer: 8
@@ -272,7 +257,7 @@ AimHeuristic:
     pattern-check:
         # Repeated delta patterns; buffer is a small float that fades when the pattern stops.
         enabled: true
-        buffer: 2
+        buffer: 5
         buffer-fade: 0.25
     factor-check:
         # Large "centre spike" factors; resets after enough normal ticks.
@@ -305,6 +290,16 @@ AimStatistics:
     buffer-limit-iqr: 11.0
     buffer-limit-zfactor: 7.0
     buffer-limit-improbable: 15.0
+
+AimNoise:
+    # Enable the basic low-variance / high-consistency sub-checks.
+    enabled-basic: true
+    # Enable the mixed kurtosis/pearson/distinct-noise combat pattern sub-check.
+    enabled-mix: true
+    # Enable the yaw/pitch entropy correlation sub-check.
+    enabled-entropy: true
+    # Enable the advanced kurtosis clustering sub-check.
+    enabled-advanced: true
 
 exploit:
     # You can gain high speeds when sprint jumping with an elytra, this prevents the exploit when set to false

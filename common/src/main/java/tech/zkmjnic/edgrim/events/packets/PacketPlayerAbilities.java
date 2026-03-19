@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.events.packets;
 import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -18,7 +18,7 @@ public class PacketPlayerAbilities extends Check implements PacketCheck {
     private boolean lastSentPlayerCanFly = false;
     private int maxFlyingPing = 1000;
 
-    public PacketPlayerAbilities(EdGrimPlayer player) {
+    public PacketPlayerAbilities(PlayerData player) {
         super(player);
     }
 

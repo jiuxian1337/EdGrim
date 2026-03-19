@@ -1,9 +1,7 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.packetentity.*;
-import tech.zkmjnic.edgrim.utils.data.packetentity.*;
 import tech.zkmjnic.edgrim.utils.data.packetentity.*;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityType;
@@ -22,13 +20,13 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class BoundingBoxSize {
 
-    public static float getWidth(EdGrimPlayer player, PacketEntity packetEntity) {
+    public static float getWidth(PlayerData player, PacketEntity packetEntity) {
         // Turtles are the only baby animal that don't follow the * 0.5 rule
         if (packetEntity.type == EntityTypes.TURTLE && packetEntity.isBaby) return 0.36f;
         return getWidthMinusBaby(player, packetEntity) * (packetEntity.isBaby ? 0.5f : 1f);
     }
 
-    private static float getWidthMinusBaby(EdGrimPlayer player, PacketEntity packetEntity) {
+    private static float getWidthMinusBaby(PlayerData player, PacketEntity packetEntity) {
         final EntityType type = packetEntity.type;
         if (EntityTypes.AXOLOTL.equals(type)) {
             return 0.75f;
@@ -133,7 +131,7 @@ public final class BoundingBoxSize {
         return 0.6f;
     }
 
-    public static Vector3d getRidingOffsetFromVehicle(PacketEntity entity, EdGrimPlayer player) {
+    public static Vector3d getRidingOffsetFromVehicle(PacketEntity entity, PlayerData player) {
         SimpleCollisionBox box = entity.getPossibleCollisionBoxes();
         double x = (box.maxX + box.minX) / 2d;
         double y = box.minY;
@@ -187,7 +185,7 @@ public final class BoundingBoxSize {
         );
     }
 
-    public static float getHeight(EdGrimPlayer player, PacketEntity packetEntity) {
+    public static float getHeight(PlayerData player, PacketEntity packetEntity) {
         // Turtles are the only baby animal that don't follow the * 0.5 rule
         if (packetEntity.type == EntityTypes.TURTLE && packetEntity.isBaby) return 0.12f;
         return getHeightMinusBaby(player, packetEntity) * (packetEntity.isBaby ? 0.5f : 1f);
@@ -214,7 +212,7 @@ public final class BoundingBoxSize {
         return 0;
     }
 
-    public static double getPassengerRidingOffset(EdGrimPlayer player, PacketEntity packetEntity) {
+    public static double getPassengerRidingOffset(PlayerData player, PacketEntity packetEntity) {
         if (packetEntity instanceof PacketEntityHorse)
             return (getHeight(player, packetEntity) * 0.75) - 0.25;
 
@@ -243,7 +241,7 @@ public final class BoundingBoxSize {
         return getHeight(player, packetEntity) * 0.75;
     }
 
-    private static float getHeightMinusBaby(EdGrimPlayer player, PacketEntity packetEntity) {
+    private static float getHeightMinusBaby(PlayerData player, PacketEntity packetEntity) {
         final EntityType type = packetEntity.type;
         if (EntityTypes.ARMADILLO.equals(type)) {
             return 0.65f;

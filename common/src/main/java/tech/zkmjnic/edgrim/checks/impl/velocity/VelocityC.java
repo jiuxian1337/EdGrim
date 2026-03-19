@@ -4,7 +4,7 @@ import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.math.OptifineFastMath;
 import tech.zkmjnic.edgrim.utils.math.VanillaMath;
@@ -47,7 +47,7 @@ public class VelocityC extends Check implements PostPredictionCheck {
     private int velocitySinceTick;
     private double buffer;
 
-    public VelocityC(EdGrimPlayer player) {
+    public VelocityC(PlayerData player) {
         super(player);
     }
 

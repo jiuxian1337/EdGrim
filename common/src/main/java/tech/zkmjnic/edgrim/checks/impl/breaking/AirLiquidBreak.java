@@ -4,7 +4,7 @@ import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import com.github.retrooper.packetevents.protocol.item.type.ItemTypes;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -23,7 +23,7 @@ public class AirLiquidBreak extends Check implements BlockBreakCheck {
     private @NonNull Vector3i lastBreakLoc = new Vector3i();
     private @NonNull StateType lastBlockType = StateTypes.AIR;
 
-    public AirLiquidBreak(EdGrimPlayer player) {
+    public AirLiquidBreak(PlayerData player) {
         super(player);
     }
 

@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.sprint;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -15,7 +15,7 @@ import static com.github.retrooper.packetevents.protocol.potion.PotionTypes.BLIN
 public class SprintD extends Check implements PostPredictionCheck {
     public boolean startedSprintingBeforeBlind = false;
 
-    public SprintD(EdGrimPlayer player) {
+    public SprintD(PlayerData player) {
         super(player);
     }
 

@@ -2,14 +2,14 @@ package tech.zkmjnic.edgrim.checks.impl.movement;
 
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
 
 public class SetbackBlocker extends Check implements PacketCheck {
-    public SetbackBlocker(EdGrimPlayer playerData) {
+    public SetbackBlocker(PlayerData playerData) {
         super(playerData);
     }
 

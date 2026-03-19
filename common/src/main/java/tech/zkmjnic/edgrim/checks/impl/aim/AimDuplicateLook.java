@@ -3,14 +3,14 @@ package tech.zkmjnic.edgrim.checks.impl.aim;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 
 @CheckData(name = "AimDuplicateLook", description = "Detects duplicate look packets with no rotation change")
 public class AimDuplicateLook extends Check implements RotationCheck {
     private boolean exempt;
 
-    public AimDuplicateLook(EdGrimPlayer playerData) {
+    public AimDuplicateLook(PlayerData playerData) {
         super(playerData);
     }
 

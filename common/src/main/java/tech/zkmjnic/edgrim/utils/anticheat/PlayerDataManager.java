@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.utils.anticheat;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.event.events.GrimJoinEvent;
 import ac.grim.grimac.api.event.events.GrimQuitEvent;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.reflection.GeyserUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.netty.channel.ChannelHelper;
@@ -17,10 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerDataManager {
     public final Collection<User> exemptUsers = ConcurrentHashMap.newKeySet();
-    private final ConcurrentHashMap<User, EdGrimPlayer> playerDataMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<User, PlayerData> playerDataMap = new ConcurrentHashMap<>();
 
     @Nullable
-    public EdGrimPlayer getPlayer(final @NonNull UUID uuid) {
+    public PlayerData getPlayer(final @NonNull UUID uuid) {
         // Is it safe to interact with this, or is this internal PacketEvents code?
         Object channel = PacketEvents.getAPI().getProtocolManager().getChannel(uuid);
         User user = PacketEvents.getAPI().getProtocolManager().getUser(channel);
@@ -28,8 +28,8 @@ public class PlayerDataManager {
     }
 
     @Nullable
-    public EdGrimPlayer getPlayer(final @NonNull User user) {
-        @Nullable EdGrimPlayer player = playerDataMap.get(user);
+    public PlayerData getPlayer(final @NonNull User user) {
+        @Nullable PlayerData player = playerDataMap.get(user);
         if (player != null && player.platformPlayer != null && player.platformPlayer.isExternalPlayer())
             return null;
         return player;
@@ -47,7 +47,7 @@ public class PlayerDataManager {
             }
 
             // Has exempt permission
-            EdGrimPlayer EdGrimPlayer = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(user);
+            PlayerData EdGrimPlayer = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(user);
             if (EdGrimPlayer != null && EdGrimPlayer.hasPermission("edgrim.exempt")) {
                 exemptUsers.add(user);
                 return false;
@@ -66,18 +66,18 @@ public class PlayerDataManager {
 
     public void addUser(final @NonNull User user) {
         if (shouldCheck(user)) {
-            EdGrimPlayer player = new EdGrimPlayer(user);
+            PlayerData player = new PlayerData(user);
             playerDataMap.put(user, player);
             EdGrimAPI.INSTANCE.getEventBus().post(new GrimJoinEvent(player));
         }
     }
 
-    public EdGrimPlayer remove(final @NonNull User user) {
+    public PlayerData remove(final @NonNull User user) {
         return playerDataMap.remove(user);
     }
 
     public void onDisconnect(User user) {
-        EdGrimPlayer EdGrimPlayer = remove(user);
+        PlayerData EdGrimPlayer = remove(user);
         if (EdGrimPlayer != null) EdGrimAPI.INSTANCE.getEventBus().post(new GrimQuitEvent(EdGrimPlayer));
         exemptUsers.remove(user);
 
@@ -97,7 +97,7 @@ public class PlayerDataManager {
         EdGrimAPI.INSTANCE.getPlatformPlayerFactory().invalidatePlayer(uuid);
     }
 
-    public Collection<EdGrimPlayer> getEntries() {
+    public Collection<PlayerData> getEntries() {
         return playerDataMap.values();
     }
 

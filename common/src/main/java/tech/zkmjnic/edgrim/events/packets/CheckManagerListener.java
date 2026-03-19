@@ -1,15 +1,11 @@
 package tech.zkmjnic.edgrim.events.packets;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
-import tech.zkmjnic.edgrim.utils.anticheat.update.*;
-import tech.zkmjnic.edgrim.utils.anticheat.update.*;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.*;
 import tech.zkmjnic.edgrim.utils.blockplace.BlockPlaceResult;
 import tech.zkmjnic.edgrim.utils.blockplace.ConsumesBlockPlace;
 import tech.zkmjnic.edgrim.utils.change.BlockModification;
-import tech.zkmjnic.edgrim.utils.data.*;
-import tech.zkmjnic.edgrim.utils.data.*;
 import tech.zkmjnic.edgrim.utils.data.*;
 import tech.zkmjnic.edgrim.utils.inventory.Inventory;
 import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
@@ -44,8 +40,6 @@ import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.client.*;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerAcknowledgeBlockChanges;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetSlot;
-import tech.zkmjnic.edgrim.utils.nmsutil.*;
-import tech.zkmjnic.edgrim.utils.nmsutil.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +55,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
         super(PacketListenerPriority.LOW);
     }
 
-    private static void placeWaterLavaSnowBucket(EdGrimPlayer player, ItemStack held, StateType toPlace, InteractionHand hand, int sequence) {
+    private static void placeWaterLavaSnowBucket(PlayerData player, ItemStack held, StateType toPlace, InteractionHand hand, int sequence) {
         HitData data = WorldRayTrace.getNearestBlockHitResult(player, StateTypes.AIR, false, true, true);
         if (data != null) {
             BlockPlace blockPlace = new BlockPlace(player, hand, data.position(), data.closestDirection().getFaceValue(), data.closestDirection(), held, data, sequence);
@@ -97,7 +91,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
         }
     }
 
-    public static void handleQueuedPlaces(EdGrimPlayer player, boolean hasLook, float pitch, float yaw, long now) {
+    public static void handleQueuedPlaces(PlayerData player, boolean hasLook, float pitch, float yaw, long now) {
         // Handle queue'd block places
         BlockPlaceSnapshot snapshot;
         while ((snapshot = player.placeUseItemPackets.poll()) != null) {
@@ -138,7 +132,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
         }
     }
 
-    public static void handleQueuedBreaks(EdGrimPlayer player, boolean hasLook, float pitch, float yaw, long now) {
+    public static void handleQueuedBreaks(PlayerData player, boolean hasLook, float pitch, float yaw, long now) {
         BlockBreak blockBreak;
         while ((blockBreak = player.queuedBreaks.poll()) != null) {
             double lastX = player.x;
@@ -172,7 +166,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
         }
     }
 
-    private static void handleUseItem(EdGrimPlayer player, ItemStack placedWith, InteractionHand hand, int sequence) {
+    private static void handleUseItem(PlayerData player, ItemStack placedWith, InteractionHand hand, int sequence) {
         // Lilypads are USE_ITEM (THIS CAN DESYNC, WTF MOJANG)
         if (placedWith.getType() == ItemTypes.LILY_PAD) {
             placeLilypad(player, hand, sequence); // Pass a block place because lily pads have a hitbox
@@ -189,7 +183,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
         }
     }
 
-    private static void handleBlockPlaceOrUseItem(PacketWrapper<?> packet, EdGrimPlayer player) {
+    private static void handleBlockPlaceOrUseItem(PacketWrapper<?> packet, PlayerData player) {
         // Legacy "use item" packet
         if (packet instanceof WrapperPlayClientPlayerBlockPlacement place &&
                 PacketEvents.getAPI().getServerManager().getVersion().isOlderThan(ServerVersion.V_1_9)) {
@@ -277,7 +271,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
         }
     }
 
-    private static void placeBucket(EdGrimPlayer player, InteractionHand hand, int sequence) {
+    private static void placeBucket(PlayerData player, InteractionHand hand, int sequence) {
         HitData data = WorldRayTrace.getNearestBlockHitResult(player, null, true, false, true);
 
         if (data != null) {
@@ -333,7 +327,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
         }
     }
 
-    public static void setPlayerItem(EdGrimPlayer player, InteractionHand hand, ItemType type) {
+    public static void setPlayerItem(PlayerData player, InteractionHand hand, ItemType type) {
         // Give the player a water bucket
         if (player.gamemode != GameMode.CREATIVE) {
             if (hand == InteractionHand.MAIN_HAND) {
@@ -356,7 +350,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
         }
     }
 
-    private static void placeLilypad(EdGrimPlayer player, InteractionHand hand, int sequence) {
+    private static void placeLilypad(PlayerData player, InteractionHand hand, int sequence) {
         HitData data = WorldRayTrace.getNearestBlockHitResult(player, null, true, false, true);
 
         if (data != null) {
@@ -389,7 +383,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-        EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+        PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
         if (player == null) return;
 
         if (event.getConnectionState() != ConnectionState.PLAY) {
@@ -598,7 +592,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
     @Override
     public void onPacketSend(PacketSendEvent event) {
         if (event.getConnectionState() != ConnectionState.PLAY) return;
-        EdGrimPlayer player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+        PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
         if (player == null) return;
 
         if (event.getPacketType() == PacketType.Play.Server.OPEN_WINDOW) {
@@ -608,7 +602,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
         player.checkManager.onPacketSend(event);
     }
 
-    private static boolean isMojangStupid(EdGrimPlayer player, PacketReceiveEvent event, WrapperPlayClientPlayerFlying flying) {
+    private static boolean isMojangStupid(PlayerData player, PacketReceiveEvent event, WrapperPlayClientPlayerFlying flying) {
         // Teleports are not stupidity packets.
         if (player.packetStateData.lastPacketWasTeleport) return false;
         // Mojang has become less stupid!
@@ -664,7 +658,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
         return false;
     }
 
-    private static void handleFlying(EdGrimPlayer player, double x, double y, double z, float yaw, float pitch, boolean hasPosition, boolean hasLook, boolean onGround, TeleportAcceptData teleportData, PacketReceiveEvent event) {
+    private static void handleFlying(PlayerData player, double x, double y, double z, float yaw, float pitch, boolean hasPosition, boolean hasLook, boolean onGround, TeleportAcceptData teleportData, PacketReceiveEvent event) {
         long now = System.currentTimeMillis();
 
         if (!hasPosition) {
@@ -760,7 +754,7 @@ public class CheckManagerListener extends PacketListenerAbstract {
         player.packetStateData.horseInteractCausedForcedRotation = false;
     }
 
-    private static void handleDigging(EdGrimPlayer player, PacketReceiveEvent event) {
+    private static void handleDigging(PlayerData player, PacketReceiveEvent event) {
         player.lastBlockBreak = System.currentTimeMillis();
 
         final WrapperPlayClientPlayerDigging packet = new WrapperPlayClientPlayerDigging(event);

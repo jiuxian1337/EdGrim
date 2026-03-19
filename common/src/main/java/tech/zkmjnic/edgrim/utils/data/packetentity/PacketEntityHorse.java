@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
@@ -18,7 +18,7 @@ public class PacketEntityHorse extends PacketEntityTrackXRot {
     public boolean hasSaddle = false;
     public boolean isTame = false;
 
-    public PacketEntityHorse(EdGrimPlayer player, UUID uuid, EntityType type, double x, double y, double z, float xRot) {
+    public PacketEntityHorse(PlayerData player, UUID uuid, EntityType type, double x, double y, double z, float xRot) {
         super(player, uuid, type, x, y, z, xRot);
         this.trackEntityEquipment = true;
         setAttribute(Attributes.STEP_HEIGHT, 1.0f);

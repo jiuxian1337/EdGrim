@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.inventory.inventory;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.inventory.Inventory;
 import tech.zkmjnic.edgrim.utils.inventory.InventoryStorage;
 import tech.zkmjnic.edgrim.utils.inventory.slot.Slot;
@@ -9,7 +9,7 @@ import com.github.retrooper.packetevents.protocol.item.ItemStack;
 public class BasicInventoryMenu extends AbstractContainerMenu {
     private final int rows;
 
-    public BasicInventoryMenu(EdGrimPlayer player, Inventory playerInventory, int rows) {
+    public BasicInventoryMenu(PlayerData player, Inventory playerInventory, int rows) {
         super(player, playerInventory);
         this.rows = rows;
 

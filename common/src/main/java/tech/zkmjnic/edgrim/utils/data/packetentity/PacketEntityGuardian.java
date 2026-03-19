@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityType;
 
 import java.util.UUID;
@@ -10,7 +10,7 @@ public class PacketEntityGuardian extends PacketEntity {
     // in newer versions Elder Guardians are separate entities, we use this field regardless for simplicity
     public boolean isElder;
 
-    public PacketEntityGuardian(EdGrimPlayer player, UUID uuid, EntityType type, double x, double y, double z, boolean isElder) {
+    public PacketEntityGuardian(PlayerData player, UUID uuid, EntityType type, double x, double y, double z, boolean isElder) {
         super(player, uuid, type, x, y, z);
         this.isElder = isElder;
     }

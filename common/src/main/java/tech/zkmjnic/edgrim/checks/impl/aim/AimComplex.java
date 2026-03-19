@@ -5,22 +5,17 @@ import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.impl.aim.processor.AimProcessor;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.lists.Tuple;
 import tech.zkmjnic.edgrim.utils.math.MathUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @CheckData(name = "AimComplex", configName = "AimComplex", decay = 0.75, description = "complex aim checks migrated")
 public final class AimComplex extends Check implements RotationCheck {
-    private static final int RAW_SAMPLE_SIZE = 10;
-    private static final int SPIKE_SAMPLE_SIZE = 10;
+    private static final int RAW_SAMPLE_SIZE = 100;
+    private static final int SPIKE_SAMPLE_SIZE = 100;
 
     private final List<Float> rawYaw = new ArrayList<>(RAW_SAMPLE_SIZE);
     private final List<Float> rawPitch = new ArrayList<>(RAW_SAMPLE_SIZE);
@@ -46,7 +41,7 @@ public final class AimComplex extends Check implements RotationCheck {
     private float distinctBufferLimit = 4.0f;
     private float randomizerBufferLimit = 2.5f;
 
-    public AimComplex(EdGrimPlayer player) {
+    public AimComplex(PlayerData player) {
         super(player);
     }
 
@@ -62,7 +57,13 @@ public final class AimComplex extends Check implements RotationCheck {
 
     @Override
     public void process(final RotationUpdate rotationUpdate) {
-        if (!player.actionManager.hasAttackedSince(500L)) return;
+        if (!player.actionManager.hasAttackedSince(2500L)) {
+//            rawYaw.clear();
+//            rawPitch.clear();
+//            gcdYaw.clear();
+//            gcdPitch.clear();
+            return;
+        }
         if (rotationUpdate.isCinematic()) return;
 
         if (player.packetStateData.lastPacketWasTeleport
@@ -70,6 +71,10 @@ public final class AimComplex extends Check implements RotationCheck {
                 || player.packetStateData.horseInteractCausedForcedRotation
                 || player.packetStateData.lastPacketWasOnePointSeventeenDuplicate
                 || player.compensatedEntities.self.getRiding() != null) {
+//            rawYaw.clear();
+//            rawPitch.clear();
+//            gcdYaw.clear();
+//            gcdPitch.clear();
             return;
         }
 
@@ -135,13 +140,12 @@ public final class AimComplex extends Check implements RotationCheck {
         oldShannonYaw = shannonYaw;
         oldShannonPitch = shannonPitch;
 
-        rawYaw.clear();
-        rawPitch.clear();
+        rawYaw.remove(0);
+        rawPitch.remove(0);
     }
 
     private void checkSpikes() {
         if (gcdYaw.isEmpty()) {
-            gcdYaw.clear();
             gcdPitch.clear();
             return;
         }
@@ -169,8 +173,8 @@ public final class AimComplex extends Check implements RotationCheck {
                 float dec = (xDev < 40 || xSpikeMax < 70) ? -0.4f : -0.8f;
                 machineHeartBuffer = Math.max(0.0f, machineHeartBuffer + dec);
             }
-            kireikoGenericYaw.clear();
-            kireikoGenericPitch.clear();
+            kireikoGenericYaw.remove(0);
+            kireikoGenericPitch.remove(0);
         }
 
         double devYaw = MathUtil.getVariance(gcdYaw);
@@ -189,8 +193,8 @@ public final class AimComplex extends Check implements RotationCheck {
             randomizerBuffer = Math.max(0.0f, randomizerBuffer - 0.4f);
         }
 
-        gcdYaw.clear();
-        gcdPitch.clear();
+        gcdYaw.remove(0);
+        gcdPitch.remove(0);
     }
 
     private static double difference(double a, double b) {

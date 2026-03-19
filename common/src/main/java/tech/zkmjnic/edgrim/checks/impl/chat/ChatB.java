@@ -3,7 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.chat;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
@@ -16,7 +16,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCh
 // happen unless they're trying to flag, or if the server is set up badly
 @CheckData(name = "ChatB", description = "Invalid chat message")
 public class ChatB extends Check implements PacketCheck {
-    public ChatB(EdGrimPlayer player) {
+    public ChatB(PlayerData player) {
         super(player);
     }
 

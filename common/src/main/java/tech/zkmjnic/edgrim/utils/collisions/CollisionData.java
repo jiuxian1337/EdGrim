@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.collisions;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.movementtick.MovementTickerStrider;
 import tech.zkmjnic.edgrim.utils.collisions.blocks.DoorHandler;
 import tech.zkmjnic.edgrim.utils.collisions.blocks.DynamicChest;
@@ -1154,11 +1154,11 @@ public enum CollisionData implements CollisionFactory {
         return rawLookupMap.getOrDefault(state, DEFAULT);
     }
 
-    public CollisionBox getMovementCollisionBox(EdGrimPlayer player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
+    public CollisionBox getMovementCollisionBox(PlayerData player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
         return fetch(player, version, block, x, y, z).offset(x, y, z);
     }
 
-    public CollisionBox getMovementCollisionBox(EdGrimPlayer player, ClientVersion version, WrappedBlockState block) {
+    public CollisionBox getMovementCollisionBox(PlayerData player, ClientVersion version, WrappedBlockState block) {
         if (this.box != null)
             return this.box.copy();
 
@@ -1166,7 +1166,7 @@ public enum CollisionData implements CollisionFactory {
     }
 
     @Override
-    public CollisionBox fetch(EdGrimPlayer player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
+    public CollisionBox fetch(PlayerData player, ClientVersion version, WrappedBlockState block, int x, int y, int z) {
         return box != null ? box.copy() : new DynamicCollisionBox(player, version, dynamic, block);
     }
 }

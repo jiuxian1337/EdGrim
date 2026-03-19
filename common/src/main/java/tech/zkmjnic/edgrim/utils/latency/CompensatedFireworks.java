@@ -2,7 +2,7 @@ package tech.zkmjnic.edgrim.utils.latency;
 
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 
 import java.util.HashSet;
@@ -14,7 +14,7 @@ public class CompensatedFireworks extends Check implements PostPredictionCheck {
     private final Set<Integer> activeFireworks = new HashSet<>();
     private final Set<Integer> fireworksToRemoveNextTick = new HashSet<>();
 
-    public CompensatedFireworks(EdGrimPlayer player) {
+    public CompensatedFireworks(PlayerData player) {
         super(player);
     }
 

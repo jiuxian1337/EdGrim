@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
 import tech.zkmjnic.edgrim.utils.collisions.HitboxData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
@@ -24,7 +24,7 @@ import java.util.function.BiFunction;
 
 @UtilityClass
 public class WorldRayTrace {
-    public static HitData getNearestBlockHitResult(EdGrimPlayer player, StateType heldItem, boolean sourcesHaveHitbox, boolean fluidPlacement, boolean itemUsePlacement) {
+    public static HitData getNearestBlockHitResult(PlayerData player, StateType heldItem, boolean sourcesHaveHitbox, boolean fluidPlacement, boolean itemUsePlacement) {
         Vector3d startingPos = new Vector3d(player.x, player.y + player.getEyeHeight(), player.z);
         Vector3dm startingVec = new Vector3dm(startingPos.getX(), startingPos.getY(), startingPos.getZ());
         Ray trace = new Ray(player, startingPos.getX(), startingPos.getY(), startingPos.getZ(), player.xRot, player.yRot);
@@ -85,7 +85,7 @@ public class WorldRayTrace {
     //
     // I do have to admit that I'm starting to like bifunctions/new java 8 things more than I originally did.
     // although I still don't understand Mojang's obsession with streams in some of the hottest methods... that kills performance
-    public static HitData traverseBlocks(EdGrimPlayer player, Vector3d start, Vector3d end, BiFunction<WrappedBlockState, Vector3i, HitData> predicate) {
+    public static HitData traverseBlocks(PlayerData player, Vector3d start, Vector3d end, BiFunction<WrappedBlockState, Vector3i, HitData> predicate) {
         // I guess go back by the collision epsilon?
         double endX = GrimMath.lerp(-1.0E-7D, end.x, start.x);
         double endY = GrimMath.lerp(-1.0E-7D, end.y, start.y);

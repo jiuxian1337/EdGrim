@@ -3,13 +3,13 @@ package tech.zkmjnic.edgrim.checks.impl.sprint;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.EdGrimPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 
 @CheckData(name = "SprintF", description = "Sprinting while gliding", experimental = true)
 public class SprintF extends Check implements PostPredictionCheck {
-    public SprintF(EdGrimPlayer player) {
+    public SprintF(PlayerData player) {
         super(player);
     }
 
