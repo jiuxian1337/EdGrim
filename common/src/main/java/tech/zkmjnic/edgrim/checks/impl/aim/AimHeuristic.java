@@ -347,40 +347,6 @@ public final class AimHeuristic extends Check implements RotationCheck {
                 }
             }
 
-            if (!flagged) {
-                final List<Vec2f> patterns = new ArrayList<>();
-                final int currentSampleSize = patternSamples.size();
-
-                for (int i = 0; i <= currentSampleSize - PATTERN_LENGTH; ++i) {
-                    for (int j = i + MIN_PATTERN_START_INDEX_GAP; j <= currentSampleSize - PATTERN_LENGTH; ++j) {
-                        Vec2f pattern = null;
-                        for (int k = 0; k < PATTERN_LENGTH; ++k) {
-                            final Vec2f first = patternSamples.get(i + k);
-                            final Vec2f second = patternSamples.get(j + k);
-                            if (first.equals(second)) {
-                                pattern = first;
-                                break;
-                            }
-                        }
-                        if (pattern != null && !patterns.contains(pattern)) patterns.add(pattern);
-                    }
-                }
-
-                for (final Vec2f p : patterns) {
-                    final float x = Math.abs(p.getX());
-                    final float y = Math.abs(p.getY());
-                    if ((x > 1.0f || y > 1.0f) && (x > 0.26f && y > 0.26f)) {
-                        flagged = true;
-                        if (patternBuffer++ >= patternBufferLimit) {
-                            if (flagHeuristic("t=Pattern repeat vec=" + p + " buf=" + patternBuffer)) {
-                                patternBuffer -= 1.0f;
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-
             if (!flagged) patternBuffer = Math.max(0.0f, patternBuffer - patternBufferFade);
             patternSamples.remove(0);
         }

@@ -291,15 +291,58 @@ AimStatistics:
     buffer-limit-zfactor: 7.0
     buffer-limit-improbable: 15.0
 
-AimNoise:
-    # Enable the basic low-variance / high-consistency sub-checks.
-    enabled-basic: true
-    # Enable the mixed kurtosis/pearson/distinct-noise combat pattern sub-check.
-    enabled-mix: true
-    # Enable the yaw/pitch entropy correlation sub-check.
-    enabled-entropy: true
-    # Enable the advanced kurtosis clustering sub-check.
-    enabled-advanced: true
+AimBehavior:
+    # Broad aim-behavior analysis: consistency, entropy, combat pattern, and kurtosis clustering.
+
+AimDrip:
+    # Consecutive descending micro-pitch pattern after meaningful yaw movement.
+    max-streak: 12
+    vl-for-streak: 2
+
+AimInvalidSmooth:
+    # Large windows with too many ultra-small deltas and abnormally low average movement.
+    minimum-level-threshold: 90
+
+AimFocus:
+    # Detects combat windows where yaw stays unnaturally close to the target angle with low deviation.
+
+AimDivisor:
+    # Detect invalid divisor / GCD change relationships in aim deltas.
+
+AimModulo:
+    # Detect abnormal GCD and modulo relations in cinematic rotations.
+
+AimAssist:
+    # Detect invalid-mouse, flawed randomizer, and extreme randomization patterns.
+
+AimRatio:
+    # Detect windows where yaw dominates pitch with an abnormally high ratio.
+    buffer: 7
+    min-deltaX: 1.0
+    max-deltaY: 0.0001
+    ratio-threshold: 1000.0
+    window-size: 5
+
+AimVariance:
+    # Detect highly asymmetric variance after GCD-normalized combat rotations.
+
+AimJolt:
+    # Detect abnormal duplicate/outlier patterns in jolt samples.
+
+AimRoute:
+    # Detect repeated route fragments or filter-like deviations in rotation paths.
+
+AimAxis:
+    # Detect simplified cross-axis imbalance in recent aim samples.
+
+AimDistribution:
+    # Detect abnormal rotation score, distribution, and long-term limit patterns.
+
+AimEntropy:
+    # Detect entropy and spike patterns that look mechanically generated.
+
+AimTrajectory:
+    # Detect abnormal acceleration, path, coordination, correlation, and friction patterns.
 
 exploit:
     # You can gain high speeds when sprint jumping with an elytra, this prevents the exploit when set to false

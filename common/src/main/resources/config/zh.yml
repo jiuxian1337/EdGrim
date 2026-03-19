@@ -326,15 +326,58 @@ AimStatistics:
     # buffer-limit-improbable：improbable 组合检测触发所需的缓冲阈值。
     buffer-limit-improbable: 15.0
 
-AimNoise:
-    # enabled-basic：是否启用基础低方差 / 高一致性子检测。
-    enabled-basic: true
-    # enabled-mix：是否启用基于 kurtosis、pearson、distinct 的混合噪声子检测。
-    enabled-mix: true
-    # enabled-entropy：是否启用 yaw/pitch 熵相关性子检测。
-    enabled-entropy: true
-    # enabled-advanced：是否启用高级峰度聚类子检测。
-    enabled-advanced: true
+AimBehavior:
+    # 综合型瞄准行为分析：覆盖一致性、熵、战斗模式与峰度聚类。
+
+AimDrip:
+    # 在存在有效水平转动时，检测连续下压式的极小 pitch 平滑。
+    max-streak: 12
+    vl-for-streak: 2
+
+AimInvalidSmooth:
+    # 检测窗口内极小旋转过多且平均转动过低的异常平滑模式。
+    minimum-level-threshold: 90
+
+AimFocus:
+    # 检测战斗中偏航长期异常贴近目标角且波动很低的锁头模式。
+
+AimDivisor:
+    # 检测旋转增量中的 divisor / GCD 变化关系是否异常。
+
+AimModulo:
+    # 检测 cinematic 旋转中的 GCD 与 modulo 关系是否异常。
+
+AimAssist:
+    # 检测 invalid-mouse、randomizer flaw 与极端随机化旋转模式。
+
+AimRatio:
+    # 检测一段窗口内 yaw 远强于 pitch 的异常比例模式。
+    buffer: 7
+    min-deltaX: 1.0
+    max-deltaY: 0.0001
+    ratio-threshold: 1000.0
+    window-size: 5
+
+AimVariance:
+    # 检测 GCD 归一化后方差极不对称的旋转模式。
+
+AimJolt:
+    # 检测 jolt 样本中的重复度与离群点异常。
+
+AimRoute:
+    # 检测旋转路径中的重复片段或过滤器式偏移。
+
+AimAxis:
+    # 检测近期样本中两轴波动极不均衡的简化旋转模式。
+
+AimDistribution:
+    # 检测旋转评分、分布与长期限制特征异常。
+
+AimEntropy:
+    # 检测看起来像机械生成的熵与 spike 模式。
+
+AimTrajectory:
+    # 检测加速度、路径、协调性、相关性与摩擦特征异常。
 
 exploit:
     #是否允许玩家在使用鞘翅时候进行的疾跑跳跃

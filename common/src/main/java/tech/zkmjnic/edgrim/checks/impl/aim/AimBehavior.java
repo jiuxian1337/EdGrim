@@ -13,8 +13,8 @@ import tech.zkmjnic.edgrim.utils.time.Watch;
 
 import java.util.*;
 
-@CheckData(name = "AimNoise", decay = 0.85)
-public final class AimNoise extends Check implements RotationCheck {
+@CheckData(name = "AimBehavior", configName = "AimBehavior", decay = 0.85)
+public final class AimBehavior extends Check implements RotationCheck {
 
     private static final long COMBAT_COOLDOWN_MS = 100;
     private final Watch timer = new Watch();
@@ -37,7 +37,7 @@ public final class AimNoise extends Check implements RotationCheck {
     private long lastCombatEndTime = 0;
     private long lastCombatTime = 0;
 
-    public AimNoise(PlayerData player) {
+    public AimBehavior(PlayerData player) {
         super(player);
     }
 

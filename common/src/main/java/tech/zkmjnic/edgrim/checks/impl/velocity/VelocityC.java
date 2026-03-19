@@ -280,7 +280,7 @@ public class VelocityC extends Check implements PostPredictionCheck {
         ticks = 0;
     }
 
-    private void rewardBufferAndVL() {
+    public void rewardBufferAndVL() {
         buffer = Math.max(0, buffer - 0.5);
         reward();
     }

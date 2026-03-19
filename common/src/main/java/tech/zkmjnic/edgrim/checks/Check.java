@@ -20,6 +20,7 @@ import static com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayC
 @Getter
 public class Check extends GrimProcessor implements AbstractCheck {
     protected @NotNull final PlayerData player;
+    protected double buffer;
 
     public double violations;
     private double decay;
@@ -127,6 +128,26 @@ public class Check extends GrimProcessor implements AbstractCheck {
 
     public final void reward() {
         violations = Math.max(0, violations - decay);
+    }
+
+    public final void rewardVL() {
+        reward();
+    }
+
+    public void rewardBufferAndVL() {
+        if (buffer == 0.0) {
+            reward();
+        } else {
+            buffer = Math.max(0, buffer - decay);
+        }
+    }
+
+    public final boolean isAboveSetbackVl() {
+        return shouldSetback();
+    }
+
+    protected final long time() {
+        return System.currentTimeMillis();
     }
 
     public final double getDecay() {
