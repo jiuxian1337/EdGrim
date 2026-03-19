@@ -18,8 +18,7 @@ import java.util.stream.Collectors;
 
 @CheckData(
         name = "AimPredict",
-        description = "predictive target tracking",
-        experimental = true
+        description = "predictive target tracking"
 )
 public final class AimPredict extends Check implements RotationCheck {
     private final List<Float> pitchMatches = new EvictingList<>(100);

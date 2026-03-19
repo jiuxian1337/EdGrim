@@ -16,7 +16,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@CheckData(name = "AimDistribution", configName = "AimDistribution", decay = 0.92)
+@CheckData(
+        name = "AimDistribution",
+        configName = "AimDistribution",
+        description = "abnormal aim distribution and rank patterns",
+        decay = 0.92
+)
 public class AimDistribution extends Check implements RotationCheck {
     private static final int RAW_ROTATIONS_THRESHOLD = 100;
     private static final int SCORE_CHUNK_SIZE = 10;
@@ -182,18 +187,34 @@ public class AimDistribution extends Check implements RotationCheck {
     private void checkDistribution(List<Float> yawChanges, List<Float> pitchChanges) {
         double distinctX = MathUtil.getDistinct(yawChanges);
         double maxYawAbs = Math.abs(MathUtil.getMax(yawChanges));
+        double averageYawAbs = yawChanges.stream().mapToDouble(value -> Math.abs(value)).average().orElse(0.0);
+        double averagePitchAbs = pitchChanges.stream().mapToDouble(value -> Math.abs(value)).average().orElse(0.0);
         double kurtosis = MathUtil.getKurtosis(yawChanges);
         double pearson = MathUtil.getPearsonCorrelation(yawChanges, pitchChanges);
         int spikeCount = MathUtil.getZScoreOutliers(yawChanges, 1.0f).size() + MathUtil.getZScoreOutliers(pitchChanges, 1.0f).size();
 
-        if (maxYawAbs > 8 && pearson < 0.25 && distinctX < 85 && distinctX > 65 && kurtosis > 0 && spikeCount >= 40) {
-            if (++distributionBuffer > 4) {
-                if (flagAndAlert("d= " + distinctX + "\np= " + pearson + "\nmax= " + maxYawAbs + "\ns= " + spikeCount)) {
+        // Keep this branch for obviously synthetic distributions only.
+        // Legit high-sensitivity combat can naturally land in the old distinct/spike range.
+        if (maxYawAbs > 12
+                && averageYawAbs > 3.25
+                && averagePitchAbs > 0.9
+                && Math.abs(pearson) < 0.06
+                && distinctX < 80
+                && distinctX > 68
+                && kurtosis > 1.25
+                && spikeCount >= 48) {
+            if (++distributionBuffer > 6) {
+                if (flagAndAlert("d= " + distinctX
+                        + "\np= " + pearson
+                        + "\nmax= " + maxYawAbs
+                        + "\navgY= " + averageYawAbs
+                        + "\navgP= " + averagePitchAbs
+                        + "\ns= " + spikeCount)) {
                     player.mitigateDamage();
                 }
             }
         } else {
-            distributionBuffer = Math.max(0, distributionBuffer - 0.5);
+            distributionBuffer = Math.max(0, distributionBuffer - 0.85);
         }
     }
 

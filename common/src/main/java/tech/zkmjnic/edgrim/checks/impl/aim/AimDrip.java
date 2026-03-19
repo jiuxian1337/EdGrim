@@ -10,8 +10,7 @@ import tech.zkmjnic.edgrim.utils.math.MathUtil;
 
 @CheckData(
         name = "AimDrip",
-        description = "descending micro-pitch smoothing",
-        experimental = true
+        description = "descending micro-pitch smoothing"
 )
 public final class AimDrip extends Check implements RotationCheck {
     private double streak;

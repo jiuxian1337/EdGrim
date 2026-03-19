@@ -16,8 +16,7 @@ import java.util.stream.Collectors;
 
 @CheckData(
         name = "AimAlign",
-        description = "common target box alignment",
-        experimental = true
+        description = "common target box alignment"
 )
 public final class AimAlign extends Check implements RotationCheck {
     private final List<Float> pitchMatches = new EvictingList<>(150);

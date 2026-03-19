@@ -10,8 +10,7 @@ import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 
 @CheckData(
         name = "AimLock",
-        description = "consistent target-angle lock",
-        experimental = true
+        description = "consistent target-angle lock"
 )
 public final class AimLock extends Check implements RotationCheck {
     private double lastAngle;

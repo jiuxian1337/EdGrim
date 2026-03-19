@@ -16,8 +16,7 @@ import java.util.stream.Collectors;
 
 @CheckData(
         name = "AimOffset",
-        description = "offset target rotation matching",
-        experimental = true
+        description = "offset target rotation matching"
 )
 public final class AimOffset extends Check implements RotationCheck {
     private final List<Float> pitchMatches = new EvictingList<>(150);

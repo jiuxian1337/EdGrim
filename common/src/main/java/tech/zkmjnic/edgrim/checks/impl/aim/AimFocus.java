@@ -14,11 +14,11 @@ import java.util.List;
 
 @CheckData(
         name = "AimFocus",
-        description = "stable optimal-yaw deviation",
-        experimental = true
+        description = "stable optimal-yaw deviation"
 )
 public final class AimFocus extends Check implements RotationCheck {
     private final List<Double> differenceSamples = new EvictingList<>(25);
+    private final List<Float> yawSamples = new EvictingList<>(25);
 
     public AimFocus(PlayerData player) {
         super(player);
@@ -35,21 +35,26 @@ public final class AimFocus extends Check implements RotationCheck {
         final float rotationYaw = update.getTo().getYaw();
         final float fixedRotYaw = (rotationYaw % 360F + 360F) % 360F;
         final double optimalYaw = (AimTargetTraceUtil.directionToCenter(player, AimTargetTraceUtil.getTargetBox(target)) % 360.0 + 360.0) % 360.0;
-        final double difference = Math.abs(fixedRotYaw - optimalYaw);
+        final double difference = Math.abs(MathUtil.getAngleDifference(fixedRotYaw, (float) optimalYaw));
 
         if (deltaYaw > 3f) {
             differenceSamples.add(difference);
+            yawSamples.add(deltaYaw);
         }
 
         if (differenceSamples.size() == 25) {
             final double average = MathUtil.getAverageDouble(differenceSamples);
             final double deviation = MathUtil.getStandardDeviation(differenceSamples);
-            if (average < 7 && deviation < 12) {
-                if (++buffer > 15 && flagAndAlert(String.format("dev=%.2f, avg=%.2f, buf=%.2f", deviation, average, buffer))) {
+            final double averageYaw = MathUtil.getAverage(yawSamples);
+
+            // Only treat this as suspicious when the player keeps fairly large yaw movement
+            // while staying unnaturally tight and stable around the target angle.
+            if (average > 0.2 && average < 3.5 && deviation < 2.4 && averageYaw > 6.0) {
+                if (++buffer > 8 && flagAndAlert(String.format("dev=%.2f, avg=%.2f, yaw=%.2f, buf=%.2f", deviation, average, averageYaw, buffer))) {
                     player.mitigateDamage();
                 }
             } else {
-                buffer -= buffer > 0 ? 1 : 0;
+                buffer = Math.max(0.0, buffer - 1.25);
             }
         }
     }

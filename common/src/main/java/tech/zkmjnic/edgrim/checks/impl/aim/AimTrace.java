@@ -16,8 +16,7 @@ import java.util.stream.Collectors;
 
 @CheckData(
         name = "AimTrace",
-        description = "generic target rotation matching",
-        experimental = true
+        description = "generic target rotation matching"
 )
 public final class AimTrace extends Check implements RotationCheck {
     private final List<Float> pitchMatches = new EvictingList<>(100);

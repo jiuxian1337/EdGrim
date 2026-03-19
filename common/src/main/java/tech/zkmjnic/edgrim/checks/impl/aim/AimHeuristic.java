@@ -153,19 +153,23 @@ public final class AimHeuristic extends Check implements RotationCheck {
             final long expandedPitch = (long) (MathUtil.EXPANDER * deltaPitch);
             final long expandedLastPitch = (long) (MathUtil.EXPANDER * constantLastDeltaPitch);
             final long gcd = MathUtil.getGcd(expandedPitch, expandedLastPitch);
-            final boolean validAngles = deltaYaw > 0.25f && deltaPitch > 0.25f && deltaPitch < CONSTANT_MAX_DELTA && deltaYaw < CONSTANT_MAX_DELTA;
-            final boolean invalid = gcd < 131072L;
+            final float maxDelta = Math.max(deltaYaw, deltaPitch);
+            final float minDelta = Math.min(deltaYaw, deltaPitch);
+            final float axisRatio = minDelta <= 0.0f ? Float.MAX_VALUE : (maxDelta / minDelta);
+            final boolean validAngles = deltaYaw > 1.0f && deltaPitch > 1.0f && deltaPitch < CONSTANT_MAX_DELTA && deltaYaw < CONSTANT_MAX_DELTA;
+            final boolean balancedEnough = axisRatio < 4.5f;
+            final boolean invalid = gcd < 65536L;
 
-            if (invalid && validAngles && !sensitivityTooLow) {
+            if (invalid && validAngles && balancedEnough && !sensitivityTooLow) {
                 constantBuffer1 = Math.min(constantBuffer1 + 1.0f, 200.0f);
-                if (constantBuffer1 > constant1NeedVl + 2) {
-                    if (flagAndAlert("t=Constant1 gcd=" + gcd + " dy=" + deltaYaw + " dp=" + deltaPitch + " sens=" + sens + " cs=" + clientSens)) {
+                if (constantBuffer1 > constant1NeedVl + 4) {
+                    if (flagAndAlert("t=Constant1 gcd=" + gcd + " dy=" + deltaYaw + " dp=" + deltaPitch + " ratio=" + axisRatio + " sens=" + sens + " cs=" + clientSens)) {
                         player.mitigateDamage();
                         constantBuffer1 = 4.0f;
                     }
                 }
             } else if (constantBuffer1 > 0.0f) {
-                constantBuffer1 -= 2.0f;
+                constantBuffer1 -= 2.5f;
             }
         }
 

@@ -13,8 +13,7 @@ import java.util.List;
 
 @CheckData(
         name = "AimInvalidSmooth",
-        description = "abnormally smooth micro-rotation windows",
-        experimental = true
+        description = "abnormally smooth micro-rotation windows"
 )
 public final class AimInvalidSmooth extends Check implements RotationCheck {
     private final List<Float> yawSamples = new EvictingList<>(128);

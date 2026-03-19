@@ -17,6 +17,8 @@ import java.util.*;
 public final class AimBehavior extends Check implements RotationCheck {
 
     private static final long COMBAT_COOLDOWN_MS = 100;
+    private static final int ANALYSIS_MIN_SAMPLES = 60;
+    private static final long ANALYSIS_INTERVAL_MS = 275;
     private final Watch timer = new Watch();
     private final List<Double> kurtosisHistory = new ArrayList<>();
     private final List<Float> yawEntropyHist = new ArrayList<>(), pitchEntropyHist = new ArrayList<>();
@@ -46,6 +48,7 @@ public final class AimBehavior extends Check implements RotationCheck {
     public void process(RotationUpdate rotationUpdate) {
         if (!player.actionManager.hasAttackedSince(1400L)) {
             rotation.clear();
+            setRotations(null);
             return;
         }
 
@@ -59,7 +62,17 @@ public final class AimBehavior extends Check implements RotationCheck {
             return;
         }
 
-        rotation.add(rotationUpdate.getDelta());
+        final Vec2f delta = rotationUpdate.getDelta();
+        final float deltaYawAbs = Math.abs(delta.getX());
+        final float deltaPitchAbs = Math.abs(delta.getY());
+
+        // Ignore very small housekeeping rotations so meaningful combat input reaches
+        // analysis thresholds faster instead of being drowned in tiny noise.
+        if (deltaYawAbs < 0.35f && deltaPitchAbs < 0.2f) {
+            return;
+        }
+
+        rotation.add(delta);
 
         if (player.calculateSensitivity() < 40) {
             rotation.clear();
@@ -67,7 +80,7 @@ public final class AimBehavior extends Check implements RotationCheck {
             return;
         }
 
-        if (rotation.size() > 50) {
+        if (rotation.size() >= ANALYSIS_MIN_SAMPLES) {
             setRotations(rotation);
             checkForAimbot(rotationUpdate.getProcessor(), rotationUpdate);
         }
@@ -79,8 +92,8 @@ public final class AimBehavior extends Check implements RotationCheck {
             return;
         }
 
-        if (rotations.size() < 80
-                || !timer.hasTimeElapsed(400)
+        if (rotations.size() < ANALYSIS_MIN_SAMPLES
+                || !timer.hasTimeElapsed(ANALYSIS_INTERVAL_MS)
         ) return;
         timer.reset();
 
@@ -165,7 +178,7 @@ public final class AimBehavior extends Check implements RotationCheck {
 
             if (isSuspicious) {
                 buffer5 = modifyBuffer(buffer5, 1.0);
-                if (buffer5 > 4) {
+                if (buffer5 > 3) {
                     if (flagAndAlert("(Entropy)\nMain= " + reason + "\ny= " + yawEnt + "\npe= " + pitchEnt + "\nyv= " + yawVar + "\npv= " + pitchVar)) {
                         player.mitigateDamage();
                         buffer5 = decayBuffer(buffer5, 0.95, 1.0);
