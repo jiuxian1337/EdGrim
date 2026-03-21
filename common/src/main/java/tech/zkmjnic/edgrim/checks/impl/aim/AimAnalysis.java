@@ -25,12 +25,9 @@ public final class AimAnalysis extends Check implements RotationCheck {
 
     private final List<Float> longTermAnalysis = new ArrayList<>(10);
     private boolean linearQuery;
-    private float rankBuffer;
 
     private boolean linearEnabled = true;
-    private boolean rankEnabled = true;
     private boolean longtermEnabled = true;
-    private float rankBufferLimit = 6.0f;
 
     public AimAnalysis(PlayerData player) {
         super(player);
@@ -39,9 +36,7 @@ public final class AimAnalysis extends Check implements RotationCheck {
     @Override
     public void onReload(ConfigManager config) {
         linearEnabled = config.getBooleanElse("AimAnalysis.enabled-linear", true);
-        rankEnabled = config.getBooleanElse("AimAnalysis.enabled-rank", true);
         longtermEnabled = config.getBooleanElse("AimAnalysis.enabled-longterm", true);
-        rankBufferLimit = (float) config.getDoubleElse("AimAnalysis.buffer-limit-rank", 6.0);
     }
 
     @Override
@@ -132,7 +127,6 @@ public final class AimAnalysis extends Check implements RotationCheck {
         }
 
         final List<Double> outliers = Statistics.getZScoreOutliers(resultDeviation, 0.5);
-        final float distinctRank = (float) resultDistinct / 60.0f;
 
         if (outliers.isEmpty() || (outliers.size() == 1 && Math.abs(outliers.get(0)) > 10 && Math.abs(outliers.get(0)) < 100)) {
             if (!linearQuery) {
@@ -142,23 +136,6 @@ public final class AimAnalysis extends Check implements RotationCheck {
             }
         } else {
             linearQuery = false;
-        }
-
-        final boolean valid = player.calculateSensitivity() > 20 && sens < 140;
-        if (rankEnabled && distinctRank < 1.0f && distinctRank > 0.7f && MathUtil.getAverage(rawYaw) > 1.8 && valid) {
-            if (rankBuffer < 0.01f) {
-                if (distinctRank < 0.8f) rankBuffer += 0.2f;
-            } else {
-                final float inc = (distinctRank > 0.9f) ? 0.08f : (distinctRank > 0.8f) ? 2.0f : 3.0f;
-                rankBuffer = Math.max(0.0f, rankBuffer + inc);
-                if (rankBuffer >= rankBufferLimit) {
-                    if (flagAnalysis("t=Rank rank=" + distinctRank + " buf=" + rankBuffer)) {
-                        rankBuffer = Math.max(0.0f, rankBufferLimit - 1.0f);
-                    }
-                }
-            }
-        } else {
-            rankBuffer = Math.max(0.0f, rankBuffer - 2.25f);
         }
     }
 
