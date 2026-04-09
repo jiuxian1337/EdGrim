@@ -14,7 +14,8 @@ import java.util.List;
 
 @CheckData(
         name = "AimFocus",
-        description = "stable optimal-yaw deviation"
+        description = "stable optimal-yaw deviation",
+        experimental = true
 )
 public final class AimFocus extends Check implements RotationCheck {
     private final List<Double> differenceSamples = new EvictingList<>(25);

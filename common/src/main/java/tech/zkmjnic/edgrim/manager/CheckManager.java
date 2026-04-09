@@ -2,32 +2,7 @@ package tech.zkmjnic.edgrim.manager;
 
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.AbstractCheck;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimDuplicateLook;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimModulo360;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimAlign;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimAssist;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimAnalysis;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimAxis;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimBehavior;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimComplex;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimDistribution;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimDivisor;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimEntropy;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimDrip;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimFocus;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimHeuristic;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimInvalidSmooth;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimJolt;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimLock;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimModulo;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimOffset;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimPredict;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimRatio;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimRoute;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimStatistics;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimTrace;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimTrajectory;
-import tech.zkmjnic.edgrim.checks.impl.aim.AimVariance;
+import tech.zkmjnic.edgrim.checks.impl.aim.*;
 import tech.zkmjnic.edgrim.checks.impl.aim.processor.AimProcessor;
 import tech.zkmjnic.edgrim.checks.impl.aim.processor.Cinematic;
 import tech.zkmjnic.edgrim.checks.impl.badpackets.*;
@@ -179,6 +154,7 @@ public class CheckManager {
                 .put(Cinematic.class, new Cinematic(player))
                 .put(AimModulo360.class, new AimModulo360(player))
                 .put(AimDuplicateLook.class, new AimDuplicateLook(player))
+                .put(AimLinear.class, new AimLinear(player))
                 .put(AimDivisor.class, new AimDivisor(player))
                 .put(AimModulo.class, new AimModulo(player))
                 .put(AimAssist.class, new AimAssist(player))
@@ -195,11 +171,7 @@ public class CheckManager {
                 .put(AimDrip.class, new AimDrip(player))
                 .put(AimInvalidSmooth.class, new AimInvalidSmooth(player))
                 .put(AimFocus.class, new AimFocus(player))
-                .put(AimHeuristic.class, new AimHeuristic(player))
                 .put(AimBehavior.class, new AimBehavior(player))
-                .put(AimComplex.class, new AimComplex(player))
-                .put(AimAnalysis.class, new AimAnalysis(player))
-                .put(AimStatistics.class, new AimStatistics(player))
                 .put(AimDistribution.class, new AimDistribution(player))
                 .put(AimEntropy.class, new AimEntropy(player))
                 .build();

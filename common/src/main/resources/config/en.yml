@@ -235,56 +235,6 @@ AutoclickerA:
     entropy-jiff-min: 0.04
     entropy-jiff-max: 0.06
 
-AimHeuristic:
-    constant-check:
-        # Required buffer (roughly: consecutive matches) before Constant1/2/3 flags.
-        constant-1-buffer: 8
-        constant-2-buffer: 6
-        constant-3-buffer: 6
-    invalid-check:
-        # Enable invalid pitch / exponentially-small delta detection.
-        enabled: true
-    inconsistent-check:
-        # Inconsistent aim patterns based on outliers/duplicates across a sample window.
-        enabled: true
-        buffer: 2.0
-    pattern-check:
-        # Repeated delta patterns; buffer is a small float that fades when the pattern stops.
-        enabled: true
-        buffer: 5
-        buffer-fade: 0.25
-    factor-check:
-        # Large "centre spike" factors; resets after enough normal ticks.
-        enabled: true
-        buffer: 2.5
-        ticks-to-reset: 2500
-    smooth-check:
-        # Smooth-angle repeat detection.
-        enabled: true
-
-AimComplex:
-    enabled-entropy: true
-    enabled-distinct: true
-    enabled-randomizer: true
-    buffer-limit-entropy: 30
-    buffer-limit-distinct: 4.0
-    buffer-limit-randomizer: 2.5
-
-AimAnalysis:
-    enabled-linear: true
-    enabled-rank: true
-    enabled-longterm: true
-    buffer-limit-rank: 6.0
-
-AimStatistics:
-    enabled-iqr: true
-    enabled-bot-pattern: true
-    enabled-zfactor: true
-    enabled-improbable: true
-    buffer-limit-iqr: 11.0
-    buffer-limit-zfactor: 7.0
-    buffer-limit-improbable: 15.0
-
 AimBehavior:
     # Broad aim-behavior analysis: consistency, entropy, combat pattern, and kurtosis clustering.
 
