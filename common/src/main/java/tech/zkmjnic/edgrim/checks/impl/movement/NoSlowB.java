@@ -41,13 +41,12 @@ public class NoSlowB extends Check implements PostPredictionCheck {
             ItemStack itemInHand = player.inventory.getItemInHand(wrapperPlayClientUseItem.getHand());
             ItemStack spigotItem = wrapperPlayClientUseItem.getHand() == InteractionHand.MAIN_HAND ? spigotMainHand : spigotOffHand;
 
-            if (itemInHand.getType() != spigotItem.getType()) {
+            if (itemInHand.getType() != spigotItem.getType() && (spigotMainHand.getType() == player.inventory.getItemInHand(InteractionHand.OFF_HAND) || spigotOffHand.getType() == player.inventory.getItemInHand(InteractionHand.MAIN_HAND)) && flagAndAlertWithSetback("Hand: " + wrapperPlayClientUseItem.getHand() +
+                    "\nUseHand: " + wrapperPlayClientUseItem.getHand() +
+                    "\nGrimItem: " + itemInHand.getType() +
+                    "\nSpigotItem: " + spigotItem.getType())) {
                 event.setCancelled(true);
-                flagAndAlertWithSetback("Hand: " + wrapperPlayClientUseItem.getHand() +
-                        "\nGrimMainItem: " + player.inventory.getItemInHand(InteractionHand.MAIN_HAND) +
-                        "\nGrimOffItem: " + player.inventory.getItemInHand(InteractionHand.OFF_HAND) +
-                        "\nSpigotMainItem: " + spigotMainHand +
-                        "\nSpigotOffItem: " + spigotOffHand);
+
             }
 
         }

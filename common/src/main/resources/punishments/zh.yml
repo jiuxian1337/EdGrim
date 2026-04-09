@@ -25,10 +25,10 @@ Punishments:
     # 在100vl后执行say %player% is cheating,之后的每50vl都执行一次say %player% is cheating
     #
     commands:
-      - "100:40 [alert]"
-      - "100:40 [log]"
-      - "100:100 [webhook]"
-      - "100:100 [proxy]"
+      - "10:5 [alert]"
+      - "10:5 [log]"
+      - "10:5 [webhook]"
+      - "10:5 [proxy]"
   Timer:
     remove-violations-after: 300
     checks:
@@ -91,24 +91,6 @@ Punishments:
     remove-violations-after: 300
     checks:
       - "Reach"
-    commands:
-      - "1:1 [alert]"
-      - "1:1 [log]"
-      - "1:1 [webhook]"
-      - "1:1 [proxy]"
-  InteractBlock:
-    remove-violations-after: 300
-    checks:
-      - "InteractBlock"
-    commands:
-      - "1:1 [alert]"
-      - "1:1 [log]"
-      - "1:1 [webhook]"
-      - "1:1 [proxy]"
-  InteractEntity:
-    remove-violations-after: 300
-    checks:
-      - "InteractEntity"
     commands:
       - "1:1 [alert]"
       - "1:1 [log]"
