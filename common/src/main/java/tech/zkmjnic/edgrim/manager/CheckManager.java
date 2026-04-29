@@ -174,6 +174,10 @@ public class CheckManager {
                 .put(AimD.class, new AimD(player))
                 .put(AimE.class, new AimE(player))
                 .put(AimI.class, new AimI(player))
+                .put(AimY.class, new AimY(player))
+                .put(AimZ.class, new AimZ(player))
+                .put(AimAA.class, new AimAA(player))
+                .put(AimAB.class, new AimAB(player))
                 .build();
         vehicleChecks = new ImmutableClassToInstanceMap.Builder<VehicleCheck>()
                 .put(VehiclePredictionRunner.class, new VehiclePredictionRunner(player))

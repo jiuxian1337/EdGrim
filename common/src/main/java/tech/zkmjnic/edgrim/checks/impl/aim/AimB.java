@@ -11,8 +11,7 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
         name = "AimB",
         configName = "AimB",
         description = "rotate like aimassist",
-        decay = 0.85,
-        experimental = true
+        decay = 0.85
 )
 public final class AimB extends Check implements RotationCheck {
     private double buffer2;
