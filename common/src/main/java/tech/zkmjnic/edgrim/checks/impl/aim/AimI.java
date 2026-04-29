@@ -123,7 +123,7 @@ public final class AimI extends Check implements RotationCheck {
         if (validSensitivity && deltaYaw < 0.00015 && deltaPitch < 0.00015) {
             bufferStability = modifyBuffer(bufferStability, (shannonYaw > 3.0 && shannonPitch > 2.8) ? 0.8 : 1.2);
             if (bufferStability > 25.0) {
-                if (alert("(Stability)\nsy= " + String.format("%.3f", shannonYaw) + "\npd= " + String.format("%.5f", Math.abs(shannonPitch - oldShannonPitch)) + "\nyd= " + String.format("%.5f", Math.abs(shannonYaw - oldShannonYaw)))) {
+                if (flagAndAlert("(Stability)\nsy= " + String.format("%.3f", shannonYaw) + "\npd= " + String.format("%.5f", Math.abs(shannonPitch - oldShannonPitch)) + "\nyd= " + String.format("%.5f", Math.abs(shannonYaw - oldShannonYaw)))) {
                     bufferStability = decayBuffer(bufferStability, 0.84, 0.25);
                     player.mitigateDamage();
                 }
@@ -224,7 +224,7 @@ public final class AimI extends Check implements RotationCheck {
             Tuple<Double, Double> spikeRange = new Tuple<>(MathUtil.getMin(kireikoX), MathUtil.getMax(kireikoX));
             if (stdDevX > 5 && stdDevX < 22 && spikeRange.getY() < 50) {
                 bufferSpikesRule = modifyBuffer(bufferSpikesRule, MathUtil.getAverage(kireikoX) < 6.0 ? 0 : (stdDevX < 10 ? 1.5 : 1.0));
-                if (bufferSpikesRule > 7.0 && alert("(Spike Rule) \nstdDevX=" + (int) stdDevX)) {
+                if (bufferSpikesRule > 7.0 && flagAndAlert("(Spike Rule) \nstdDevX=" + (int) stdDevX)) {
                     player.mitigateDamage();
                 }
             }
@@ -302,7 +302,7 @@ public final class AimI extends Check implements RotationCheck {
             if (currentMax > 150 && player.checkManager.getRotationCheck(AimProcessor.class).getDeltaYaw() < 25) {
                 bufferSpikesMega = modifyBuffer(bufferSpikesMega, 2.0);
                 if (bufferSpikesMega > 5.5) {
-                    if (alert("(Mega Spike)\nval= " + currentMax)) {
+                    if (flagAndAlert("(Mega Spike)\nval= " + currentMax)) {
                         player.mitigateDamage();
                         bufferSpikesMega = decayBuffer(bufferSpikesMega, 0.75, 0.25);
                     }
@@ -358,7 +358,7 @@ public final class AimI extends Check implements RotationCheck {
                 double minAbs = Math.min(Math.abs(MathUtil.getMax(yawOutY)), Math.abs(MathUtil.getMin(yawOutY)));
                 if ((maxAbs > 55 && minAbs == maxAbs) || (maxAbs > 60 && minAbs < maxAbs / 3)) {
                     bufferSpikesOutlier = modifyBuffer(bufferSpikesOutlier, 1.45);
-                    if (bufferSpikesOutlier > 4.0 && alert("(Spike Rough) \nOutX= " + yawOutX)) {
+                    if (bufferSpikesOutlier > 4.0 && flagAndAlert("(Spike Rough) \nOutX= " + yawOutX)) {
                         bufferSpikesOutlier = modifyBuffer(bufferSpikesOutlier, -0.45);
                     }
                 }
