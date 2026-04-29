@@ -8,14 +8,14 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 
 
 @CheckData(
-        name = "AimLinear",
+        name = "AimM",
         description = "Detecting linear rotation"
 )
-public class AimLinear extends Check implements RotationCheck {
+public class AimM extends Check implements RotationCheck {
 
     private double buffer;
 
-    public AimLinear(PlayerData player) {
+    public AimM(PlayerData player) {
         super(player);
     }
 

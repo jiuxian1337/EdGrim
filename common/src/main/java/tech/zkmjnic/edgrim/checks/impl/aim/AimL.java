@@ -12,16 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @CheckData(
-        name = "AimJolt",
-        configName = "AimJolt",
+        name = "AimL",
+        configName = "AimL",
         decay = 0.86
 )
-public final class AimJolt extends Check implements RotationCheck {
+public final class AimL extends Check implements RotationCheck {
     private final List<Float> samplesYaw = new ArrayList<>();
     private final List<Float> samplesPitch = new ArrayList<>();
     private double buffer2;
 
-    public AimJolt(PlayerData player) {
+    public AimL(PlayerData player) {
         super(player);
     }
 

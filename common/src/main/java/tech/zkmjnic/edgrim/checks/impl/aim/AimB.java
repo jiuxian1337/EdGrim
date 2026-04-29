@@ -8,17 +8,18 @@ import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 
 @CheckData(
-        name = "AimAssist",
-        configName = "AimAssist",
+        name = "AimB",
+        configName = "AimB",
         description = "rotate like aimassist",
-        decay = 0.85
+        decay = 0.85,
+        experimental = true
 )
-public final class AimAssist extends Check implements RotationCheck {
+public final class AimB extends Check implements RotationCheck {
     private double buffer2;
     private double buffer3;
     private float lastDeltaYaw;
 
-    public AimAssist(PlayerData player) {
+    public AimB(PlayerData player) {
         super(player);
     }
 

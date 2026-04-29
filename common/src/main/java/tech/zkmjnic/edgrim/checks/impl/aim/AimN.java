@@ -3,20 +3,21 @@ package tech.zkmjnic.edgrim.checks.impl.aim;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.impl.aim.util.AimTargetTraceUtil;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 
 @CheckData(
-        name = "AimLock",
+        name = "AimN",
         description = "consistent target-angle lock"
 )
-public final class AimLock extends Check implements RotationCheck {
+public final class AimN extends Check implements RotationCheck {
     private double lastAngle;
     private double lastAngleDiff;
 
-    public AimLock(PlayerData player) {
+    public AimN(PlayerData player) {
         super(player);
     }
 

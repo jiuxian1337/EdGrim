@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
-@CheckData(name = "AimEntropy", configName = "AimEntropy", decay = 0.85)
-public final class AimEntropy extends Check implements RotationCheck {
+@CheckData(name = "AimI", configName = "AimI", decay = 0.85)
+public final class AimI extends Check implements RotationCheck {
     private final List<Vec2f> rawRotations;
     private final List<Vec2i> rotations2;
     private final List<Vec2d> kireikoGeneric;
@@ -48,7 +48,7 @@ public final class AimEntropy extends Check implements RotationCheck {
     private double bufferMicroSpikes;
     private int standTicks;
 
-    public AimEntropy(PlayerData player) {
+    public AimI(PlayerData player) {
         super(player);
         rawRotations = new CopyOnWriteArrayList<>();
         rotations2 = new CopyOnWriteArrayList<>();

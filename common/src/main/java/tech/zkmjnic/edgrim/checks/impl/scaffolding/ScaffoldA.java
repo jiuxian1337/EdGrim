@@ -16,7 +16,8 @@ import static com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayC
         name = "ScaffoldA",
         configName = "ScaffoldA",
         decay = 0.86,
-        description = "GodBridge/KeepY scaffold analysis"
+        description = "GodBridge/KeepY scaffold analysis",
+        experimental = true
 )
 public final class ScaffoldA extends ScaffoldCheck {
     private static final long DRAG_CLICK_INTERVAL_MS = 50L;

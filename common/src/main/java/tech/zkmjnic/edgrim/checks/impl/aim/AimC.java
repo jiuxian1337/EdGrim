@@ -11,18 +11,18 @@ import tech.zkmjnic.edgrim.utils.math.MathUtil;
 import java.util.ArrayDeque;
 
 @CheckData(
-        name = "AimAxis",
-        configName = "AimAxis",
+        name = "AimC",
+        configName = "AimC",
         description = "Simplified rotation analysis",
         decay = 0.65
 )
-public final class AimAxis extends Check implements RotationCheck {
+public final class AimC extends Check implements RotationCheck {
     private static final float MIN_DELTA = 0.085F;
     private final ArrayDeque<Float> yawSamples = new ArrayDeque<>();
     private final ArrayDeque<Float> pitchSamples = new ArrayDeque<>();
     private int time;
 
-    public AimAxis(PlayerData player) {
+    public AimC(PlayerData player) {
         super(player);
     }
 

@@ -3,6 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.aim;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.impl.aim.util.AimTargetTraceUtil;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
@@ -15,14 +16,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @CheckData(
-        name = "AimOffset",
+        name = "AimQ",
         description = "offset target rotation matching"
 )
-public final class AimOffset extends Check implements RotationCheck {
+public final class AimQ extends Check implements RotationCheck {
     private final List<Float> pitchMatches = new EvictingList<>(150);
     private final List<Float> yawMatches = new EvictingList<>(150);
 
-    public AimOffset(PlayerData player) {
+    public AimQ(PlayerData player) {
         super(player);
     }
 

@@ -9,17 +9,17 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.math.MathUtil;
 
 @CheckData(
-        name = "AimDrip",
+        name = "AimG",
         description = "descending micro-pitch smoothing"
 )
-public final class AimDrip extends Check implements RotationCheck {
+public final class AimG extends Check implements RotationCheck {
     private double streak;
     private double vl;
     private float lastDeltaPitch;
     private int maxStreak = 12;
     private int vlForStreak = 2;
 
-    public AimDrip(PlayerData player) {
+    public AimG(PlayerData player) {
         super(player);
     }
 
@@ -53,7 +53,7 @@ public final class AimDrip extends Check implements RotationCheck {
 
     @Override
     public void onReload(ConfigManager config) {
-        maxStreak = config.getIntElse("AimDrip.max-streak", maxStreak);
-        vlForStreak = config.getIntElse("AimDrip.vl-for-streak", vlForStreak);
+        maxStreak = config.getIntElse("AimG.max-streak", maxStreak);
+        vlForStreak = config.getIntElse("AimG.vl-for-streak", vlForStreak);
     }
 }

@@ -11,8 +11,8 @@ import tech.zkmjnic.edgrim.utils.math.MathUtil;
 import java.util.LinkedList;
 import java.util.Queue;
 
-@CheckData(name = "AimRatio", configName = "AimRatio", decay = 0.845)
-public final class AimRatio extends Check implements RotationCheck {
+@CheckData(name = "AimS", configName = "AimS", decay = 0.845)
+public final class AimS extends Check implements RotationCheck {
     private final Queue<Double> ratioWindow = new LinkedList<>();
     private int maxBuffer;
     private double minDeltaX;
@@ -23,7 +23,7 @@ public final class AimRatio extends Check implements RotationCheck {
     private double lastPitch;
     private long lastTick;
 
-    public AimRatio(PlayerData player) {
+    public AimS(PlayerData player) {
         super(player);
         lastTick = -1;
     }

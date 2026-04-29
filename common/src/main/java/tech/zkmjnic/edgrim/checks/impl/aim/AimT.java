@@ -13,19 +13,19 @@ import java.util.List;
 import java.util.Objects;
 
 @CheckData(
-        name = "AimRoute",
-        configName = "AimRoute",
+        name = "AimT",
+        configName = "AimT",
         description = "Deviated from the predicted rotation route",
         decay = 0.75,
         setback = 6
 )
-public final class AimRoute extends Check implements RotationCheck {
+public final class AimT extends Check implements RotationCheck {
     private static final int SAMPLE_SIZE = 100;
     private static final int PATTERN_LENGTH = 3;
     private final List<Vec2f> sample = new ArrayList<>(SAMPLE_SIZE);
     private double buffer2;
 
-    public AimRoute(PlayerData player) {
+    public AimT(PlayerData player) {
         super(player);
     }
 

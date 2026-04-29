@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @CheckData(
-        name = "AimDistribution",
-        configName = "AimDistribution",
+        name = "AimE",
+        configName = "AimE",
         description = "abnormal aim distribution and rank patterns",
         decay = 0.92
 )
-public class AimDistribution extends Check implements RotationCheck {
+public class AimE extends Check implements RotationCheck {
     private static final int RAW_ROTATIONS_THRESHOLD = 100;
     private static final int SCORE_CHUNK_SIZE = 10;
 
@@ -36,7 +36,7 @@ public class AimDistribution extends Check implements RotationCheck {
     private boolean query = false;
     private int standTicks;
 
-    public AimDistribution(PlayerData player) {
+    public AimE(PlayerData player) {
         super(player);
     }
 

@@ -14,16 +14,16 @@ import java.util.Collections;
 import java.util.List;
 
 @CheckData(
-        name = "AimVariance",
-        configName = "AimVariance",
+        name = "AimX",
+        configName = "AimX",
         decay = 0.65,
         description = "Detect abnormal horizontal rotation patterns during attacks"
 )
-public final class AimVariance extends Check implements RotationCheck {
+public final class AimX extends Check implements RotationCheck {
     private final EvictingList<Pair2<Double, Double>> rotations = new EvictingList<>(10);
     private final EvictingList<Pair2<Integer, Integer>> rotationsG = new EvictingList<>(10);
 
-    public AimVariance(PlayerData player) {
+    public AimX(PlayerData player) {
         super(player);
     }
 

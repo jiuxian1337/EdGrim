@@ -8,12 +8,12 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.math.MathUtil;
 
 @CheckData(
-        name = "AimModulo",
-        configName = "AimModulo",
+        name = "AimO",
+        configName = "AimO",
         description = "Detects abnormal aim rotation patterns indicative of automation",
         decay = 0.84
 )
-public final class AimModulo extends Check implements RotationCheck {
+public final class AimO extends Check implements RotationCheck {
     private static final double MODULO_THRESHOLD = 60.0;
     private static final double LINEAR_THRESHOLD = 0.1;
     private static final double GCD_MULTIPLIER = Math.pow(2, 24);
@@ -24,7 +24,7 @@ public final class AimModulo extends Check implements RotationCheck {
 
     private double moduloCheckBuffer;
 
-    public AimModulo(PlayerData player) {
+    public AimO(PlayerData player) {
         super(player);
     }
 

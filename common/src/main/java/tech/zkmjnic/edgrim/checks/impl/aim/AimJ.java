@@ -3,6 +3,7 @@ package tech.zkmjnic.edgrim.checks.impl.aim;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.impl.aim.util.AimTargetTraceUtil;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
@@ -13,15 +14,15 @@ import tech.zkmjnic.edgrim.utils.math.MathUtil;
 import java.util.List;
 
 @CheckData(
-        name = "AimFocus",
+        name = "AimJ",
         description = "stable optimal-yaw deviation",
         experimental = true
 )
-public final class AimFocus extends Check implements RotationCheck {
+public final class AimJ extends Check implements RotationCheck {
     private final List<Double> differenceSamples = new EvictingList<>(25);
     private final List<Float> yawSamples = new EvictingList<>(25);
 
-    public AimFocus(PlayerData player) {
+    public AimJ(PlayerData player) {
         super(player);
     }
 

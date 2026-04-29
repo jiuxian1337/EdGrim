@@ -14,16 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @CheckData(
-        name = "AimTrajectory",
-        configName = "AimTrajectory",
+        name = "AimW",
+        configName = "AimW",
         decay = 0.85
 )
-public class AimTrajectory extends Check implements PacketCheck {
+public class AimW extends Check implements PacketCheck {
     private final DetectionContext context;
     private final List<AimDetectionStrategy> detectionStrategies;
     public ArrayList<Rotation> rotations = new ArrayList<>();
 
-    public AimTrajectory(PlayerData player) {
+    public AimW(PlayerData player) {
         super(player);
         detectionStrategies = List.of(
                 new AccelerationDetection(),

@@ -12,15 +12,15 @@ import tech.zkmjnic.edgrim.utils.math.MathUtil;
 import java.util.List;
 
 @CheckData(
-        name = "AimInvalidSmooth",
+        name = "AimK",
         description = "abnormally smooth micro-rotation windows"
 )
-public final class AimInvalidSmooth extends Check implements RotationCheck {
+public final class AimK extends Check implements RotationCheck {
     private final List<Float> yawSamples = new EvictingList<>(128);
     private final List<Float> pitchSamples = new EvictingList<>(128);
     private double minimumLevel = 90.0;
 
-    public AimInvalidSmooth(PlayerData player) {
+    public AimK(PlayerData player) {
         super(player);
     }
 
@@ -60,6 +60,6 @@ public final class AimInvalidSmooth extends Check implements RotationCheck {
 
     @Override
     public void onReload(ConfigManager config) {
-        minimumLevel = config.getDoubleElse("AimInvalidSmooth.minimum-level-threshold", minimumLevel);
+        minimumLevel = config.getDoubleElse("AimK.minimum-level-threshold", minimumLevel);
     }
 }

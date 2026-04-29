@@ -235,31 +235,31 @@ AutoclickerA:
     entropy-jiff-min: 0.04
     entropy-jiff-max: 0.06
 
-AimBehavior:
+AimD:
     # Broad aim-behavior analysis: consistency, entropy, combat pattern, and kurtosis clustering.
 
-AimDrip:
+AimG:
     # Consecutive descending micro-pitch pattern after meaningful yaw movement.
     max-streak: 12
     vl-for-streak: 2
 
-AimInvalidSmooth:
+AimK:
     # Large windows with too many ultra-small deltas and abnormally low average movement.
     minimum-level-threshold: 90
 
-AimFocus:
+AimJ:
     # Detects combat windows where yaw stays unnaturally close to the target angle with low deviation.
 
-AimDivisor:
+AimF:
     # Detect invalid divisor / GCD change relationships in aim deltas.
 
-AimModulo:
+AimO:
     # Detect abnormal GCD and modulo relations in cinematic rotations.
 
-AimAssist:
+AimB:
     # Detect invalid-mouse, flawed randomizer, and extreme randomization patterns.
 
-AimRatio:
+AimS:
     # Detect windows where yaw dominates pitch with an abnormally high ratio.
     buffer: 7
     min-deltaX: 1.0
@@ -267,25 +267,25 @@ AimRatio:
     ratio-threshold: 1000.0
     window-size: 5
 
-AimVariance:
+AimX:
     # Detect highly asymmetric variance after GCD-normalized combat rotations.
 
-AimJolt:
+AimL:
     # Detect abnormal duplicate/outlier patterns in jolt samples.
 
-AimRoute:
+AimT:
     # Detect repeated route fragments or filter-like deviations in rotation paths.
 
-AimAxis:
+AimC:
     # Detect simplified cross-axis imbalance in recent aim samples.
 
-AimDistribution:
+AimE:
     # Detect abnormal rotation score, distribution, and long-term limit patterns.
 
-AimEntropy:
+AimI:
     # Detect entropy and spike patterns that look mechanically generated.
 
-AimTrajectory:
+AimW:
     # Detect abnormal acceleration, path, coordination, correlation, and friction patterns.
 
 exploit:

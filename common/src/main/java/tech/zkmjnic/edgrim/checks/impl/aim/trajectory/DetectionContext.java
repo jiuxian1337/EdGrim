@@ -1,6 +1,6 @@
 package tech.zkmjnic.edgrim.checks.impl.aim.trajectory;
 
-import tech.zkmjnic.edgrim.checks.impl.aim.AimTrajectory;
+import tech.zkmjnic.edgrim.checks.impl.aim.AimW;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.math.MathUtil;
 
@@ -68,7 +68,7 @@ public class DetectionContext {
     }
 
     public void flagDetection(AimDetectionStrategy strategy, String reason) {
-        if (playerData.checkManager.getCheck(AimTrajectory.class).flagAndAlert(strategy.getCheckName() + " | " + reason)) {
+        if (playerData.checkManager.getCheck(AimW.class).flagAndAlert(strategy.getCheckName() + " | " + reason)) {
             playerData.mitigateDamage();
         }
     }

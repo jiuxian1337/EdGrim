@@ -1,4 +1,4 @@
-package tech.zkmjnic.edgrim.checks.impl.aim;
+package tech.zkmjnic.edgrim.checks.impl.aim.util;
 
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
@@ -6,55 +6,55 @@ import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import tech.zkmjnic.edgrim.utils.math.MathUtil;
 import tech.zkmjnic.edgrim.utils.math.Vec2f;
 
-final class AimTargetTraceUtil {
+public final class AimTargetTraceUtil {
     private AimTargetTraceUtil() {
     }
 
-    static PacketEntity getPlayerTarget(PlayerData player) {
+    public static PacketEntity getPlayerTarget(PlayerData player) {
         PacketEntity target = player.getTarget();
         return target != null && target.canHit() ? target : null;
     }
 
-    static SimpleCollisionBox getTargetBox(PacketEntity target) {
+    public static SimpleCollisionBox getTargetBox(PacketEntity target) {
         return target.getPossibleCollisionBoxes().copy();
     }
 
-    static double centerX(SimpleCollisionBox box) {
+    public static double centerX(SimpleCollisionBox box) {
         return (box.minX + box.maxX) * 0.5;
     }
 
-    static double centerY(SimpleCollisionBox box) {
+    public static double centerY(SimpleCollisionBox box) {
         return (box.minY + box.maxY) * 0.5;
     }
 
-    static double centerZ(SimpleCollisionBox box) {
+    public static double centerZ(SimpleCollisionBox box) {
         return (box.minZ + box.maxZ) * 0.5;
     }
 
-    static double horizontalCenterDistance(PlayerData player, SimpleCollisionBox box) {
+    public static double horizontalCenterDistance(PlayerData player, SimpleCollisionBox box) {
         double dx = centerX(box) - player.x;
         double dz = centerZ(box) - player.z;
         return Math.hypot(dx, dz);
     }
 
-    static double centerDistance(SimpleCollisionBox first, SimpleCollisionBox second) {
+    public static double centerDistance(SimpleCollisionBox first, SimpleCollisionBox second) {
         double dx = centerX(first) - centerX(second);
         double dy = centerY(first) - centerY(second);
         double dz = centerZ(first) - centerZ(second);
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
-    static double directionToCenter(PlayerData player, SimpleCollisionBox box) {
+    public static double directionToCenter(PlayerData player, SimpleCollisionBox box) {
         double x = centerX(box);
         double z = centerZ(box);
         return Math.toDegrees(Math.atan2(z - player.z, x - player.x)) - 90.0;
     }
 
-    static float angleToCenter(PlayerData player, float yaw, SimpleCollisionBox box) {
+    public static float angleToCenter(PlayerData player, float yaw, SimpleCollisionBox box) {
         return Math.abs(MathUtil.getAngleDifference(yaw, (float) directionToCenter(player, box)));
     }
 
-    static Vec2f genericRotations(double x, double y, double z, SimpleCollisionBox box) {
+    public static Vec2f genericRotations(double x, double y, double z, SimpleCollisionBox box) {
         double diffX = centerX(box) + 0.1 - x;
         double diffY = box.minY - 2.2 + 1.62 - y;
         double diffZ = centerZ(box) + 0.1 - z;
@@ -66,7 +66,7 @@ final class AimTargetTraceUtil {
         return new Vec2f(yaw, pitch);
     }
 
-    static Vec2f commonRotations(double x, double y, double z, SimpleCollisionBox box) {
+    public static Vec2f commonRotations(double x, double y, double z, SimpleCollisionBox box) {
         double xDiff = centerX(box) - x;
         double zDiff = centerZ(box) - z;
         double yDiff = box.minY - (y + 1.62);
@@ -76,7 +76,7 @@ final class AimTargetTraceUtil {
         return new Vec2f(yaw, pitch);
     }
 
-    static Vec2f predictiveRotations(double x, double y, double z, SimpleCollisionBox current, SimpleCollisionBox previous) {
+    public static Vec2f predictiveRotations(double x, double y, double z, SimpleCollisionBox current, SimpleCollisionBox previous) {
         double diffX = centerX(current) + (centerX(current) - centerX(previous)) + x;
         double diffY = current.minY - 3.5 + 1.62 - y + 1.62;
         double diffZ = centerZ(current) + (centerZ(current) - centerZ(previous)) + z;
@@ -91,7 +91,7 @@ final class AimTargetTraceUtil {
         return new Vec2f(yaw, pitch);
     }
 
-    static Vec2f offsetRotations(double x, double y, double z, float currentYaw, float currentPitch, SimpleCollisionBox box) {
+    public static Vec2f offsetRotations(double x, double y, double z, float currentYaw, float currentPitch, SimpleCollisionBox box) {
         double diffX = centerX(box) - x;
         double diffY = box.minY + 1.4580000000000002 - (y + 1.62);
         double diffZ = centerZ(box) - z;

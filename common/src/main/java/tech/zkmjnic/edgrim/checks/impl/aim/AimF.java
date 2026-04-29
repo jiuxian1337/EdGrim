@@ -8,15 +8,15 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.math.MathUtil;
 
 @CheckData(
-        name = "AimDivisor",
-        configName = "AimDivisor",
+        name = "AimF",
+        configName = "AimF",
         description = "invalid rotation gcd change",
         setback = 8,
         decay = 0.95
 )
-public final class AimDivisor extends Check implements RotationCheck {
+public final class AimF extends Check implements RotationCheck {
 
-    public AimDivisor(PlayerData player) {
+    public AimF(PlayerData player) {
         super(player);
     }
 
