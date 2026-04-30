@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
+// Original author: Dg32z
+// https://github.com/Dg32z
 public class CoordinationDetection implements StatisticalDetectionStrategy {
     private final Queue<RotationSample> samples = new ArrayDeque<>(50);
     double buffer = 0;

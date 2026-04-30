@@ -13,6 +13,8 @@ import tech.zkmjnic.edgrim.utils.time.Watch;
 
 import java.util.*;
 
+// Original author: Dg32z
+// https://github.com/Dg32z
 @CheckData(name = "AimD", configName = "AimD", decay = 0.85)
 public final class AimD extends Check implements RotationCheck {
 
