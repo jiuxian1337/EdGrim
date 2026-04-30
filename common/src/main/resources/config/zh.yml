@@ -217,12 +217,26 @@ Reach:
     # 禁用此功能仍会捕获作弊者，不会导致误报
     # 除非你是专注于 1.8 PvP 的服务器，否则不建议使用这个额外的数据包
     enable-post-packet: false
-InteractBlock:
-    # 当达到该 VL 后开始取消与被遮挡方块的交互。
+
+# Backtrack检测
+PingSpoofB:
     cancelVL: 5
-InteractEntity:
-    # 用于检测穿过实体与玩家之间实体方块遮挡的攻击。
-    # 目前没有额外可调选项。
+
+PingSpoofC:
+    cancelVL: 5
+
+PingSpoofD:
+    cancelVL: 5
+    # 在叠加基于 ping 的容错前，基础允许的实体待确认事务数。
+    basePendingAllowance: 2
+    # 将基于 ping 推导出的额外容错限制为最多这么多个 50ms tick。
+    maxPingTicks: 20
+
+InteractA:
+    cancelVL: 0
+
+InteractB:
+    cancelVL: 0
 
 # 连点器
 AutoclickerA:

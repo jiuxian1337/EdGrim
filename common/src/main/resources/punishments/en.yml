@@ -171,6 +171,8 @@ Punishments:
     commands:
       - "5:1 [alert]"
       - "5:1 [log]"
+      - "10:5 [webhook]"
+      - "10:5 [proxy]"
   Aim:
     remove-violations-after: 300
     checks:
@@ -178,6 +180,8 @@ Punishments:
     commands:
       - "5:1 [alert]"
       - "5:1 [log]"
+      - "10:5 [webhook]"
+      - "10:5 [proxy]"
   Autoclicker:
     remove-violations-after: 300
     checks:
@@ -185,13 +189,17 @@ Punishments:
     commands:
       - "5:1 [alert]"
       - "5:1 [log]"
+      - "10:5 [webhook]"
+      - "10:5 [proxy]"
   PingSpoof:
     remove-violations-after: 300
     checks:
-      - "Ping"
+      - "PingSpoof"
     commands:
       - "5:1 [alert]"
       - "5:1 [log]"
+      - "10:5 [webhook]"
+      - "10:5 [proxy]"
   Inventory:
     remove-violations-after: 300
     checks:
@@ -199,5 +207,7 @@ Punishments:
     commands:
       - "5:1 [alert]"
       - "5:1 [log]"
+      - "10:5 [webhook]"
+      - "10:5 [proxy]"
 
 

@@ -35,8 +35,8 @@ public final class AimY extends Check implements RotationCheck {
         this.rawRotations.add(delta);
         if (this.rawRotations.size() >= 100) this.checkRaw();
 
-        float absDeltaX = Math.abs(Math.abs(update.getTo().getYaw()) - Math.abs(update.getFrom().getYaw()));
-        float absDeltaY = Math.abs(Math.abs(update.getTo().getPitch()) - Math.abs(update.getFrom().getPitch()));
+        float absDeltaX = Math.abs(delta.getX());
+        float absDeltaY = Math.abs(delta.getY());
         if (absDeltaX > 1.35 || absDeltaY > 1.35 && absDeltaX > 0.32) {
             this.limitedRotations.add(delta);
             if (this.limitedRotations.size() >= 100) this.checkLimited();
@@ -44,11 +44,9 @@ public final class AimY extends Check implements RotationCheck {
     }
 
     private void checkLimited() {
-        final List<Float> x = new ArrayList<>(), xAbs = new ArrayList<>(), y = new ArrayList<>();
-        final int sens = player.calculateSensitivity();
+        final List<Float> x = new ArrayList<>(), y = new ArrayList<>();
         for (Vec2f vec2 : this.limitedRotations) {
             x.add(vec2.getX());
-            xAbs.add(Math.abs(vec2.getX()));
             y.add(vec2.getY());
         }
 
@@ -82,9 +80,10 @@ public final class AimY extends Check implements RotationCheck {
     }
 
     private void checkRaw() {
-        final List<Float> x = new ArrayList<>(), y = new ArrayList<>();
+        final List<Float> x = new ArrayList<>(), xAbs = new ArrayList<>(), y = new ArrayList<>();
         for (Vec2f vec2 : this.rawRotations) {
             x.add(vec2.getX());
+            xAbs.add(vec2.getX());
             y.add(vec2.getY());
         }
 
@@ -123,8 +122,7 @@ public final class AimY extends Check implements RotationCheck {
         {
             final int sens = player.calculateSensitivity();
             final boolean valid = sens > 20 && sens < 140;
-            final double avgXAbs = x.stream().mapToDouble(Math::abs).average().orElse(0);
-            if (distinctRank < 1.0 && distinctRank > 0.7 && avgXAbs > 1.8 && valid) {
+            if (distinctRank < 1.0 && distinctRank > 0.7 && Statistics.getAverage(xAbs) > 1.8 && valid) {
                 if (this.localBuffer.get(1) < 0.01) {
                     if (distinctRank < 0.8) this.increaseBuffer(1, 0.2f);
                 } else {

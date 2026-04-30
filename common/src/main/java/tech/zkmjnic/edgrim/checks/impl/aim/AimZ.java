@@ -2,6 +2,7 @@ package tech.zkmjnic.edgrim.checks.impl.aim;
 
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.impl.aim.processor.AimProcessor;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
@@ -20,6 +21,7 @@ public final class AimZ extends Check implements RotationCheck {
     private final List<Vec2i> rotations2;
     private final List<Vec2> kireikoGeneric;
     private double oldShannonYaw, oldShannonPitch;
+    private boolean cinematicBatch;
     private final List<Float> localBuffer;
 
     public AimZ(PlayerData player) {
@@ -29,6 +31,7 @@ public final class AimZ extends Check implements RotationCheck {
         this.kireikoGeneric = new CopyOnWriteArrayList<>();
         this.oldShannonYaw = 0;
         this.oldShannonPitch = 0;
+        this.cinematicBatch = false;
         this.localBuffer = new CopyOnWriteArrayList<>();
         for (int i = 0; i < 16; i++) this.localBuffer.add(0.0f);
     }
@@ -43,6 +46,7 @@ public final class AimZ extends Check implements RotationCheck {
 
         Vec2f delta = update.getDelta();
         this.rawRotations.add(delta);
+        this.cinematicBatch |= update.isCinematic2();
         double gcdValue = Statistics.getGCDValue(0.5d) * 3;
         this.rotations2.add(new Vec2i(
                 (int) (delta.getX() / gcdValue),
@@ -54,9 +58,15 @@ public final class AimZ extends Check implements RotationCheck {
     }
 
     private void checkRaw() {
-        if (updateCinematic()) return;
+        if (this.cinematicBatch) {
+            this.rawRotations.clear();
+            this.cinematicBatch = false;
+            return;
+        }
 
         final int sens = player.calculateSensitivity();
+        final AimProcessor aimProcessor = player.checkManager.getRotationCheck(AimProcessor.class);
+        final int sensTemp = aimProcessor != null ? aimProcessor.totalSensitivityClient : 0;
         final List<Float> x = new ArrayList<>(), y = new ArrayList<>();
         for (Vec2f vec2 : this.rawRotations) {
             x.add(vec2.getX());
@@ -65,7 +75,7 @@ public final class AimZ extends Check implements RotationCheck {
         final int disX = Statistics.getDistinct(x);
         final double shannonYaw = Statistics.getShannonEntropy(x);
         final double shannonPitch = Statistics.getShannonEntropy(y);
-        final boolean valid = sens >= 60 && sens <= 150;
+        final boolean valid = sens >= 60 && sens <= 150 && sensTemp >= 60 && sensTemp < 150;
 
         if (valid && getDifference(shannonYaw, oldShannonYaw) < 1e-5
                 && getDifference(shannonPitch, oldShannonPitch) < 1e-5) {
@@ -110,6 +120,7 @@ public final class AimZ extends Check implements RotationCheck {
         this.oldShannonYaw = shannonYaw;
         this.oldShannonPitch = shannonPitch;
         this.rawRotations.clear();
+        this.cinematicBatch = false;
     }
 
     private void checkSpikes() {
@@ -171,10 +182,6 @@ public final class AimZ extends Check implements RotationCheck {
                 this.increaseBuffer(4, -0.4f);
             }
         }
-    }
-
-    private boolean updateCinematic() {
-        return false; // equivalent to !profile.ignoreCinematic() being false when cinematic is ignored
     }
 
     private void increaseBuffer(int index, float v) {

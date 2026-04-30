@@ -9,11 +9,12 @@ import tech.zkmjnic.edgrim.checks.impl.badpackets.*;
 import tech.zkmjnic.edgrim.checks.impl.breaking.*;
 import tech.zkmjnic.edgrim.checks.impl.crash.*;
 import tech.zkmjnic.edgrim.checks.impl.elytra.*;
-import tech.zkmjnic.edgrim.checks.impl.interact.InteractBlock;
-import tech.zkmjnic.edgrim.checks.impl.interact.InteractEntity;
+import tech.zkmjnic.edgrim.checks.impl.interact.InteractA;
+import tech.zkmjnic.edgrim.checks.impl.interact.InteractB;
 import tech.zkmjnic.edgrim.checks.impl.movement.*;
 import tech.zkmjnic.edgrim.checks.impl.multiactions.*;
 import tech.zkmjnic.edgrim.checks.impl.packetorder.*;
+import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofA;
 import tech.zkmjnic.edgrim.checks.impl.scaffolding.*;
 import tech.zkmjnic.edgrim.checks.impl.sprint.*;
 import tech.zkmjnic.edgrim.checks.impl.timer.*;
@@ -28,7 +29,9 @@ import tech.zkmjnic.edgrim.checks.impl.combat.MultiInteractA;
 import tech.zkmjnic.edgrim.checks.impl.combat.MultiInteractB;
 import tech.zkmjnic.edgrim.checks.impl.combat.Reach;
 import tech.zkmjnic.edgrim.checks.impl.autoclicker.AutoclickerA;
-import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingA;
+import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofB;
+import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofC;
+import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofD;
 import tech.zkmjnic.edgrim.checks.impl.exploit.ExploitA;
 import tech.zkmjnic.edgrim.checks.impl.exploit.ExploitB;
 import tech.zkmjnic.edgrim.checks.impl.groundspoof.NoFall;
@@ -82,9 +85,12 @@ public class CheckManager {
         packetChecks = new ImmutableClassToInstanceMap.Builder<PacketCheck>()
                 .put(PacketOrderProcessor.class, player.packetOrderProcessor)
                 .put(Reach.class, new Reach(player))
-                .put(InteractEntity.class, new InteractEntity(player))
+                .put(InteractB.class, new InteractB(player))
                 .put(AutoclickerA.class, new AutoclickerA(player))
-                .put(PingA.class, new PingA(player))
+                .put(PingSpoofA.class, new PingSpoofA(player))
+                .put(PingSpoofB.class, new PingSpoofB(player))
+                .put(PingSpoofC.class, new PingSpoofC(player))
+                .put(PingSpoofD.class, new PingSpoofD(player))
                 .put(PacketEntityReplication.class, new PacketEntityReplication(player))
                 .put(PacketChangeGameState.class, new PacketChangeGameState(player))
                 .put(CompensatedInventory.class, player.inventory)
@@ -244,7 +250,7 @@ public class CheckManager {
                 .put(FabricatedPlace.class, new FabricatedPlace(player))
                 .put(PositionPlace.class, new PositionPlace(player))
                 .put(RotationPlace.class, new RotationPlace(player))
-                .put(InteractBlock.class, new InteractBlock(player))
+                .put(InteractA.class, new InteractA(player))
                 .put(ScaffoldA.class, new ScaffoldA(player))
                 .put(ScaffoldB.class, new ScaffoldB(player))
                 .put(PacketOrderN.class, new PacketOrderN(player))

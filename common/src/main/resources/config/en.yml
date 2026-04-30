@@ -212,12 +212,26 @@ Reach:
     # Leaving this disabled will still catch cheaters and will not cause false positives
     # Unless you are a 1.8 PvP focused server, this additional packet is not recommended
     enable-post-packet: false
-InteractBlock:
-    # Cancel the interaction once this many violations have been reached.
+
+# Backtrack checks
+PingSpoofB:
     cancelVL: 5
-InteractEntity:
-    # Look-agnostic visibility check for attacks through solid world geometry.
-    # No extra options are required here at the moment.
+
+PingSpoofC:
+    cancelVL: 5
+
+PingSpoofD:
+    cancelVL: 5
+    # Base number of pending entity transactions allowed before ping-based allowance is added.
+    basePendingAllowance: 2
+    # Cap the ping-derived allowance at this many 50ms ticks.
+    maxPingTicks: 20
+
+InteractA:
+    cancelVL: 0
+
+InteractB:
+    cancelVL: 0
 
 # Autoclicker
 AutoclickerA:
@@ -341,4 +355,3 @@ history:
         password: ""
 
 config-version: 9
-

@@ -8,14 +8,14 @@ import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 
 @CheckData(
-        name = "PingA",
+        name = "PingSpoofA",
         description = "Detects spoofed keepalive ping vs transaction ping"
 )
-public final class PingA extends Check implements PacketCheck {
+public final class PingSpoofA extends Check implements PacketCheck {
     private boolean kReceived;
     private boolean suspicious;
 
-    public PingA(final PlayerData player) {
+    public PingSpoofA(final PlayerData player) {
         super(player);
     }
 
