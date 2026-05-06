@@ -13,6 +13,7 @@ public class NoSlowA extends Check implements PostPredictionCheck {
     // The player sends that they switched items the next tick if they switch from an item that can be used
     // to another item that can be used.  What the fuck mojang.  Affects 1.8 (and most likely 1.7) clients.
     public boolean didSlotChangeLastTick = false;
+    public boolean flaggedLastTick = false;
     double offsetToFlag;
     double bestOffset = 1;
 
@@ -29,21 +30,22 @@ public class NoSlowA extends Check implements PostPredictionCheck {
             // 1.8 users are not slowed the first tick they use an item, strangely
             if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_8) && didSlotChangeLastTick) {
                 didSlotChangeLastTick = false;
-                buffer = 0;
+                flaggedLastTick = false;
             }
 
-            if (buffer > 2) {
+            if (flaggedLastTick) {
                 flagAndAlertWithSetback();
             }
 
             if (bestOffset > offsetToFlag) {
-                buffer++;
+                flaggedLastTick = true;
             } else {
                 reward();
-                buffer = Math.max(0, buffer - 1);
+                flaggedLastTick = false;
             }
         } else {
-            buffer = 0;
+            flaggedLastTick = false;
+            didSlotChangeLastTick = true;
         }
 
         bestOffset = 1;

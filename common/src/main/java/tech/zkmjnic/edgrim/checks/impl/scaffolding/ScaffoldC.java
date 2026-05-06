@@ -39,21 +39,21 @@ public final class ScaffoldC extends ScaffoldCheck {
         cancelPlaceIfWindowActive(place);
 //        alert("pitch=" + pitch + "yaw=" + yaw + "lastYaw=" + lastYaw);
 
-        if (Math.abs(pitch - 82F) < 1.0F || Math.abs(pitch - 87F) < 1.0F) {
-            if (!player.isSneaking) {
-                buffer++;
-            }
-        } else {
-            buffer = Math.max(0, buffer -1F);
-        }
-
-        if (buffer >= 2) {
-            if (flagAndAlert("pitch=" + pitch + "\nyaw=" + yaw + "\nlastYaw=" + lastYaw) && shouldCancel()) {
-                startCancelWindow();
-                place.resync();
-                player.mitigateDamage();
-            }
-        }
+//        if (Math.abs(pitch - 82F) < 1.0F || Math.abs(pitch - 87F) < 1.0F) {
+//            if (!player.isSneaking) {
+//                buffer++;
+//            }
+//        } else {
+//            buffer = Math.max(0, buffer -1F);
+//        }
+//
+//        if (buffer >= 2) {
+//            if (flagAndAlert("pitch=" + pitch + "\nyaw=" + yaw + "\nlastYaw=" + lastYaw) && shouldCancel()) {
+//                startCancelWindow();
+//                place.resync();
+//                player.mitigateDamage();
+//            }
+//        }
         lastYaw = yaw;
         lastPitch = pitch;
     }

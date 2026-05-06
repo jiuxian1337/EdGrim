@@ -16,8 +16,7 @@ import static com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayC
         name = "ScaffoldA",
         configName = "ScaffoldA",
         decay = 0.86,
-        description = "GodBridge/KeepY scaffold analysis",
-        experimental = true
+        description = "GodBridge/KeepY scaffold analysis"
 )
 public final class ScaffoldA extends ScaffoldCheck {
     private static final long DRAG_CLICK_INTERVAL_MS = 50L;
@@ -45,7 +44,7 @@ public final class ScaffoldA extends ScaffoldCheck {
 
     @Override
     public void onBlockPlace(final BlockPlace place) {
-        if (!place.isBlock) {
+        if (!place.isBlock || place.position.y >= player.y) {
             return;
         }
 
@@ -70,6 +69,7 @@ public final class ScaffoldA extends ScaffoldCheck {
                 startCancelWindow();
                 if (shouldModifyPackets()) {
                     place.resync();
+                    player.mitigateDamage();
                 }
             }
             return;

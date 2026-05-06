@@ -75,7 +75,7 @@ Simulation:
     # 玩家移动偏移量判定阈值（单位：方块）
     # 已针对 Optifine 优化三角函数表，若设为 0.001 可减少 FastMath 误报
     # 如果此补偿不起作用，则反作弊记录此玩家作弊
-    threshold: 0.03
+    threshold: 0.01
     # 在玩家受到回弹之前，1 ticks 的判定阈值
     # 假设作弊者与模拟移动的阈值（threshold）是0.0945，该项目设置的是0.07，玩家会立即被回弹到合适的位置
     # -1 关闭
@@ -84,7 +84,7 @@ Simulation:
     # 假设作弊者与模拟移动的阈值（threshold）是0.0945，并且触发了10次，应为0.9450
     # 而你设置的值为0.94 ， 作弊者会受到回弹
     # -1 关闭
-    max-advantage: 2.5
+    max-advantage: 3.0
     # 在默认配置的50秒后，玩家将从4块跑到1块
     # 这是为了防止玩家收集过多的违规行为，并且永远无法清除所有的违规行为
     # 这是默认配置的样子（x 轴 = seconds ，y 轴 = 1/1000 方块）: https://www.desmos.com/calculator/4lovswdarj
@@ -158,7 +158,7 @@ ScaffoldD:
 NoSlowA:
     # 有多少偏移量是作弊
     # 标志 0.03-0.2 与 NoSlow 一致
-    threshold: 0.03
+    threshold: 0.01
     # 到达多少VL时回弹
     setbackvl: 1
     # 当玩家使用一个物品并被它减慢时衰减多少VL
@@ -169,20 +169,20 @@ VelocityA:
     setback-decay-multiplier: 0.999
     # 我们应该为玩家的移动创建多大的偏移量？
     # 从可能的移动中以方块为单位测量
-    threshold: 0.03
+    threshold: 0.01
     # 在玩家受到回弹之前，1 ticks 的违规行为有多大？
     # -1 关闭
     immediate-setback-threshold: 0.03
     # 在我们开始遭遇回弹之前，我们的优势有多大?
     # -1 关闭
-    max-advantage: 2.5
+    max-advantage: 3.0
     # 这是为了防止玩家收集过多的违规行为，并且永远无法清除所有的违规行为
     max-ceiling: 4
     setbackvl: 1
 
 
 VelocityB:
-    threshold: 0.03
+    threshold: 0.01
     setbackvl: 1
 
 VelocityC:
