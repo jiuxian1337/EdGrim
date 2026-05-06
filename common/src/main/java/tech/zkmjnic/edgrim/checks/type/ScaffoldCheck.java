@@ -15,14 +15,14 @@ public class ScaffoldCheck extends BlockPlaceCheck {
     @Override
     public void onReload(ConfigManager config) {
         super.onReload(config);
-        this.cancelForMs = config.getLongElse(getConfigName() + ".cancel-for-ms", 0L);
+        this.cancelForMs = config.getLongElse(getConfigName() + ".cancel-for-ms", 500L);
     }
 
     protected void startCancelWindow() {
         if (cancelForMs <= 0L) {
             return;
         }
-        cancelPlacementsUntil = Math.max(cancelPlacementsUntil, System.currentTimeMillis() + cancelForMs);
+        cancelPlacementsUntil = Math.max(cancelPlacementsUntil + cancelForMs, System.currentTimeMillis() + cancelForMs);
     }
 
     protected boolean isCancelWindowActive() {

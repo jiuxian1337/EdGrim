@@ -131,7 +131,19 @@ ScaffoldB:
         difference: 90
     # Checks if the player switches hotbar slot on the tick after placing
     tool-switch: true
-    cancelvl: 10
+    cancelvl: 5
+    # After reaching cancelvl, cancel all block placements for this many milliseconds
+    cancel-for-ms: 500
+
+ScaffoldC:
+    # Detects near-vertical pitch (82°/87°) placements while tower scaffolding
+    cancelvl: 5
+    # After reaching cancelvl, cancel all block placements for this many milliseconds
+    cancel-for-ms: 500
+
+ScaffoldD:
+    # Detects backward movement combined with yaw at 90° multiples (cardinal directions) while bridging
+    cancelvl: 5
     # After reaching cancelvl, cancel all block placements for this many milliseconds
     cancel-for-ms: 500
 

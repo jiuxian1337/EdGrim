@@ -82,6 +82,7 @@ public final class PingSpoofB extends Check implements PacketCheck {
                 ) && shouldCancel()) {
                     event.setCancelled(true);
                     player.onPacketCancel();
+                    player.mitigateDamage();
                 }
             } else {
                 buffer = Math.max(0, buffer * 0.95);

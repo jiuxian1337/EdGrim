@@ -253,6 +253,8 @@ public class CheckManager {
                 .put(InteractA.class, new InteractA(player))
                 .put(ScaffoldA.class, new ScaffoldA(player))
                 .put(ScaffoldB.class, new ScaffoldB(player))
+                .put(ScaffoldC.class, new ScaffoldC(player))
+                .put(ScaffoldD.class, new ScaffoldD(player))
                 .put(PacketOrderN.class, new PacketOrderN(player))
                 .put(DuplicateRotPlace.class, new DuplicateRotPlace(player))
                 .put(GhostBlockMitigation.class, new GhostBlockMitigation(player))

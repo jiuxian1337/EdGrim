@@ -142,6 +142,7 @@ public final class ScaffoldB extends ScaffoldCheck {
                 if (flagAndAlert("tags=" + String.join("+", tags)) && shouldCancel()) {
                     startCancelWindow();
                     cancel = true;
+                    player.mitigateDamage();
                 }
             }
         }
@@ -169,6 +170,7 @@ public final class ScaffoldB extends ScaffoldCheck {
                     if (flagAndAlert("tags=" + String.join("+", tags)) && shouldCancel()) {
                         startCancelWindow();
                         cancel = true;
+                        player.mitigateDamage();
                     }
                     if (placeTick.size() > 20) {
                         placeTick.clear();
@@ -190,6 +192,7 @@ public final class ScaffoldB extends ScaffoldCheck {
             if (flagAndAlert("tags=" + String.join("+", tags)) && shouldCancel()) {
                 startCancelWindow();
                 cancel = true;
+                player.mitigateDamage();
             }
         }
 
@@ -221,6 +224,7 @@ public final class ScaffoldB extends ScaffoldCheck {
                     if (flagAndAlert("tags=" + String.join("+", tags)) && shouldCancel()) {
                         startCancelWindow();
                         cancelNextPlace = true;
+                        player.mitigateDamage();
                     }
                     cancelNextPlaceSourceTick = pending.tick;
                 }
@@ -233,6 +237,7 @@ public final class ScaffoldB extends ScaffoldCheck {
                     if (flagAndAlert("tags=" + String.join("+", tags)) && shouldCancel()) {
                         startCancelWindow();
                         cancelNextPlace = true;
+                        player.mitigateDamage();
                     }
                     cancelNextPlaceSourceTick = pending.tick;
                 }

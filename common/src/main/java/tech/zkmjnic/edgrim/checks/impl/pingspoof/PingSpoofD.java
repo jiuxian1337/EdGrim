@@ -69,6 +69,7 @@ public final class PingSpoofD extends Check implements PacketCheck {
                     && shouldCancel()) {
                 event.setCancelled(true);
                 player.onPacketCancel();
+                player.mitigateDamage();
             }
             return;
         }

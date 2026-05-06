@@ -123,6 +123,7 @@ public final class PingSpoofC extends Check implements PacketCheck {
                 if (shouldCancel() && shouldModifyPackets()) {
                     event.setCancelled(true);
                     player.onPacketCancel();
+                    player.mitigateDamage();
                 }
             }
 

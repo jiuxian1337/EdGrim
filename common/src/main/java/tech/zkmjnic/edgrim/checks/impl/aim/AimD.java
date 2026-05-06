@@ -15,7 +15,7 @@ import java.util.*;
 
 // Original author: Dg32z
 // https://github.com/Dg32z
-@CheckData(name = "AimD", configName = "AimD", decay = 0.85)
+@CheckData(name = "AimD", configName = "AimD", decay = 0.85, experimental = true)
 public final class AimD extends Check implements RotationCheck {
 
     private static final long COMBAT_COOLDOWN_MS = 100;
