@@ -27,12 +27,12 @@ import java.util.Comparator;
 import java.util.List;
 
 @CheckData(
-        name = "ClickJitterAnalysis",
-        configName = "ClickJitterAnalysis",
+        name = "AnalysisA",
+        configName = "AnalysisA",
         decay = 0.05,
         description = "attack-centered click jitter analysis"
 )
-public final class ClickJitterAnalysis extends Check implements RotationCheck {
+public final class AnalysisA extends Check implements RotationCheck {
 
     private static final Gson GSON = new GsonBuilder().create();
     private static final int MAX_BUFFERED_UPDATES = 64;
@@ -40,7 +40,7 @@ public final class ClickJitterAnalysis extends Check implements RotationCheck {
     private static final double MIN_SAMPLE_ENERGY = 1.25;
     private static final double MIN_CLASSIFICATION_SCORE = 0.86;
     private static final double MIN_CLASSIFICATION_MARGIN = 0.012;
-    private static final String ROOT_DIR = "click-jitter-analysis";
+    private static final String ROOT_DIR = "analysis-a";
     private static final String LEGIT_DIR = "legit";
     private static final String CHEAT_DIR = "cheat";
     private static final String RECORDED_DIR = "recorded";
@@ -61,27 +61,27 @@ public final class ClickJitterAnalysis extends Check implements RotationCheck {
     private double minAverageMargin = 0.02;
     private long rotationSequence;
 
-    public ClickJitterAnalysis(PlayerData player) {
+    public AnalysisA(PlayerData player) {
         super(player);
     }
 
     @Override
     public void onReload(ConfigManager config) {
         ensureRuntimeState();
-        recordMode = config.getBooleanElse("ClickJitterAnalysis.record-mode", false);
-        debugLog = config.getBooleanElse("ClickJitterAnalysis.debug-log", false);
-        sampleRadius = Math.max(1, config.getIntElse("ClickJitterAnalysis.sample-radius", 5));
+        recordMode = config.getBooleanElse("AnalysisA.record-mode", false);
+        debugLog = config.getBooleanElse("AnalysisA.debug-log", false);
+        sampleRadius = Math.max(1, config.getIntElse("AnalysisA.sample-radius", 5));
         sampleSize = (sampleRadius * 2) + 1;
-        analysisWindowSize = Math.max(3, config.getIntElse("ClickJitterAnalysis.analysis-window-size", 10));
+        analysisWindowSize = Math.max(3, config.getIntElse("AnalysisA.analysis-window-size", 10));
         minCheatVotes = Math.max(1, Math.min(
                 analysisWindowSize,
-                config.getIntElse("ClickJitterAnalysis.min-cheat-votes", Math.max(1, (analysisWindowSize / 2) + 1))
+                config.getIntElse("AnalysisA.min-cheat-votes", Math.max(1, (analysisWindowSize / 2) + 1))
         ));
         minAverageCheatSimilarity = clamp01(config.getDoubleElse(
-                "ClickJitterAnalysis.min-average-cheat-similarity",
+                "AnalysisA.min-average-cheat-similarity",
                 0.89
         ));
-        minAverageMargin = Math.max(0.0, config.getDoubleElse("ClickJitterAnalysis.min-average-margin", 0.02));
+        minAverageMargin = Math.max(0.0, config.getDoubleElse("AnalysisA.min-average-margin", 0.02));
         tickBuffer.clear();
         attacksAwaitingCenter.clear();
         pendingSamples.clear();
@@ -298,7 +298,7 @@ public final class ClickJitterAnalysis extends Check implements RotationCheck {
             return cached;
         }
 
-        synchronized (ClickJitterAnalysis.class) {
+        synchronized (AnalysisA.class) {
             cached = referenceLibrary;
             if (cached == null) {
                 cached = ReferenceLibrary.load(sampleSize);
@@ -341,12 +341,12 @@ public final class ClickJitterAnalysis extends Check implements RotationCheck {
         if (!debugLog) {
             return;
         }
-        final String formatted = "[ClickJitterAnalysis] " + message;
+        final String formatted = "[AnalysisA] " + message;
         if (player.platformPlayer != null) {
             player.platformPlayer.sendMessage(formatted);
             return;
         }
-        LogUtil.info("[ClickJitterAnalysis] " + player.getName() + " " + message);
+        LogUtil.info("[AnalysisA] " + player.getName() + " " + message);
     }
 
     private void ensureRuntimeState() {
@@ -429,7 +429,7 @@ public final class ClickJitterAnalysis extends Check implements RotationCheck {
             locateDirectory(RECORDED_DIR);
 
             LogUtil.info(String.format(
-                    "[ClickJitterAnalysis] loaded legit files=%d templates=%d, cheat files=%d templates=%d",
+                    "[AnalysisA] loaded legit files=%d templates=%d, cheat files=%d templates=%d",
                     legitLoadResult.fileCount,
                     legitLoadResult.templates.size(),
                     cheatLoadResult.fileCount,

@@ -184,7 +184,7 @@ public class CheckManager {
                 .put(AimZ.class, new AimZ(player))
                 .put(AimAA.class, new AimAA(player))
                 .put(AimAB.class, new AimAB(player))
-                .put(ClickJitterAnalysis.class, new ClickJitterAnalysis(player))
+                .put(AnalysisA.class, new AnalysisA(player))
                 .build();
         vehicleChecks = new ImmutableClassToInstanceMap.Builder<VehicleCheck>()
                 .put(VehiclePredictionRunner.class, new VehiclePredictionRunner(player))

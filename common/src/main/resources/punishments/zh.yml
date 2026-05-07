@@ -185,7 +185,7 @@ Punishments:
   Analysis:
       remove-violations-after: 300
       checks:
-          - "ClickJitterAnalysis"
+          - "Analysis"
       commands:
           - "5:1 [alert]"
           - "5:1 [log]"
