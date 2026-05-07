@@ -6,6 +6,7 @@ import ac.grim.grimac.api.alerts.AlertManager;
 import ac.grim.grimac.api.config.ConfigManager;
 import ac.grim.grimac.api.event.EventBus;
 import ac.grim.grimac.api.event.events.GrimReloadEvent;
+import tech.zkmjnic.edgrim.checks.impl.aim.analysis.AnalysisA;
 import tech.zkmjnic.edgrim.manager.config.ConfigManagerFileImpl;
 import tech.zkmjnic.edgrim.manager.init.start.StartableInitable;
 import tech.zkmjnic.edgrim.player.PlayerData;
@@ -179,6 +180,7 @@ public class EdGrimExternalAPI implements GrimAbstractAPI, ConfigReloadObserver,
         EdGrimAPI.INSTANCE.getDiscordManager().reload();
         EdGrimAPI.INSTANCE.getSpectateManager().reload();
         EdGrimAPI.INSTANCE.getViolationDatabaseManager().reload();
+        AnalysisA.reloadGlobal(configManager);
         // Don't reload players if the plugin hasn't started yet
         if (!started) return;
         // Reload checks for all players

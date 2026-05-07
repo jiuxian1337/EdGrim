@@ -3,6 +3,7 @@ package tech.zkmjnic.edgrim.manager;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.AbstractCheck;
 import tech.zkmjnic.edgrim.checks.impl.aim.*;
+import tech.zkmjnic.edgrim.checks.impl.aim.analysis.AnalysisA;
 import tech.zkmjnic.edgrim.checks.impl.aim.processor.AimProcessor;
 import tech.zkmjnic.edgrim.checks.impl.aim.processor.Cinematic;
 import tech.zkmjnic.edgrim.checks.impl.badpackets.*;
