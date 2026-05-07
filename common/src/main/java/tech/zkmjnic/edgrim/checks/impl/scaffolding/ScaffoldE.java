@@ -5,29 +5,22 @@ import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.ScaffoldCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
-import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
+import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 
 @CheckData(
-        name = "ScaffoldC",
-        configName = "ScaffoldC",
+        name = "ScaffoldE",
+        configName = "ScaffoldE",
         decay = 0.86,
         description = ""
 )
-public final class ScaffoldC extends ScaffoldCheck {
+public final class ScaffoldE extends ScaffoldCheck {
 
-    private float dYaw;
-    private float dPitch;
+    private boolean sneak;
+    private boolean lastSneak;
 
-    public ScaffoldC(PlayerData player) {
+    public ScaffoldE(PlayerData player) {
         super(player);
     }
-
-    @Override
-    public void process(RotationUpdate rotationUpdate) {
-        this.dYaw = rotationUpdate.getDeltaXRotABS();
-        this.dPitch = rotationUpdate.getDeltaYRotABS();
-    }
-
     @Override
     public void onBlockPlace(final BlockPlace place) {
         if (!place.isBlock || place.position.y >= player.y) {
@@ -39,21 +32,25 @@ public final class ScaffoldC extends ScaffoldCheck {
         cancelPlaceIfWindowActive(place);
 //        alert("pitch=" + pitch + "yaw=" + yaw + "lastYaw=" + lastYaw);
 
-        if (dYaw >= 30 || dPitch >= 30) {
-            if (!player.isSneaking) {
-                buffer++;
-            }
+        if (lastSneak != sneak) {
+            buffer++;
         } else {
             buffer = Math.max(0, buffer -0.5F);
         }
 
         if (buffer >= 2) {
-            if (flagAndAlert("dy=" + dYaw + "\ndp=" + dPitch ) && shouldCancel()) {
+            if (flagAndAlert("s=" + sneak + "\nls=" + lastSneak ) && shouldCancel()) {
                 startCancelWindow();
                 place.resync();
                 player.mitigateDamage();
                 buffer = 1;
             }
         }
+    }
+
+    @Override
+    public void onPredictionComplete(PredictionComplete predictionComplete) {
+        lastSneak = sneak;
+        sneak = player.isSneaking;
     }
 }

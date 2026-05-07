@@ -8,9 +8,7 @@ import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.ScaffoldCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
-import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 
-import static com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying.isFlying;
 
 @CheckData(
         name = "ScaffoldA",
@@ -20,26 +18,12 @@ import static com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayC
 )
 public final class ScaffoldA extends ScaffoldCheck {
     private static final long DRAG_CLICK_INTERVAL_MS = 50L;
-    private static final long RESET_AFTER_IDLE_MS = 1000L;
 
     private long lastPlacementPacketAt;
     private double dragClick;
-    private double godBridgeBuffer;
-    private double godBridgeStreak;
-    private double placeSpeed;
-    private int placeCounter;
-    private int tickCounter;
-    private int lastSneakTicks = 100;
-    private int lastPlaceY = Integer.MIN_VALUE;
-    private float pitch;
 
     public ScaffoldA(PlayerData player) {
         super(player);
-    }
-
-    @Override
-    public void process(RotationUpdate rotationUpdate) {
-        this.pitch = rotationUpdate.getTo().getPitch();
     }
 
     @Override
@@ -48,81 +32,44 @@ public final class ScaffoldA extends ScaffoldCheck {
             return;
         }
 
+        final BlockFace face = place.getFace();
+        if (face == BlockFace.OTHER) return;
+
         if (cancelPlaceIfWindowActive(place)) {
             return;
         }
+        boolean keepY = face != BlockFace.UP && face != BlockFace.DOWN;
 
-        placeCounter++;
-        updateGodBridgeBuffer(place);
-
-        if (dragClick < 5.0 && godBridgeBuffer > 3.0) {
-            final long sinceLastPlacement = now() - lastPlacementPacketAt;
-            if (sinceLastPlacement > RESET_AFTER_IDLE_MS) {
-                godBridgeBuffer = 0.0;
-                godBridgeStreak = 0.0;
-                return;
-            }
-
-            if (godBridgeStreak++ > 2.0
-                    && flagAndAlert("(GodBridge/KeepY)\ndc= " + dragClick + "\nlc= " + sinceLastPlacement)
-                    && shouldCancel()) {
-                startCancelWindow();
-                if (shouldModifyPackets()) {
-                    place.resync();
-                    player.mitigateDamage();
-                }
-            }
-            return;
-        }
-
-        godBridgeStreak = Math.max(0.0, godBridgeStreak - (placeSpeed <= 0.6 ? 1.0 : 0.6));
-    }
-
-    private void updateGodBridgeBuffer(BlockPlace place) {
-        final BlockFace face = place.getFace();
-        if (face == BlockFace.OTHER || face == BlockFace.UP || face == BlockFace.DOWN) {
-            return;
-        }
-
-        if (place.position.getY() == lastPlaceY) {
-            if (lastSneakTicks > 5 && pitch >= 45.0F && dragClick < 2.0) {
-                godBridgeBuffer = Math.min(5.0, godBridgeBuffer + 1.0);
-            } else if (lastSneakTicks <= 5 || dragClick > 1.0) {
-                godBridgeBuffer = Math.max(0.0, godBridgeBuffer - 1);
+        if (keepY) {
+            if (!player.isSneaking) {
+                buffer++;
+            } else {
+                buffer = Math.max(0, buffer - 1);
             }
         } else {
-            godBridgeBuffer = Math.max(0.0, godBridgeBuffer - 1.5);
+            buffer = 0;
         }
 
-        lastPlaceY = place.position.getY();
+        if (buffer >= 2 && dragClick < 2) {
+            if (flagAndAlert("dc=" + dragClick + "\nb=" + buffer ) && shouldCancel()) {
+                startCancelWindow();
+                place.resync();
+                player.mitigateDamage();
+                buffer = 1;
+            }
+        }
     }
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-        if (isFlying(event.getPacketType())) {
-            tickCounter++;
-            if (tickCounter > 30) {
-                placeSpeed = (double) placeCounter / tickCounter;
-                tickCounter = 0;
-                placeCounter = 0;
-            }
-
-            if (player.isSneaking) {
-                lastSneakTicks = 0;
-            } else {
-                lastSneakTicks = Math.min(lastSneakTicks + 1, 100);
-            }
-            return;
-        }
 
         if (event.getPacketType() == PacketType.Play.Client.PLAYER_BLOCK_PLACEMENT) {
-            final long now = now();
-            if ((now - lastPlacementPacketAt) > DRAG_CLICK_INTERVAL_MS) {
+            if ((now() - lastPlacementPacketAt) > DRAG_CLICK_INTERVAL_MS) {
                 dragClick = Math.max(0.0, dragClick - 1.0);
             } else {
                 dragClick = Math.min(20.0, dragClick + 1.0);
             }
-            lastPlacementPacketAt = now;
+            lastPlacementPacketAt = now();
         }
     }
 

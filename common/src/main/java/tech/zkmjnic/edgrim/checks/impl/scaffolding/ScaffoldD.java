@@ -14,7 +14,7 @@ import tech.zkmjnic.edgrim.utils.math.Vector3dm;
         name = "ScaffoldD",
         configName = "ScaffoldD",
         decay = 0.86,
-        description = "Detects backward movement with yaw at 90° multiples (cardinal directions) while bridging"
+        description = ""
 )
 public final class ScaffoldD extends ScaffoldCheck {
 
@@ -64,6 +64,7 @@ public final class ScaffoldD extends ScaffoldCheck {
                 startCancelWindow();
                 place.resync();
                 player.mitigateDamage();
+                buffer = 1;
             }
         }
         lastYaw = yaw;

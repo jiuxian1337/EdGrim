@@ -184,6 +184,7 @@ public class CheckManager {
                 .put(AimZ.class, new AimZ(player))
                 .put(AimAA.class, new AimAA(player))
                 .put(AimAB.class, new AimAB(player))
+                .put(ClickJitterAnalysis.class, new ClickJitterAnalysis(player))
                 .build();
         vehicleChecks = new ImmutableClassToInstanceMap.Builder<VehicleCheck>()
                 .put(VehiclePredictionRunner.class, new VehiclePredictionRunner(player))
@@ -255,6 +256,7 @@ public class CheckManager {
                 .put(ScaffoldB.class, new ScaffoldB(player))
                 .put(ScaffoldC.class, new ScaffoldC(player))
                 .put(ScaffoldD.class, new ScaffoldD(player))
+                .put(ScaffoldE.class, new ScaffoldE(player))
                 .put(PacketOrderN.class, new PacketOrderN(player))
                 .put(DuplicateRotPlace.class, new DuplicateRotPlace(player))
                 .put(GhostBlockMitigation.class, new GhostBlockMitigation(player))

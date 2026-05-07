@@ -180,8 +180,8 @@ public class VelocityC extends Check implements PostPredictionCheck {
             double allowed = 0.002 + (player.totalFlyingPacketsSent <= 2 ? 0.03 : 0);
 
             if (!exempt && ((ptc < minVelocity && diff > allowed) || (ptc >= 300) || (rev && diff > allowed))) {
-                buffer += 1;
-                if (buffer > 8) {
+                buffer++;
+                if (buffer > 2) {
                     if (flagAndAlertWithSetback(String.format("ptc= %.5f%ndiff= %.5f%na= %s%nr= %s", ptc, diff, attack, rev))) {
                         resetState();
                         buffer *= 0.85;

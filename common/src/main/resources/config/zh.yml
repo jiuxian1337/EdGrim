@@ -141,15 +141,15 @@ ScaffoldB:
     cancel-for-ms: 500
 
 ScaffoldC:
-    # 检测塔式搭路时近乎垂直的 pitch（82°/87°）放置
-    cancelvl: 5
-    # 达到 cancelvl 后，持续取消后续方块放置的时间（毫秒）
+    cancelvl: 0
     cancel-for-ms: 500
 
 ScaffoldD:
-    # 检测搭路时后退移动且 yaw 为 90° 倍数（正方向）
     cancelvl: 5
-    # 达到 cancelvl 后，持续取消后续方块放置的时间（毫秒）
+    cancel-for-ms: 500
+
+ScaffoldE:
+    cancelvl: 5
     cancel-for-ms: 500
 
 # 使用模拟移动进行的NoSlow(使用物品时不会减速)检查
@@ -318,6 +318,23 @@ AimI:
 
 AimW:
     # 检测加速度、路径、协调性、相关性与摩擦特征异常。
+
+ClickJitterAnalysis:
+    # 点击抖动分析：以攻击实体为中心采样 11 tick 转头，并按 10 次攻击窗口分析更像 legit 还是 cheat。
+    # 开启后只记录，不分析，也不会触发告警。
+    record-mode: false
+    # 单次攻击样本半径。5 表示总样本大小为 11 tick，攻击 tick 在正中间。
+    sample-radius: 5
+    # 多少个攻击样本组成一个分析窗口。
+    analysis-window-size: 10
+    # 分析窗口内至少多少个样本需要表现为 cheat-like 才会命中。
+    min-cheat-votes: 6
+    # 分析窗口的平均 cheat 相似度下限。
+    min-average-cheat-similarity: 0.89
+    # 分析窗口的平均 cheat/legit 相似度差值下限。
+    min-average-margin: 0.02
+    # 是否在控制台打印样本丢弃等调试信息。
+    debug-log: false
 
 exploit:
     #是否允许玩家在使用鞘翅时候进行的疾跑跳跃
