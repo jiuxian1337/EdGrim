@@ -32,19 +32,20 @@ public final class ScaffoldE extends ScaffoldCheck {
         if (face == BlockFace.OTHER || face == BlockFace.UP || face == BlockFace.DOWN) return;
 
         placeCount++;
-        if (lastSneak != sneak && player.onGround && !player.isJumping) {
+        if (lastSneak != sneak) {
             buffer++;
-
         }
 
         double v = buffer / placeCount;
-        if (v > 0.5 && placeCount > 0) {
-            if (flagAndAlert("s=" + sneak + "\nls=" + lastSneak + "\nf/pc=" + v) && shouldCancel()) {
-                startCancelWindow();
-                player.mitigateDamage();
+        if (v > 0.4 && placeCount > 4) {
+            if (flagAndAlert("s=" + lastSneak + "\ns=" + sneak + "\nf/pc=" + v)) {
                 placeCount = 0;
                 buffer = 0;
-                place.resync();
+                if (shouldCancel()) {
+                    cancel();
+                    player.mitigateDamage();
+                    place.resync();
+                }
             }
         }
     }

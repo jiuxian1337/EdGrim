@@ -17,6 +17,7 @@ public final class ScaffoldC extends ScaffoldCheck {
 
     private float dYaw;
     private float dPitch;
+    private int lastPlace;
 
     public ScaffoldC(PlayerData player) {
         super(player);
@@ -26,6 +27,15 @@ public final class ScaffoldC extends ScaffoldCheck {
     public void process(RotationUpdate rotationUpdate) {
         this.dYaw = rotationUpdate.getDeltaXRotABS();
         this.dPitch = rotationUpdate.getDeltaYRotABS();
+        if (lastPlace <= 3) {
+            lastPlace++;
+                if (dYaw >= 160 || dPitch >= 160) {
+                    if (flagAndAlert("dy=" + dYaw + "\ndp=" + dPitch + "\nlp=" + lastPlace) && shouldCancel()) {
+                        cancel();
+                        player.mitigateDamage();
+                    }
+                }
+        }
     }
 
     @Override
@@ -46,12 +56,15 @@ public final class ScaffoldC extends ScaffoldCheck {
         }
 
         if (buffer >= 2) {
-            if (flagAndAlert("dy=" + dYaw + "\ndp=" + dPitch) && shouldCancel()) {
-                startCancelWindow();
-                player.mitigateDamage();
+            if (flagAndAlert("dy=" + dYaw + "\ndp=" + dPitch)) {
+                if (shouldCancel()) {
+                    cancel();
+                    player.mitigateDamage();
+                    place.resync();
+                }
                 buffer = 1;
-                place.resync();
             }
         }
+        lastPlace = 0;
     }
 }

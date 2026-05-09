@@ -19,6 +19,7 @@ public final class ScaffoldA extends ScaffoldCheck {
 
     private long lastPlacementPacketAt;
     private double dragClick;
+    private int lastYLevel;
 
     public ScaffoldA(PlayerData player) {
         super(player);
@@ -37,13 +38,13 @@ public final class ScaffoldA extends ScaffoldCheck {
         final BlockFace face = place.getFace();
         if (face == BlockFace.OTHER) return;
 
-        if (now() - lastPlacementPacketAt > 500) {
+        if ((now() - lastPlacementPacketAt > 500 && player.onGround) || now() - lastPlacementPacketAt > 2000 || place.position.y != lastYLevel) {
             buffer = 0;
         }
 
         boolean keepY = face != BlockFace.UP && face != BlockFace.DOWN;
-        if (keepY && getInferredInput(player).getZ() < 0) {
-            if (!player.isSneaking && dragClick < 2) {
+        if (keepY) {
+            if ((!player.isSneaking && dragClick < 2 && getInferredInput(player).getZ() < 0) || !player.onGround) {
                 buffer++;
             } else {
                 buffer = Math.max(0, buffer - 1);
@@ -52,14 +53,17 @@ public final class ScaffoldA extends ScaffoldCheck {
             buffer = 0;
         }
 
-        if (buffer >= 5) {
-            if (flagAndAlert("dc=" + dragClick + "\nb=" + buffer + "\nface=" + face) && shouldCancel()) {
-                startCancelWindow();
-                player.mitigateDamage();
-                place.resync();
+        if (buffer >= 4) {
+            if (flagAndAlert("dc=" + dragClick + "\nb=" + buffer + "\nface=" + face)) {
+                if (shouldCancel()) {
+                    cancel();
+                    player.mitigateDamage();
+                    place.resync();
+                }
                 buffer = 1;
             }
         }
+        lastYLevel = place.position.y;
     }
 
     @Override

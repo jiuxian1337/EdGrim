@@ -54,11 +54,13 @@ public final class ScaffoldD extends ScaffoldCheck {
         }
 
         if (buffer > 5) {
-            if (flagAndAlert("pitch=" + pitch + "\nyaw=" + yaw) && shouldCancel()) {
-                startCancelWindow();
-                player.mitigateDamage();
+            if (flagAndAlert("pitch=" + pitch + "\nyaw=" + yaw)) {
+                if (shouldCancel()) {
+                    cancel();
+                    player.mitigateDamage();
+                    place.resync();
+                }
                 buffer = 1;
-                place.resync();
             }
         }
     }

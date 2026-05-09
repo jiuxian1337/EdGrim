@@ -93,7 +93,7 @@ public final class ScaffoldB extends ScaffoldCheck {
         }
 
         if (cancel && shouldModifyPackets()) {
-            startCancelWindow();
+            cancel();
         }
 
         cancelNextPlace = false;
@@ -147,7 +147,7 @@ public final class ScaffoldB extends ScaffoldCheck {
             if (placedAngle > MAX_ANGLE) {
                 tags.add("Angle");
                 if (flagAndAlert("tags=" + String.join("+", tags)) && shouldCancel()) {
-                    startCancelWindow();
+                    cancel();
                     cancel = true;
                     player.mitigateDamage();
                 }
@@ -175,7 +175,7 @@ public final class ScaffoldB extends ScaffoldCheck {
                 if (avg < scaffoldTimeAvg) {
                     tags.add("Time");
                     if (flagAndAlert("tags=" + String.join("+", tags)) && shouldCancel()) {
-                        startCancelWindow();
+                        cancel();
                         cancel = true;
                         player.mitigateDamage();
                     }
@@ -197,7 +197,7 @@ public final class ScaffoldB extends ScaffoldCheck {
                 && jumpPhase < 4) {
             tags.add("Sprint");
             if (flagAndAlert("tags=" + String.join("+", tags))) {
-                startCancelWindow();
+                cancel();
                 cancel = true;
                 player.mitigateDamage();
             }
@@ -229,7 +229,7 @@ public final class ScaffoldB extends ScaffoldCheck {
                 if (diff > scaffoldRotateDiff) {
                     tags.add("Rotate");
                     if (flagAndAlert("tags=" + String.join("+", tags)) && shouldCancel()) {
-                        startCancelWindow();
+                        cancel();
                         cancelNextPlace = true;
                         player.mitigateDamage();
                     }
@@ -242,7 +242,7 @@ public final class ScaffoldB extends ScaffoldCheck {
                 if (pending.slot != player.packetStateData.lastSlotSelected) {
                     tags.add("ToolSwitch");
                     if (flagAndAlert("tags=" + String.join("+", tags)) && shouldCancel()) {
-                        startCancelWindow();
+                        cancel();
                         cancelNextPlace = true;
                         player.mitigateDamage();
                     }
