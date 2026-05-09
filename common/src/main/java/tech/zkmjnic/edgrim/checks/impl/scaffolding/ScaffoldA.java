@@ -12,8 +12,6 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 
 @CheckData(
         name = "ScaffoldA",
-        configName = "ScaffoldA",
-        decay = 0.86,
         description = "GodBridge/KeepY scaffold analysis"
 )
 public final class ScaffoldA extends ScaffoldCheck {
@@ -54,10 +52,11 @@ public final class ScaffoldA extends ScaffoldCheck {
             buffer = 0;
         }
 
-        if (buffer >= 8) {
+        if (buffer >= 5) {
             if (flagAndAlert("dc=" + dragClick + "\nb=" + buffer + "\nface=" + face) && shouldCancel()) {
                 startCancelWindow();
                 player.mitigateDamage();
+                place.resync();
                 buffer = 1;
             }
         }

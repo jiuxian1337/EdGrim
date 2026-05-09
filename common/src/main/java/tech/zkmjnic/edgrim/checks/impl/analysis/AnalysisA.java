@@ -23,8 +23,6 @@ import java.util.List;
 
 @CheckData(
         name = "AnalysisA",
-        configName = "AnalysisA",
-        decay = 0.05,
         description = "attack-centered heuristic analysis"
 )
 public final class AnalysisA extends Check implements RotationCheck {

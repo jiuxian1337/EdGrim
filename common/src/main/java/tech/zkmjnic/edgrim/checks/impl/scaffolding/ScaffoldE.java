@@ -44,6 +44,7 @@ public final class ScaffoldE extends ScaffoldCheck {
                 player.mitigateDamage();
                 placeCount = 0;
                 buffer = 0;
+                place.resync();
             }
         }
     }

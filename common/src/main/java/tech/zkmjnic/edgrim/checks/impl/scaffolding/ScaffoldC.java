@@ -50,6 +50,7 @@ public final class ScaffoldC extends ScaffoldCheck {
                 startCancelWindow();
                 player.mitigateDamage();
                 buffer = 1;
+                place.resync();
             }
         }
     }
