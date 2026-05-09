@@ -1,5 +1,6 @@
 package tech.zkmjnic.edgrim.predictionengine.predictions;
 
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
@@ -9,7 +10,6 @@ import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
 import tech.zkmjnic.edgrim.utils.nmsutil.FluidFallingAdjustedMovement;
 import tech.zkmjnic.edgrim.utils.nmsutil.ReachUtils;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -11,10 +11,10 @@ import java.io.Serializable;
 import java.util.Random;
 
 public class Vector3dm implements Cloneable, Serializable {
+    public static final double epsilon = 1.0E-6;
     @Serial
     private static final long serialVersionUID = -2657651106777219169L;
     private static final Random random = new Random();
-    public static final double epsilon = 1.0E-6;
     @Getter
     protected double x;
     @Getter

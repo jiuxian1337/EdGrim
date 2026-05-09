@@ -1,16 +1,16 @@
 package tech.zkmjnic.edgrim.command.commands;
 
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.context.CommandContext;
+import org.incendo.cloud.parser.standard.StringParser;
+import org.incendo.cloud.suggestion.Suggestion;
+import org.incendo.cloud.suggestion.SuggestionProvider;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.command.BuildableCommand;
 import tech.zkmjnic.edgrim.command.requirements.PlayerSenderRequirement;
 import tech.zkmjnic.edgrim.manager.init.start.CommandRegister;
 import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
-import org.incendo.cloud.CommandManager;
-import org.incendo.cloud.context.CommandContext;
-import org.incendo.cloud.parser.standard.StringParser;
-import org.incendo.cloud.suggestion.Suggestion;
-import org.incendo.cloud.suggestion.SuggestionProvider;
 
 import java.util.List;
 import java.util.Objects;

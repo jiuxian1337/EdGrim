@@ -1,14 +1,5 @@
 package tech.zkmjnic.edgrim.utils.latency;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.ShulkerData;
-import tech.zkmjnic.edgrim.utils.data.TrackerData;
-import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
-import tech.zkmjnic.edgrim.utils.data.packetentity.*;
-import tech.zkmjnic.edgrim.utils.data.packetentity.dragon.PacketEntityEnderDragon;
-import tech.zkmjnic.edgrim.utils.nmsutil.BoundingBoxSize;
-import tech.zkmjnic.edgrim.utils.nmsutil.WatchableIndexUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.attribute.Attribute;
@@ -29,13 +20,17 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUp
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.data.ShulkerData;
+import tech.zkmjnic.edgrim.utils.data.TrackerData;
+import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
+import tech.zkmjnic.edgrim.utils.data.packetentity.*;
+import tech.zkmjnic.edgrim.utils.data.packetentity.dragon.PacketEntityEnderDragon;
+import tech.zkmjnic.edgrim.utils.nmsutil.BoundingBoxSize;
+import tech.zkmjnic.edgrim.utils.nmsutil.WatchableIndexUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.UUID;
+import java.util.*;
 
 public class CompensatedEntities {
 
@@ -46,11 +41,11 @@ public class CompensatedEntities {
     public final IntArraySet entitiesRemovedThisTick = new IntArraySet();
     public final Int2ObjectOpenHashMap<TrackerData> serverPositionsMap = new Int2ObjectOpenHashMap<>(40, 0.7f);
     public final Object2ObjectOpenHashMap<UUID, UserProfile> profiles = new Object2ObjectOpenHashMap<>();
+    private final PlayerData player;
     public Integer serverPlayerVehicle = null;
     public boolean hasSprintingAttributeEnabled = false;
     public TrackerData selfTrackedEntity;
     public PacketEntitySelf self;
-    private final PlayerData player;
 
     public CompensatedEntities(PlayerData player) {
         this.player = player;
@@ -196,12 +191,12 @@ public class CompensatedEntities {
             packetEntity = new PacketEntityEnderDragon(player, uuid, entityID, position.getX(), position.getY(), position.getZ());
         } else if (
                 EntityTypes.isTypeInstanceOf(entityType, EntityTypes.ABSTRACT_ARROW)
-                || EntityTypes.FIREWORK_ROCKET.equals(entityType)
-                || EntityTypes.BLOCK_DISPLAY.equals(entityType)
-                || EntityTypes.TEXT_DISPLAY.equals(entityType)
-                || EntityTypes.LIGHTNING_BOLT.equals(entityType)
-                || EntityTypes.EXPERIENCE_BOTTLE.equals(entityType)
-                || EntityTypes.EXPERIENCE_ORB.equals(entityType)
+                        || EntityTypes.FIREWORK_ROCKET.equals(entityType)
+                        || EntityTypes.BLOCK_DISPLAY.equals(entityType)
+                        || EntityTypes.TEXT_DISPLAY.equals(entityType)
+                        || EntityTypes.LIGHTNING_BOLT.equals(entityType)
+                        || EntityTypes.EXPERIENCE_BOTTLE.equals(entityType)
+                        || EntityTypes.EXPERIENCE_ORB.equals(entityType)
         ) {
             packetEntity = new PacketEntityUnHittable(player, uuid, entityType, position.getX(), position.getY(), position.getZ());
         } else if (EntityTypes.ARMOR_STAND.equals(entityType)) {

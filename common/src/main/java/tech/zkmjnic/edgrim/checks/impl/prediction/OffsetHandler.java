@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.checks.impl.prediction;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.config.ConfigManager;
 import ac.grim.grimac.api.event.events.CompletePredictionEvent;
+import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;

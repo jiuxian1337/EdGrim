@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.platform.bukkit.initables;
 
+import io.github.retrooper.packetevents.bstats.bukkit.Metrics;
 import tech.zkmjnic.edgrim.manager.init.start.StartableInitable;
 import tech.zkmjnic.edgrim.platform.bukkit.EdGrimBukkitLoaderPlugin;
-import io.github.retrooper.packetevents.bstats.bukkit.Metrics;
 
 public class BukkitBStats implements StartableInitable {
     @Override

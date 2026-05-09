@@ -1,10 +1,5 @@
 package tech.zkmjnic.edgrim.events.packets;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsW;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityHorse;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
@@ -17,6 +12,11 @@ import com.github.retrooper.packetevents.protocol.item.enchantment.type.Enchantm
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsW;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityHorse;
 
 public class PacketPlayerAttack extends PacketListenerAbstract {
 
@@ -51,7 +51,8 @@ public class PacketPlayerAttack extends PacketListenerAbstract {
 
                 // This is not vanilla behaviour as the attack damage attribute is marked as not synced to the client
                 // However, plugins can still set this by sending an attributes packet
-                if (player.compensatedEntities.self.getAttributeValue(Attributes.ATTACK_DAMAGE) <= 0) return;
+                if (player.compensatedEntities.self.getAttributeValue(Attributes.ATTACK_DAMAGE) <= 0)
+                    return;
 
                 ItemStack heldItem = player.inventory.getHeldItem();
                 PacketEntity entity = player.compensatedEntities.getEntity(interact.getEntityId());

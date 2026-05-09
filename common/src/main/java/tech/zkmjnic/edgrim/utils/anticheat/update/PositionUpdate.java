@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.utils.anticheat.update;
 
-import tech.zkmjnic.edgrim.utils.data.SetBackData;
-import tech.zkmjnic.edgrim.utils.data.TeleportData;
 import com.github.retrooper.packetevents.util.Vector3d;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import tech.zkmjnic.edgrim.utils.data.SetBackData;
+import tech.zkmjnic.edgrim.utils.data.TeleportData;
 
 @AllArgsConstructor
 @Getter

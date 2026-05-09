@@ -3,16 +3,13 @@ package tech.zkmjnic.edgrim.platform.api.player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class AbstractPlatformPlayerFactory<T> implements PlatformPlayerFactory {
     protected final PlatformPlayerCache cache = PlatformPlayerCache.getInstance();
 
-    @Override @Nullable
+    @Override
+    @Nullable
     public final PlatformPlayer getFromUUID(@NonNull UUID uuid) {
         // Check cache first
         PlatformPlayer cachedPlayer = cache.getPlayer(uuid);
@@ -31,7 +28,8 @@ public abstract class AbstractPlatformPlayerFactory<T> implements PlatformPlayer
         return cache.addOrGetPlayer(uuid, platformPlayer);
     }
 
-    @Override @Nullable
+    @Override
+    @Nullable
     public PlatformPlayer getFromName(@NonNull String name) {
         T nativePlayer = getNativePlayer(name);
         if (nativePlayer == null) {
@@ -79,7 +77,8 @@ public abstract class AbstractPlatformPlayerFactory<T> implements PlatformPlayer
         return platformPlayers;
     }
 
-    public void replaceNativePlayer(@NonNull UUID uuid, @NonNull T player) {}
+    public void replaceNativePlayer(@NonNull UUID uuid, @NonNull T player) {
+    }
 
     /**
      * Retrieves the native player object for the given UUID.

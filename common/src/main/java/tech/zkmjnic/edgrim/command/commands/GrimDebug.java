@@ -1,11 +1,5 @@
 package tech.zkmjnic.edgrim.command.commands;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.command.BuildableCommand;
-import tech.zkmjnic.edgrim.platform.api.command.PlayerSelector;
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.User;
 import net.kyori.adventure.text.Component;
@@ -16,6 +10,12 @@ import org.incendo.cloud.Command;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.description.Description;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.command.BuildableCommand;
+import tech.zkmjnic.edgrim.platform.api.command.PlayerSelector;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 
 public class GrimDebug implements BuildableCommand {
 

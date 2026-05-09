@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.checks.impl.scaffolding;
 
+import com.github.retrooper.packetevents.util.Vector3f;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
-import com.github.retrooper.packetevents.util.Vector3f;
 
 @CheckData(name = "InvalidPlaceA", description = "Sent invalid cursor position")
 public class InvalidPlaceA extends BlockPlaceCheck {

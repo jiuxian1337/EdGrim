@@ -12,7 +12,9 @@ import tech.zkmjnic.edgrim.utils.math.Vec2;
 import tech.zkmjnic.edgrim.utils.math.Vec2f;
 import tech.zkmjnic.edgrim.utils.math.Vec2i;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @CheckData(name = "AimZ", description = "entropy, distinct, randomizer, machine heart", decay = 0.05)
@@ -20,9 +22,9 @@ public final class AimZ extends Check implements RotationCheck {
     private final List<Vec2f> rawRotations;
     private final List<Vec2i> rotations2;
     private final List<Vec2> kireikoGeneric;
+    private final List<Float> localBuffer;
     private double oldShannonYaw, oldShannonPitch;
     private boolean cinematicBatch;
-    private final List<Float> localBuffer;
 
     public AimZ(PlayerData player) {
         super(player);
@@ -49,8 +51,8 @@ public final class AimZ extends Check implements RotationCheck {
         this.cinematicBatch |= update.isCinematic2();
         double gcdValue = Statistics.getGCDValue(0.5d) * 3;
         this.rotations2.add(new Vec2i(
-                (int) (delta.getX() / gcdValue),
-                (int) (delta.getY() / gcdValue)));
+                (int) (delta.x() / gcdValue),
+                (int) (delta.y() / gcdValue)));
         if (this.rotations2.size() >= 10) {
             this.checkSpikes();
         }
@@ -69,8 +71,8 @@ public final class AimZ extends Check implements RotationCheck {
         final int sensTemp = aimProcessor != null ? aimProcessor.totalSensitivityClient : 0;
         final List<Float> x = new ArrayList<>(), y = new ArrayList<>();
         for (Vec2f vec2 : this.rawRotations) {
-            x.add(vec2.getX());
-            y.add(vec2.getY());
+            x.add(vec2.x());
+            y.add(vec2.y());
         }
         final int disX = Statistics.getDistinct(x);
         final double shannonYaw = Statistics.getShannonEntropy(x);
@@ -126,8 +128,8 @@ public final class AimZ extends Check implements RotationCheck {
     private void checkSpikes() {
         List<Integer> gcdYaw = new ArrayList<>(), gcdPitch = new ArrayList<>();
         for (Vec2i vec2i : this.rotations2) {
-            gcdYaw.add(vec2i.getX());
-            gcdPitch.add(vec2i.getY());
+            gcdYaw.add(vec2i.x());
+            gcdPitch.add(vec2i.y());
         }
         this.rotations2.clear();
         if (gcdYaw.isEmpty()) return;

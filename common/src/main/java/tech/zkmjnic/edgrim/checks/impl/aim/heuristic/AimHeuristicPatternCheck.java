@@ -5,17 +5,19 @@ import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.math.Vec2f;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public final class AimHeuristicPatternCheck implements HeuristicComponent {
-    private final AimAA check;
-    private Vec2f oldDelta = new Vec2f(0, 0);
-    private final List<Vec2f> sample = new ArrayList<>();
     private static final int PATTERN_LENGTH = 3;
     private static final int SAMPLE_SIZE = 100;
     private static final int MIN_START_INDEX_GAP = PATTERN_LENGTH;
     private static final float BUFFER_LIMIT = 2.5f;
     private static final float BUFFER_FADE = 0.3f;
+    private final AimAA check;
+    private final List<Vec2f> sample = new ArrayList<>();
+    private Vec2f oldDelta = new Vec2f(0, 0);
     private float buffer;
 
     public AimHeuristicPatternCheck(final AimAA check) {
@@ -29,8 +31,8 @@ public final class AimHeuristicPatternCheck implements HeuristicComponent {
         boolean flagged = false;
         final PlayerData player = check.getPlayer();
         final Vec2f delta = event.getDelta();
-        final float yawFactor = delta.getX() - oldDelta.getX();
-        final float pitchFactor = delta.getY() - oldDelta.getY();
+        final float yawFactor = delta.x() - oldDelta.x();
+        final float pitchFactor = delta.y() - oldDelta.y();
         final Vec2f vec = new Vec2f(yawFactor, pitchFactor);
 
         this.sample.add(vec);
@@ -40,8 +42,8 @@ public final class AimHeuristicPatternCheck implements HeuristicComponent {
             final List<Float> filteredPatterns = new ArrayList<>();
 
             for (int i = 0; i < SAMPLE_SIZE; i++) {
-                if (i > 0 && Math.abs(this.sample.get(i).getX()) > 1.0) {
-                    rawPatterns.add(Math.abs(this.sample.get(i).getX() - this.sample.get(i - 1).getY()));
+                if (i > 0 && Math.abs(this.sample.get(i).x()) > 1.0) {
+                    rawPatterns.add(Math.abs(this.sample.get(i).x() - this.sample.get(i - 1).y()));
                 }
             }
             for (final float x : rawPatterns) {
@@ -73,8 +75,8 @@ public final class AimHeuristicPatternCheck implements HeuristicComponent {
                     }
                 }
                 for (final Vec2f vec2f : patterns) {
-                    final float x = Math.abs(vec2f.getX());
-                    final float y = Math.abs(vec2f.getY());
+                    final float x = Math.abs(vec2f.x());
+                    final float y = Math.abs(vec2f.y());
                     if ((x > 1.0 || y > 1.0) && (x > 0.26 && y > 0.26)) {
                         flagged = true;
                         if (++buffer >= BUFFER_LIMIT) {

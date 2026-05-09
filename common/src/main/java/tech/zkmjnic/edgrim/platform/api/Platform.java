@@ -10,7 +10,8 @@ public enum Platform {
     BUKKIT("bukkit"),
     FOLIA("folia");
 
-    @Getter private final String name;
+    @Getter
+    private final String name;
 
     public static @Nullable Platform getByName(String name) {
         for (Platform platform : values()) {

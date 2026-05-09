@@ -1,12 +1,12 @@
 package tech.zkmjnic.edgrim.predictionengine;
 
+import lombok.Getter;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;

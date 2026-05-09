@@ -73,13 +73,13 @@ Simulation:
     # Measured in blocks from the possible movement
     # We account for Optifine by switching trig tables but dropping this to 0.001 will reduce FastMath
     # flagging the anticheat if this compensation doesn't work...
-    threshold: 0.022
+    threshold: 0.01
     # How large of a violation in a tick before the player gets immediately setback?
     # -1 to disable
-    immediate-setback-threshold: 0.03
+    immediate-setback-threshold: 0.1
     # How large of an advantage over all ticks before we start to setback?
     # -1 to disable
-    max-advantage: 3.0
+    max-advantage: 1
     # After 50 seconds with default config, the player will go from 4 blocks -> 1 block of advantage
     # This is to stop the player from gathering too many violations and never being able to clear them all
     # Default advantage ceiling (x axis = seconds, y axis = 1/1000 block): https://www.desmos.com/calculator/4lovswdarj
@@ -136,7 +136,7 @@ ScaffoldB:
     cancel-for-ms: 500
 
 ScaffoldC:
-    cancelvl: 0
+    cancelvl: 5
     cancel-for-ms: 500
 
 ScaffoldD:
@@ -156,9 +156,9 @@ NoSlowA:
     # Flags by 0.03-0.2 consistently with NoSlow on
     threshold: 0.01
     # Setback fast on the first item to remove any advantage NoSlow gives
-    setbackvl: 5
+    setbackvl: 0
     # Decay's when the player uses an item AND is slowed by it
-    decay: 0.05
+    decay: 0.25
 
 VelocityA:
     # How much should we multiply total advantage by when the player is legit
@@ -168,22 +168,22 @@ VelocityA:
     threshold: 0.01
     # How large of a violation in a tick before the player gets immediately setback?
     # -1 to disable
-    immediate-setback-threshold: 0.03
+    immediate-setback-threshold: 0.1
     # How large of an advantage over all ticks before we start to setback?
     # -1 to disable
-    max-advantage: 3.0
+    max-advantage: 1
     # This is to stop the player from gathering too many violations and never being able to clear them all
     max-ceiling: 4
-    setbackvl: 1
+    setbackvl: 0
 
 VelocityB:
     threshold: 0.01
-    setbackvl: 1
+    setbackvl: 0
 
 VelocityC:
     allowed-jump-reset: true
     min-velocity: 90
-    setbackvl: 1
+    setbackvl: 0
 
 TimerA:
     setbackvl: 10
@@ -227,13 +227,13 @@ Reach:
 
 # Backtrack checks
 PingSpoofB:
-    cancelVL: 5
+    cancelVL: 0
 
 PingSpoofC:
-    cancelVL: 5
+    cancelVL: 0
 
 PingSpoofD:
-    cancelVL: 5
+    cancelVL: 0
     # Base number of pending entity transactions allowed before ping-based allowance is added.
     basePendingAllowance: 2
     # Cap the ping-derived allowance at this many 50ms ticks.
@@ -261,9 +261,6 @@ AutoclickerA:
     entropy-jiff-min: 0.04
     entropy-jiff-max: 0.06
 
-AimD:
-    # Broad aim-behavior analysis: consistency, entropy, combat pattern, and kurtosis clustering.
-
 AimG:
     # Consecutive descending micro-pitch pattern after meaningful yaw movement.
     max-streak: 12
@@ -273,18 +270,6 @@ AimK:
     # Large windows with too many ultra-small deltas and abnormally low average movement.
     minimum-level-threshold: 90
 
-AimJ:
-    # Detects combat windows where yaw stays unnaturally close to the target angle with low deviation.
-
-AimF:
-    # Detect invalid divisor / GCD change relationships in aim deltas.
-
-AimO:
-    # Detect abnormal GCD and modulo relations in cinematic rotations.
-
-AimB:
-    # Detect invalid-mouse, flawed randomizer, and extreme randomization patterns.
-
 AimS:
     # Detect windows where yaw dominates pitch with an abnormally high ratio.
     buffer: 7
@@ -293,29 +278,8 @@ AimS:
     ratio-threshold: 1000.0
     window-size: 5
 
-AimX:
-    # Detect highly asymmetric variance after GCD-normalized combat rotations.
-
-AimL:
-    # Detect abnormal duplicate/outlier patterns in jolt samples.
-
-AimT:
-    # Detect repeated route fragments or filter-like deviations in rotation paths.
-
-AimC:
-    # Detect simplified cross-axis imbalance in recent aim samples.
-
-AimE:
-    # Detect abnormal rotation score, distribution, and long-term limit patterns.
-
-AimI:
-    # Detect entropy and spike patterns that look mechanically generated.
-
-AimW:
-    # Detect abnormal acceleration, path, coordination, correlation, and friction patterns.
-
 ClickJitterAnalysis:
-    # Attack-centered click jitter analysis. Samples 11 ticks around each entity attack and evaluates 10 attacks as a window.
+    # Attack-centered heuristic analysis. Samples 11 ticks around each entity attack and evaluates 10 attacks as a window.
     # When enabled, record mode only writes samples and does not run detection or alerts.
     record-mode: false
     # Radius around the attack tick. 5 means an 11-tick sample with the attack tick in the middle.

@@ -1,12 +1,12 @@
 package tech.zkmjnic.edgrim.checks.impl.interact;
 
+import com.github.retrooper.packetevents.protocol.player.GameMode;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.nmsutil.InteractVisibilityUtil;
-import com.github.retrooper.packetevents.protocol.player.GameMode;
 
 @CheckData(name = "InteractA", description = "block interaction visibility check", decay = 0.05)
 public final class InteractA extends BlockPlaceCheck {
@@ -27,7 +27,7 @@ public final class InteractA extends BlockPlaceCheck {
         }
 
         if (flagAndAlert("pos=" + place.position.getX() + "," + place.position.getY() + "," + place.position.getZ() + ", face=" + place.getFace())
-                && shouldCancel() && shouldModifyPackets()) {
+                && shouldCancel()) {
             place.resync();
         }
     }
@@ -58,7 +58,7 @@ public final class InteractA extends BlockPlaceCheck {
         }
 
         if (flagAndAlert("break,pos=" + blockBreak.position.getX() + "," + blockBreak.position.getY() + "," + blockBreak.position.getZ() + ", face=" + blockBreak.face)
-                && shouldCancel() && shouldModifyPackets()) {
+                && shouldCancel()) {
             blockBreak.cancel();
         }
     }

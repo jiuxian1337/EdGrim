@@ -1,4 +1,4 @@
-package tech.zkmjnic.edgrim.checks.impl.aim.analysis;
+package tech.zkmjnic.edgrim.checks.impl.analysis;
 
 import ac.grim.grimac.api.config.ConfigManager;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.impl.aim.analysis.a.*;
+import tech.zkmjnic.edgrim.checks.impl.analysis.a.*;
 import tech.zkmjnic.edgrim.checks.type.RotationCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
@@ -25,20 +25,20 @@ import java.util.List;
         name = "AnalysisA",
         configName = "AnalysisA",
         decay = 0.05,
-        description = "attack-centered click jitter analysis"
+        description = "attack-centered heuristic analysis"
 )
 public final class AnalysisA extends Check implements RotationCheck {
 
     public static final Gson GSON = new GsonBuilder().create();
-    static final int MAX_BUFFERED_UPDATES = 64;
     public static final int TOP_MATCH_COUNT = 3;
-    static final double MIN_SAMPLE_ENERGY = 1.25;
-    static final double MIN_CLASSIFICATION_SCORE = 0.86;
-    static final double MIN_CLASSIFICATION_MARGIN = 0.012;
     public static final String ROOT_DIR = "analysis-a";
     public static final String LEGIT_DIR = "legit";
     public static final String CHEAT_DIR = "cheat";
     public static final String RECORDED_DIR = "recorded";
+    static final int MAX_BUFFERED_UPDATES = 64;
+    static final double MIN_SAMPLE_ENERGY = 1.25;
+    static final double MIN_CLASSIFICATION_SCORE = 0.86;
+    static final double MIN_CLASSIFICATION_MARGIN = 0.012;
     static volatile ReferenceLibrary referenceLibrary;
 
     private ArrayDeque<RotationFrame> tickBuffer;
@@ -66,6 +66,10 @@ public final class AnalysisA extends Check implements RotationCheck {
         referenceLibrary = ReferenceLibrary.load(sampleSize);
     }
 
+    private static double clamp01(double value) {
+        return Math.max(0.0, Math.min(1.0, value));
+    }
+
     @Override
     public void onReload(ConfigManager config) {
         ensureRuntimeState();
@@ -91,29 +95,41 @@ public final class AnalysisA extends Check implements RotationCheck {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-        ensureRuntimeState();
-        if (event.getPacketType() != PacketType.Play.Client.INTERACT_ENTITY) {
-            return;
-        }
+        try {
+            if (!shouldModifyPackets()) return;
+            if (!referenceLibrary.hasTemplates()) return;
+            ensureRuntimeState();
+            if (event.getPacketType() != PacketType.Play.Client.INTERACT_ENTITY) {
+                return;
+            }
 
-        final WrapperPlayClientInteractEntity interact = new WrapperPlayClientInteractEntity(event);
-        if (interact.getAction() != WrapperPlayClientInteractEntity.InteractAction.ATTACK) {
-            return;
-        }
+            final WrapperPlayClientInteractEntity interact = new WrapperPlayClientInteractEntity(event);
+            if (interact.getAction() != WrapperPlayClientInteractEntity.InteractAction.ATTACK) {
+                return;
+            }
 
-        attacksAwaitingCenter.addLast(rotationSequence + 1L);
+            attacksAwaitingCenter.addLast(rotationSequence + 1L);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void process(RotationUpdate update) {
-        ensureRuntimeState();
-        if (update.isCinematic2()) {
-            return;
-        }
+        try {
+            if (!shouldModifyPackets()) return;
+            if (!referenceLibrary.hasTemplates()) return;
+            ensureRuntimeState();
+            if (update.isCinematic2()) {
+                return;
+            }
 
-        appendRotation(update);
-        resolveAttackCenters();
-        drainPendingSamples();
+            appendRotation(update);
+            resolveAttackCenters();
+            drainPendingSamples();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void appendRotation(RotationUpdate update) {
@@ -127,12 +143,12 @@ public final class AnalysisA extends Check implements RotationCheck {
     private void drainPendingSamples() {
         while (!pendingSamples.isEmpty()) {
             final PendingSample pending = pendingSamples.peekFirst();
-            if (rotationSequence < pending.centerSequence + sampleRadius) {
+            if (rotationSequence < pending.centerSequence() + sampleRadius) {
                 return;
             }
 
             pendingSamples.removeFirst();
-            final RecordedAttackSample sample = extractSample(pending.centerSequence);
+            final RecordedAttackSample sample = extractSample(pending.centerSequence());
             if (sample == null) {
                 debug("dropped attack sample because centered window was incomplete");
                 continue;
@@ -195,7 +211,7 @@ public final class AnalysisA extends Check implements RotationCheck {
             return;
         }
 
-        final WindowSignature signature = WindowSignature.fromRotations(sample.rotations, sampleRadius);
+        final WindowSignature signature = WindowSignature.fromRotations(sample.rotations(), sampleRadius);
         if (signature.totalEnergy < MIN_SAMPLE_ENERGY) {
             debug(String.format("sample classified as %s (energy=%.3f below minimum)", Label.UNCERTAIN.logName(), signature.totalEnergy));
             addDecision(new SampleDecision(Label.UNCERTAIN, 0.0, 0.0));
@@ -207,9 +223,9 @@ public final class AnalysisA extends Check implements RotationCheck {
         final SampleDecision decision = classify(legitScore, cheatScore);
         debug(String.format(
                 "sample classified as %s (legit=%.3f cheat=%.3f bestLegit=%s bestCheat=%s)",
-                decision.label.logName(),
-                decision.legitScore,
-                decision.cheatScore,
+                decision.label().logName(),
+                decision.legitScore(),
+                decision.cheatScore(),
                 legitScore.bestReferenceName.isBlank() ? "-" : legitScore.bestReferenceName,
                 cheatScore.bestReferenceName.isBlank() ? "-" : cheatScore.bestReferenceName
         ));
@@ -237,15 +253,15 @@ public final class AnalysisA extends Check implements RotationCheck {
         double totalLegitScore = 0.0;
 
         for (SampleDecision decision : analysisWindow) {
-            if (decision.label == Label.CHEAT_LIKE) {
+            if (decision.label() == Label.CHEAT_LIKE) {
                 cheatVotes++;
-            } else if (decision.label == Label.LEGIT_LIKE) {
+            } else if (decision.label() == Label.LEGIT_LIKE) {
                 legitVotes++;
             } else {
                 uncertainVotes++;
             }
-            totalCheatScore += decision.cheatScore;
-            totalLegitScore += decision.legitScore;
+            totalCheatScore += decision.cheatScore();
+            totalLegitScore += decision.legitScore();
         }
 
         final double averageCheatScore = totalCheatScore / analysisWindow.size();
@@ -314,7 +330,7 @@ public final class AnalysisA extends Check implements RotationCheck {
             GSON.toJson(sample, writer);
             writer.write('\n');
         } catch (IOException exception) {
-            LogUtil.error("Failed to write click jitter sample", exception);
+            LogUtil.error("Failed to write heuristic analysis sample", exception);
         }
     }
 
@@ -350,9 +366,5 @@ public final class AnalysisA extends Check implements RotationCheck {
         if (analysisWindow == null) {
             analysisWindow = new ArrayDeque<>();
         }
-    }
-
-    private static double clamp01(double value) {
-        return Math.max(0.0, Math.min(1.0, value));
     }
 }

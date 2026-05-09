@@ -1,13 +1,13 @@
 package tech.zkmjnic.edgrim.platform.bukkit.scheduler.folia;
 
 import ac.grim.grimac.api.plugin.GrimPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import tech.zkmjnic.edgrim.platform.api.entity.GrimEntity;
 import tech.zkmjnic.edgrim.platform.api.scheduler.EntityScheduler;
 import tech.zkmjnic.edgrim.platform.api.scheduler.TaskHandle;
 import tech.zkmjnic.edgrim.platform.bukkit.EdGrimBukkitLoaderPlugin;
 import tech.zkmjnic.edgrim.platform.bukkit.entity.BukkitEdGrimEntity;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class FoliaEntityScheduler implements EntityScheduler {
 

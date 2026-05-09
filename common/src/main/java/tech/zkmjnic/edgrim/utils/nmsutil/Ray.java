@@ -3,23 +3,12 @@ package tech.zkmjnic.edgrim.utils.nmsutil;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.Pair;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
-import lombok.Getter;
 
 // Copied directly from Hawk
-@Getter
-public class Ray implements Cloneable {
-
-    private final Vector3dm origin;
-    private final Vector3dm direction;
-
-    public Ray(Vector3dm origin, Vector3dm direction) {
-        this.origin = origin;
-        this.direction = direction;
-    }
+public record Ray(Vector3dm origin, Vector3dm direction) implements Cloneable {
 
     public Ray(PlayerData player, double x, double y, double z, float xRot, float yRot) {
-        this.origin = new Vector3dm(x, y, z);
-        this.direction = calculateDirection(player, xRot, yRot);
+        this(new Vector3dm(x, y, z), calculateDirection(player, xRot, yRot));
     }
 
     // Account for FastMath by using player's trig handler

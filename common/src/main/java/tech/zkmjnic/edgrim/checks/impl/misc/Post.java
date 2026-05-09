@@ -1,12 +1,5 @@
 package tech.zkmjnic.edgrim.checks.impl.misc;
 
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
-import tech.zkmjnic.edgrim.utils.lists.EvictingQueue;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
@@ -16,20 +9,19 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientEntityAction;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityAnimation;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.PacketCheck;
+import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
+import tech.zkmjnic.edgrim.utils.lists.EvictingQueue;
 
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Locale;
 
-import static com.github.retrooper.packetevents.protocol.packettype.PacketType.Play.Client.ANIMATION;
-import static com.github.retrooper.packetevents.protocol.packettype.PacketType.Play.Client.CLICK_WINDOW;
-import static com.github.retrooper.packetevents.protocol.packettype.PacketType.Play.Client.ENTITY_ACTION;
-import static com.github.retrooper.packetevents.protocol.packettype.PacketType.Play.Client.HELD_ITEM_CHANGE;
-import static com.github.retrooper.packetevents.protocol.packettype.PacketType.Play.Client.INTERACT_ENTITY;
-import static com.github.retrooper.packetevents.protocol.packettype.PacketType.Play.Client.PLAYER_ABILITIES;
-import static com.github.retrooper.packetevents.protocol.packettype.PacketType.Play.Client.PLAYER_BLOCK_PLACEMENT;
-import static com.github.retrooper.packetevents.protocol.packettype.PacketType.Play.Client.PLAYER_DIGGING;
-import static com.github.retrooper.packetevents.protocol.packettype.PacketType.Play.Client.USE_ITEM;
+import static com.github.retrooper.packetevents.protocol.packettype.PacketType.Play.Client.*;
 
 @CheckData(name = "Post")
 public class Post extends Check implements PacketCheck, PostPredictionCheck {

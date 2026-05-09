@@ -1,6 +1,5 @@
 package tech.zkmjnic.edgrim.manager.init.load;
 
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.github.retrooper.packetevents.protocol.chat.ChatTypes;
@@ -10,6 +9,7 @@ import com.github.retrooper.packetevents.protocol.item.enchantment.type.Enchantm
 import com.github.retrooper.packetevents.protocol.item.type.ItemTypes;
 import com.github.retrooper.packetevents.protocol.particle.type.ParticleTypes;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 
 import java.util.concurrent.Executors;
 

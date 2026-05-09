@@ -1,9 +1,5 @@
 package tech.zkmjnic.edgrim.checks.impl.badpackets;
 
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -13,16 +9,20 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCl
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChangeGameState;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerCombatEvent;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDeathCombatEvent;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.PacketCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 @CheckData(name = "BadPacketsM", description = "Tried to respawn while alive", experimental = true)
 public class BadPacketsM extends Check implements PacketCheck {
-    public BadPacketsM(final PlayerData player) {
-        super(player);
-    }
-
     // not a boolean because the server could send packets that cause
     // the client to send a respawn packet before it receives the first
     private int exempt;
+
+    public BadPacketsM(final PlayerData player) {
+        super(player);
+    }
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {

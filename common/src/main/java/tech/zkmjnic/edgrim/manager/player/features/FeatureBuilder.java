@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.manager.player.features;
 
+import com.google.common.collect.ImmutableMap;
 import tech.zkmjnic.edgrim.manager.player.features.types.GrimFeature;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-import com.google.common.collect.ImmutableMap;
 
 import java.util.regex.Pattern;
 

@@ -1,28 +1,25 @@
 package tech.zkmjnic.edgrim.platform.bukkit.world;
 
-import tech.zkmjnic.edgrim.platform.api.world.PlatformChunk;
-import tech.zkmjnic.edgrim.platform.api.world.PlatformWorld;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.platform.api.world.PlatformChunk;
+import tech.zkmjnic.edgrim.platform.api.world.PlatformWorld;
 
 import java.util.UUID;
 
-@Getter
-public class BukkitPlatformWorld implements PlatformWorld {
+public record BukkitPlatformWorld(World bukkitWorld) implements PlatformWorld {
 
     private static final boolean LEGACY_SERVER_VERSION = PacketEvents.getAPI().getServerManager().getVersion().isOlderThanOrEquals(ServerVersion.V_1_12_2);
-    private final World bukkitWorld;
 
-    public BukkitPlatformWorld(@NotNull World world) {
-        this.bukkitWorld = world;
+    public BukkitPlatformWorld(@NotNull World bukkitWorld) {
+        this.bukkitWorld = bukkitWorld;
     }
 
     @Override

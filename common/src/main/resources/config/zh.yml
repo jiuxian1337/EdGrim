@@ -79,12 +79,12 @@ Simulation:
     # 在玩家受到回弹之前，1 ticks 的判定阈值
     # 假设作弊者与模拟移动的阈值（threshold）是0.0945，该项目设置的是0.07，玩家会立即被回弹到合适的位置
     # -1 关闭
-    immediate-setback-threshold: 0.03
+    immediate-setback-threshold: 0.1
     # 在玩家受到回弹之前，累计回弹的阈值
     # 假设作弊者与模拟移动的阈值（threshold）是0.0945，并且触发了10次，应为0.9450
     # 而你设置的值为0.94 ， 作弊者会受到回弹
     # -1 关闭
-    max-advantage: 3.0
+    max-advantage: 1
     # 在默认配置的50秒后，玩家将从4块跑到1块
     # 这是为了防止玩家收集过多的违规行为，并且永远无法清除所有的违规行为
     # 这是默认配置的样子（x 轴 = seconds ，y 轴 = 1/1000 方块）: https://www.desmos.com/calculator/4lovswdarj
@@ -141,7 +141,7 @@ ScaffoldB:
     cancel-for-ms: 500
 
 ScaffoldC:
-    cancelvl: 0
+    cancelvl: 5
     cancel-for-ms: 500
 
 ScaffoldD:
@@ -160,9 +160,9 @@ NoSlowA:
     # 标志 0.03-0.2 与 NoSlow 一致
     threshold: 0.01
     # 到达多少VL时回弹
-    setbackvl: 1
+    setbackvl: 0
     # 当玩家使用一个物品并被它减慢时衰减多少VL
-    decay: 0.05
+    decay: 0.25
 
 VelocityA:
     # 当玩家合法时，我们应该将总优势乘以多少
@@ -172,13 +172,13 @@ VelocityA:
     threshold: 0.01
     # 在玩家受到回弹之前，1 ticks 的违规行为有多大？
     # -1 关闭
-    immediate-setback-threshold: 0.03
+    immediate-setback-threshold: 0.1
     # 在我们开始遭遇回弹之前，我们的优势有多大?
     # -1 关闭
-    max-advantage: 3.0
+    max-advantage: 1
     # 这是为了防止玩家收集过多的违规行为，并且永远无法清除所有的违规行为
     max-ceiling: 4
-    setbackvl: 1
+    setbackvl: 0
 
 
 VelocityB:
@@ -232,13 +232,13 @@ Reach:
 
 # Backtrack检测
 PingSpoofB:
-    cancelVL: 5
+    cancelVL: 0
 
 PingSpoofC:
-    cancelVL: 5
+    cancelVL: 0
 
 PingSpoofD:
-    cancelVL: 5
+    cancelVL: 0
     # 在叠加基于 ping 的容错前，基础允许的实体待确认事务数。
     basePendingAllowance: 2
     # 将基于 ping 推导出的额外容错限制为最多这么多个 50ms tick。
@@ -266,9 +266,6 @@ AutoclickerA:
     entropy-jiff-min: 0.04
     entropy-jiff-max: 0.06
 
-AimD:
-    # 综合型瞄准行为分析：覆盖一致性、熵、战斗模式与峰度聚类。
-
 AimG:
     # 在存在有效水平转动时，检测连续下压式的极小 pitch 平滑。
     max-streak: 12
@@ -278,18 +275,6 @@ AimK:
     # 检测窗口内极小旋转过多且平均转动过低的异常平滑模式。
     minimum-level-threshold: 90
 
-AimJ:
-    # 检测战斗中偏航长期异常贴近目标角且波动很低的锁头模式。
-
-AimF:
-    # 检测旋转增量中的 divisor / GCD 变化关系是否异常。
-
-AimO:
-    # 检测 cinematic 旋转中的 GCD 与 modulo 关系是否异常。
-
-AimB:
-    # 检测 invalid-mouse、randomizer flaw 与极端随机化旋转模式。
-
 AimS:
     # 检测一段窗口内 yaw 远强于 pitch 的异常比例模式。
     buffer: 7
@@ -297,27 +282,6 @@ AimS:
     max-deltaY: 0.0001
     ratio-threshold: 1000.0
     window-size: 5
-
-AimX:
-    # 检测 GCD 归一化后方差极不对称的旋转模式。
-
-AimL:
-    # 检测 jolt 样本中的重复度与离群点异常。
-
-AimT:
-    # 检测旋转路径中的重复片段或过滤器式偏移。
-
-AimC:
-    # 检测近期样本中两轴波动极不均衡的简化旋转模式。
-
-AimE:
-    # 检测旋转评分、分布与长期限制特征异常。
-
-AimI:
-    # 检测看起来像机械生成的熵与 spike 模式。
-
-AimW:
-    # 检测加速度、路径、协调性、相关性与摩擦特征异常。
 
 ClickJitterAnalysis:
     # 点击抖动分析：以攻击实体为中心采样 11 tick 转头，并按 10 次攻击窗口分析更像 legit 还是 cheat。

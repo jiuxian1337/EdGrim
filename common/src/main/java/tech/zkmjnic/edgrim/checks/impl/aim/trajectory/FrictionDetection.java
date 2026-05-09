@@ -30,8 +30,10 @@ public class FrictionDetection implements AimDetectionStrategy {
 
         yawVelocities.add(currentYawVelocity);
         pitchVelocities.add(currentPitchVelocity);
-        if (yawVelocities.size() > 15) yawVelocities.poll(); else return;
-        if (pitchVelocities.size() > 15) pitchVelocities.poll(); else return;
+        if (yawVelocities.size() > 15) yawVelocities.poll();
+        else return;
+        if (pitchVelocities.size() > 15) pitchVelocities.poll();
+        else return;
 
         double decelerationYaw = 0;
         double decelerationPitch = 0;

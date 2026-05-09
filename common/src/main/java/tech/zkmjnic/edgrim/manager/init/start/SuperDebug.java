@@ -1,5 +1,10 @@
 package tech.zkmjnic.edgrim.manager.init.start;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import lombok.AllArgsConstructor;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
@@ -11,18 +16,8 @@ import tech.zkmjnic.edgrim.utils.data.VectorData;
 import tech.zkmjnic.edgrim.utils.lists.EvictingQueue;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import lombok.AllArgsConstructor;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public final class SuperDebug extends Check implements PostPredictionCheck {
     private static final StringBuilder[] flags = new StringBuilder[256]; //  17 MB of logs in memory

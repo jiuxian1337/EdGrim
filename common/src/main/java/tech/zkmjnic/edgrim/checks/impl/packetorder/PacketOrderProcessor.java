@@ -1,9 +1,5 @@
 package tech.zkmjnic.edgrim.checks.impl.packetorder;
 
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
@@ -13,13 +9,13 @@ import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import com.github.retrooper.packetevents.wrapper.play.client.*;
 import lombok.Getter;
 import org.jetbrains.annotations.Contract;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.type.PacketCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
 
 @Getter
 public final class PacketOrderProcessor extends Check implements PacketCheck {
-    public PacketOrderProcessor(final PlayerData player) {
-        super(player);
-    }
-
     private boolean openingInventory; // only pre 1.12 clients on pre 1.12 servers
     private boolean swapping;
     private boolean dropping;
@@ -39,6 +35,9 @@ public final class PacketOrderProcessor extends Check implements PacketCheck {
     private boolean leavingBed;
     private boolean startingToGlide;
     private boolean jumpingWithMount;
+    public PacketOrderProcessor(final PlayerData player) {
+        super(player);
+    }
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {

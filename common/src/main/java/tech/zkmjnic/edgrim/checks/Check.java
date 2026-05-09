@@ -1,16 +1,18 @@
 package tech.zkmjnic.edgrim.checks;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.AbstractCheck;
 import ac.grim.grimac.api.config.ConfigManager;
 import ac.grim.grimac.api.event.events.FlagEvent;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.data.VectorData;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 
 import java.util.Objects;
 
@@ -19,10 +21,10 @@ import static com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayC
 // Class from https://github.com/Tecnio/AntiCheatBase/blob/master/src/main/java/me/tecnio/anticheat/check/Check.java
 @Getter
 public class Check extends GrimProcessor implements AbstractCheck {
-    protected @NotNull final PlayerData player;
-    protected double buffer;
-
+    protected @NotNull
+    final PlayerData player;
     public double violations;
+    protected double buffer;
     private double decay;
     private double setbackVL;
 
@@ -58,6 +60,25 @@ public class Check extends GrimProcessor implements AbstractCheck {
         }
 
         reload();
+    }
+
+    public static boolean isTransaction(PacketTypeCommon packetType) {
+        return packetType == PacketType.Play.Client.PONG ||
+                packetType == PacketType.Play.Client.WINDOW_CONFIRMATION;
+    }
+
+    public static Vector3dm getInferredInput(PlayerData player) {
+        VectorData data = player.predictedVelocity;
+        if (data != null && data.preUncertainty != null) {
+            data = data.preUncertainty;
+        }
+        while (data != null) {
+            if (data.input != null) {
+                return data.input;
+            }
+            data = data.lastVector;
+        }
+        return null;
     }
 
     public boolean shouldModifyPackets() {
@@ -187,11 +208,6 @@ public class Check extends GrimProcessor implements AbstractCheck {
 
     public String formatOffset(double offset) {
         return offset > 0.001 ? String.format("%.5f", offset) : String.format("%.2E", offset);
-    }
-
-    public static boolean isTransaction(PacketTypeCommon packetType) {
-        return packetType == PacketType.Play.Client.PONG ||
-                packetType == PacketType.Play.Client.WINDOW_CONFIRMATION;
     }
 
     public boolean isUpdate(PacketTypeCommon packetType) {

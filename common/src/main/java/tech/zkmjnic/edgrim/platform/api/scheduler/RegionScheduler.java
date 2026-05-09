@@ -19,9 +19,9 @@
 package tech.zkmjnic.edgrim.platform.api.scheduler;
 
 import ac.grim.grimac.api.plugin.GrimPlugin;
+import org.jetbrains.annotations.NotNull;
 import tech.zkmjnic.edgrim.platform.api.world.PlatformWorld;
 import tech.zkmjnic.edgrim.utils.math.Location;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a scheduler for executing region tasks

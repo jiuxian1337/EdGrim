@@ -1,5 +1,8 @@
 package tech.zkmjnic.edgrim.checks.impl.prediction;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.debug.AbstractDebugHandler;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
@@ -8,9 +11,6 @@ import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.lists.EvictingQueue;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,15 +21,13 @@ public class DebugHandler extends AbstractDebugHandler implements PostPrediction
     private static final Component P_PREFIX = MiniMessage.miniMessage().deserialize("<reset>P: </reset>");
     private static final Component A_PREFIX = MiniMessage.miniMessage().deserialize("<reset>A: </reset>");
     private static final Component O_PREFIX = MiniMessage.miniMessage().deserialize("<reset>O: </reset>");
-
-    private Set<PlayerData> listeners = new CopyOnWriteArraySet<>(new HashSet<>());
-    private boolean outputToConsole = false;
-    private boolean enabledFlags = false;
-    private boolean lastMovementIsFlag = false;
-
     private final EvictingQueue<Component> predicted = new EvictingQueue<>(5);
     private final EvictingQueue<Component> actually = new EvictingQueue<>(5);
     private final EvictingQueue<Component> offset = new EvictingQueue<>(5);
+    private final Set<PlayerData> listeners = new CopyOnWriteArraySet<>(new HashSet<>());
+    private boolean outputToConsole = false;
+    private final boolean enabledFlags = false;
+    private boolean lastMovementIsFlag = false;
 
     public DebugHandler(PlayerData player) {
         super(player);

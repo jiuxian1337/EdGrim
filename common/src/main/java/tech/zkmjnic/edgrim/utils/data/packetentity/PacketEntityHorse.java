@@ -1,7 +1,5 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
@@ -9,11 +7,14 @@ import com.github.retrooper.packetevents.protocol.entity.type.EntityType;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.EquipmentSlot;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
 
 import java.util.UUID;
 
 public class PacketEntityHorse extends PacketEntityTrackXRot {
 
+    private static final boolean HAS_SADDLE_SENT_BY_SERVER = PacketEvents.getAPI().getServerManager().getVersion().isOlderThanOrEquals(ServerVersion.V_1_21_4);
     public boolean isRearing = false;
     public boolean hasSaddle = false;
     public boolean isTame = false;
@@ -46,7 +47,6 @@ public class PacketEntityHorse extends PacketEntityTrackXRot {
         }
     }
 
-    private static final boolean HAS_SADDLE_SENT_BY_SERVER = PacketEvents.getAPI().getServerManager().getVersion().isOlderThanOrEquals(ServerVersion.V_1_21_4);
     public boolean hasSaddle() {
         if (HAS_SADDLE_SENT_BY_SERVER) {
             return this.hasSaddle;

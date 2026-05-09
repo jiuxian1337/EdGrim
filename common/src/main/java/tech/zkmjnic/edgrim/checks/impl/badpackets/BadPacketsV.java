@@ -1,14 +1,14 @@
 package tech.zkmjnic.edgrim.checks.impl.badpackets;
 
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.PacketCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 @CheckData(name = "BadPacketsV", description = "Did not move far enough", experimental = true)
 public class BadPacketsV extends Check implements PacketCheck {

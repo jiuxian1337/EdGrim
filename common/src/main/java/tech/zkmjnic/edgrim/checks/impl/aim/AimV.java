@@ -42,10 +42,10 @@ public final class AimV extends Check implements RotationCheck {
 
         Vec2f rotation = AimTargetTraceUtil.genericRotations(player.lastX, player.lastY, player.lastZ, AimTargetTraceUtil.getTargetBox(target));
         if (update.getDeltaYRotABS() > 0.0F) {
-            yawMatches.add(Math.abs(MathUtil.getAngleDifference(rotation.getX(), update.getTo().getYaw())));
+            yawMatches.add(Math.abs(MathUtil.getAngleDifference(rotation.x(), update.getTo().getYaw())));
         }
         if (update.getDeltaXRotABS() > 0.0F) {
-            pitchMatches.add(Math.abs(MathUtil.getAngleDifference(rotation.getY(), update.getTo().getPitch())));
+            pitchMatches.add(Math.abs(MathUtil.getAngleDifference(rotation.y(), update.getTo().getPitch())));
         }
 
         if (yawMatches.size() == 100) {

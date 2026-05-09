@@ -1,10 +1,5 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -16,6 +11,11 @@ import com.github.retrooper.packetevents.protocol.world.states.enums.South;
 import com.github.retrooper.packetevents.protocol.world.states.enums.West;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 
 import java.util.HashSet;
 import java.util.Set;

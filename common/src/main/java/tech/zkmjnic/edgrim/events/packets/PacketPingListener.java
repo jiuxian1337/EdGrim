@@ -1,8 +1,5 @@
 package tech.zkmjnic.edgrim.events.packets;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.data.Pair;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
@@ -12,6 +9,9 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPo
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientWindowConfirmation;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPing;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWindowConfirmation;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.data.Pair;
 
 public class PacketPingListener extends PacketListenerAbstract {
 

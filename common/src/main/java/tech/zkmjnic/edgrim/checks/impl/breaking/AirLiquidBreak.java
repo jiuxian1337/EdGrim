@@ -1,11 +1,5 @@
 package tech.zkmjnic.edgrim.checks.impl.breaking;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import com.github.retrooper.packetevents.protocol.item.type.ItemTypes;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.DiggingAction;
@@ -13,6 +7,12 @@ import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import com.github.retrooper.packetevents.util.Vector3i;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 
 @CheckData(name = "AirLiquidBreak", description = "Breaking a block that cannot be broken")
 public class AirLiquidBreak extends Check implements BlockBreakCheck {

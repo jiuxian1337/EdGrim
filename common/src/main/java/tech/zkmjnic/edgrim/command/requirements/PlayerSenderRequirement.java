@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.command.requirements;
 
-import tech.zkmjnic.edgrim.command.SenderRequirement;
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.context.CommandContext;
+import tech.zkmjnic.edgrim.command.SenderRequirement;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
+import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 
 public final class PlayerSenderRequirement implements SenderRequirement {
 

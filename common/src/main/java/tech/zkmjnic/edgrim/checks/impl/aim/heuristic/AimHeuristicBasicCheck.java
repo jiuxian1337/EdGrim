@@ -8,16 +8,12 @@ import tech.zkmjnic.edgrim.utils.math.Statistics;
 import tech.zkmjnic.edgrim.utils.math.Vec2;
 import tech.zkmjnic.edgrim.utils.math.Vec2f;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class AimHeuristicBasicCheck implements HeuristicComponent {
-    private final AimAA check;
-    private final List<Vec2> rawRotations;
-    private int streak;
-    private float vl, vlL2;
-    private String reason = "";
-
     private static final float HEURISTIC_SYNC_ADD_VL = 125;
     private static final float HEURISTIC_AGGRESSIVE_ADD_VL = 50;
     private static final float HEURISTIC_AIM_ADD_VL = 100;
@@ -30,6 +26,11 @@ public final class AimHeuristicBasicCheck implements HeuristicComponent {
     private static final float LOCAL_VL_FADE_COMPONENT = 5;
     private static final float LOCAL_VL_FADE_INTERPOLATION = 5;
     private static final int RANDOMIZER_FLAW_ADD_VL = 25;
+    private final AimAA check;
+    private final List<Vec2> rawRotations;
+    private int streak;
+    private float vl, vlL2;
+    private String reason = "";
 
     public AimHeuristicBasicCheck(final AimAA check) {
         this.check = check;
@@ -54,7 +55,7 @@ public final class AimHeuristicBasicCheck implements HeuristicComponent {
         this.rawRotations.add(new Vec2(event.getTo().getYaw(), event.getTo().getPitch()));
 
         final PlayerData player = check.getPlayer();
-        if (RANDOMIZER_FLAW_ADD_VL > 0 && ((delta.getY() > 1.5f || delta.getX() > 3.0f)
+        if (RANDOMIZER_FLAW_ADD_VL > 0 && ((delta.y() > 1.5f || delta.x() > 3.0f)
                 && (event.getTo().getPitch() == 0
                 || event.getTo().getPitch() % 0.01f == 0))) {
             if (check.flagAndAlert("* [Heuristic] Randomizer flaw")) {
@@ -117,12 +118,15 @@ public final class AimHeuristicBasicCheck implements HeuristicComponent {
         final int sens = player.calculateSensitivity();
         if (sens > 65) {
             if (robotizedAmount > 8) addNewPunish("heuristic(sync)", HEURISTIC_SYNC_ADD_VL);
-            if (aggressiveAim > 8) addNewPunish("heuristic(aggressive)", HEURISTIC_AGGRESSIVE_ADD_VL);
+            if (aggressiveAim > 8)
+                addNewPunish("heuristic(aggressive)", HEURISTIC_AGGRESSIVE_ADD_VL);
             if (machineKnownMovement > 7) addNewPunish("heuristic(aim)", HEURISTIC_AIM_ADD_VL);
-            if (constantRotations > 3) addNewPunish("heuristic(constant)", HEURISTIC_CONSTANT_ADD_VL);
+            if (constantRotations > 3)
+                addNewPunish("heuristic(constant)", HEURISTIC_CONSTANT_ADD_VL);
         } else {
             if (machineKnownMovement > 8) addNewPunish("heuristic(aim)", HEURISTIC_AIM_ADD_VL);
-            if (constantRotations > 6) addNewPunish("heuristic(constant)", HEURISTIC_CONSTANT_ADD_VL);
+            if (constantRotations > 6)
+                addNewPunish("heuristic(constant)", HEURISTIC_CONSTANT_ADD_VL);
         }
         if (infinitives > 1 && Math.abs(Statistics.getAverage(yaws)) > 3.2) {
             addNewPunishL2("heuristic(interpolation)", HEURISTIC_INTERPOLATION_ADD_VL);

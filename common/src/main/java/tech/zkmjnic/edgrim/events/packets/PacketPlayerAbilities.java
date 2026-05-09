@@ -1,14 +1,14 @@
 package tech.zkmjnic.edgrim.events.packets;
 
 import ac.grim.grimac.api.config.ConfigManager;
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerAbilities;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerAbilities;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.type.PacketCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 // The client can send ability packets out of order due to Mojang's excellent netcode design.
 // We must delay the second ability packet until the tick after the first is received

@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity.dragon;
 
+import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
-import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 
 public final class PacketEntityEnderDragonPart extends PacketEntity {
     public final DragonPart part;

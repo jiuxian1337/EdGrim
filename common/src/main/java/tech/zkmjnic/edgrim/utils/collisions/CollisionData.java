@@ -1,28 +1,5 @@
 package tech.zkmjnic.edgrim.utils.collisions;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.predictionengine.movementtick.MovementTickerStrider;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.DoorHandler;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.DynamicChest;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.DynamicChorusPlant;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.DynamicStair;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.PistonBaseCollision;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.PistonHeadCollision;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.TrapDoorHandler;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicCollisionFence;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicCollisionPane;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicCollisionWall;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.DynamicCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexOffsetCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.NoCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityStrider;
-import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
-import tech.zkmjnic.edgrim.utils.reflection.ViaVersionUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
@@ -31,23 +8,22 @@ import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
 import com.github.retrooper.packetevents.protocol.world.states.defaulttags.BlockTags;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Attachment;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Axis;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Face;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Half;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Thickness;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Tilt;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Type;
-import com.github.retrooper.packetevents.protocol.world.states.enums.VerticalDirection;
+import com.github.retrooper.packetevents.protocol.world.states.enums.*;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import com.viaversion.viaversion.api.Via;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.predictionengine.movementtick.MovementTickerStrider;
+import tech.zkmjnic.edgrim.utils.collisions.blocks.*;
+import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicCollisionFence;
+import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicCollisionPane;
+import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicCollisionWall;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.*;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityStrider;
+import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
+import tech.zkmjnic.edgrim.utils.reflection.ViaVersionUtil;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 // Warning for major game updates!
@@ -1002,7 +978,7 @@ public enum CollisionData implements CollisionFactory {
     DRIED_GHAST((player, version, data, x, y, z) -> {
         if (player.getClientVersion().isNewerThan(ClientVersion.V_1_21_5)) {
             return new HexCollisionBox(3.0, 0.0, 3.0, 13.0, 10.0, 13.0);
-        // ViaVersion replacement block - chorus plant (down: true, up: false, east: false, south: false, west: false)
+            // ViaVersion replacement block - chorus plant (down: true, up: false, east: false, south: false, west: false)
         } else if (player.getClientVersion().isNewerThan(ClientVersion.V_1_12_2)) {
             // While the 2nd SimpleCollisionBox clearly encompasses the first, it's unclear if Mojang's collision code on any version
             // May give a different result if the vanilla boxes aren't replicated perfectly, even the inefficiencies like the code below

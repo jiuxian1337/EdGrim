@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.utils.data;
 
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 
 import java.util.Objects;
 

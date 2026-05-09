@@ -1,12 +1,12 @@
 package tech.zkmjnic.edgrim.checks.impl.badpackets;
 
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.player.GameMode;
 
 @CheckData(name = "BadPacketsR", decay = 0.25, experimental = true)
 public class BadPacketsR extends Check implements PacketCheck {

@@ -2,11 +2,10 @@ package tech.zkmjnic.edgrim.checks.type;
 
 import ac.grim.grimac.api.config.ConfigManager;
 import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 
 public class ScaffoldCheck extends BlockPlaceCheck {
     protected long cancelForMs;
-    private long cancelPlacementsUntil;
+    private static long cancelPlacementsUntil;
 
     public ScaffoldCheck(PlayerData player) {
         super(player);
@@ -25,7 +24,7 @@ public class ScaffoldCheck extends BlockPlaceCheck {
         cancelPlacementsUntil = Math.max(cancelPlacementsUntil + cancelForMs, System.currentTimeMillis() + cancelForMs);
     }
 
-    protected boolean isCancelWindowActive() {
+    protected static boolean isCancelWindowActive() {
         if (cancelPlacementsUntil == 0L) {
             return false;
         }
@@ -33,14 +32,6 @@ public class ScaffoldCheck extends BlockPlaceCheck {
             cancelPlacementsUntil = 0L;
             return false;
         }
-        return true;
-    }
-
-    protected boolean cancelPlaceIfWindowActive(BlockPlace place) {
-        if (!place.isBlock || !shouldModifyPackets() || !isCancelWindowActive()) {
-            return false;
-        }
-        place.resync();
         return true;
     }
 }

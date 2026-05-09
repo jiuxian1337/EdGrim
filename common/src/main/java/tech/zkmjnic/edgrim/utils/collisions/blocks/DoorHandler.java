@@ -1,10 +1,5 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.NoCollisionBox;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -12,6 +7,11 @@ import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
 import com.github.retrooper.packetevents.protocol.world.states.enums.Half;
 import com.github.retrooper.packetevents.protocol.world.states.enums.Hinge;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.NoCollisionBox;
 
 public class DoorHandler implements CollisionFactory {
     protected static final CollisionBox SOUTH_AABB = new HexCollisionBox(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 3.0D);

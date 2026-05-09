@@ -36,21 +36,18 @@ public final class ScaffoldC extends ScaffoldCheck {
         final BlockFace face = place.getFace();
         if (face == BlockFace.OTHER || face == BlockFace.UP || face == BlockFace.DOWN) return;
 
-        cancelPlaceIfWindowActive(place);
-//        alert("pitch=" + pitch + "yaw=" + yaw + "lastYaw=" + lastYaw);
 
         if (dYaw >= 30 || dPitch >= 30) {
             if (!player.isSneaking) {
                 buffer++;
             }
         } else {
-            buffer = Math.max(0, buffer -0.5F);
+            buffer = Math.max(0, buffer - 0.5F);
         }
 
         if (buffer >= 2) {
-            if (flagAndAlert("dy=" + dYaw + "\ndp=" + dPitch ) && shouldCancel()) {
+            if (flagAndAlert("dy=" + dYaw + "\ndp=" + dPitch) && shouldCancel()) {
                 startCancelWindow();
-                place.resync();
                 player.mitigateDamage();
                 buffer = 1;
             }

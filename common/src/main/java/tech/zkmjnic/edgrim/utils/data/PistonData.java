@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.utils.data;
 
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 
 import java.util.List;
 

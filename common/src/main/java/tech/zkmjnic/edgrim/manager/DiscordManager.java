@@ -39,6 +39,33 @@ public class DiscordManager implements StartableInitable, ReloadableInitable {
     private String embedTitle = "";
     private boolean includeTimestamp;
 
+    private static void tick() {
+        HttpRequest request = requests.peek();
+        if (request != null && rateLimitedUntil < System.currentTimeMillis() && !sending.getAndSet(true)) {
+            client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).whenComplete((response, throwable) -> {
+                if (throwable != null) {
+                    sending.set(false);
+                    LogUtil.error("Exception caught while sending a Discord webhook alert", throwable);
+                    return;
+                }
+
+                if (response != null && response.statusCode() == 429) {
+                    sending.set(false);
+                    rateLimitedUntil = Math.max(response.headers().firstValueAsLong("X-RateLimit-Reset").getAsLong() * 1000, rateLimitedUntil);
+                    return;
+                }
+
+                requests.remove(request);
+                sending.set(false);
+
+                // TODO: handle 503 (Service Unavailable)?
+                if (response != null && response.statusCode() >= 400) {
+                    LogUtil.error("Encountered status code " + response.statusCode() + " with body " + response.body() + " and headers " + response.headers().map() + " while sending a Discord webhook alert.");
+                }
+            });
+        }
+    }
+
     @Override
     public void start() {
         reload();
@@ -131,33 +158,6 @@ public class DiscordManager implements StartableInitable, ReloadableInitable {
         if (!taskStarted.getAndSet(true)) {
             // there's probably a better way to handle rate limits, but this works, so whatever.
             EdGrimAPI.INSTANCE.getScheduler().getAsyncScheduler().runAtFixedRate(EdGrimAPI.INSTANCE.getGrimPlugin(), DiscordManager::tick, 0, 1);
-        }
-    }
-
-    private static void tick() {
-        HttpRequest request = requests.peek();
-        if (request != null && rateLimitedUntil < System.currentTimeMillis() && !sending.getAndSet(true)) {
-            client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).whenComplete((response, throwable) -> {
-                if (throwable != null) {
-                    sending.set(false);
-                    LogUtil.error("Exception caught while sending a Discord webhook alert", throwable);
-                    return;
-                }
-
-                if (response != null && response.statusCode() == 429) {
-                    sending.set(false);
-                    rateLimitedUntil = Math.max(response.headers().firstValueAsLong("X-RateLimit-Reset").getAsLong() * 1000, rateLimitedUntil);
-                    return;
-                }
-
-                requests.remove(request);
-                sending.set(false);
-
-                // TODO: handle 503 (Service Unavailable)?
-                if (response != null && response.statusCode() >= 400) {
-                    LogUtil.error("Encountered status code " + response.statusCode() + " with body " + response.body() + " and headers " + response.headers().map() + " while sending a Discord webhook alert.");
-                }
-            });
         }
     }
 }

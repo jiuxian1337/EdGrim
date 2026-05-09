@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.checks.impl.timer;
 
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 @CheckData(name = "VehicleTimer", setback = 10)
 public class VehicleTimer extends Timer {

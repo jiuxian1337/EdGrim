@@ -1,12 +1,12 @@
 package tech.zkmjnic.edgrim.events.packets;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetCooldown;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 public class PacketPlayerCooldown extends PacketListenerAbstract {
 

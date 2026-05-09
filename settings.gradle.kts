@@ -42,3 +42,4 @@ develocity {
 rootProject.name = "edgrimac"
 include("common")
 include("bukkit")
+include("RotationRecorder")

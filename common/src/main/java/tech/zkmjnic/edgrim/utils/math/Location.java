@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.utils.math;
 
-import org.bukkit.entity.Player;
-import tech.zkmjnic.edgrim.platform.api.world.PlatformWorld;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.platform.api.world.PlatformWorld;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;

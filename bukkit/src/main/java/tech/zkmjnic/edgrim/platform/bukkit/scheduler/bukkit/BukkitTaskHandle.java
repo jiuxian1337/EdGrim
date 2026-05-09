@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.platform.bukkit.scheduler.bukkit;
 
-import tech.zkmjnic.edgrim.platform.api.scheduler.TaskHandle;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.platform.api.scheduler.TaskHandle;
 
 import java.util.Objects;
 

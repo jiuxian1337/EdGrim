@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.utils.anticheat;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
+import tech.zkmjnic.edgrim.EdGrimAPI;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

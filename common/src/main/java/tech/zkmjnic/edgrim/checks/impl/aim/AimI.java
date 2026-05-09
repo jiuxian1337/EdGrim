@@ -87,7 +87,7 @@ public final class AimI extends Check implements RotationCheck {
         Vec2f delta = update.getDelta();
         rawRotations.add(delta);
         double gcdValue = MathUtil.getGCDValue(0.5d) * 3;
-        rotations2.add(new Vec2i((int) (delta.getX() / gcdValue), (int) (delta.getY() / gcdValue)));
+        rotations2.add(new Vec2i((int) (delta.x() / gcdValue), (int) (delta.y() / gcdValue)));
 
         if (rotations2.size() >= 10) {
             checkSpikes();
@@ -105,8 +105,8 @@ public final class AimI extends Check implements RotationCheck {
         List<Float> xList = new ArrayList<>();
         List<Float> yList = new ArrayList<>();
         for (Vec2f vec : rawRotations) {
-            xList.add(vec.getX());
-            yList.add(vec.getY());
+            xList.add(vec.x());
+            yList.add(vec.y());
         }
 
         final int sens = player.calculateSensitivity();
@@ -198,16 +198,16 @@ public final class AimI extends Check implements RotationCheck {
         List<Integer> gcdYaw = new ArrayList<>();
         List<Integer> gcdPitch = new ArrayList<>();
         for (Vec2i vec : rotations2) {
-            gcdYaw.add(vec.getX());
-            gcdPitch.add(vec.getY());
+            gcdYaw.add(vec.x());
+            gcdPitch.add(vec.y());
         }
         rotations2.clear();
         if (gcdYaw.isEmpty()) {
             return;
         }
 
-        final List<Double> yawOutX = MathUtil.getAnalyzeOutliers(gcdYaw).getX();
-        final List<Double> yawOutY = MathUtil.getAnalyzeOutliers(gcdYaw).getY();
+        final List<Double> yawOutX = MathUtil.getAnalyzeOutliers(gcdYaw).x();
+        final List<Double> yawOutY = MathUtil.getAnalyzeOutliers(gcdYaw).y();
         double currentMax = Math.max(Math.abs(MathUtil.getMax(yawOutY)), Math.abs(MathUtil.getMin(yawOutY)));
         double currentMin = Math.min(Math.abs(MathUtil.getMax(yawOutY)), Math.abs(MathUtil.getMin(yawOutY)));
 
@@ -217,12 +217,12 @@ public final class AimI extends Check implements RotationCheck {
             List<Double> kireikoX = new ArrayList<>();
             List<Double> kireikoY = new ArrayList<>();
             for (Vec2d vec : kireikoGeneric) {
-                kireikoX.add(vec.getX());
-                kireikoY.add(vec.getY());
+                kireikoX.add(vec.x());
+                kireikoY.add(vec.y());
             }
             double stdDevX = MathUtil.stdDev(kireikoX);
             Tuple<Double, Double> spikeRange = new Tuple<>(MathUtil.getMin(kireikoX), MathUtil.getMax(kireikoX));
-            if (stdDevX > 5 && stdDevX < 22 && spikeRange.getY() < 50) {
+            if (stdDevX > 5 && stdDevX < 22 && spikeRange.y() < 50) {
                 bufferSpikesRule = modifyBuffer(bufferSpikesRule, MathUtil.getAverage(kireikoX) < 6.0 ? 0 : (stdDevX < 10 ? 1.5 : 1.0));
                 if (bufferSpikesRule > 7.0 && flagAndAlert("(Spike Rule) \nstdDevX=" + (int) stdDevX)) {
                     player.mitigateDamage();

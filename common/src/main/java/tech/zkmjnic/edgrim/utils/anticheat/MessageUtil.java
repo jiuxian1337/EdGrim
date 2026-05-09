@@ -1,10 +1,6 @@
 package tech.zkmjnic.edgrim.utils.anticheat;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.GrimUser;
-import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.util.Vector3f;
 import com.github.retrooper.packetevents.util.Vector3i;
 import lombok.experimental.UtilityClass;
@@ -14,6 +10,10 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 import java.util.Map;
 import java.util.function.Function;

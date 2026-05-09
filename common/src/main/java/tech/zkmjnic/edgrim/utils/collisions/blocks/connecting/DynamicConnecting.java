@@ -1,12 +1,5 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks.connecting;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.NoCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -15,6 +8,9 @@ import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState
 import com.github.retrooper.packetevents.protocol.world.states.defaulttags.BlockTags;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.*;
+import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
 
 public class DynamicConnecting {
 

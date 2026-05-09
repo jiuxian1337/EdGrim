@@ -10,6 +10,16 @@ import java.util.List;
 public class GrimMath {
     public static final double MINIMUM_DIVISOR = ((Math.pow(0.2f, 3) * 8) * 0.15) - 1e-3; // 1e-3 for float imprecision
     private static final float DEGREES_TO_RADIANS = (float) Math.PI / 180f;
+    private static final int[] MULTIPLY_DE_BRUIJN_BIT_POSITION = new int[]{
+            0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9
+    };
+    public static final int PACKED_HORIZONTAL_LENGTH = 1 + GrimMath.log2(GrimMath.smallestEncompassingPowerOfTwo(30000000));
+    public static final int PACKED_Y_LENGTH = 64 - 2 * PACKED_HORIZONTAL_LENGTH;
+    private static final long PACKED_Y_MASK = (1L << PACKED_Y_LENGTH) - 1L;
+    private static final int Z_OFFSET = PACKED_Y_LENGTH;
+    private static final int X_OFFSET = PACKED_Y_LENGTH + PACKED_HORIZONTAL_LENGTH;
+    private static final long PACKED_X_MASK = (1L << PACKED_HORIZONTAL_LENGTH) - 1L;
+    private static final long PACKED_Z_MASK = (1L << PACKED_HORIZONTAL_LENGTH) - 1L;
 
     @Contract(pure = true)
     public static double gcd(double a, double b) {
@@ -157,7 +167,7 @@ public class GrimMath {
 
     @Contract(pure = true)
     public static float sqrt(float value) {
-        return (float)Math.sqrt(value);
+        return (float) Math.sqrt(value);
     }
 
     // Find the closest distance to (1 / 64)
@@ -206,18 +216,6 @@ public class GrimMath {
         return degrees * DEGREES_TO_RADIANS;
     }
 
-    private static final int[] MULTIPLY_DE_BRUIJN_BIT_POSITION = new int[]{
-            0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9
-    };
-
-    public static final int PACKED_HORIZONTAL_LENGTH = 1 + GrimMath.log2(GrimMath.smallestEncompassingPowerOfTwo(30000000));
-    public static final int PACKED_Y_LENGTH = 64 - 2 * PACKED_HORIZONTAL_LENGTH;
-    private static final long PACKED_X_MASK = (1L << PACKED_HORIZONTAL_LENGTH) - 1L;
-    private static final long PACKED_Y_MASK = (1L << PACKED_Y_LENGTH) - 1L;
-    private static final long PACKED_Z_MASK = (1L << PACKED_HORIZONTAL_LENGTH) - 1L;
-    private static final int Z_OFFSET = PACKED_Y_LENGTH;
-    private static final int X_OFFSET = PACKED_Y_LENGTH + PACKED_HORIZONTAL_LENGTH;
-
     @Contract(pure = true)
     public static long asLong(int x, int y, int z) {
         return (x & PACKED_X_MASK) << X_OFFSET
@@ -231,7 +229,7 @@ public class GrimMath {
 
     public static int ceillog2(int value) {
         value = isPowerOfTwo(value) ? value : smallestEncompassingPowerOfTwo(value);
-        return MULTIPLY_DE_BRUIJN_BIT_POSITION[(int)(value * 125613361L >> 27) & 31];
+        return MULTIPLY_DE_BRUIJN_BIT_POSITION[(int) (value * 125613361L >> 27) & 31];
     }
 
     @Contract(pure = true)

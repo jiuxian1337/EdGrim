@@ -1,12 +1,12 @@
 package tech.zkmjnic.edgrim.platform.bukkit.utils.placeholder;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.GrimUser;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 import java.util.ArrayList;
 import java.util.List;

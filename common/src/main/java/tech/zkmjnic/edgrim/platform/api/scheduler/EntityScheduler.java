@@ -19,9 +19,9 @@
 package tech.zkmjnic.edgrim.platform.api.scheduler;
 
 import ac.grim.grimac.api.plugin.GrimPlugin;
-import tech.zkmjnic.edgrim.platform.api.entity.GrimEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.platform.api.entity.GrimEntity;
 
 /**
  * Represents a scheduler for executing entity tasks.

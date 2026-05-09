@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.platform.bukkit.command;
 
-import tech.zkmjnic.edgrim.platform.api.command.AbstractPlayerSelectorParser;
-import tech.zkmjnic.edgrim.platform.api.command.PlayerSelector;
 import org.incendo.cloud.bukkit.parser.selector.SinglePlayerSelectorParser;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.parser.ParserDescriptor;
+import tech.zkmjnic.edgrim.platform.api.command.AbstractPlayerSelectorParser;
+import tech.zkmjnic.edgrim.platform.api.command.PlayerSelector;
 
 import java.util.concurrent.CompletableFuture;
 

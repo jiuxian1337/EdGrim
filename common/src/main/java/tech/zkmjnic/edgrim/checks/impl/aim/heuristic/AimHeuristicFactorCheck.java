@@ -6,17 +6,17 @@ import tech.zkmjnic.edgrim.utils.lists.EvictingList;
 import tech.zkmjnic.edgrim.utils.math.Simplification;
 import tech.zkmjnic.edgrim.utils.math.Statistics;
 
-import java.util.*;
+import java.util.List;
 
 public final class AimHeuristicFactorCheck implements HeuristicComponent {
+    private static final float BUFFER_LIMIT = 3.0f;
+    private static final int TICKS_TO_RESET = 2500;
     private final AimAA check;
+    private final List<Double> stack = new EvictingList<>(3);
     private boolean lastIsNoRotation = false;
     private double lastHash;
     private float buffer;
     private int ticksToReset;
-    private final List<Double> stack = new EvictingList<>(3);
-    private static final float BUFFER_LIMIT = 3.0f;
-    private static final int TICKS_TO_RESET = 2500;
 
     public AimHeuristicFactorCheck(final AimAA check) {
         this.check = check;

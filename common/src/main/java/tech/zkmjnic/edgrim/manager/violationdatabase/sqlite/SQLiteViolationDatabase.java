@@ -1,17 +1,12 @@
 package tech.zkmjnic.edgrim.manager.violationdatabase.sqlite;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.plugin.GrimPlugin;
-import tech.zkmjnic.edgrim.manager.violationdatabase.DatabaseConstants;
-import tech.zkmjnic.edgrim.manager.violationdatabase.DatabaseDialect;
-import tech.zkmjnic.edgrim.manager.violationdatabase.DatabaseUtils;
-import tech.zkmjnic.edgrim.manager.violationdatabase.Violation;
-import tech.zkmjnic.edgrim.manager.violationdatabase.ViolationDatabase;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-
 import com.github.retrooper.packetevents.PacketEvents;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.manager.violationdatabase.*;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 
 import java.io.File;
 import java.sql.*;
@@ -22,8 +17,8 @@ import java.util.UUID;
 public class SQLiteViolationDatabase implements ViolationDatabase {
 
     private final GrimPlugin plugin;
-    private Connection openConnection;
     private final DatabaseDialect dialect;
+    private Connection openConnection;
 
     public SQLiteViolationDatabase(@NotNull GrimPlugin plugin) {
         this.plugin = plugin;

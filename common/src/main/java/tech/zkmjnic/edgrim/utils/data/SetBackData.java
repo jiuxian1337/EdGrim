@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.utils.data;
 
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 
 @Getter
 @Setter

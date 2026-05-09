@@ -1,45 +1,9 @@
 package tech.zkmjnic.edgrim.player;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.AbstractCheck;
 import ac.grim.grimac.api.GrimUser;
 import ac.grim.grimac.api.config.ConfigManager;
 import ac.grim.grimac.api.handler.ResyncHandler;
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.impl.aim.processor.AimProcessor;
-import tech.zkmjnic.edgrim.checks.impl.misc.ClientBrand;
-import tech.zkmjnic.edgrim.checks.impl.misc.TransactionOrder;
-import tech.zkmjnic.edgrim.checks.impl.packetorder.PacketOrderProcessor;
-import tech.zkmjnic.edgrim.events.packets.CheckManagerListener;
-import tech.zkmjnic.edgrim.manager.*;
-import tech.zkmjnic.edgrim.manager.player.features.FeatureManagerImpl;
-import tech.zkmjnic.edgrim.manager.player.handlers.DefaultResyncHandler;
-import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
-import tech.zkmjnic.edgrim.predictionengine.MovementCheckRunner;
-import tech.zkmjnic.edgrim.predictionengine.PointThreeEstimator;
-import tech.zkmjnic.edgrim.predictionengine.UncertaintyHandler;
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
-import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
-import tech.zkmjnic.edgrim.utils.change.PlayerBlockHistory;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.*;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityHappyGhast;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntitySelf;
-import tech.zkmjnic.edgrim.utils.data.tags.SyncedTags;
-import tech.zkmjnic.edgrim.utils.enums.FluidTag;
-import tech.zkmjnic.edgrim.utils.enums.Pose;
-import tech.zkmjnic.edgrim.utils.latency.*;
-import tech.zkmjnic.edgrim.utils.lists.EvictingList;
-import tech.zkmjnic.edgrim.utils.math.*;
-import tech.zkmjnic.edgrim.utils.nmsutil.BlockProperties;
-import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
-import tech.zkmjnic.edgrim.utils.nmsutil.GetBoundingBox;
-import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
-import tech.zkmjnic.edgrim.utils.reflection.ViaVersionUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
@@ -77,9 +41,45 @@ import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.impl.aim.processor.AimProcessor;
+import tech.zkmjnic.edgrim.checks.impl.misc.ClientBrand;
+import tech.zkmjnic.edgrim.checks.impl.misc.TransactionOrder;
+import tech.zkmjnic.edgrim.checks.impl.packetorder.PacketOrderProcessor;
+import tech.zkmjnic.edgrim.events.packets.CheckManagerListener;
+import tech.zkmjnic.edgrim.manager.*;
+import tech.zkmjnic.edgrim.manager.player.features.FeatureManagerImpl;
+import tech.zkmjnic.edgrim.manager.player.handlers.DefaultResyncHandler;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
+import tech.zkmjnic.edgrim.predictionengine.MovementCheckRunner;
+import tech.zkmjnic.edgrim.predictionengine.PointThreeEstimator;
+import tech.zkmjnic.edgrim.predictionengine.UncertaintyHandler;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
+import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
+import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
+import tech.zkmjnic.edgrim.utils.change.PlayerBlockHistory;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.data.*;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityHappyGhast;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntitySelf;
+import tech.zkmjnic.edgrim.utils.data.tags.SyncedTags;
+import tech.zkmjnic.edgrim.utils.enums.FluidTag;
+import tech.zkmjnic.edgrim.utils.enums.Pose;
+import tech.zkmjnic.edgrim.utils.latency.*;
+import tech.zkmjnic.edgrim.utils.lists.EvictingList;
+import tech.zkmjnic.edgrim.utils.math.*;
+import tech.zkmjnic.edgrim.utils.nmsutil.BlockProperties;
+import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
+import tech.zkmjnic.edgrim.utils.nmsutil.GetBoundingBox;
+import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
+import tech.zkmjnic.edgrim.utils.reflection.ViaVersionUtil;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -95,15 +95,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PlayerData implements GrimUser {
     public final UUID uuid;
     public final User user;
-    public int entityID;
-    public @Nullable PlatformPlayer platformPlayer;
-    public @Nullable Player bukkitPlayer;
     // Start transaction handling stuff
     // Determining player ping
     // The difference between keepalive and transactions is that keepalive is async while transactions are sync
     public final Queue<Pair<Short, Long>> transactionsSent = new ConcurrentLinkedQueue<>();
     public final Set<Short> didWeSendThatTrans = ConcurrentHashMap.newKeySet();
-    private final AtomicInteger transactionIDCounter = new AtomicInteger(0);
     public final AtomicInteger lastTransactionSent = new AtomicInteger(0);
     public final AtomicInteger lastTransactionReceived = new AtomicInteger(0);
     // End transaction handling stuff
@@ -113,26 +109,51 @@ public class PlayerData implements GrimUser {
     public final PunishmentManager punishmentManager;
     public final MovementCheckRunner movementCheckRunner;
     public final SyncedTags tagManager;
+    public final PacketOrderProcessor packetOrderProcessor = new PacketOrderProcessor(this);
+    public final long joinTime = System.currentTimeMillis();
+    public final UncertaintyHandler uncertaintyHandler;
+    public final VehicleData vehicleData = new VehicleData();
+    // You cannot initialize everything here for some reason
+    public final LastInstanceManager lastInstanceManager;
+    public final CompensatedFireworks fireworks;
+    public final CompensatedWorld compensatedWorld;
+    public final CompensatedEntities compensatedEntities;
+    public final CompensatedInventory inventory;
+    public final LatencyUtils latencyUtils = new LatencyUtils(this);
+    public final PointThreeEstimator pointThreeEstimator;
+    public final TrigHandler trigHandler = new TrigHandler(this);
+    public final PacketStateData packetStateData = new PacketStateData();
+    public final AtomicInteger cancelledPackets = new AtomicInteger(0);
+    // possibleEyeHeights[0] = Standing eye heights, [1] = Sneaking. [2] = Elytra, Swimming, and Riptide Trident which only exists in 1.9+
+    public final double[][] possibleEyeHeights = new double[3][];
+    public final Queue<BlockPlaceSnapshot> placeUseItemPackets = new LinkedBlockingQueue<>();
+    public final Queue<BlockBreak> queuedBreaks = new LinkedBlockingQueue<>();
+    public final PlayerBlockHistory blockHistory = new PlayerBlockHistory();
+    public final ArrayDeque<RotationData> pendingRotations = new ArrayDeque<>();
+    public final ArrayDeque<Movement> movementThisTick = new ArrayDeque<>(8);
+    public final List<Movement> finalMovementsThisTick = new ObjectArrayList<>();
+    public final LongSet visitedBlocks = new LongOpenHashSet();
+    private final AtomicInteger transactionIDCounter = new AtomicInteger(0);
+    @Getter
+    private final FeatureManagerImpl featureManager = new FeatureManagerImpl(this);
+    @Getter
+    private final List<Integer> sensitivity = new EvictingList<>(14);
+    public int entityID;
+    public @Nullable PlatformPlayer platformPlayer;
+    public @Nullable Player bukkitPlayer;
     // End manager like classes
     public Vector3dm clientVelocity = new Vector3dm();
-    private PacketTracker viaPacketTracker;
-    public final PacketOrderProcessor packetOrderProcessor = new PacketOrderProcessor(this);
-    private long transactionPing = 0;
     public long lastTransSent = 0;
     public long lastTransReceived = 0;
-    @Getter
-    private long playerClockAtLeast = System.nanoTime();
     public double lastWasClimbing = 0;
     public boolean canSwimHop = false;
     public int riptideSpinAttackTicks = 0;
     public int powderSnowFrozenTicks = 0;
     public boolean hasGravity = true;
-    public final long joinTime = System.currentTimeMillis();
     public boolean playerEntityHasGravity = true;
     public VectorData predictedVelocity = new VectorData(new Vector3dm(), VectorData.VectorType.Normal);
     public Vector3dm actualMovement = new Vector3dm();
     public Vector3dm stuckSpeedMultiplier = new Vector3dm(1, 1, 1);
-    public final UncertaintyHandler uncertaintyHandler;
     public double gravity;
     public float friction;
     public double speed;
@@ -147,9 +168,6 @@ public class PlayerData implements GrimUser {
     public float yRot;
     public float lastXRot;
     public float lastYRot;
-    private PacketEntity target;
-    private PacketEntity lastTarget;
-    private int respawnTick;
     public boolean onGround;
     public boolean lastOnGround;
     public boolean isSneaking;
@@ -180,7 +198,6 @@ public class PlayerData implements GrimUser {
     public float depthStriderLevel;
     public float sneakingSpeedMultiplier = 0.3f;
     public float flySpeed;
-    public final VehicleData vehicleData = new VehicleData();
     // The client claims this
     public boolean clientClaimsLastOnGround;
     // Set from base tick
@@ -206,16 +223,6 @@ public class PlayerData implements GrimUser {
     public boolean couldSkipTick = false;
     // This determines if the
     public boolean skippedTickInActualMovement = false;
-    // You cannot initialize everything here for some reason
-    public final LastInstanceManager lastInstanceManager;
-    public final CompensatedFireworks fireworks;
-    public final CompensatedWorld compensatedWorld;
-    public final CompensatedEntities compensatedEntities;
-    public final CompensatedInventory inventory;
-    public final LatencyUtils latencyUtils = new LatencyUtils(this);
-    public final PointThreeEstimator pointThreeEstimator;
-    public final TrigHandler trigHandler = new TrigHandler(this);
-    public final PacketStateData packetStateData = new PacketStateData();
     // Keep track of basetick stuff
     public Vector3dm baseTickAddition = new Vector3dm();
     public Vector3dm baseTickWaterPushing = new Vector3dm();
@@ -234,47 +241,58 @@ public class PlayerData implements GrimUser {
     public Vector3d bedPosition;
     public long lastBlockPlaceUseItem = 0;
     public long lastBlockBreak = 0;
-    public final AtomicInteger cancelledPackets = new AtomicInteger(0);
     public MainSupportingBlockData mainSupportingBlockData = new MainSupportingBlockData(null, false);
-    // possibleEyeHeights[0] = Standing eye heights, [1] = Sneaking. [2] = Elytra, Swimming, and Riptide Trident which only exists in 1.9+
-    public final double[][] possibleEyeHeights = new double[3][];
     public int totalFlyingPacketsSent;
-    public final Queue<BlockPlaceSnapshot> placeUseItemPackets = new LinkedBlockingQueue<>();
-    public final Queue<BlockBreak> queuedBreaks = new LinkedBlockingQueue<>();
-    public final PlayerBlockHistory blockHistory = new PlayerBlockHistory();
-    public final ArrayDeque<RotationData> pendingRotations = new ArrayDeque<>();
-    @Getter @Setter private ResyncHandler resyncHandler = new DefaultResyncHandler(this);
-    @Getter private final FeatureManagerImpl featureManager = new FeatureManagerImpl(this);
     public boolean serverOpenedInventoryThisTick;
-    // start config
-    private boolean debugPacketCancel = false;
-    private int spamThreshold = 100;
-    private int maxTransactionTime = 60;
-    @Getter private boolean ignoreDuplicatePacketRotation = false;
-    @Getter @Setter private boolean experimentalChecks = false;
-    @Getter private boolean cancelDuplicatePacket = true;
-    @Getter @Setter private boolean exemptElytra = false;
-    @Getter @Setter private boolean forceStuckSpeed = true;
-    @Getter @Setter private boolean forceSlowMovement = true;
-    @Getter private boolean resetItemUsageOnAttack;
-    @Getter private boolean resetItemUsageOnItemUpdate;
-    @Getter private boolean resetItemUsageOnSlotChange;
-    private boolean mitigateDamageEnabled = true;
-    @Getter private long mitigateDamageTime;
     // end config
     public boolean noModifyPacketPermission = false;
     public boolean noSetbackPermission = false;
     // This variable is for support with test servers that want to be able to disable grim
     // Grim disabler 2022 still working!
     public boolean disableGrim = false;
-    public final ArrayDeque<Movement> movementThisTick = new ArrayDeque<>(8);
-    public final List<Movement> finalMovementsThisTick = new ObjectArrayList<>();
-    public final LongSet visitedBlocks = new LongOpenHashSet();
-    private @Nullable UserConnection viaUserConnection;
     public boolean wasLastPredictionCompleteChecked;
     public boolean isJumping;
     public boolean lastJumping;
-    @Getter private final List<Integer> sensitivity = new EvictingList<>(14);
+    private PacketTracker viaPacketTracker;
+    private long transactionPing = 0;
+    @Getter
+    private long playerClockAtLeast = System.nanoTime();
+    private PacketEntity target;
+    private PacketEntity lastTarget;
+    private int respawnTick;
+    @Getter
+    @Setter
+    private ResyncHandler resyncHandler = new DefaultResyncHandler(this);
+    // start config
+    private boolean debugPacketCancel = false;
+    private int spamThreshold = 100;
+    private int maxTransactionTime = 60;
+    @Getter
+    private boolean ignoreDuplicatePacketRotation = false;
+    @Getter
+    @Setter
+    private boolean experimentalChecks = false;
+    @Getter
+    private boolean cancelDuplicatePacket = true;
+    @Getter
+    @Setter
+    private boolean exemptElytra = false;
+    @Getter
+    @Setter
+    private boolean forceStuckSpeed = true;
+    @Getter
+    @Setter
+    private boolean forceSlowMovement = true;
+    @Getter
+    private boolean resetItemUsageOnAttack;
+    @Getter
+    private boolean resetItemUsageOnItemUpdate;
+    @Getter
+    private boolean resetItemUsageOnSlotChange;
+    private boolean mitigateDamageEnabled = true;
+    @Getter
+    private long mitigateDamageTime;
+    private @Nullable UserConnection viaUserConnection;
 
     public PlayerData(@NonNull User user) {
         this.user = user;
@@ -310,6 +328,15 @@ public class PlayerData implements GrimUser {
 
         // reload last
         reload();
+    }
+
+    private static boolean isGlider(ItemStack stack, EquipmentSlot slot) {
+        if (!stack.hasComponent(ComponentTypes.GLIDER) || stack.getDamageValue() >= (stack.getMaxDamage() - 1)) {
+            return false;
+        }
+
+        Optional<ItemEquippable> equippable = stack.getComponent(ComponentTypes.EQUIPPABLE);
+        return equippable.isPresent() && equippable.get().getSlot() == slot;
     }
 
     public void onPacketCancel() {
@@ -400,7 +427,8 @@ public class PlayerData implements GrimUser {
 
         if (hasID) {
             // Transactions that we send don't count towards total limit
-            if (viaPacketTracker != null) viaPacketTracker.setIntervalPackets(viaPacketTracker.getIntervalPackets() - 1);
+            if (viaPacketTracker != null)
+                viaPacketTracker.setIntervalPackets(viaPacketTracker.getIntervalPackets() - 1);
 
             if (skipped > 0 && System.currentTimeMillis() - joinTime > 5000)
                 checkManager.getCheck(TransactionOrder.class).flagAndAlert("skipped: " + skipped);
@@ -490,7 +518,8 @@ public class PlayerData implements GrimUser {
                 addTransactionSend(transactionID);
                 user.writePacket(packet);
             }
-        } catch (Exception ignored) { // Fix protocollib + viaversion support by ignoring any errors :) // TODO: Fix this
+        } catch (
+                Exception ignored) { // Fix protocollib + viaversion support by ignoring any errors :) // TODO: Fix this
             // recompile
         }
     }
@@ -518,7 +547,8 @@ public class PlayerData implements GrimUser {
         LogUtil.info("Disconnecting " + user.getProfile().getName() + " for " + MessageUtil.stripColor(textReason));
         try {
             user.sendPacket(new WrapperPlayServerDisconnect(reason));
-        } catch (Exception ignored) { // There may (?) be an exception if the player is in the wrong state...
+        } catch (
+                Exception ignored) { // There may (?) be an exception if the player is in the wrong state...
             LogUtil.warn("Failed to send disconnect packet to disconnect " + user.getProfile().getName() + "! Disconnecting anyways.");
         }
         user.closeConnection();
@@ -564,8 +594,10 @@ public class PlayerData implements GrimUser {
         }
 
         Set<VectorData> knockback = new HashSet<>();
-        if (firstBreadKB != null) knockback.add(new VectorData(firstBreadKB.vector, VectorData.VectorType.Knockback));
-        if (likelyKB != null) knockback.add(new VectorData(likelyKB.vector, VectorData.VectorType.Knockback));
+        if (firstBreadKB != null)
+            knockback.add(new VectorData(firstBreadKB.vector, VectorData.VectorType.Knockback));
+        if (likelyKB != null)
+            knockback.add(new VectorData(likelyKB.vector, VectorData.VectorType.Knockback));
 
         boolean kbPointThree = pointThreeEstimator.determineCanSkipTick(BlockProperties.getFrictionInfluencedSpeed((float) (speed * (isSprinting ? 1.3 : 1)), this), knockback);
         checkManager.getKnockbackHandler().setPointThree(kbPointThree);
@@ -655,13 +687,13 @@ public class PlayerData implements GrimUser {
         return target;
     }
 
-    public PacketEntity getLastTarget() {
-        return lastTarget;
-    }
-
     public void setTarget(PacketEntity target) {
         this.lastTarget = this.target;
         this.target = target;
+    }
+
+    public PacketEntity getLastTarget() {
+        return lastTarget;
     }
 
     public float getPitch() {
@@ -732,8 +764,10 @@ public class PlayerData implements GrimUser {
                      SPIN_ATTACK, // Riptide trident
                      SWIMMING -> // Swimming (includes crawling in 1.14+)
                         this.possibleEyeHeights[2]; // [swimming/gliding/riptide height, standing height, sneaking height]
-                case NINE_CROUCHING, CROUCHING -> this.possibleEyeHeights[1]; // [sneaking height, standing height, swimming/gliding/riptide height]
-                default -> this.possibleEyeHeights[0]; // [standing height, sneaking height, swimming/gliding/riptide height]
+                case NINE_CROUCHING, CROUCHING ->
+                        this.possibleEyeHeights[1]; // [sneaking height, standing height, swimming/gliding/riptide height]
+                default ->
+                        this.possibleEyeHeights[0]; // [standing height, sneaking height, swimming/gliding/riptide height]
             };
         }
     }
@@ -848,15 +882,6 @@ public class PlayerData implements GrimUser {
                 || isGlider(inventory.getChestplate(), EquipmentSlot.LEGGINGS)
                 || isGlider(inventory.getLeggings(), EquipmentSlot.BOOTS)
                 || isGlider(inventory.getBoots(), EquipmentSlot.OFF_HAND);
-    }
-
-    private static boolean isGlider(ItemStack stack, EquipmentSlot slot) {
-        if (!stack.hasComponent(ComponentTypes.GLIDER) || stack.getDamageValue() >= (stack.getMaxDamage() - 1)) {
-            return false;
-        }
-
-        Optional<ItemEquippable> equippable = stack.getComponent(ComponentTypes.EQUIPPABLE);
-        return equippable.isPresent() && equippable.get().getSlot() == slot;
     }
 
     public void resyncPose() {
@@ -1037,8 +1062,6 @@ public class PlayerData implements GrimUser {
         this.movementThisTick.add(movement);
     }
 
-    public record Movement(Vector3d from, Vector3d to, boolean axisIndependant) {}
-
     // TODO (Cross-platform) keep track of world at packet level; do not rely on potentially non-lag-compensated platformPlayer.getWorld()
     public Location getLocation() {
         return new Location(platformPlayer.getWorld(), this.x, this.y, this.z, this.xRot, this.yRot);
@@ -1065,5 +1088,8 @@ public class PlayerData implements GrimUser {
         }
 
         return blockStateId;
+    }
+
+    public record Movement(Vector3d from, Vector3d to, boolean axisIndependant) {
     }
 }

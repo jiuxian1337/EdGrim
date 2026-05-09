@@ -1,15 +1,15 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
 
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
+import com.github.retrooper.packetevents.protocol.world.BlockFace;
+import lombok.experimental.UtilityClass;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.Pair;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import tech.zkmjnic.edgrim.utils.math.VectorUtils;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
-import com.github.retrooper.packetevents.protocol.world.BlockFace;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ReachUtils {

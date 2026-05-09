@@ -2,9 +2,9 @@ package tech.zkmjnic.edgrim.manager.player.features.types;
 
 import ac.grim.grimac.api.config.ConfigManager;
 import ac.grim.grimac.api.feature.FeatureState;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 @RequiredArgsConstructor
 @Getter

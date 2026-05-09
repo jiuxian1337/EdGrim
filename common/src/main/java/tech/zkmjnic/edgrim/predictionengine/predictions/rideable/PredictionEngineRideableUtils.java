@@ -1,5 +1,9 @@
 package tech.zkmjnic.edgrim.predictionengine.predictions.rideable;
 
+import com.github.retrooper.packetevents.protocol.attribute.Attributes;
+import com.github.retrooper.packetevents.protocol.potion.PotionTypes;
+import com.github.retrooper.packetevents.util.Vector3d;
+import lombok.experimental.UtilityClass;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngine;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngineNormal;
@@ -10,10 +14,6 @@ import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import tech.zkmjnic.edgrim.utils.nmsutil.BlockProperties;
 import tech.zkmjnic.edgrim.utils.nmsutil.JumpPower;
 import tech.zkmjnic.edgrim.utils.nmsutil.ReachUtils;
-import com.github.retrooper.packetevents.protocol.attribute.Attributes;
-import com.github.retrooper.packetevents.protocol.potion.PotionTypes;
-import com.github.retrooper.packetevents.util.Vector3d;
-import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.List;

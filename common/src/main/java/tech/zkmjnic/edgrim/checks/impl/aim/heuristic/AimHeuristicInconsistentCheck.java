@@ -7,14 +7,15 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.data.Pair;
 import tech.zkmjnic.edgrim.utils.math.Statistics;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class AimHeuristicInconsistentCheck implements HeuristicComponent {
+    private static final float BUFFER_LIMIT = 2;
     private final AimAA check;
-    private float lastDeltaYaw = 0.0f, lastDeltaPitch = 0.0f;
     private final List<Float> samplesYaw = new ArrayList<>();
     private final List<Float> samplesPitch = new ArrayList<>();
-    private static final float BUFFER_LIMIT = 2;
+    private float lastDeltaYaw = 0.0f, lastDeltaPitch = 0.0f;
     private float buffer;
 
     public AimHeuristicInconsistentCheck(final AimAA check) {

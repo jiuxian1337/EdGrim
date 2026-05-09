@@ -17,10 +17,12 @@ public final class ScaffoldE extends ScaffoldCheck {
 
     private boolean sneak;
     private boolean lastSneak;
+    private int placeCount;
 
     public ScaffoldE(PlayerData player) {
         super(player);
     }
+
     @Override
     public void onBlockPlace(final BlockPlace place) {
         if (!place.isBlock || place.position.y >= player.y) {
@@ -29,21 +31,19 @@ public final class ScaffoldE extends ScaffoldCheck {
         final BlockFace face = place.getFace();
         if (face == BlockFace.OTHER || face == BlockFace.UP || face == BlockFace.DOWN) return;
 
-        cancelPlaceIfWindowActive(place);
-//        alert("pitch=" + pitch + "yaw=" + yaw + "lastYaw=" + lastYaw);
-
-        if (lastSneak != sneak) {
+        placeCount++;
+        if (lastSneak != sneak && player.onGround && !player.isJumping) {
             buffer++;
-        } else {
-            buffer = Math.max(0, buffer -0.5F);
+
         }
 
-        if (buffer >= 2) {
-            if (flagAndAlert("s=" + sneak + "\nls=" + lastSneak ) && shouldCancel()) {
+        double v = buffer / placeCount;
+        if (v > 0.5 && placeCount > 0) {
+            if (flagAndAlert("s=" + sneak + "\nls=" + lastSneak + "\nf/pc=" + v) && shouldCancel()) {
                 startCancelWindow();
-                place.resync();
                 player.mitigateDamage();
-                buffer = 1;
+                placeCount = 0;
+                buffer = 0;
             }
         }
     }

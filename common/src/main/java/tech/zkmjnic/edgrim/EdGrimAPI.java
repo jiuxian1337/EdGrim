@@ -3,22 +3,17 @@ package tech.zkmjnic.edgrim;
 import ac.grim.grimac.api.event.EventBus;
 import ac.grim.grimac.api.event.OptimizedEventBus;
 import ac.grim.grimac.api.plugin.GrimPlugin;
-import tech.zkmjnic.edgrim.manager.AlertManagerImpl;
-import tech.zkmjnic.edgrim.manager.DiscordManager;
-import tech.zkmjnic.edgrim.manager.InitManager;
-import tech.zkmjnic.edgrim.manager.SpectateManager;
-import tech.zkmjnic.edgrim.manager.TickManager;
+import lombok.Getter;
+import org.incendo.cloud.CommandManager;
+import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.manager.*;
 import tech.zkmjnic.edgrim.manager.config.BaseConfigManager;
 import tech.zkmjnic.edgrim.manager.init.Initable;
 import tech.zkmjnic.edgrim.manager.violationdatabase.ViolationDatabaseManager;
 import tech.zkmjnic.edgrim.platform.api.Platform;
 import tech.zkmjnic.edgrim.platform.api.PlatformLoader;
 import tech.zkmjnic.edgrim.platform.api.PlatformServer;
-import tech.zkmjnic.edgrim.platform.api.manager.ItemResetHandler;
-import tech.zkmjnic.edgrim.platform.api.manager.MessagePlaceHolderManager;
-import tech.zkmjnic.edgrim.platform.api.manager.CommandAdapter;
-import tech.zkmjnic.edgrim.platform.api.manager.PermissionRegistrationManager;
-import tech.zkmjnic.edgrim.platform.api.manager.PlatformPluginManager;
+import tech.zkmjnic.edgrim.platform.api.manager.*;
 import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayerFactory;
 import tech.zkmjnic.edgrim.platform.api.scheduler.PlatformScheduler;
 import tech.zkmjnic.edgrim.platform.api.sender.Sender;
@@ -26,9 +21,6 @@ import tech.zkmjnic.edgrim.platform.api.sender.SenderFactory;
 import tech.zkmjnic.edgrim.utils.anticheat.PlayerDataManager;
 import tech.zkmjnic.edgrim.utils.common.GrimArguments;
 import tech.zkmjnic.edgrim.utils.reflection.ReflectionUtils;
-import lombok.Getter;
-import org.incendo.cloud.CommandManager;
-import org.jetbrains.annotations.NotNull;
 
 
 @Getter
@@ -66,7 +58,8 @@ public final class EdGrimAPI {
     private static Platform detectPlatform() {
         Platform override = Platform.getByName(GrimArguments.PLATFORM_OVERRIDE);
         if (override != null) return override;
-        if (ReflectionUtils.hasClass("io.papermc.paper.threadedregions.RegionizedServer")) return Platform.FOLIA;
+        if (ReflectionUtils.hasClass("io.papermc.paper.threadedregions.RegionizedServer"))
+            return Platform.FOLIA;
         if (ReflectionUtils.hasClass("org.bukkit.Bukkit")) return Platform.BUKKIT;
         throw new IllegalStateException("Unknown platform!");
     }

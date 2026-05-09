@@ -1,13 +1,13 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.potion.PotionTypes;
 import com.github.retrooper.packetevents.util.Vector3d;
 import lombok.experimental.UtilityClass;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 
 import java.util.OptionalInt;
 

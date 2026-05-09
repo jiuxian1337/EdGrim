@@ -1,41 +1,23 @@
 package tech.zkmjnic.edgrim.utils.collisions;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicHitboxFence;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicHitboxPane;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicHitboxWall;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexOffsetCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.HitBoxFactory;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.NoCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.OffsetCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
 import com.github.retrooper.packetevents.protocol.world.states.defaulttags.BlockTags;
-import com.github.retrooper.packetevents.protocol.world.states.enums.East;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Face;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Half;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Leaves;
-import com.github.retrooper.packetevents.protocol.world.states.enums.North;
-import com.github.retrooper.packetevents.protocol.world.states.enums.South;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Tilt;
-import com.github.retrooper.packetevents.protocol.world.states.enums.West;
+import com.github.retrooper.packetevents.protocol.world.states.enums.*;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateValue;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicHitboxFence;
+import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicHitboxPane;
+import tech.zkmjnic.edgrim.utils.collisions.blocks.connecting.DynamicHitboxWall;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.*;
+import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 // Expansion to the CollisionData class, which is different than regular ray tracing hitboxes
 public enum HitboxData implements HitBoxFactory {
@@ -681,11 +663,6 @@ public enum HitboxData implements HitBoxFactory {
         this.materials = mList.toArray(new StateType[0]);
     }
 
-    @Override
-    public CollisionBox fetch(PlayerData player, StateType heldItem, ClientVersion version, WrappedBlockState block, boolean isTargetBlock, int x, int y, int z) {
-        return box != null ? box.copy() : dynamic.fetch(player, heldItem, version, block, isTargetBlock, x, y, z);
-    }
-
     public static HitboxData getData(StateType material) {
         return lookup.get(material);
     }
@@ -713,8 +690,8 @@ public enum HitboxData implements HitBoxFactory {
         if (version.isNewerThan(ClientVersion.V_1_15_2)) {
             return isWeeping
                     ? isBlock
-                        ? new SimpleCollisionBox(0.25, 0.5625, 0.25, 0.75, 1, 0.75)
-                        : new SimpleCollisionBox(0.0625, 0, 0.0625, 0.9375, 1, 0.9375)
+                    ? new SimpleCollisionBox(0.25, 0.5625, 0.25, 0.75, 1, 0.75)
+                    : new SimpleCollisionBox(0.0625, 0, 0.0625, 0.9375, 1, 0.9375)
                     : new SimpleCollisionBox(0.25, 0, 0.25, 0.75, isBlock ? 0.9375 : 1, 0.75);
         } else {
             // Via replacement - 4 sided vine
@@ -748,5 +725,10 @@ public enum HitboxData implements HitBoxFactory {
             case 3, 4 -> new SimpleCollisionBox(0, 0, 0, 1, height / 16d, 1, false);
             default -> throw new IllegalStateException("Unexpected value: " + segments);
         };
+    }
+
+    @Override
+    public CollisionBox fetch(PlayerData player, StateType heldItem, ClientVersion version, WrappedBlockState block, boolean isTargetBlock, int x, int y, int z) {
+        return box != null ? box.copy() : dynamic.fetch(player, heldItem, version, block, isTargetBlock, x, y, z);
     }
 }

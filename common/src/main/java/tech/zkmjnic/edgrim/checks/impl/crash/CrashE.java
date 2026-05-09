@@ -1,12 +1,12 @@
 package tech.zkmjnic.edgrim.checks.impl.crash;
 
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSettings;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSettings;
 
 @CheckData(name = "CrashE")
 public class CrashE extends Check implements PacketCheck {

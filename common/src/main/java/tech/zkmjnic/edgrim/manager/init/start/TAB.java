@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.manager.init.start;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import tech.zkmjnic.edgrim.utils.reflection.ViaVersionUtil;
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.manager.server.ServerVersion;
 
 public class TAB implements StartableInitable {
 

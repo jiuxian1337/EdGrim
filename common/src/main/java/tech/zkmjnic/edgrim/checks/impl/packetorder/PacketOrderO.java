@@ -1,22 +1,22 @@
 package tech.zkmjnic.edgrim.checks.impl.packetorder;
 
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientEntityAction;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientEntityAction;
 
 import static com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying.isFlying;
 
 @CheckData(name = "PacketOrderO", experimental = true)
 public class PacketOrderO extends Check implements PacketCheck {
+    private boolean flying;
+
     public PacketOrderO(final PlayerData player) {
         super(player);
     }
-
-    private boolean flying;
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {

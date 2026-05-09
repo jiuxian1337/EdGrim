@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.utils.data;
 
-import tech.zkmjnic.edgrim.utils.enums.BoatEntityStatus;
 import com.github.retrooper.packetevents.util.Vector3d;
+import tech.zkmjnic.edgrim.utils.enums.BoatEntityStatus;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 

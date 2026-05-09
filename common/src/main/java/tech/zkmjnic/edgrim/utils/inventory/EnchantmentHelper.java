@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.utils.inventory;
 
-import tech.zkmjnic.edgrim.utils.latency.CompensatedInventory;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
 import com.github.retrooper.packetevents.protocol.item.enchantment.type.EnchantmentType;
+import tech.zkmjnic.edgrim.utils.latency.CompensatedInventory;
 
 public class EnchantmentHelper {
     // Some enchants work on any armor piece but only the maximum level counts

@@ -1,39 +1,9 @@
 package tech.zkmjnic.edgrim.platform.bukkit;
 
-import ac.grim.grimac.api.plugin.BasicGrimPlugin;
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.GrimAPIProvider;
 import ac.grim.grimac.api.GrimAbstractAPI;
+import ac.grim.grimac.api.plugin.BasicGrimPlugin;
 import ac.grim.grimac.api.plugin.GrimPlugin;
-import tech.zkmjnic.edgrim.manager.init.Initable;
-import tech.zkmjnic.edgrim.manager.init.start.ExemptOnlinePlayersOnReload;
-import tech.zkmjnic.edgrim.manager.init.start.StartableInitable;
-import tech.zkmjnic.edgrim.platform.api.Platform;
-import tech.zkmjnic.edgrim.platform.api.PlatformLoader;
-import tech.zkmjnic.edgrim.platform.api.PlatformServer;
-import tech.zkmjnic.edgrim.platform.api.manager.ItemResetHandler;
-import tech.zkmjnic.edgrim.platform.api.manager.MessagePlaceHolderManager;
-import tech.zkmjnic.edgrim.platform.api.manager.CommandAdapter;
-import tech.zkmjnic.edgrim.platform.api.manager.PermissionRegistrationManager;
-import tech.zkmjnic.edgrim.platform.api.manager.PlatformPluginManager;
-import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayerFactory;
-import tech.zkmjnic.edgrim.platform.api.scheduler.PlatformScheduler;
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.platform.api.sender.SenderFactory;
-import tech.zkmjnic.edgrim.platform.bukkit.initables.BukkitBStats;
-import tech.zkmjnic.edgrim.platform.bukkit.initables.BukkitEventManager;
-import tech.zkmjnic.edgrim.platform.bukkit.initables.BukkitTickEndEvent;
-import tech.zkmjnic.edgrim.platform.bukkit.manager.BukkitItemResetHandler;
-import tech.zkmjnic.edgrim.platform.bukkit.manager.BukkitMessagePlaceHolderManager;
-import tech.zkmjnic.edgrim.platform.bukkit.manager.BukkitParserDescriptorFactory;
-import tech.zkmjnic.edgrim.platform.bukkit.manager.BukkitPermissionRegistrationManager;
-import tech.zkmjnic.edgrim.platform.bukkit.manager.BukkitPlatformPluginManager;
-import tech.zkmjnic.edgrim.platform.bukkit.player.BukkitPlatformPlayerFactory;
-import tech.zkmjnic.edgrim.platform.bukkit.scheduler.bukkit.BukkitPlatformScheduler;
-import tech.zkmjnic.edgrim.platform.bukkit.scheduler.folia.FoliaPlatformScheduler;
-import tech.zkmjnic.edgrim.platform.bukkit.sender.BukkitSenderFactory;
-import tech.zkmjnic.edgrim.platform.bukkit.utils.placeholder.PlaceholderAPIExpansion;
-import tech.zkmjnic.edgrim.utils.lazy.LazyHolder;
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.Bukkit;
@@ -48,6 +18,28 @@ import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.paper.LegacyPaperCommandManager;
 import org.incendo.cloud.setting.Configurable;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.manager.init.Initable;
+import tech.zkmjnic.edgrim.manager.init.start.ExemptOnlinePlayersOnReload;
+import tech.zkmjnic.edgrim.manager.init.start.StartableInitable;
+import tech.zkmjnic.edgrim.platform.api.Platform;
+import tech.zkmjnic.edgrim.platform.api.PlatformLoader;
+import tech.zkmjnic.edgrim.platform.api.PlatformServer;
+import tech.zkmjnic.edgrim.platform.api.manager.*;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayerFactory;
+import tech.zkmjnic.edgrim.platform.api.scheduler.PlatformScheduler;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
+import tech.zkmjnic.edgrim.platform.api.sender.SenderFactory;
+import tech.zkmjnic.edgrim.platform.bukkit.initables.BukkitBStats;
+import tech.zkmjnic.edgrim.platform.bukkit.initables.BukkitEventManager;
+import tech.zkmjnic.edgrim.platform.bukkit.initables.BukkitTickEndEvent;
+import tech.zkmjnic.edgrim.platform.bukkit.manager.*;
+import tech.zkmjnic.edgrim.platform.bukkit.player.BukkitPlatformPlayerFactory;
+import tech.zkmjnic.edgrim.platform.bukkit.scheduler.bukkit.BukkitPlatformScheduler;
+import tech.zkmjnic.edgrim.platform.bukkit.scheduler.folia.FoliaPlatformScheduler;
+import tech.zkmjnic.edgrim.platform.bukkit.sender.BukkitSenderFactory;
+import tech.zkmjnic.edgrim.platform.bukkit.utils.placeholder.PlaceholderAPIExpansion;
+import tech.zkmjnic.edgrim.utils.lazy.LazyHolder;
 
 public final class EdGrimBukkitLoaderPlugin extends JavaPlugin implements PlatformLoader {
 
@@ -84,7 +76,7 @@ public final class EdGrimBukkitLoaderPlugin extends JavaPlugin implements Platfo
     }
 
     private Initable[] getBukkitInitTasks() {
-        return new Initable[] {
+        return new Initable[]{
                 new ExemptOnlinePlayersOnReload(),
                 new BukkitEventManager(),
                 new BukkitTickEndEvent(),

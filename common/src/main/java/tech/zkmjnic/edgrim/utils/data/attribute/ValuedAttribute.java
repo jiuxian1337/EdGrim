@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.utils.data.attribute;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import com.github.retrooper.packetevents.protocol.attribute.Attribute;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateAttributes;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,7 +55,8 @@ public final class ValuedAttribute {
 
     /**
      * Creates a rewriter that prevents the value from ever being modified unless the player meets the required version.
-     * @param player the player
+     *
+     * @param player          the player
      * @param requiredVersion the required version for the attribute
      * @return this instance for chaining
      */

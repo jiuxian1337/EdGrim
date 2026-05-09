@@ -20,7 +20,7 @@ public interface DatabaseDialect {
      * E.g., "INSERT OR IGNORE INTO tableName (columnName) VALUES (?)" for SQLite,
      * "INSERT IGNORE INTO tableName (columnName) VALUES (?)" for MySQL.
      *
-     * @param tableName The name of the table to insert into.
+     * @param tableName   The name of the table to insert into.
      * @param columnNames The column names to insert into (comma-separated).
      */
     String getInsertOrIgnoreSyntax(String tableName, String columnNames);
@@ -30,5 +30,6 @@ public interface DatabaseDialect {
      * Used to differentiate expected "duplicate key" errors from other SQLExceptions.
      */
     String getUniqueConstraintViolationSQLState();
+
     int getUniqueConstraintViolationErrorCode();
 }

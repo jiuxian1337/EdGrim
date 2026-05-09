@@ -1,10 +1,5 @@
 package tech.zkmjnic.edgrim.events.packets;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.checks.impl.movement.NoSlowA;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.item.ItemBehaviour;
-import tech.zkmjnic.edgrim.utils.item.ItemBehaviourRegistry;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
@@ -24,21 +19,21 @@ import com.github.retrooper.packetevents.protocol.player.DiggingAction;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.InteractionHand;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientHeldItemChange;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerBlockPlacement;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerDigging;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientUseItem;
+import com.github.retrooper.packetevents.wrapper.play.client.*;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.checks.impl.movement.NoSlowA;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.item.ItemBehaviour;
+import tech.zkmjnic.edgrim.utils.item.ItemBehaviourRegistry;
 
 public class PacketPlayerDigging extends PacketListenerAbstract {
 
+    private static final boolean RELIABLE_COMPONENT_SYSTEM = PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_21_4);
+    private static final boolean SERVER_HAS_OFFHAND = PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_9);
     public PacketPlayerDigging() {
         super(PacketListenerPriority.LOW);
     }
-
-    private static final boolean RELIABLE_COMPONENT_SYSTEM = PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_21_4);
-    private static final boolean SERVER_HAS_OFFHAND = PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_9);
 
     public static void handleUseItem(@NotNull PlayerData player, @NotNull InteractionHand hand) {
         ItemStack item = player.inventory.getItemInHand(hand);
@@ -212,7 +207,8 @@ public class PacketPlayerDigging extends PacketListenerAbstract {
                         && player.packetStateData.getSlowedByUsingItemSlot() != player.packetStateData.lastSlotSelected;
                 if (slotChanged || player.inventory.getItemInHand(player.packetStateData.itemInUseHand).isEmpty()) {
                     player.packetStateData.setSlowedByUsingItem(false);
-                    if (slotChanged) player.checkManager.getPostPredictionCheck(NoSlowA.class).didSlotChangeLastTick = true;
+                    if (slotChanged)
+                        player.checkManager.getPostPredictionCheck(NoSlowA.class).didSlotChangeLastTick = true;
                 }
             }
         }

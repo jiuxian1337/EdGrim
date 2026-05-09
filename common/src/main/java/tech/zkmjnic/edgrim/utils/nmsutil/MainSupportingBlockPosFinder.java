@@ -1,12 +1,12 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.MainSupportingBlockData;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.util.Vector3i;
 import com.google.common.util.concurrent.AtomicDouble;
 import lombok.experimental.UtilityClass;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.data.MainSupportingBlockData;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;

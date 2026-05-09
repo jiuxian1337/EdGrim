@@ -1,10 +1,5 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.data.tags.SyncedTag;
-import tech.zkmjnic.edgrim.utils.data.tags.SyncedTags;
-import tech.zkmjnic.edgrim.utils.enums.FluidTag;
-import tech.zkmjnic.edgrim.utils.inventory.EnchantmentHelper;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
@@ -25,6 +20,11 @@ import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import com.github.retrooper.packetevents.resources.ResourceLocation;
 import com.google.common.collect.Sets;
 import lombok.experimental.UtilityClass;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.data.tags.SyncedTag;
+import tech.zkmjnic.edgrim.utils.data.tags.SyncedTags;
+import tech.zkmjnic.edgrim.utils.enums.FluidTag;
+import tech.zkmjnic.edgrim.utils.inventory.EnchantmentHelper;
 
 import java.util.Optional;
 import java.util.OptionalInt;

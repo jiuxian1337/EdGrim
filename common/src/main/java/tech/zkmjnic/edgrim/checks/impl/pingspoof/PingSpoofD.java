@@ -1,23 +1,22 @@
 package tech.zkmjnic.edgrim.checks.impl.pingspoof;
 
 import ac.grim.grimac.api.config.ConfigManager;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.TrackerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.player.GameMode;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 
 @CheckData(name = "PingSpoofD", description = "entity position staleness on attack (pending transaction gap)", decay = 0.05)
 public final class PingSpoofD extends Check implements PacketCheck {
     private static final double VL_PER_FLAG = 0.5;
 
-    private int cancelVL;
     private int basePendingAllowance;
     private int maxPingTicks;
 
@@ -28,7 +27,6 @@ public final class PingSpoofD extends Check implements PacketCheck {
     @Override
     public void onReload(ConfigManager config) {
         super.onReload(config);
-        this.cancelVL = config.getIntElse(getConfigName() + ".cancelVL", 5);
         this.basePendingAllowance = config.getIntElse(getConfigName() + ".basePendingAllowance", 2);
         this.maxPingTicks = config.getIntElse(getConfigName() + ".maxPingTicks", 20);
     }
@@ -65,10 +63,7 @@ public final class PingSpoofD extends Check implements PacketCheck {
             buffer += VL_PER_FLAG;
             if (buffer >= 1.0D
                     && flagAndAlert("pending=" + pendingTransactions + " allowed=" + allowedPending
-                    + " transPing=" + player.getTransactionPing() + "ms")
-                    && shouldCancel()) {
-                event.setCancelled(true);
-                player.onPacketCancel();
+                    + " transPing=" + player.getTransactionPing() + "ms")) {
                 player.mitigateDamage();
             }
             return;
@@ -77,7 +72,4 @@ public final class PingSpoofD extends Check implements PacketCheck {
         rewardBufferAndVL();
     }
 
-    private boolean shouldCancel() {
-        return violations >= cancelVL;
-    }
 }

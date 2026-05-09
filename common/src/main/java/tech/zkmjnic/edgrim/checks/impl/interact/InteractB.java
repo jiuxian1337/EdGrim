@@ -1,6 +1,10 @@
 package tech.zkmjnic.edgrim.checks.impl.interact;
 
 import ac.grim.grimac.api.config.ConfigManager;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
@@ -8,10 +12,6 @@ import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import tech.zkmjnic.edgrim.utils.data.packetentity.dragon.PacketEntityEnderDragonPart;
 import tech.zkmjnic.edgrim.utils.nmsutil.InteractVisibilityUtil;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.player.GameMode;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 
 @CheckData(name = "InteractB", description = "entity attack visibility check", decay = 0.05)
 public final class InteractB extends Check implements PacketCheck {
@@ -56,7 +56,7 @@ public final class InteractB extends Check implements PacketCheck {
         }
 
         if (flagAndAlert("entity=" + interact.getEntityId() + ", type=" + entity.type.getName().getKey())
-                && shouldCancel() && shouldModifyPackets()) {
+                && shouldCancel()) {
             event.setCancelled(true);
             player.onPacketCancel();
         }

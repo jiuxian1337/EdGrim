@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.command;
 
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.context.CommandInput;
 import org.incendo.cloud.suggestion.Suggestion;
 import org.incendo.cloud.suggestion.SuggestionProvider;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 
 import java.util.Arrays;
 import java.util.List;

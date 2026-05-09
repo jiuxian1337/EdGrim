@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.utils.team;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 import java.util.Collection;
 import java.util.HashSet;

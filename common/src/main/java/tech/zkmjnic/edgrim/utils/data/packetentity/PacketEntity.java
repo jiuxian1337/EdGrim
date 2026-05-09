@@ -15,11 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package tech.zkmjnic.edgrim.utils.data.packetentity;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.ReachInterpolationData;
-import tech.zkmjnic.edgrim.utils.data.TrackedPosition;
-import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
 import com.github.retrooper.packetevents.protocol.attribute.Attribute;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityType;
@@ -31,15 +26,13 @@ import com.github.retrooper.packetevents.util.Vector3d;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.Getter;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.data.ReachInterpolationData;
+import tech.zkmjnic.edgrim.utils.data.TrackedPosition;
+import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.UUID;
+import java.util.*;
 
 // You may not copy this check unless your anticheat is licensed under GPL
 public class PacketEntity extends TypedPacketEntity {
@@ -55,10 +48,10 @@ public class PacketEntity extends TypedPacketEntity {
     public boolean isDead = false;
     public boolean isBaby = false;
     public boolean hasGravity = true;
+    public boolean trackEntityEquipment = false;
     private ReachInterpolationData oldPacketLocation;
     private ReachInterpolationData newPacketLocation;
     private Object2IntMap<PotionType> potionsMap = null;
-    public boolean trackEntityEquipment = false;
     private EnumMap<EquipmentSlot, ItemStack> equipment = null;
 
     public PacketEntity(PlayerData player, EntityType type) {
@@ -153,7 +146,7 @@ public class PacketEntity extends TypedPacketEntity {
         // https://bugs.mojang.com/browse/MC-255263
         if (!hasPos &&
                 (player.getClientVersion().isNewerThan(ClientVersion.V_1_21_4) ||
-                (player.getClientVersion().isOlderThan(ClientVersion.V_1_20_2)) && player.getClientVersion().isNewerThan(ClientVersion.V_1_14_4))
+                        (player.getClientVersion().isOlderThan(ClientVersion.V_1_20_2)) && player.getClientVersion().isNewerThan(ClientVersion.V_1_14_4))
         ) {
             newPacketLocation.cancelLerp();
         }

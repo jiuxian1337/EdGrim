@@ -1,29 +1,27 @@
 package tech.zkmjnic.edgrim.checks.impl.packetorder;
 
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerDigging;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.nmsutil.BlockBreakSpeed;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.player.GameMode;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerDigging;
 
 import java.util.ArrayDeque;
 
 @CheckData(name = "PacketOrderI")
 public class PacketOrderI extends Check implements PostPredictionCheck {
+    private final ArrayDeque<String> flags = new ArrayDeque<>();
+    private boolean setback;
+    private boolean digging; // for placing
     public PacketOrderI(final PlayerData player) {
         super(player);
     }
-
-
-    private boolean setback;
-    private boolean digging; // for placing
-    private final ArrayDeque<String> flags = new ArrayDeque<>();
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
@@ -35,9 +33,10 @@ public class PacketOrderI extends Check implements PostPredictionCheck {
                             + ", releasing=" + player.packetOrderProcessor.isReleasing()
                             + ", digging=" + player.packetOrderProcessor.isDigging();
                     if (!player.canSkipTicks()) {
-                        if (flagAndAlert(verbose) && shouldModifyPackets()) {
+                        if (flagAndAlert(verbose)) {
                             event.setCancelled(true);
                             player.onPacketCancel();
+                            player.mitigateDamage();
                         }
                     } else {
                         flags.add(verbose);
@@ -46,9 +45,10 @@ public class PacketOrderI extends Check implements PostPredictionCheck {
             } else if (player.packetOrderProcessor.isReleasing() || player.packetOrderProcessor.isDigging()) {
                 String verbose = "type=interact, releasing=" + player.packetOrderProcessor.isReleasing() + ", digging=" + player.packetOrderProcessor.isDigging();
                 if (!player.canSkipTicks()) {
-                    if (flagAndAlert(verbose) && shouldModifyPackets()) {
+                    if (flagAndAlert(verbose)) {
                         event.setCancelled(true);
                         player.onPacketCancel();
+                        player.mitigateDamage();
                     }
                 } else {
                     flags.add(verbose);
@@ -60,9 +60,10 @@ public class PacketOrderI extends Check implements PostPredictionCheck {
             if (player.packetOrderProcessor.isReleasing() || digging) {
                 String verbose = "type=place/use, releasing=" + player.packetOrderProcessor.isReleasing() + ", digging=" + digging;
                 if (!player.canSkipTicks()) {
-                    if (flagAndAlert(verbose) && shouldModifyPackets()) {
+                    if (flagAndAlert(verbose)) {
                         event.setCancelled(true);
                         player.onPacketCancel();
+                        player.mitigateDamage();
                     }
                 } else {
                     flags.add(verbose);
@@ -83,6 +84,7 @@ public class PacketOrderI extends Check implements PostPredictionCheck {
                         if (!player.canSkipTicks()) {
                             if (flagAndAlert(verbose)) {
                                 setback = true;
+                                player.mitigateDamage();
                             }
                         } else {
                             flags.add(verbose);
@@ -117,6 +119,7 @@ public class PacketOrderI extends Check implements PostPredictionCheck {
             for (String verbose : flags) {
                 if (flagAndAlert(verbose) && setback) {
                     setbackIfAboveSetbackVL();
+                    player.mitigateDamage();
                     setback = false;
                 }
             }

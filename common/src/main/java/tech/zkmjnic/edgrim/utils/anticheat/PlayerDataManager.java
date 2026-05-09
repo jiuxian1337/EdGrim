@@ -1,15 +1,15 @@
 package tech.zkmjnic.edgrim.utils.anticheat;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.event.events.GrimJoinEvent;
 import ac.grim.grimac.api.event.events.GrimQuitEvent;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.reflection.GeyserUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.netty.channel.ChannelHelper;
 import com.github.retrooper.packetevents.protocol.player.User;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.reflection.GeyserUtil;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -78,7 +78,8 @@ public class PlayerDataManager {
 
     public void onDisconnect(User user) {
         PlayerData EdGrimPlayer = remove(user);
-        if (EdGrimPlayer != null) EdGrimAPI.INSTANCE.getEventBus().post(new GrimQuitEvent(EdGrimPlayer));
+        if (EdGrimPlayer != null)
+            EdGrimAPI.INSTANCE.getEventBus().post(new GrimQuitEvent(EdGrimPlayer));
         exemptUsers.remove(user);
 
         UUID uuid = user.getProfile().getUUID();

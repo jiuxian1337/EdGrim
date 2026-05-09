@@ -6,7 +6,8 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.math.Statistics;
 import tech.zkmjnic.edgrim.utils.math.Vec2f;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class AimHeuristicSmoothCheck implements HeuristicComponent {
     private final AimAA check;
@@ -25,7 +26,7 @@ public final class AimHeuristicSmoothCheck implements HeuristicComponent {
         final Vec2f delta = event.getDelta();
         final float absDeltaX = Math.abs(Math.abs(event.getTo().getYaw()) - Math.abs(event.getFrom().getYaw()));
         final float absDeltaY = Math.abs(Math.abs(event.getTo().getPitch()) - Math.abs(event.getFrom().getPitch()));
-        double angle = Euler.getAngleInDegrees(new Vec2f(delta.getX(), delta.getY())) % 90;
+        double angle = Euler.getAngleInDegrees(new Vec2f(delta.x(), delta.y())) % 90;
 
         if ((absDeltaY > 1.5 && absDeltaX > 0.32) || absDeltaX > 1.5) {
             stack.add(angle);
@@ -51,7 +52,7 @@ public final class AimHeuristicSmoothCheck implements HeuristicComponent {
 
 class Euler {
     public static double getAngleInDegrees(Vec2f delta) {
-        double angleInRadians = Math.atan2(delta.getX(), delta.getY());
+        double angleInRadians = Math.atan2(delta.x(), delta.y());
         double angleInDegrees = Math.toDegrees(angleInRadians);
         if (angleInDegrees < 0) {
             angleInDegrees += 360;

@@ -1,14 +1,6 @@
 package tech.zkmjnic.edgrim.checks.impl.velocity;
 
 import ac.grim.grimac.api.config.ConfigManager;
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.math.OptifineFastMath;
-import tech.zkmjnic.edgrim.utils.math.VanillaMath;
-import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
@@ -18,6 +10,14 @@ import com.github.retrooper.packetevents.protocol.potion.PotionTypes;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityVelocity;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.math.OptifineFastMath;
+import tech.zkmjnic.edgrim.utils.math.VanillaMath;
+import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
 
 import java.util.OptionalInt;
 
@@ -46,13 +46,42 @@ public class VelocityC extends Check implements PostPredictionCheck {
     private int ticks;
     private int velocitySinceTick;
     private double buffer;
-
+    private boolean allowJumpReset;
+    private double minVelocity;
     public VelocityC(PlayerData player) {
         super(player);
     }
 
-    private boolean allowJumpReset;
-    private double minVelocity;
+    private static double hypot(double x, double z) {
+        return Math.hypot(x, z);
+    }
+
+    private static float sin(float a, boolean fastMath) {
+        return fastMath ? OptifineFastMath.sin(a) : VanillaMath.sin(a);
+    }
+
+    private static float cos(float a, boolean fastMath) {
+        return fastMath ? OptifineFastMath.cos(a) : VanillaMath.cos(a);
+    }
+
+    private static double[] moveFlying(double motionX, double motionZ, float strafe, float forward, float friction, float yaw, boolean fastMath) {
+        float f = strafe * strafe + forward * forward;
+        if (f >= 1.0E-4F) {
+            f = (float) Math.sqrt(f);
+            if (f < 1.0F) {
+                f = 1.0F;
+            }
+            f = friction / f;
+            strafe = strafe * f;
+            forward = forward * f;
+
+            float f1 = sin(yaw * (float) Math.PI / 180.0F, fastMath);
+            float f2 = cos(yaw * (float) Math.PI / 180.0F, fastMath);
+            motionX += strafe * f2 - forward * f1;
+            motionZ += forward * f2 + strafe * f1;
+        }
+        return new double[]{motionX, motionZ};
+    }
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
@@ -183,6 +212,7 @@ public class VelocityC extends Check implements PostPredictionCheck {
                 buffer++;
                 if (buffer > 2) {
                     if (flagAndAlertWithSetback(String.format("ptc= %.5f%ndiff= %.5f%na= %s%nr= %s", ptc, diff, attack, rev))) {
+                        player.mitigateDamage();
                         resetState();
                         buffer *= 0.85;
                         if (ptc < 40) {
@@ -283,37 +313,6 @@ public class VelocityC extends Check implements PostPredictionCheck {
     public void rewardBufferAndVL() {
         buffer = Math.max(0, buffer - 0.5);
         reward();
-    }
-
-    private static double hypot(double x, double z) {
-        return Math.hypot(x, z);
-    }
-
-    private static float sin(float a, boolean fastMath) {
-        return fastMath ? OptifineFastMath.sin(a) : VanillaMath.sin(a);
-    }
-
-    private static float cos(float a, boolean fastMath) {
-        return fastMath ? OptifineFastMath.cos(a) : VanillaMath.cos(a);
-    }
-
-    private static double[] moveFlying(double motionX, double motionZ, float strafe, float forward, float friction, float yaw, boolean fastMath) {
-        float f = strafe * strafe + forward * forward;
-        if (f >= 1.0E-4F) {
-            f = (float) Math.sqrt(f);
-            if (f < 1.0F) {
-                f = 1.0F;
-            }
-            f = friction / f;
-            strafe = strafe * f;
-            forward = forward * f;
-
-            float f1 = sin(yaw * (float) Math.PI / 180.0F, fastMath);
-            float f2 = cos(yaw * (float) Math.PI / 180.0F, fastMath);
-            motionX += strafe * f2 - forward * f1;
-            motionZ += forward * f2 + strafe * f1;
-        }
-        return new double[]{motionX, motionZ};
     }
 
     @Override

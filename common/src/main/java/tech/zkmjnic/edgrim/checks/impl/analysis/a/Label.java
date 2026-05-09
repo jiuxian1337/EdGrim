@@ -1,4 +1,4 @@
-package tech.zkmjnic.edgrim.checks.impl.aim.analysis.a;
+package tech.zkmjnic.edgrim.checks.impl.analysis.a;
 
 public enum Label {
     LEGIT_LIKE,

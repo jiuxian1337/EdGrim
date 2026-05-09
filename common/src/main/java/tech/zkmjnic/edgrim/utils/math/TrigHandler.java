@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.utils.math;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import lombok.Getter;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 public class TrigHandler {
     private final PlayerData player;

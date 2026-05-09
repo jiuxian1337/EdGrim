@@ -1,7 +1,5 @@
 package tech.zkmjnic.edgrim.utils.item;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
 import com.github.retrooper.packetevents.protocol.component.ComponentTypes;
 import com.github.retrooper.packetevents.protocol.component.builtin.item.FoodProperties;
 import com.github.retrooper.packetevents.protocol.component.builtin.item.ItemBlocksAttacks;
@@ -11,6 +9,8 @@ import com.github.retrooper.packetevents.protocol.item.ItemStack;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.InteractionHand;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
 
 public class ItemBehaviour {
 
@@ -42,6 +42,6 @@ public class ItemBehaviour {
 
     protected boolean testFoodComponent(ItemStack item, CompensatedWorld world, PlayerData player, InteractionHand hand) {
         FoodProperties foodProperties = item.getComponentOr(ComponentTypes.FOOD, null);
-        return foodProperties != null ? foodProperties.isCanAlwaysEat() || player.food < 20 || player.gamemode == GameMode.CREATIVE : true;
+        return foodProperties == null || foodProperties.isCanAlwaysEat() || player.food < 20 || player.gamemode == GameMode.CREATIVE;
     }
 }

@@ -1,6 +1,7 @@
 package tech.zkmjnic.edgrim.manager.violationdatabase;
 
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
+
 import java.nio.ByteBuffer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

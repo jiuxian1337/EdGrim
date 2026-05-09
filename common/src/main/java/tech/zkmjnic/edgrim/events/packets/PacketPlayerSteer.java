@@ -1,13 +1,5 @@
 package tech.zkmjnic.edgrim.events.packets;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngine;
-import tech.zkmjnic.edgrim.utils.math.Vec2;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.KnownInput;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityHorse;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
@@ -17,6 +9,14 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerInput;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSteerVehicle;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngine;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.data.KnownInput;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityHorse;
+import tech.zkmjnic.edgrim.utils.math.Vec2;
 
 public class PacketPlayerSteer extends PacketListenerAbstract {
 
@@ -82,7 +82,8 @@ public class PacketPlayerSteer extends PacketListenerAbstract {
             player.packetStateData.knownInput = new KnownInput(input.isForward(), input.isBackward(), input.isLeft(), input.isRight(), input.isJump(), input.isShift(), input.isSprint());
         } else if (event.getPacketType() == PacketType.Play.Client.PLAYER_ROTATION) {
             PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
-            if (player == null || !player.inVehicle() || player.getClientVersion().isOlderThan(ClientVersion.V_1_21_2)) return;
+            if (player == null || !player.inVehicle() || player.getClientVersion().isOlderThan(ClientVersion.V_1_21_2))
+                return;
 
             // player_input is not sent every tick, so we need to stick to this packet
             this.tickPlayerWorld(player);

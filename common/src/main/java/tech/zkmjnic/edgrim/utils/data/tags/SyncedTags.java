@@ -1,6 +1,5 @@
 package tech.zkmjnic.edgrim.utils.data.tags;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -9,6 +8,7 @@ import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import com.github.retrooper.packetevents.resources.ResourceLocation;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTags;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 import java.util.HashMap;
 import java.util.Map;

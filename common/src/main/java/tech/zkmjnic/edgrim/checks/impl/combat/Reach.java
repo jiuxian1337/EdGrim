@@ -16,15 +16,6 @@
 package tech.zkmjnic.edgrim.checks.impl.combat;
 
 import ac.grim.grimac.api.config.ConfigManager;
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
-import tech.zkmjnic.edgrim.utils.data.packetentity.dragon.PacketEntityEnderDragonPart;
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
-import tech.zkmjnic.edgrim.utils.nmsutil.ReachUtils;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityType;
@@ -37,6 +28,15 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientIn
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.PacketCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
+import tech.zkmjnic.edgrim.utils.data.packetentity.dragon.PacketEntityEnderDragonPart;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
+import tech.zkmjnic.edgrim.utils.nmsutil.ReachUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

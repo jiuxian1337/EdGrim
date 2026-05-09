@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.utils.data;
 
+import com.github.retrooper.packetevents.util.Vector3i;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityShulker;
-import com.github.retrooper.packetevents.util.Vector3i;
 
 import java.util.Objects;
 

@@ -1,28 +1,26 @@
 package tech.zkmjnic.edgrim.manager.violationdatabase.mysql;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.plugin.GrimPlugin;
-import tech.zkmjnic.edgrim.manager.violationdatabase.DatabaseConstants;
-import tech.zkmjnic.edgrim.manager.violationdatabase.DatabaseDialect;
-import tech.zkmjnic.edgrim.manager.violationdatabase.DatabaseUtils;
-import tech.zkmjnic.edgrim.manager.violationdatabase.Violation;
-import tech.zkmjnic.edgrim.manager.violationdatabase.ViolationDatabase;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-
 import com.github.retrooper.packetevents.PacketEvents;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.manager.violationdatabase.*;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
 public class MySQLViolationDatabase implements ViolationDatabase {
 
     private final GrimPlugin plugin;
-    private HikariDataSource dataSource;
     private final DatabaseDialect dialect;
+    private HikariDataSource dataSource;
 
     public MySQLViolationDatabase(GrimPlugin plugin, String url, String database, String username, String password) {
         this.plugin = plugin;
@@ -285,6 +283,6 @@ public class MySQLViolationDatabase implements ViolationDatabase {
         String wantUrl = "jdbc:mysql://" + host + "/" + db;
         return wantUrl.equalsIgnoreCase(dataSource.getJdbcUrl())
                 && user.equals(dataSource.getUsername())
-                && pwd .equals(dataSource.getPassword());
+                && pwd.equals(dataSource.getPassword());
     }
 }

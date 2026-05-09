@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.platform.bukkit.scheduler.folia;
 
 import ac.grim.grimac.api.plugin.GrimPlugin;
+import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 import tech.zkmjnic.edgrim.platform.api.scheduler.GlobalRegionScheduler;
 import tech.zkmjnic.edgrim.platform.api.scheduler.TaskHandle;
 import tech.zkmjnic.edgrim.platform.bukkit.EdGrimBukkitLoaderPlugin;
-import org.bukkit.Bukkit;
-import org.jetbrains.annotations.NotNull;
 
 public class FoliaGlobalRegionScheduler implements GlobalRegionScheduler {
 

@@ -1,15 +1,15 @@
 package tech.zkmjnic.edgrim.utils.inventory;
 
+import com.github.retrooper.packetevents.protocol.item.ItemStack;
+import com.github.retrooper.packetevents.protocol.item.type.ItemType;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
+import lombok.Getter;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.inventory.inventory.AbstractContainerMenu;
 import tech.zkmjnic.edgrim.utils.inventory.slot.EquipmentSlot;
 import tech.zkmjnic.edgrim.utils.inventory.slot.ResultSlot;
 import tech.zkmjnic.edgrim.utils.inventory.slot.Slot;
 import tech.zkmjnic.edgrim.utils.lists.CorrectingPlayerInventoryStorage;
-import com.github.retrooper.packetevents.protocol.item.ItemStack;
-import com.github.retrooper.packetevents.protocol.item.type.ItemType;
-import com.github.retrooper.packetevents.protocol.player.GameMode;
-import lombok.Getter;
 
 public class Inventory extends AbstractContainerMenu {
     public static final int SLOT_OFFHAND = 45;

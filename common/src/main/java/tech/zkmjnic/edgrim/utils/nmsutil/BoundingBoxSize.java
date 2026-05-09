@@ -1,14 +1,14 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.packetentity.*;
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityType;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.util.Vector3d;
 import lombok.experimental.UtilityClass;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.data.packetentity.*;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
 
 /**
  * Yeah, I know this is a bad class

@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.platform.bukkit.manager;
 
-import tech.zkmjnic.edgrim.platform.api.PlatformPlugin;
-import tech.zkmjnic.edgrim.platform.api.manager.PlatformPluginManager;
-import tech.zkmjnic.edgrim.platform.bukkit.BukkitPlatformPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import tech.zkmjnic.edgrim.platform.api.PlatformPlugin;
+import tech.zkmjnic.edgrim.platform.api.manager.PlatformPluginManager;
+import tech.zkmjnic.edgrim.platform.bukkit.BukkitPlatformPlugin;
 
 public class BukkitPlatformPluginManager implements PlatformPluginManager {
 

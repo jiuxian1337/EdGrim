@@ -48,6 +48,7 @@ public final class AimD extends Check implements RotationCheck {
 
     @Override
     public void process(RotationUpdate rotationUpdate) {
+        if (!shouldModifyPackets()) return;
         if (!player.actionManager.hasAttackedSince(1400L)) {
             rotation.clear();
             setRotations(null);
@@ -65,8 +66,8 @@ public final class AimD extends Check implements RotationCheck {
         }
 
         final Vec2f delta = rotationUpdate.getDelta();
-        final float deltaYawAbs = Math.abs(delta.getX());
-        final float deltaPitchAbs = Math.abs(delta.getY());
+        final float deltaYawAbs = Math.abs(delta.x());
+        final float deltaPitchAbs = Math.abs(delta.y());
 
         // Ignore very small housekeeping rotations so meaningful combat input reaches
         // analysis thresholds faster instead of being drowned in tiny noise.
@@ -103,8 +104,8 @@ public final class AimD extends Check implements RotationCheck {
         List<Float> pitches = new ArrayList<>(rotations.size());
 
         for (Vec2f rot : rotations) {
-            yaws.add(rot.getX());
-            pitches.add(rot.getY());
+            yaws.add(rot.x());
+            pitches.add(rot.y());
         }
 
         float avgYaw = processor.getAvgYaw();
@@ -358,7 +359,7 @@ public final class AimD extends Check implements RotationCheck {
 
         for (int i = rotations.size() - 1; i >= 0; i--) {
             Vec2f rot = rotations.get(i);
-            if (Math.abs(rot.getX()) > 0.1 || Math.abs(rot.getY()) > 0.1) {
+            if (Math.abs(rot.x()) > 0.1 || Math.abs(rot.y()) > 0.1) {
                 break;
             }
             stillnessStart = update.getTick();
@@ -374,11 +375,11 @@ public final class AimD extends Check implements RotationCheck {
             Vec2f prev = rotations.get(i - 1);
             Vec2f curr = rotations.get(i);
 
-            if (Math.abs(prev.getX()) < 0.1 && Math.abs(prev.getY()) < 0.1) {
-                if (Math.abs(curr.getX()) >= 0.1 || Math.abs(curr.getY()) >= 0.1) {
+            if (Math.abs(prev.x()) < 0.1 && Math.abs(prev.y()) < 0.1) {
+                if (Math.abs(curr.x()) >= 0.1 || Math.abs(curr.y()) >= 0.1) {
                     return Math.sqrt(
-                            Math.pow(curr.getX() - prev.getX(), 2) +
-                                    Math.pow(curr.getY() - prev.getY(), 2)
+                            Math.pow(curr.x() - prev.x(), 2) +
+                                    Math.pow(curr.y() - prev.y(), 2)
                     );
                 }
             }
@@ -442,10 +443,10 @@ public final class AimD extends Check implements RotationCheck {
 
     private double variation() {
         double[] stats = rotations.stream()
-                .filter(r -> Math.abs(r.getX()) >= 0.001 || Math.abs(r.getY()) >= 0.001)
+                .filter(r -> Math.abs(r.x()) >= 0.001 || Math.abs(r.y()) >= 0.001)
                 .collect(() -> new double[3], (a, r) -> {
-                    a[0] += r.getX() + r.getY();
-                    a[1] += Math.pow(r.getX(), 2) + Math.pow(r.getY(), 2);
+                    a[0] += r.x() + r.y();
+                    a[1] += Math.pow(r.x(), 2) + Math.pow(r.y(), 2);
                     a[2] += 2;
                 }, (a, b) -> {
                     a[0] += b[0];
@@ -461,8 +462,8 @@ public final class AimD extends Check implements RotationCheck {
         int bound = rotations.size();
         for (int i1 = 1; i1 < bound; i1++) {
             Vec2f prev = rotations.get(i1 - 1), curr = rotations.get(i1);
-            double yaw = Math.round((curr.getX() - prev.getX()) * 10) / 10.0;
-            double pitch = Math.round((curr.getY() - prev.getY()) * 10) / 10.0;
+            double yaw = Math.round((curr.x() - prev.x()) * 10) / 10.0;
+            double pitch = Math.round((curr.y() - prev.y()) * 10) / 10.0;
             int changes = 0;
             if (Math.abs(yaw) >= 0.1) {
                 counts.merge(String.valueOf(yaw), 1, Integer::sum);

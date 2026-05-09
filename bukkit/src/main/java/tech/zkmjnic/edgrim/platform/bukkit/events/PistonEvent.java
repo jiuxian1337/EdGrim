@@ -1,10 +1,5 @@
 package tech.zkmjnic.edgrim.platform.bukkit.events;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.platform.bukkit.utils.convert.BukkitConversionUtils;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.PistonData;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.util.Vector3i;
@@ -15,17 +10,21 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.platform.bukkit.utils.convert.BukkitConversionUtils;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.data.PistonData;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PistonEvent implements Listener {
 
-    private final Material SLIME_BLOCK = Material.getMaterial("SLIME_BLOCK");
-    private final Material HONEY_BLOCK = Material.getMaterial("HONEY_BLOCK");
-
     private static final double MAX_HORIZONTAL_DISTANCE = 24.0;
     private static final double MAX_VERTICAL_DISTANCE = 64.0;
+    private final Material SLIME_BLOCK = Material.getMaterial("SLIME_BLOCK");
+    private final Material HONEY_BLOCK = Material.getMaterial("HONEY_BLOCK");
 
     // accuracy isn't that important, it's close enough and performant
     private static boolean isCloseEnough(Vector3i vectorA, Vector3d vectorB) {

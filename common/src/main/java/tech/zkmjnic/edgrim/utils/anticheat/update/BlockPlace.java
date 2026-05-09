@@ -1,22 +1,5 @@
 package tech.zkmjnic.edgrim.utils.anticheat.update;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-import tech.zkmjnic.edgrim.utils.collisions.AxisSelect;
-import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.DoorHandler;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.HitData;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
-import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
-import tech.zkmjnic.edgrim.utils.nmsutil.BoundingBoxSize;
-import tech.zkmjnic.edgrim.utils.nmsutil.GetBoundingBox;
-import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
-import tech.zkmjnic.edgrim.utils.nmsutil.ReachUtils;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
@@ -35,29 +18,49 @@ import com.github.retrooper.packetevents.util.Vector3f;
 import com.github.retrooper.packetevents.util.Vector3i;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
+import tech.zkmjnic.edgrim.utils.collisions.AxisSelect;
+import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
+import tech.zkmjnic.edgrim.utils.collisions.blocks.DoorHandler;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.data.HitData;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
+import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
+import tech.zkmjnic.edgrim.utils.nmsutil.BoundingBoxSize;
+import tech.zkmjnic.edgrim.utils.nmsutil.GetBoundingBox;
+import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
+import tech.zkmjnic.edgrim.utils.nmsutil.ReachUtils;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class BlockPlace {
-    private static final BlockFace[] BY_3D = { BlockFace.DOWN, BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST, BlockFace.EAST };
-    public static final BlockFace[] BY_2D = { BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST };
+    public static final BlockFace[] BY_2D = {BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST};
+    private static final BlockFace[] BY_3D = {BlockFace.DOWN, BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST, BlockFace.EAST};
     public final boolean isBlock;
-    // Allocated once instead of in functions to reduce new[] calls that need to be made. Since per-instance BlockPlace is always dealt with on the same thread we can use 1 buffer array
-    private final SimpleCollisionBox[] collisions = new SimpleCollisionBox[ComplexCollisionBox.DEFAULT_MAX_COLLISION_BOX_SIZE];
-    public Vector3i position;
     public final InteractionHand hand;
-    public boolean replaceClicked;
-    @Getter private boolean isCancelled;
-    private final PlayerData player;
     public final ItemStack itemStack;
     public final StateType material;
     public final @Nullable HitData hitData;
-    @Getter private int faceId;
-    @Getter private BlockFace face;
+    public final int sequence;
+    // Allocated once instead of in functions to reduce new[] calls that need to be made. Since per-instance BlockPlace is always dealt with on the same thread we can use 1 buffer array
+    private final SimpleCollisionBox[] collisions = new SimpleCollisionBox[ComplexCollisionBox.DEFAULT_MAX_COLLISION_BOX_SIZE];
+    private final PlayerData player;
+    public Vector3i position;
+    public boolean replaceClicked;
     public boolean isInside;
     public Vector3f cursor;
-    public final int sequence;
+    @Getter
+    private boolean isCancelled;
+    @Getter
+    private int faceId;
+    @Getter
+    private BlockFace face;
 
     public BlockPlace(PlayerData player, InteractionHand hand, Vector3i position, int faceId, BlockFace face, ItemStack itemStack, @Nullable HitData hitData, int sequence) {
         this.player = player;

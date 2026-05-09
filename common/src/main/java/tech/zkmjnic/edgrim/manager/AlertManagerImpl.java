@@ -1,19 +1,19 @@
 package tech.zkmjnic.edgrim.manager;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.GrimUser;
 import ac.grim.grimac.api.alerts.AlertManager;
 import ac.grim.grimac.api.config.ConfigManager;
 import ac.grim.grimac.api.config.ConfigReloadable;
+import net.kyori.adventure.text.Component;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.manager.init.start.StartableInitable;
 import tech.zkmjnic.edgrim.platform.api.PlatformServer;
 import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
-import net.kyori.adventure.text.Component;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -27,46 +27,15 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public final class AlertManagerImpl implements AlertManager, ConfigReloadable, StartableInitable {
     private static @NonNull PlatformServer platformServer;
 
-    private enum AlertType {
-        NORMAL, VERBOSE, BRAND;
+    /**
+     * Gets the cached message, applies placeholders, and sends it to a PlatformPlayer.
+     */
+    private static void sendToggleMessage(@NonNull PlatformPlayer player, boolean enabled, @NonNull AlertType type) {
+        String rawMessage = type.getToggleMessage(enabled);
+        if (rawMessage.isEmpty()) return;
 
-        public String enableMessage;
-        public String disableMessage;
-        public final Set<PlatformPlayer> players = new CopyOnWriteArraySet<>();
-        public boolean console;
-
-        @Contract(pure = true)
-        public boolean hasListeners() {
-            return !players.isEmpty() || console;
-        }
-
-        @Contract(pure = true)
-        public String getToggleMessage(boolean enabled) {
-            return enabled ? enableMessage : disableMessage;
-        }
-
-        /**
-         * @param component the message to send to listeners
-         * @param excluding the listeners to exclude, null means console
-         * @return listeners this message was sent to, null means console
-         */
-        public Set<@Nullable PlatformPlayer> send(Component component, @Nullable Set<@Nullable PlatformPlayer> excluding) {
-            HashSet<PlatformPlayer> listeners = new HashSet<>(players);
-            if (excluding != null) {
-                listeners.removeAll(excluding);
-            }
-
-            for (PlatformPlayer platformPlayer : listeners) {
-                platformPlayer.sendMessage(component);
-            }
-
-            if (console && (excluding == null || !excluding.contains(null))) {
-                platformServer.getConsoleSender().sendMessage(component);
-                listeners.add(null);
-            }
-
-            return listeners;
-        }
+        String messageWithPlaceholders = MessageUtil.replacePlaceholders(player, rawMessage);
+        player.sendMessage(MessageUtil.miniMessage(messageWithPlaceholders));
     }
 
     @Override
@@ -90,8 +59,9 @@ public final class AlertManagerImpl implements AlertManager, ConfigReloadable, S
 
     /**
      * Gets the non-null PlatformPlayer from a GrimUser.
+     *
      * @throws IllegalArgumentException if the user is not a EdGrimPlayer.
-     * @throws NullPointerException if the EdGrimPlayer's platformPlayer is null.
+     * @throws NullPointerException     if the EdGrimPlayer's platformPlayer is null.
      */
     @NonNull
     private PlatformPlayer requirePlatformPlayerFromUser(@NonNull GrimUser user) {
@@ -108,15 +78,6 @@ public final class AlertManagerImpl implements AlertManager, ConfigReloadable, S
         Objects.requireNonNull(platformPlayer, "AlertManager action for user " + user.getName() + " with null platformPlayer (potentially during early join)");
 
         return platformPlayer;
-    }
-
-    /** Gets the cached message, applies placeholders, and sends it to a PlatformPlayer. */
-    private static void sendToggleMessage(@NonNull PlatformPlayer player, boolean enabled, @NonNull AlertType type) {
-        String rawMessage = type.getToggleMessage(enabled);
-        if (rawMessage.isEmpty()) return;
-
-        String messageWithPlaceholders = MessageUtil.replacePlaceholders(player, rawMessage);
-        player.sendMessage(MessageUtil.miniMessage(messageWithPlaceholders));
     }
 
     @Override
@@ -368,5 +329,47 @@ public final class AlertManagerImpl implements AlertManager, ConfigReloadable, S
     @Contract(pure = true)
     public boolean hasAlertListeners() {
         return AlertType.NORMAL.hasListeners();
+    }
+
+    private enum AlertType {
+        NORMAL, VERBOSE, BRAND;
+
+        public final Set<PlatformPlayer> players = new CopyOnWriteArraySet<>();
+        public String enableMessage;
+        public String disableMessage;
+        public boolean console;
+
+        @Contract(pure = true)
+        public boolean hasListeners() {
+            return !players.isEmpty() || console;
+        }
+
+        @Contract(pure = true)
+        public String getToggleMessage(boolean enabled) {
+            return enabled ? enableMessage : disableMessage;
+        }
+
+        /**
+         * @param component the message to send to listeners
+         * @param excluding the listeners to exclude, null means console
+         * @return listeners this message was sent to, null means console
+         */
+        public Set<@Nullable PlatformPlayer> send(Component component, @Nullable Set<@Nullable PlatformPlayer> excluding) {
+            HashSet<PlatformPlayer> listeners = new HashSet<>(players);
+            if (excluding != null) {
+                listeners.removeAll(excluding);
+            }
+
+            for (PlatformPlayer platformPlayer : listeners) {
+                platformPlayer.sendMessage(component);
+            }
+
+            if (console && (excluding == null || !excluding.contains(null))) {
+                platformServer.getConsoleSender().sendMessage(component);
+                listeners.add(null);
+            }
+
+            return listeners;
+        }
     }
 }

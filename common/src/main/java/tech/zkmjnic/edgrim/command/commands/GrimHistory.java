@@ -1,5 +1,9 @@
 package tech.zkmjnic.edgrim.command.commands;
 
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.context.CommandContext;
+import org.incendo.cloud.parser.standard.IntegerParser;
+import org.incendo.cloud.parser.standard.StringParser;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.command.BuildableCommand;
 import tech.zkmjnic.edgrim.manager.violationdatabase.Violation;
@@ -7,10 +11,6 @@ import tech.zkmjnic.edgrim.manager.violationdatabase.ViolationDatabaseManager;
 import tech.zkmjnic.edgrim.platform.api.player.OfflinePlatformPlayer;
 import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
-import org.incendo.cloud.CommandManager;
-import org.incendo.cloud.context.CommandContext;
-import org.incendo.cloud.parser.standard.IntegerParser;
-import org.incendo.cloud.parser.standard.StringParser;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -117,7 +117,8 @@ public class GrimHistory implements BuildableCommand {
         if (days > 0) result.append(days).append("d ");
         if (hours > 0) result.append(hours).append("h ");
         if (minutes > 0) result.append(minutes).append("m ");
-        if (seconds > 0 || result.length() == 0) result.append(seconds).append("s"); // Always show seconds if nothing else, or if it's 0s.
+        if (seconds > 0 || result.length() == 0)
+            result.append(seconds).append("s"); // Always show seconds if nothing else, or if it's 0s.
 
         return result.toString().trim();
     }

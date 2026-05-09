@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.platform.bukkit.player;
 
-import tech.zkmjnic.edgrim.platform.api.player.OfflinePlatformPlayer;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.platform.api.player.OfflinePlatformPlayer;
 
 import java.util.Objects;
 import java.util.UUID;

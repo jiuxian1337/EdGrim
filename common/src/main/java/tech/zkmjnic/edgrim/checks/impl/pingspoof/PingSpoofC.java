@@ -1,17 +1,18 @@
 package tech.zkmjnic.edgrim.checks.impl.pingspoof;
 
-import ac.grim.grimac.api.config.ConfigManager;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.math.LatencyHistogram;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.player.GameMode;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @CheckData(name = "PingSpoofC", description = "statistical latency anomaly (histogram + backtrack VL)", decay = 0.05)
 public final class PingSpoofC extends Check implements PacketCheck {
@@ -22,7 +23,6 @@ public final class PingSpoofC extends Check implements PacketCheck {
 
     // Backtrack VL (port of Intave ViolationMetadata.backtrackVL)
     private long lastBacktrackVLChange;
-    private long lastBacktrackHitCancel;
 
     // Short-term rolling average (for deviation check)
     private long shortSum, shortCount;
@@ -32,23 +32,17 @@ public final class PingSpoofC extends Check implements PacketCheck {
     private long lastFreqMismatchReport;
     private String lastFreqMismatchMessage = "";
     private long lastDeviationRecheck;
-    private int cancelVL;
 
     public PingSpoofC(PlayerData player) {
         super(player);
     }
 
     @Override
-    public void onReload(ConfigManager config) {
-        super.onReload(config);
-        this.cancelVL = config.getIntElse(getConfigName() + ".cancelVL", 5);
-    }
-
-    @Override
     public void onPacketReceive(PacketReceiveEvent event) {
         if (event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
             WrapperPlayClientInteractEntity interact = new WrapperPlayClientInteractEntity(event);
-            if (interact.getAction() != WrapperPlayClientInteractEntity.InteractAction.ATTACK) return;
+            if (interact.getAction() != WrapperPlayClientInteractEntity.InteractAction.ATTACK)
+                return;
             if (player.gamemode == GameMode.CREATIVE || player.gamemode == GameMode.SPECTATOR || player.inVehicle())
                 return;
 
@@ -101,11 +95,7 @@ public final class PingSpoofC extends Check implements PacketCheck {
                                     " mean=" + (int) mean + "ms sd=" + (int) stdDev +
                                     (frequencyMismatch ? " freq:" + lastFreqMismatchMessage : "")
                     )) {
-                        if (shouldCancel()) {
-                            event.setCancelled(true);
-                            player.onPacketCancel();
-                        }
-                        lastBacktrackHitCancel = System.currentTimeMillis();
+                        player.mitigateDamage();
                     }
                 }
                 lastBacktrackVLChange = System.currentTimeMillis();
@@ -117,14 +107,6 @@ public final class PingSpoofC extends Check implements PacketCheck {
             if (System.currentTimeMillis() - lastBacktrackVLChange > 7500) {
                 buffer = Math.max(0, buffer - 1);
                 lastBacktrackVLChange = System.currentTimeMillis();
-            }
-
-            if (System.currentTimeMillis() - lastBacktrackHitCancel < 5000) {
-                if (shouldCancel() && shouldModifyPackets()) {
-                    event.setCancelled(true);
-                    player.onPacketCancel();
-                    player.mitigateDamage();
-                }
             }
 
             return;
@@ -171,10 +153,6 @@ public final class PingSpoofC extends Check implements PacketCheck {
         return System.currentTimeMillis() - lastFreqMismatchReport < 8000;
     }
 
-    private boolean shouldCancel() {
-        return violations >= cancelVL;
-    }
-
     private boolean isFlyingPacket(PacketReceiveEvent event) {
         return event.getPacketType() == PacketType.Play.Client.PLAYER_FLYING
                 || event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION
@@ -191,6 +169,8 @@ public final class PingSpoofC extends Check implements PacketCheck {
             this.time = System.currentTimeMillis();
         }
 
-        long latency() { return latency; }
+        long latency() {
+            return latency;
+        }
     }
 }

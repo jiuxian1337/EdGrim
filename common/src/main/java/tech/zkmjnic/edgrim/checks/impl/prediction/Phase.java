@@ -1,5 +1,9 @@
 package tech.zkmjnic.edgrim.checks.impl.prediction;
 
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
+import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
+import com.github.retrooper.packetevents.protocol.world.states.defaulttags.BlockTags;
+import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
@@ -7,10 +11,6 @@ import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
-import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
-import com.github.retrooper.packetevents.protocol.world.states.defaulttags.BlockTags;
-import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 
 import java.util.ArrayList;
 import java.util.List;

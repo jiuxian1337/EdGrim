@@ -43,5 +43,7 @@ public final class LatencyHistogram {
         return Math.exp(-Math.pow(latency - m, 2) / (2 * Math.pow(stdDev, 2))) / (stdDev * Math.sqrt(2 * Math.PI));
     }
 
-    public long getSize() { return size; }
+    public long getSize() {
+        return size;
+    }
 }

@@ -1,8 +1,5 @@
 package tech.zkmjnic.edgrim.platform.bukkit.world;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.platform.api.Platform;
-import tech.zkmjnic.edgrim.platform.api.world.PlatformChunk;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
@@ -10,6 +7,9 @@ import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.platform.api.Platform;
+import tech.zkmjnic.edgrim.platform.api.world.PlatformChunk;
 
 import java.util.HashMap;
 import java.util.Map;

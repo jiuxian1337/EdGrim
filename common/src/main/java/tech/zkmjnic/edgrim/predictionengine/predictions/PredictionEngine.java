@@ -1,28 +1,24 @@
 package tech.zkmjnic.edgrim.predictionengine.predictions;
 
+import com.github.retrooper.packetevents.protocol.attribute.Attributes;
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.SneakingEstimator;
 import tech.zkmjnic.edgrim.predictionengine.movementtick.MovementTickerPlayer;
-import tech.zkmjnic.edgrim.utils.math.Vec2;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.KnownInput;
 import tech.zkmjnic.edgrim.utils.data.Pair;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
+import tech.zkmjnic.edgrim.utils.math.Vec2;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import tech.zkmjnic.edgrim.utils.math.VectorUtils;
 import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
 import tech.zkmjnic.edgrim.utils.nmsutil.GetBoundingBox;
 import tech.zkmjnic.edgrim.utils.nmsutil.JumpPower;
 import tech.zkmjnic.edgrim.utils.nmsutil.Riptide;
-import com.github.retrooper.packetevents.protocol.attribute.Attributes;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PredictionEngine {
 
@@ -402,7 +398,8 @@ public class PredictionEngine {
 
     private void addNonEffectiveAI(PlayerData player, Set<VectorData> data) {
         // For some reason on 1.21.5+ this no longer applies
-        if (!player.inVehicle() || player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_21_5)) return;
+        if (!player.inVehicle() || player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_21_5))
+            return;
 
         for (VectorData vectorData : data) {
             vectorData.vector = vectorData.vector.clone().multiply(0.98);

@@ -1,17 +1,5 @@
 package tech.zkmjnic.edgrim.events.packets;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsE;
-import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsF;
-import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsG;
-import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsH;
-import tech.zkmjnic.edgrim.checks.impl.elytra.ElytraC;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.data.KnownInput;
-import tech.zkmjnic.edgrim.utils.data.TrackerData;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntitySelf;
-import tech.zkmjnic.edgrim.utils.enums.Pose;
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
@@ -24,6 +12,18 @@ import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerJoinGame;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerRespawn;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateHealth;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsE;
+import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsF;
+import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsG;
+import tech.zkmjnic.edgrim.checks.impl.badpackets.BadPacketsH;
+import tech.zkmjnic.edgrim.checks.impl.elytra.ElytraC;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.data.KnownInput;
+import tech.zkmjnic.edgrim.utils.data.TrackerData;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntitySelf;
+import tech.zkmjnic.edgrim.utils.enums.Pose;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 
 import java.util.List;
 import java.util.Objects;

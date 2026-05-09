@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.platform.bukkit.utils.anticheat;
 
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-import tech.zkmjnic.edgrim.utils.reflection.ReflectionUtils;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import org.bukkit.entity.Player;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
+import tech.zkmjnic.edgrim.utils.reflection.ReflectionUtils;
 
 import java.lang.reflect.Method;
 

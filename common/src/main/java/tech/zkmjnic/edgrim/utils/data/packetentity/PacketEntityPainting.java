@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.protocol.world.Direction;
 import lombok.Getter;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 import java.util.UUID;
 

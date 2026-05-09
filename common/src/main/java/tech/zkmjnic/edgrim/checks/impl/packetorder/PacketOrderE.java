@@ -1,23 +1,22 @@
 package tech.zkmjnic.edgrim.checks.impl.packetorder;
 
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 
 import java.util.ArrayDeque;
 
 @CheckData(name = "PacketOrderE", experimental = true)
 public class PacketOrderE extends Check implements PostPredictionCheck {
+    private final ArrayDeque<String> flags = new ArrayDeque<>();
+    private boolean setback;
     public PacketOrderE(final PlayerData player) {
         super(player);
     }
-
-    private final ArrayDeque<String> flags = new ArrayDeque<>();
-    private boolean setback;
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {

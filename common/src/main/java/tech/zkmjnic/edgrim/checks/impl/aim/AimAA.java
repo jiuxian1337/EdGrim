@@ -7,12 +7,13 @@ import tech.zkmjnic.edgrim.checks.type.RotationCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @CheckData(name = "AimAA", description = "multi-component heuristic aim check", decay = 0.05)
 public final class AimAA extends Check implements RotationCheck {
-    private long lastAttack;
     private final Set<HeuristicComponent> components;
+    private long lastAttack;
 
     public AimAA(PlayerData player) {
         super(player);

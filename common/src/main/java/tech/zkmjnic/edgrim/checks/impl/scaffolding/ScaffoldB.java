@@ -1,7 +1,10 @@
 package tech.zkmjnic.edgrim.checks.impl.scaffolding;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.config.ConfigManager;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.potion.PotionTypes;
+import com.github.retrooper.packetevents.protocol.world.BlockFace;
+import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.ScaffoldCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
@@ -9,9 +12,6 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import tech.zkmjnic.edgrim.utils.nmsutil.ReachUtils;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.potion.PotionTypes;
-import com.github.retrooper.packetevents.protocol.world.BlockFace;
 
 import java.util.ArrayDeque;
 import java.util.LinkedList;
@@ -49,6 +49,20 @@ public final class ScaffoldB extends ScaffoldCheck {
         super(player);
     }
 
+    private static boolean isHorizontal(BlockFace face) {
+        return face == BlockFace.NORTH || face == BlockFace.SOUTH || face == BlockFace.WEST || face == BlockFace.EAST;
+    }
+
+    private static double getAngle(Vector3dm a, Vector3dm b) {
+        final double denominator = a.length() * b.length();
+        if (denominator <= 0.0D) {
+            return 0.0D;
+        }
+
+        final double cosine = GrimMath.clamp(a.dot(b) / denominator, -1.0D, 1.0D);
+        return Math.acos(cosine);
+    }
+
     @Override
     public void onBlockPlace(final BlockPlace place) {
         if (!place.isBlock) {
@@ -57,13 +71,6 @@ public final class ScaffoldB extends ScaffoldCheck {
 
         final int serverTick = EdGrimAPI.INSTANCE.getTickManager().currentTick;
         processPendingPlacements(serverTick);
-
-        if (cancelPlaceIfWindowActive(place)) {
-            cancelNextPlace = false;
-            cancelNextPlaceSourceTick = -1;
-            tags.clear();
-            return;
-        }
 
         if (player.isSneaking) {
             sneakTime = currentTick;
@@ -86,7 +93,7 @@ public final class ScaffoldB extends ScaffoldCheck {
         }
 
         if (cancel && shouldModifyPackets()) {
-            place.resync();
+            startCancelWindow();
         }
 
         cancelNextPlace = false;
@@ -189,7 +196,7 @@ public final class ScaffoldB extends ScaffoldCheck {
                 && yDistance < 0.1D
                 && jumpPhase < 4) {
             tags.add("Sprint");
-            if (flagAndAlert("tags=" + String.join("+", tags)) && shouldCancel()) {
+            if (flagAndAlert("tags=" + String.join("+", tags))) {
                 startCancelWindow();
                 cancel = true;
                 player.mitigateDamage();
@@ -270,33 +277,7 @@ public final class ScaffoldB extends ScaffoldCheck {
         return place.getFace().getOppositeFace();
     }
 
-    private static boolean isHorizontal(BlockFace face) {
-        return face == BlockFace.NORTH || face == BlockFace.SOUTH || face == BlockFace.WEST || face == BlockFace.EAST;
-    }
-
-    private static double getAngle(Vector3dm a, Vector3dm b) {
-        final double denominator = a.length() * b.length();
-        if (denominator <= 0.0D) {
-            return 0.0D;
-        }
-
-        final double cosine = GrimMath.clamp(a.dot(b) / denominator, -1.0D, 1.0D);
-        return Math.acos(cosine);
-    }
-
-    private static final class PendingPlacement {
-        private final int tick;
-        private final float yaw;
-        private final int slot;
-        private final boolean checkRotate;
-        private final boolean checkToolSwitch;
-
-        private PendingPlacement(int tick, float yaw, int slot, boolean checkRotate, boolean checkToolSwitch) {
-            this.tick = tick;
-            this.yaw = yaw;
-            this.slot = slot;
-            this.checkRotate = checkRotate;
-            this.checkToolSwitch = checkToolSwitch;
-        }
+    private record PendingPlacement(int tick, float yaw, int slot, boolean checkRotate,
+                                    boolean checkToolSwitch) {
     }
 }

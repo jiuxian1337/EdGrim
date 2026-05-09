@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.checks.impl.timer;
 
 import ac.grim.grimac.api.config.ConfigManager;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.player.PlayerData;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 
 // This works around 1.3 timer, to prevent too high abuse - maybe there's a better solution?
 @CheckData(name = "TimerLimit", setback = 10)

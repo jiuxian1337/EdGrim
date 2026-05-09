@@ -53,10 +53,10 @@ public final class AimR extends Check implements RotationCheck {
         if (AimTargetTraceUtil.centerDistance(currentBox, lastTargetBox) >= 0.03125D) {
             Vec2f rotation = AimTargetTraceUtil.predictiveRotations(player.lastX, player.lastY, player.lastZ, currentBox, lastTargetBox);
             if (update.getDeltaYRotABS() > 0.0F) {
-                yawMatches.add(Math.abs(MathUtil.getAngleDifference(rotation.getX(), update.getTo().getYaw())));
+                yawMatches.add(Math.abs(MathUtil.getAngleDifference(rotation.x(), update.getTo().getYaw())));
             }
             if (update.getDeltaXRotABS() > 0.0F) {
-                pitchMatches.add(Math.abs(MathUtil.getAngleDifference(rotation.getY(), update.getTo().getPitch())));
+                pitchMatches.add(Math.abs(MathUtil.getAngleDifference(rotation.y(), update.getTo().getPitch())));
             }
         }
 

@@ -1,8 +1,9 @@
-package tech.zkmjnic.edgrim.checks.impl.aim.analysis.a;
+package tech.zkmjnic.edgrim.checks.impl.analysis.a;
 
 import java.util.List;
 
 public final class WindowSignature {
+    public final double totalEnergy;
     final double[] yawAbsNorm;
     final double[] pitchAbsNorm;
     final double[] energyNorm;
@@ -10,7 +11,6 @@ public final class WindowSignature {
     final int[] pitchSign;
     final int[] yawFlip;
     final int[] pitchFlip;
-    public final double totalEnergy;
     final double peakEnergy;
     final double dominantConsistency;
     final double centerBandRatio;

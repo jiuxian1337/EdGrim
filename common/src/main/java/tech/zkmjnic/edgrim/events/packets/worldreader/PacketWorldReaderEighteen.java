@@ -1,6 +1,5 @@
 package tech.zkmjnic.edgrim.events.packets.worldreader;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
@@ -10,6 +9,7 @@ import com.github.retrooper.packetevents.protocol.world.chunk.impl.v_1_18.Chunk_
 import com.github.retrooper.packetevents.protocol.world.chunk.reader.impl.ChunkReader_v1_18;
 import com.github.retrooper.packetevents.protocol.world.dimension.DimensionTypes;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 public class PacketWorldReaderEighteen extends BasePacketWorldReader {
 

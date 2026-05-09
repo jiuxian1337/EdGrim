@@ -1,5 +1,9 @@
 package tech.zkmjnic.edgrim.checks.impl.scaffolding;
 
+import com.github.retrooper.packetevents.protocol.attribute.Attributes;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
+import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
+import com.github.retrooper.packetevents.util.Vector3i;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
@@ -7,10 +11,6 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import tech.zkmjnic.edgrim.utils.math.VectorUtils;
-import com.github.retrooper.packetevents.protocol.attribute.Attributes;
-import com.github.retrooper.packetevents.protocol.player.GameMode;
-import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
-import com.github.retrooper.packetevents.util.Vector3i;
 
 @CheckData(name = "FarPlace", description = "Placing blocks from too far away")
 public class FarPlace extends BlockPlaceCheck {

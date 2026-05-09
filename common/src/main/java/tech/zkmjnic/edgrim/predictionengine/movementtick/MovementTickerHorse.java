@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.predictionengine.movementtick;
 
+import com.github.retrooper.packetevents.protocol.attribute.Attributes;
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityHorse;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
-import com.github.retrooper.packetevents.protocol.attribute.Attributes;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 
 public class MovementTickerHorse extends MovementTickerLivingVehicle {
 

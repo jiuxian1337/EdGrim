@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.predictionengine.movementtick;
 
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityRideable;
 import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 
 public class MovementTickerRideable extends MovementTickerLivingVehicle {
 

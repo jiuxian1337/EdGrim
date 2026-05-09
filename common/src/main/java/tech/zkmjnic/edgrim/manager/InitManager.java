@@ -1,20 +1,18 @@
 package tech.zkmjnic.edgrim.manager;
 
+import com.github.retrooper.packetevents.PacketEventsAPI;
+import com.google.common.collect.ImmutableList;
+import lombok.Getter;
+import org.incendo.cloud.CommandManager;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.manager.init.Initable;
 import tech.zkmjnic.edgrim.manager.init.load.LoadableInitable;
 import tech.zkmjnic.edgrim.manager.init.load.PacketEventsInit;
 import tech.zkmjnic.edgrim.manager.init.start.*;
-import tech.zkmjnic.edgrim.manager.init.start.*;
-import tech.zkmjnic.edgrim.manager.init.start.*;
 import tech.zkmjnic.edgrim.manager.init.stop.StoppableInitable;
 import tech.zkmjnic.edgrim.manager.init.stop.TerminatePacketEvents;
 import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-import com.github.retrooper.packetevents.PacketEventsAPI;
-import com.google.common.collect.ImmutableList;
-import lombok.Getter;
-import org.incendo.cloud.CommandManager;
 
 import java.util.ArrayList;
 import java.util.function.Supplier;
@@ -37,9 +35,12 @@ public class InitManager {
         ArrayList<StartableInitable> extraStartableInitables = new ArrayList<>();
         ArrayList<StoppableInitable> extraStoppableInitables = new ArrayList<>();
         for (Initable initable : platformSpecificInitables) {
-            if (initable instanceof LoadableInitable) extraLoadableInitables.add((LoadableInitable) initable);
-            if (initable instanceof StartableInitable) extraStartableInitables.add((StartableInitable) initable);
-            if (initable instanceof StoppableInitable) extraStoppableInitables.add((StoppableInitable) initable);
+            if (initable instanceof LoadableInitable)
+                extraLoadableInitables.add((LoadableInitable) initable);
+            if (initable instanceof StartableInitable)
+                extraStartableInitables.add((StartableInitable) initable);
+            if (initable instanceof StoppableInitable)
+                extraStoppableInitables.add((StoppableInitable) initable);
         }
 
         initializersOnLoad = ImmutableList.<LoadableInitable>builder()

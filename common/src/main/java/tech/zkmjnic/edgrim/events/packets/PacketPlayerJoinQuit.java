@@ -1,13 +1,13 @@
 package tech.zkmjnic.edgrim.events.packets;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import com.github.retrooper.packetevents.event.*;
 import com.github.retrooper.packetevents.netty.channel.ChannelHelper;
 import com.github.retrooper.packetevents.protocol.ConnectionState;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 
 import java.util.Objects;
 

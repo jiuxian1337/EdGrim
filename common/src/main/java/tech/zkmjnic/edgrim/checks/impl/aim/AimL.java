@@ -53,8 +53,8 @@ public final class AimL extends Check implements RotationCheck {
                 final int duplicatesX = samplesYaw.size() - distinctYaw;
                 final int duplicatesY = samplesPitch.size() - distinctPitch;
                 final int duplicatesSum = duplicatesX + duplicatesY;
-                final int outliersX = outliersYaw.getX().size() + outliersYaw.getY().size();
-                final int outliersY = outliersPitch.getX().size() + outliersPitch.getY().size();
+                final int outliersX = outliersYaw.x().size() + outliersYaw.y().size();
+                final int outliersY = outliersPitch.x().size() + outliersPitch.y().size();
 
                 if (duplicatesSum <= 3 && outliersX < 10 && outliersY < 7) {
                     if (buffer++ > 4) {

@@ -48,10 +48,10 @@ public final class AimQ extends Check implements RotationCheck {
         );
 
         if (update.getDeltaYRotABS() > 0.0F) {
-            yawMatches.add(Math.abs(MathUtil.getAngleDifference(rotation.getX(), update.getTo().getYaw())));
+            yawMatches.add(Math.abs(MathUtil.getAngleDifference(rotation.x(), update.getTo().getYaw())));
         }
         if (update.getDeltaXRotABS() > 0.0F) {
-            pitchMatches.add(Math.abs(MathUtil.getAngleDifference(rotation.getY(), update.getTo().getPitch())));
+            pitchMatches.add(Math.abs(MathUtil.getAngleDifference(rotation.y(), update.getTo().getPitch())));
         }
 
         if (yawMatches.size() == 150) {

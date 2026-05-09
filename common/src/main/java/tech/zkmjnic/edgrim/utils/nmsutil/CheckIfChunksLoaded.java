@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
 import lombok.experimental.UtilityClass;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 @UtilityClass
 public class CheckIfChunksLoaded {

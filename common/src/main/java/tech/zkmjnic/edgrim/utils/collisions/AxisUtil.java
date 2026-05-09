@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.utils.collisions;
 
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 
 @UtilityClass
 public class AxisUtil {

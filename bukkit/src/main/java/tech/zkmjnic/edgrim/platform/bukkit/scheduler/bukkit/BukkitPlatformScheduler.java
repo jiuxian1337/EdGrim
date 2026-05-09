@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.platform.bukkit.scheduler.bukkit;
 
-import tech.zkmjnic.edgrim.platform.api.scheduler.PlatformScheduler;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import tech.zkmjnic.edgrim.platform.api.scheduler.PlatformScheduler;
 
 @Getter
 public class BukkitPlatformScheduler implements PlatformScheduler {

@@ -1,9 +1,5 @@
 package tech.zkmjnic.edgrim.platform.bukkit.manager;
 
-import tech.zkmjnic.edgrim.platform.api.manager.ItemResetHandler;
-import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
-import tech.zkmjnic.edgrim.platform.bukkit.player.BukkitPlatformPlayer;
-import tech.zkmjnic.edgrim.platform.bukkit.utils.reflection.PaperUtils;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.InteractionHand;
@@ -14,6 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.platform.api.manager.ItemResetHandler;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
+import tech.zkmjnic.edgrim.platform.bukkit.player.BukkitPlatformPlayer;
+import tech.zkmjnic.edgrim.platform.bukkit.utils.reflection.PaperUtils;
 
 import java.lang.reflect.Method;
 
@@ -107,7 +107,8 @@ public class BukkitItemResetHandler implements ItemResetHandler {
             case "v1_20_R4" -> "fB";
             case "v1_21_R1" -> "fx";
             case "v1_21_R2", "v1_21_R3", "v1_21_R4" -> "fF";
-            default -> throw new IllegalStateException("You are using an unsupported server version! (" + version.getReleaseName() + ")");
+            default ->
+                    throw new IllegalStateException("You are using an unsupported server version! (" + version.getReleaseName() + ")");
         });
 
         if (version.isOlderThan(ServerVersion.V_1_19)) {
@@ -131,8 +132,8 @@ public class BukkitItemResetHandler implements ItemResetHandler {
         if (version.isNewerThanOrEquals(ServerVersion.V_1_16_5) && PaperUtils.PAPER) {
             return player -> player.isHandRaised()
                     ? player.getHandRaised() == EquipmentSlot.OFF_HAND
-                        ? InteractionHand.OFF_HAND
-                        : InteractionHand.MAIN_HAND
+                    ? InteractionHand.OFF_HAND
+                    : InteractionHand.MAIN_HAND
                     : null;
         }
 
@@ -161,7 +162,8 @@ public class BukkitItemResetHandler implements ItemResetHandler {
             case "v1_20_R4" -> "fv";
             case "v1_21_R1" -> "fr";
             case "v1_21_R2", "v1_21_R3", "v1_21_R4" -> "fz";
-            default -> throw new IllegalStateException("You are using an unsupported server version! (" + version.getReleaseName() + ")");
+            default ->
+                    throw new IllegalStateException("You are using an unsupported server version! (" + version.getReleaseName() + ")");
         });
         Method getUsingItemHand = getHandle.getReturnType().getMethod(switch (nmsPackage) {
             case "v1_9_R1" -> "ct";
@@ -182,15 +184,16 @@ public class BukkitItemResetHandler implements ItemResetHandler {
             case "v1_20_R4" -> "fw";
             case "v1_21_R1" -> "fs";
             case "v1_21_R2", "v1_21_R3", "v1_21_R4" -> "fA";
-            default -> throw new IllegalStateException("You are using an unsupported server version! (" + version.getReleaseName() + ")");
+            default ->
+                    throw new IllegalStateException("You are using an unsupported server version! (" + version.getReleaseName() + ")");
         });
 
         return player -> {
             final Object handle = getHandle.invoke(player);
             return (boolean) isUsingItem.invoke(handle)
                     ? ((Enum<?>) getUsingItemHand.invoke(handle)).ordinal() == 0
-                        ? InteractionHand.MAIN_HAND
-                        : InteractionHand.OFF_HAND
+                    ? InteractionHand.MAIN_HAND
+                    : InteractionHand.OFF_HAND
                     : null;
         };
     }

@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.utils.data;
 
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.util.Vector3i;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 
 public record HitData(
         Vector3i position,

@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.utils.anticheat.update;
 
+import lombok.Getter;
+import lombok.Setter;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.impl.aim.processor.AimProcessor;
 import tech.zkmjnic.edgrim.utils.data.HeadRotation;
 import tech.zkmjnic.edgrim.utils.math.Vec2f;
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter

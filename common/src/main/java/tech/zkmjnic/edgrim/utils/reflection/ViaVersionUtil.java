@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.utils.reflection;
 
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import lombok.experimental.UtilityClass;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 
 @UtilityClass
 public class ViaVersionUtil {

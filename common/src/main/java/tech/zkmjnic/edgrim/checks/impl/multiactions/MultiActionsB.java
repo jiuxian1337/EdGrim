@@ -1,12 +1,12 @@
 package tech.zkmjnic.edgrim.checks.impl.multiactions;
 
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
+import com.github.retrooper.packetevents.protocol.player.InteractionHand;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
-import com.github.retrooper.packetevents.protocol.player.InteractionHand;
 
 @CheckData(name = "MultiActionsB", description = "Breaking blocks while using an item", experimental = true)
 public class MultiActionsB extends Check implements BlockBreakCheck {

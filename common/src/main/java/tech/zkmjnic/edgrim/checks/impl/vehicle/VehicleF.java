@@ -1,22 +1,22 @@
 package tech.zkmjnic.edgrim.checks.impl.vehicle;
 
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSteerBoat;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.data.KnownInput;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientSteerBoat;
 
 @CheckData(name = "VehicleF", experimental = true, description = "Sent incorrect boat paddle states")
 public class VehicleF extends Check implements PacketCheck {
+    private PacketEntity lastTickVehicle;
+
     public VehicleF(PlayerData player) {
         super(player);
     }
-
-    private PacketEntity lastTickVehicle;
 
     @Override
     public void onPacketReceive(final PacketReceiveEvent event) {
@@ -44,7 +44,7 @@ public class VehicleF extends Check implements PacketCheck {
 
             if (packet.isLeftPaddleTurning() != expectedLeft || packet.isRightPaddleTurning() != expectedRight) {
                 if (flagAndAlert("sent=(" + packet.isLeftPaddleTurning() + ", " + packet.isRightPaddleTurning() + "), expected=(" + expectedLeft + ", " + expectedRight + ")")
-                    && shouldModifyPackets()) {
+                        && shouldModifyPackets()) {
                     packet.setLeftPaddleTurning(expectedLeft);
                     packet.setRightPaddleTurning(expectedRight);
                     event.markForReEncode(true);

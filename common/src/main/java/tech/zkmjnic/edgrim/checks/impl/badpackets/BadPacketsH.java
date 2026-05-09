@@ -1,21 +1,21 @@
 package tech.zkmjnic.edgrim.checks.impl.badpackets;
 
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
-import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientUseItem;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
+import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 
 @CheckData(name = "BadPacketsH", description = "Sent unexpected sequence id", experimental = true)
 public class BadPacketsH extends BlockPlaceCheck {
-    private int lastSequence;
     private final boolean isSupportedVersion = player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_19) && PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_19);
+    private int lastSequence;
 
     public BadPacketsH(final PlayerData player) {
         super(player);

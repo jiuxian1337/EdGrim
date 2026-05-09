@@ -1,15 +1,5 @@
 package tech.zkmjnic.edgrim.utils.latency;
 
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
-import tech.zkmjnic.edgrim.utils.inventory.EquipmentType;
-import tech.zkmjnic.edgrim.utils.inventory.Inventory;
-import tech.zkmjnic.edgrim.utils.inventory.inventory.AbstractContainerMenu;
-import tech.zkmjnic.edgrim.utils.inventory.inventory.MenuType;
-import tech.zkmjnic.edgrim.utils.inventory.inventory.NotImplementedMenu;
-import tech.zkmjnic.edgrim.utils.lists.CorrectingPlayerInventoryStorage;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
@@ -22,16 +12,18 @@ import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.player.DiggingAction;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.InteractionHand;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientClickWindow;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCreativeInventoryAction;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientHeldItemChange;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerDigging;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientUseItem;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerOpenHorseWindow;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerOpenWindow;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetPlayerInventory;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetSlot;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerWindowItems;
+import com.github.retrooper.packetevents.wrapper.play.client.*;
+import com.github.retrooper.packetevents.wrapper.play.server.*;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.type.PacketCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
+import tech.zkmjnic.edgrim.utils.inventory.EquipmentType;
+import tech.zkmjnic.edgrim.utils.inventory.Inventory;
+import tech.zkmjnic.edgrim.utils.inventory.inventory.AbstractContainerMenu;
+import tech.zkmjnic.edgrim.utils.inventory.inventory.MenuType;
+import tech.zkmjnic.edgrim.utils.inventory.inventory.NotImplementedMenu;
+import tech.zkmjnic.edgrim.utils.lists.CorrectingPlayerInventoryStorage;
 
 import java.util.List;
 import java.util.Map;
@@ -118,7 +110,8 @@ public class CompensatedInventory extends Check implements PacketCheck {
 
     /**
      * Marks that the server has updated a slot by the specified ID in the specified inventory ID.
-     * @param clicked the updated slot
+     *
+     * @param clicked  the updated slot
      * @param windowID the inventory ID
      */
     private void markServerForChangingSlot(int clicked, int windowID) {

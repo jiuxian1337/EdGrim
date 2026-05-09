@@ -1,22 +1,5 @@
 package tech.zkmjnic.edgrim.utils.latency;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.change.BlockModification;
-import tech.zkmjnic.edgrim.utils.chunks.Column;
-import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.BlockPrediction;
-import tech.zkmjnic.edgrim.utils.data.Pair;
-import tech.zkmjnic.edgrim.utils.data.PistonData;
-import tech.zkmjnic.edgrim.utils.data.ShulkerData;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityShulker;
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
-import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
-import tech.zkmjnic.edgrim.utils.nmsutil.GetBoundingBox;
-import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
@@ -34,11 +17,7 @@ import com.github.retrooper.packetevents.protocol.world.chunk.storage.LegacyFlex
 import com.github.retrooper.packetevents.protocol.world.dimension.DimensionType;
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
 import com.github.retrooper.packetevents.protocol.world.states.defaulttags.BlockTags;
-import com.github.retrooper.packetevents.protocol.world.states.enums.East;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Half;
-import com.github.retrooper.packetevents.protocol.world.states.enums.North;
-import com.github.retrooper.packetevents.protocol.world.states.enums.South;
-import com.github.retrooper.packetevents.protocol.world.states.enums.West;
+import com.github.retrooper.packetevents.protocol.world.states.enums.*;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateValue;
@@ -54,13 +33,25 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import lombok.Getter;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.change.BlockModification;
+import tech.zkmjnic.edgrim.utils.chunks.Column;
+import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.data.BlockPrediction;
+import tech.zkmjnic.edgrim.utils.data.Pair;
+import tech.zkmjnic.edgrim.utils.data.PistonData;
+import tech.zkmjnic.edgrim.utils.data.ShulkerData;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityShulker;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
+import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
+import tech.zkmjnic.edgrim.utils.nmsutil.GetBoundingBox;
+import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 // Inspired by https://github.com/GeyserMC/Geyser/blob/master/connector/src/main/java/org/geysermc/connector/network/session/cache/ChunkCache.java
 public class CompensatedWorld {
@@ -71,25 +62,23 @@ public class CompensatedWorld {
     // Packet locations for blocks
     public final Set<PistonData> activePistons = new HashSet<>();
     public final Set<ShulkerData> openShulkerBoxes = new HashSet<>();
-    // 1.17 with datapacks, and 1.18, have negative world offset values
-    @Getter
-    private int minHeight = 0;
-    @Getter
-    private int maxHeight = 256;
-
     // When the player changes the blocks, they track what the server thinks the blocks are
     //
     // Pair of the block position and the owning list TO the actual block
     // The owning list is so that this info can be removed when the final list is processed
     private final Long2ObjectOpenHashMap<BlockPrediction> originalServerBlocks = new Long2ObjectOpenHashMap<>();
-    // Blocks the client changed while placing or breaking blocks
-    private List<Vector3i> currentlyChangedBlocks = new LinkedList<>();
     private final Int2ObjectMap<List<Vector3i>> serverIsCurrentlyProcessingThesePredictions = new Int2ObjectOpenHashMap<>();
     private final Object2ObjectLinkedOpenHashMap<Pair<Vector3i, DiggingAction>, Vector3d> unackedActions = new Object2ObjectLinkedOpenHashMap<>();
-    private boolean isCurrentlyPredicting = false;
-    public boolean isRaining = false;
-
     private final boolean noNegativeBlocks;
+    public boolean isRaining = false;
+    // 1.17 with datapacks, and 1.18, have negative world offset values
+    @Getter
+    private int minHeight = 0;
+    @Getter
+    private int maxHeight = 256;
+    // Blocks the client changed while placing or breaking blocks
+    private List<Vector3i> currentlyChangedBlocks = new LinkedList<>();
+    private boolean isCurrentlyPredicting = false;
 
     public CompensatedWorld(PlayerData player) {
         this.player = player;
@@ -97,8 +86,22 @@ public class CompensatedWorld {
         noNegativeBlocks = player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_16_4);
     }
 
+    public static long chunkPositionToLong(int x, int z) {
+        return ((x & 0xFFFFFFFFL) << 32L) | (z & 0xFFFFFFFFL);
+    }
+
+    private static BaseChunk create() {
+        if (PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_18)) {
+            return new Chunk_v1_18();
+        } else if (PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_16)) {
+            return new Chunk_v1_9(0, DataPalette.createForChunk());
+        }
+        return new Chunk_v1_9(0, new DataPalette(new ListPalette(4), new LegacyFlexibleStorage(4, 4096), PaletteType.CHUNK));
+    }
+
     public void startPredicting() {
-        if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_18_2)) return; // No predictions
+        if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_18_2))
+            return; // No predictions
         this.isCurrentlyPredicting = true;
     }
 
@@ -182,7 +185,8 @@ public class CompensatedWorld {
     }
 
     public void stopPredicting(PacketWrapper<?> wrapper) {
-        if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_18_2)) return; // No predictions
+        if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_18_2))
+            return; // No predictions
         this.isCurrentlyPredicting = false; // We aren't in a block place or use item
 
         if (this.currentlyChangedBlocks.isEmpty()) return; // Nothing to change
@@ -215,10 +219,6 @@ public class CompensatedWorld {
         }
     }
 
-    public static long chunkPositionToLong(int x, int z) {
-        return ((x & 0xFFFFFFFFL) << 32L) | (z & 0xFFFFFFFFL);
-    }
-
     public boolean isNearHardEntity(SimpleCollisionBox playerBox) {
         for (PacketEntity entity : player.compensatedEntities.entityMap.values()) {
             if ((entity.isBoat || entity.type == EntityTypes.SHULKER || entity.isHappyGhast) && player.compensatedEntities.self.getRiding() != entity) {
@@ -247,15 +247,6 @@ public class CompensatedWorld {
         }
 
         return false;
-    }
-
-    private static BaseChunk create() {
-        if (PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_18)) {
-            return new Chunk_v1_18();
-        } else if (PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_16)) {
-            return new Chunk_v1_9(0, DataPalette.createForChunk());
-        }
-        return new Chunk_v1_9(0, new DataPalette(new ListPalette(4), new LegacyFlexibleStorage(4, 4096), PaletteType.CHUNK));
     }
 
     public void updateBlock(Vector3i pos, WrappedBlockState state) {
@@ -688,7 +679,8 @@ public class CompensatedWorld {
 
     public void setDimension(DimensionType dimension, User user) {
         // No world height NBT
-        if (PacketEvents.getAPI().getServerManager().getVersion().isOlderThan(ServerVersion.V_1_17)) return;
+        if (PacketEvents.getAPI().getServerManager().getVersion().isOlderThan(ServerVersion.V_1_17))
+            return;
 
         minHeight = dimension.getMinY();
         maxHeight = minHeight + dimension.getHeight();

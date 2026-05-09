@@ -8,15 +8,17 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.math.Statistics;
 import tech.zkmjnic.edgrim.utils.math.Vec2f;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @CheckData(name = "AimY", description = "rotation analysis: linear, rank, long-term", decay = 0.05)
 public final class AimY extends Check implements RotationCheck {
     private final List<Vec2f> rawRotations, limitedRotations;
     private final List<Float> longTermAnalysis;
-    private boolean query;
     private final List<Float> localBuffer;
+    private boolean query;
 
     public AimY(PlayerData player) {
         super(player);
@@ -35,8 +37,8 @@ public final class AimY extends Check implements RotationCheck {
         this.rawRotations.add(delta);
         if (this.rawRotations.size() >= 100) this.checkRaw();
 
-        float absDeltaX = Math.abs(delta.getX());
-        float absDeltaY = Math.abs(delta.getY());
+        float absDeltaX = Math.abs(delta.x());
+        float absDeltaY = Math.abs(delta.y());
         if (absDeltaX > 1.35 || absDeltaY > 1.35 && absDeltaX > 0.32) {
             this.limitedRotations.add(delta);
             if (this.limitedRotations.size() >= 100) this.checkLimited();
@@ -46,8 +48,8 @@ public final class AimY extends Check implements RotationCheck {
     private void checkLimited() {
         final List<Float> x = new ArrayList<>(), y = new ArrayList<>();
         for (Vec2f vec2 : this.limitedRotations) {
-            x.add(vec2.getX());
-            y.add(vec2.getY());
+            x.add(vec2.x());
+            y.add(vec2.y());
         }
 
         // limited analysis
@@ -82,9 +84,9 @@ public final class AimY extends Check implements RotationCheck {
     private void checkRaw() {
         final List<Float> x = new ArrayList<>(), xAbs = new ArrayList<>(), y = new ArrayList<>();
         for (Vec2f vec2 : this.rawRotations) {
-            x.add(vec2.getX());
-            xAbs.add(vec2.getX());
-            y.add(vec2.getY());
+            x.add(vec2.x());
+            xAbs.add(vec2.x());
+            y.add(vec2.y());
         }
 
         // score

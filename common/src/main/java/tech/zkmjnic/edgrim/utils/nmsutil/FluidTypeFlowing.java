@@ -1,9 +1,5 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
-import tech.zkmjnic.edgrim.utils.collisions.blocks.DoorHandler;
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
@@ -11,6 +7,10 @@ import com.github.retrooper.packetevents.protocol.world.states.defaulttags.Block
 import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import lombok.experimental.UtilityClass;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
+import tech.zkmjnic.edgrim.utils.collisions.blocks.DoorHandler;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 
 @UtilityClass
 public class FluidTypeFlowing {

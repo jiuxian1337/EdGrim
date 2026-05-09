@@ -1,24 +1,23 @@
 package tech.zkmjnic.edgrim.checks.impl.packetorder;
 
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
-import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerBlockPlacement;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
+import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 
 @CheckData(name = "PacketOrderN", experimental = true)
 public class PacketOrderN extends BlockPlaceCheck {
+    private int invalid;
+    private boolean usingWithoutPlacing, placing;
     public PacketOrderN(final PlayerData player) {
         super(player);
     }
-
-    private int invalid;
-    private boolean usingWithoutPlacing, placing;
 
     @Override
     public void onBlockPlace(BlockPlace place) {

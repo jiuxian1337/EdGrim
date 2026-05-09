@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 
 @UtilityClass
 public class FluidFallingAdjustedMovement {

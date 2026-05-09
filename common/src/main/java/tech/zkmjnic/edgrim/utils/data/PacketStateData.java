@@ -27,17 +27,16 @@ public class PacketStateData {
     public float lastHealth, lastSaturation;
     public int lastFood;
     public boolean lastServerTransWasValid = false;
+    // If true, the player's rotation was forced to the horse's rotation only on 1.13-
+    public boolean horseInteractCausedForcedRotation = false;
     @Getter
     private int slowedByUsingItemSlot = Integer.MIN_VALUE;
 
-    // If true, the player's rotation was forced to the horse's rotation only on 1.13-
-    public boolean horseInteractCausedForcedRotation = false;
+    public boolean isSlowedByUsingItem() {
+        return slowedByUsingItemSlot != Integer.MIN_VALUE;
+    }
 
     public void setSlowedByUsingItem(boolean slowedByUsingItem) {
         slowedByUsingItemSlot = slowedByUsingItem ? lastSlotSelected : Integer.MIN_VALUE;
-    }
-
-    public boolean isSlowedByUsingItem() {
-        return slowedByUsingItemSlot != Integer.MIN_VALUE;
     }
 }

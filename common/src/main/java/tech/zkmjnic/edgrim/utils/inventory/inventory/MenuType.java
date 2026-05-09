@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.utils.inventory.inventory;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.inventory.Inventory;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.inventory.Inventory;
 
 @RequiredArgsConstructor
 @Getter

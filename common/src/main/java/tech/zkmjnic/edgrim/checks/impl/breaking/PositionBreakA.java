@@ -1,13 +1,13 @@
 package tech.zkmjnic.edgrim.checks.impl.breaking;
 
+import com.github.retrooper.packetevents.protocol.player.DiggingAction;
+import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import com.github.retrooper.packetevents.protocol.player.DiggingAction;
-import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 
 @CheckData(name = "PositionBreakA")
 public class PositionBreakA extends Check implements BlockBreakCheck {

@@ -1,15 +1,5 @@
 package tech.zkmjnic.edgrim.platform.bukkit.player;
 
-import tech.zkmjnic.edgrim.platform.api.entity.GrimEntity;
-import tech.zkmjnic.edgrim.platform.api.player.PlatformInventory;
-import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.platform.bukkit.EdGrimBukkitLoaderPlugin;
-import tech.zkmjnic.edgrim.platform.bukkit.entity.BukkitEdGrimEntity;
-import tech.zkmjnic.edgrim.platform.bukkit.utils.anticheat.MultiLibUtil;
-import tech.zkmjnic.edgrim.platform.bukkit.utils.convert.BukkitConversionUtils;
-import tech.zkmjnic.edgrim.platform.bukkit.utils.reflection.PaperUtils;
-import tech.zkmjnic.edgrim.utils.math.Location;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.util.Vector3d;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
@@ -22,6 +12,16 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import tech.zkmjnic.edgrim.platform.api.entity.GrimEntity;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformInventory;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
+import tech.zkmjnic.edgrim.platform.bukkit.EdGrimBukkitLoaderPlugin;
+import tech.zkmjnic.edgrim.platform.bukkit.entity.BukkitEdGrimEntity;
+import tech.zkmjnic.edgrim.platform.bukkit.utils.anticheat.MultiLibUtil;
+import tech.zkmjnic.edgrim.platform.bukkit.utils.convert.BukkitConversionUtils;
+import tech.zkmjnic.edgrim.platform.bukkit.utils.reflection.PaperUtils;
+import tech.zkmjnic.edgrim.utils.math.Location;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;

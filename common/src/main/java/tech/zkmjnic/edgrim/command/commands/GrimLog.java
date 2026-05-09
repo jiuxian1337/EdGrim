@@ -1,5 +1,10 @@
 package tech.zkmjnic.edgrim.command.commands;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.incendo.cloud.Command;
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.context.CommandContext;
+import org.incendo.cloud.parser.standard.IntegerParser;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.command.BuildableCommand;
 import tech.zkmjnic.edgrim.manager.init.start.SuperDebug;
@@ -7,11 +12,6 @@ import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import tech.zkmjnic.edgrim.utils.common.GrimArguments;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.incendo.cloud.Command;
-import org.incendo.cloud.CommandManager;
-import org.incendo.cloud.context.CommandContext;
-import org.incendo.cloud.parser.standard.IntegerParser;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -90,6 +90,7 @@ public class GrimLog implements BuildableCommand {
             sender.sendMessage(MessageUtil.getParsedComponent(sender, "upload-log-not-found", "%prefix% &cUnable to find that log"));
             return;
         }
-        sendLogAsync(sender, builder.toString(), string -> {}, "text/yaml");
+        sendLogAsync(sender, builder.toString(), string -> {
+        }, "text/yaml");
     }
 }

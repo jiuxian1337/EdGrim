@@ -1,12 +1,12 @@
 package tech.zkmjnic.edgrim.checks.impl.scaffolding;
 
+import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
+import com.github.retrooper.packetevents.util.Vector3f;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.BlockPlaceCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
-import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
-import com.github.retrooper.packetevents.util.Vector3f;
 
 @CheckData(name = "FabricatedPlace", description = "Sent out of bounds cursor position")
 public class FabricatedPlace extends BlockPlaceCheck {

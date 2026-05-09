@@ -1,16 +1,16 @@
 package tech.zkmjnic.edgrim.checks.type;
 
 import ac.grim.grimac.api.config.ConfigManager;
+import com.github.retrooper.packetevents.protocol.world.states.defaulttags.BlockTags;
+import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
+import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
+import com.github.retrooper.packetevents.util.Vector3i;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.collisions.HitboxData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import com.github.retrooper.packetevents.protocol.world.states.defaulttags.BlockTags;
-import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
-import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
-import com.github.retrooper.packetevents.util.Vector3i;
 
 import java.util.ArrayList;
 import java.util.List;

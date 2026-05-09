@@ -1,10 +1,5 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.data.MainSupportingBlockData;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityHorse;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityStrider;
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.protocol.item.enchantment.type.EnchantmentTypes;
@@ -16,6 +11,11 @@ import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.util.Vector3i;
 import lombok.experimental.UtilityClass;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.data.MainSupportingBlockData;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityHorse;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityStrider;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
 
 @UtilityClass
 public class BlockProperties {

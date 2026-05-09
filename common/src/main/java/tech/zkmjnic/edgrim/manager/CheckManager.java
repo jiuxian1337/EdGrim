@@ -1,26 +1,18 @@
 package tech.zkmjnic.edgrim.manager;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.AbstractCheck;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.ImmutableClassToInstanceMap;
+import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.impl.aim.*;
-import tech.zkmjnic.edgrim.checks.impl.aim.analysis.AnalysisA;
 import tech.zkmjnic.edgrim.checks.impl.aim.processor.AimProcessor;
 import tech.zkmjnic.edgrim.checks.impl.aim.processor.Cinematic;
+import tech.zkmjnic.edgrim.checks.impl.analysis.AnalysisA;
+import tech.zkmjnic.edgrim.checks.impl.autoclicker.AutoclickerA;
 import tech.zkmjnic.edgrim.checks.impl.badpackets.*;
 import tech.zkmjnic.edgrim.checks.impl.breaking.*;
-import tech.zkmjnic.edgrim.checks.impl.crash.*;
-import tech.zkmjnic.edgrim.checks.impl.elytra.*;
-import tech.zkmjnic.edgrim.checks.impl.interact.InteractA;
-import tech.zkmjnic.edgrim.checks.impl.interact.InteractB;
-import tech.zkmjnic.edgrim.checks.impl.movement.*;
-import tech.zkmjnic.edgrim.checks.impl.multiactions.*;
-import tech.zkmjnic.edgrim.checks.impl.packetorder.*;
-import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofA;
-import tech.zkmjnic.edgrim.checks.impl.scaffolding.*;
-import tech.zkmjnic.edgrim.checks.impl.sprint.*;
-import tech.zkmjnic.edgrim.checks.impl.timer.*;
-import tech.zkmjnic.edgrim.checks.impl.vehicle.*;
-import tech.zkmjnic.edgrim.checks.type.*;
 import tech.zkmjnic.edgrim.checks.impl.chat.ChatA;
 import tech.zkmjnic.edgrim.checks.impl.chat.ChatB;
 import tech.zkmjnic.edgrim.checks.impl.chat.ChatC;
@@ -29,24 +21,36 @@ import tech.zkmjnic.edgrim.checks.impl.combat.Hitboxes;
 import tech.zkmjnic.edgrim.checks.impl.combat.MultiInteractA;
 import tech.zkmjnic.edgrim.checks.impl.combat.MultiInteractB;
 import tech.zkmjnic.edgrim.checks.impl.combat.Reach;
-import tech.zkmjnic.edgrim.checks.impl.autoclicker.AutoclickerA;
-import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofB;
-import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofC;
-import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofD;
+import tech.zkmjnic.edgrim.checks.impl.crash.*;
+import tech.zkmjnic.edgrim.checks.impl.elytra.*;
 import tech.zkmjnic.edgrim.checks.impl.exploit.ExploitA;
 import tech.zkmjnic.edgrim.checks.impl.exploit.ExploitB;
 import tech.zkmjnic.edgrim.checks.impl.groundspoof.NoFall;
+import tech.zkmjnic.edgrim.checks.impl.interact.InteractA;
+import tech.zkmjnic.edgrim.checks.impl.interact.InteractB;
 import tech.zkmjnic.edgrim.checks.impl.misc.ClientBrand;
 import tech.zkmjnic.edgrim.checks.impl.misc.GhostBlockMitigation;
 import tech.zkmjnic.edgrim.checks.impl.misc.Post;
 import tech.zkmjnic.edgrim.checks.impl.misc.TransactionOrder;
+import tech.zkmjnic.edgrim.checks.impl.movement.*;
+import tech.zkmjnic.edgrim.checks.impl.multiactions.*;
+import tech.zkmjnic.edgrim.checks.impl.packetorder.*;
+import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofA;
+import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofB;
+import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofC;
+import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofD;
 import tech.zkmjnic.edgrim.checks.impl.prediction.DebugHandler;
 import tech.zkmjnic.edgrim.checks.impl.prediction.GroundSpoof;
 import tech.zkmjnic.edgrim.checks.impl.prediction.OffsetHandler;
 import tech.zkmjnic.edgrim.checks.impl.prediction.Phase;
-import tech.zkmjnic.edgrim.checks.impl.velocity.VelocityB;
+import tech.zkmjnic.edgrim.checks.impl.scaffolding.*;
+import tech.zkmjnic.edgrim.checks.impl.sprint.*;
+import tech.zkmjnic.edgrim.checks.impl.timer.*;
+import tech.zkmjnic.edgrim.checks.impl.vehicle.*;
 import tech.zkmjnic.edgrim.checks.impl.velocity.VelocityA;
+import tech.zkmjnic.edgrim.checks.impl.velocity.VelocityB;
 import tech.zkmjnic.edgrim.checks.impl.velocity.VelocityC;
+import tech.zkmjnic.edgrim.checks.type.*;
 import tech.zkmjnic.edgrim.events.packets.PacketChangeGameState;
 import tech.zkmjnic.edgrim.events.packets.PacketEntityReplication;
 import tech.zkmjnic.edgrim.events.packets.PacketPlayerAbilities;
@@ -61,10 +65,6 @@ import tech.zkmjnic.edgrim.utils.latency.CompensatedCooldown;
 import tech.zkmjnic.edgrim.utils.latency.CompensatedFireworks;
 import tech.zkmjnic.edgrim.utils.latency.CompensatedInventory;
 import tech.zkmjnic.edgrim.utils.team.TeamHandler;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.event.PacketSendEvent;
-import com.google.common.collect.ClassToInstanceMap;
-import com.google.common.collect.ImmutableClassToInstanceMap;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -258,6 +258,7 @@ public class CheckManager {
                 .put(ScaffoldC.class, new ScaffoldC(player))
                 .put(ScaffoldD.class, new ScaffoldD(player))
                 .put(ScaffoldE.class, new ScaffoldE(player))
+                .put(ScaffoldProcessor.class, new ScaffoldProcessor(player))
                 .put(PacketOrderN.class, new PacketOrderN(player))
                 .put(DuplicateRotPlace.class, new DuplicateRotPlace(player))
                 .put(GhostBlockMitigation.class, new GhostBlockMitigation(player))

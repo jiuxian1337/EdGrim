@@ -1,12 +1,5 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks.connecting;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -18,6 +11,9 @@ import com.github.retrooper.packetevents.protocol.world.states.enums.North;
 import com.github.retrooper.packetevents.protocol.world.states.enums.South;
 import com.github.retrooper.packetevents.protocol.world.states.enums.West;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.*;
 
 public class DynamicCollisionWall extends DynamicConnecting implements CollisionFactory {
     // https://bugs.mojang.com/browse/MC-9565

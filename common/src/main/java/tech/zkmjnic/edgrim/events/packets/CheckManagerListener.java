@@ -1,16 +1,5 @@
 package tech.zkmjnic.edgrim.events.packets;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.update.*;
-import tech.zkmjnic.edgrim.utils.blockplace.BlockPlaceResult;
-import tech.zkmjnic.edgrim.utils.blockplace.ConsumesBlockPlace;
-import tech.zkmjnic.edgrim.utils.change.BlockModification;
-import tech.zkmjnic.edgrim.utils.data.*;
-import tech.zkmjnic.edgrim.utils.inventory.Inventory;
-import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
-import tech.zkmjnic.edgrim.utils.math.VectorUtils;
-import tech.zkmjnic.edgrim.utils.nmsutil.*;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
@@ -40,6 +29,17 @@ import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.client.*;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerAcknowledgeBlockChanges;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSetSlot;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.update.*;
+import tech.zkmjnic.edgrim.utils.blockplace.BlockPlaceResult;
+import tech.zkmjnic.edgrim.utils.blockplace.ConsumesBlockPlace;
+import tech.zkmjnic.edgrim.utils.change.BlockModification;
+import tech.zkmjnic.edgrim.utils.data.*;
+import tech.zkmjnic.edgrim.utils.inventory.Inventory;
+import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
+import tech.zkmjnic.edgrim.utils.math.VectorUtils;
+import tech.zkmjnic.edgrim.utils.nmsutil.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -381,6 +381,218 @@ public class CheckManagerListener extends PacketListenerAbstract {
         }
     }
 
+    private static boolean isMojangStupid(PlayerData player, PacketReceiveEvent event, WrapperPlayClientPlayerFlying flying) {
+        // Teleports are not stupidity packets.
+        if (player.packetStateData.lastPacketWasTeleport) return false;
+        // Mojang has become less stupid!
+        if (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_21)) return false;
+
+        final Location location = flying.getLocation();
+        final double threshold = player.getMovementThreshold();
+
+        // Don't check duplicate 1.17 packets (Why would you do this mojang?)
+        // Don't check rotation since it changes between these packets, with the second being irrelevant.
+        //
+        // removed a large rant, but I'm keeping this out of context insult below
+        // EVEN A BUNCH OF MONKEYS ON A TYPEWRITER COULDNT WRITE WORSE NETCODE THAN MOJANG
+        if (!player.packetStateData.lastPacketWasTeleport && flying.hasPositionChanged() && flying.hasRotationChanged() &&
+                // Ground status will never change in this stupidity packet
+                ((flying.isOnGround() == player.packetStateData.packetPlayerOnGround
+                        // Mojang added this stupid mechanic in 1.17
+                        && (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_17) &&
+                        // Due to 0.03, we can't check exact position, only within 0.03
+                        player.filterMojangStupidityOnMojangStupidity.distanceSquared(location.getPosition()) < threshold * threshold))
+                        // If the player was in a vehicle, has position and look, and wasn't a teleport, then it was this stupid packet
+                        || player.inVehicle())) {
+
+            // Mark that we want this packet to be cancelled from reaching the server
+            // Additionally, only yaw/pitch matters: https://github.com/edgrimAnticheat/edgrim/issues/1275#issuecomment-1872444018
+            // 1.9+ isn't impacted by this packet as much.
+            if (PacketEvents.getAPI().getServerManager().getVersion().isOlderThanOrEquals(ServerVersion.V_1_9)) {
+                if (player.isCancelDuplicatePacket()) {
+                    player.packetStateData.cancelDuplicatePacket = true;
+                }
+            } else {
+                // Override location to force it to use the last real position of the player. Prevents position-related bypasses like nofall.
+                flying.setLocation(new Location(player.filterMojangStupidityOnMojangStupidity.getX(), player.filterMojangStupidityOnMojangStupidity.getY(), player.filterMojangStupidityOnMojangStupidity.getZ(), location.getYaw(), location.getPitch()));
+                event.markForReEncode(true);
+            }
+
+            player.packetStateData.lastPacketWasOnePointSeventeenDuplicate = true;
+
+            if (!player.isIgnoreDuplicatePacketRotation()) {
+                if (player.xRot != location.getYaw() || player.yRot != location.getPitch()) {
+                    player.lastXRot = player.xRot;
+                    player.lastYRot = player.yRot;
+                }
+
+                // Take the pitch and yaw, just in case we were wrong about this being a stupidity packet
+                player.xRot = location.getYaw();
+                player.yRot = location.getPitch();
+            }
+
+            player.packetStateData.lastClaimedPosition = location.getPosition();
+            return true;
+        }
+        return false;
+    }
+
+    private static void handleFlying(PlayerData player, double x, double y, double z, float yaw, float pitch, boolean hasPosition, boolean hasLook, boolean onGround, TeleportAcceptData teleportData, PacketReceiveEvent event) {
+        long now = System.currentTimeMillis();
+
+        if (!hasPosition) {
+            // This may need to be secured later, although nothing that is very important relies on this
+            // 1.8 ghost clients can't abuse this anyway
+            player.uncertaintyHandler.lastPointThree.reset();
+        }
+
+        // We can't set the look if this is actually the stupidity packet
+        // If the last packet wasn't stupid, then ignore this logic
+        // If it was stupid, only change the look if it's different
+        // Otherwise, reach and fireworks can false
+        if (hasLook && (!player.packetStateData.lastPacketWasOnePointSeventeenDuplicate ||
+                player.xRot != yaw || player.yRot != pitch)) {
+            player.lastXRot = player.xRot;
+            player.lastYRot = player.yRot;
+        }
+
+        CheckManagerListener.handleQueuedPlaces(player, hasLook, pitch, yaw, now);
+        CheckManagerListener.handleQueuedBreaks(player, hasLook, pitch, yaw, now);
+
+        // We can set the new pos after the places
+        if (hasPosition) {
+            player.packetStateData.lastClaimedPosition = new Vector3d(x, y, z);
+        }
+
+        // This stupid mechanic has been measured with 0.03403409022229198 y velocity... DAMN IT MOJANG, use 0.06 to be safe...
+        if (!hasPosition && onGround != player.packetStateData.packetPlayerOnGround && !player.inVehicle()) {
+            // Check for blocks within 0.03 of the player's position before allowing ground to be true - if 0.03
+            // Cannot use collisions like normal because stepping messes it up :(
+            //
+            // This may need to be secured better, but limiting the new setback positions seems good enough for now...
+            boolean canFeasiblyPointThree = Collisions.slowCouldPointThreeHitGround(player, player.x, player.y, player.z);
+            if (!canFeasiblyPointThree && !player.compensatedWorld.isNearHardEntity(player.boundingBox.copy().expand(4))
+                    || player.clientVelocity.getY() > 0.06 && !player.uncertaintyHandler.wasAffectedByStuckSpeed()) {
+                // Ghost block/0.03 abuse
+                player.getSetbackTeleportUtil().executeForceResync();
+            } else {
+                // Accept the new ground status
+                player.lastOnGround = onGround;
+                player.clientClaimsLastOnGround = onGround;
+                player.uncertaintyHandler.onGroundUncertain = true;
+            }
+        }
+
+        if (!player.packetStateData.lastPacketWasTeleport) {
+            player.packetStateData.packetPlayerOnGround = onGround;
+        }
+
+        if (hasLook) {
+            player.xRot = yaw;
+            player.yRot = pitch;
+
+            float deltaXRot = player.xRot - player.lastXRot;
+            float deltaYRot = player.yRot - player.lastYRot;
+
+            final RotationUpdate update = new RotationUpdate(new HeadRotation(player.lastXRot, player.lastYRot), new HeadRotation(player.xRot, player.yRot), deltaXRot, deltaYRot);
+            player.checkManager.onRotationUpdate(update);
+        }
+
+        if (hasPosition) {
+            Vector3d position = new Vector3d(x, y, z);
+            Vector3d clampVector = VectorUtils.clampVector(position);
+            final PositionUpdate update = new PositionUpdate(new Vector3d(player.x, player.y, player.z), position, onGround, teleportData.getSetback(), teleportData.getTeleportData(), teleportData.isTeleport());
+
+            // Stupidity doesn't care about 0.03
+            if (!player.packetStateData.lastPacketWasOnePointSeventeenDuplicate) {
+                player.filterMojangStupidityOnMojangStupidity = clampVector;
+            }
+
+            if (!player.inVehicle() && !player.packetStateData.lastPacketWasOnePointSeventeenDuplicate) {
+                player.lastX = player.x;
+                player.lastY = player.y;
+                player.lastZ = player.z;
+
+                player.x = clampVector.getX();
+                player.y = clampVector.getY();
+                player.z = clampVector.getZ();
+
+                player.checkManager.onPositionUpdate(update);
+            } else if (update.isTeleport()) { // Mojang doesn't use their own exit vehicle field to leave vehicles, manually call the setback handler
+                player.getSetbackTeleportUtil().onPredictionComplete(new PredictionComplete(0, update, true));
+            }
+        }
+
+        player.packetStateData.didLastLastMovementIncludePosition = player.packetStateData.didLastMovementIncludePosition;
+        player.packetStateData.didLastMovementIncludePosition = hasPosition;
+
+        if (!player.packetStateData.lastPacketWasTeleport) {
+            player.packetStateData.didSendMovementBeforeTickEnd = true;
+        }
+
+        player.packetStateData.horseInteractCausedForcedRotation = false;
+    }
+
+    private static void handleDigging(PlayerData player, PacketReceiveEvent event) {
+        player.lastBlockBreak = System.currentTimeMillis();
+
+        final WrapperPlayClientPlayerDigging packet = new WrapperPlayClientPlayerDigging(event);
+        final DiggingAction action = packet.getAction();
+
+        if (action != DiggingAction.START_DIGGING
+                && action != DiggingAction.FINISHED_DIGGING
+                && action != DiggingAction.CANCELLED_DIGGING) {
+            return;
+        }
+
+        final BlockBreak blockBreak = new BlockBreak(player, packet.getBlockPosition(), packet.getBlockFace(), packet.getBlockFaceId(), action, packet.getSequence(), player.compensatedWorld.getBlock(packet.getBlockPosition()));
+
+        player.checkManager.onBlockBreak(blockBreak);
+
+        if (blockBreak.isCancelled()) {
+            event.setCancelled(true);
+            player.onPacketCancel();
+            player.resyncPosition(blockBreak.position, packet.getSequence());
+            return;
+        }
+
+        player.queuedBreaks.add(blockBreak);
+
+        if (action == DiggingAction.FINISHED_DIGGING && BREAKABLE.apply(blockBreak.block.getType())) {
+            player.compensatedWorld.startPredicting();
+            player.compensatedWorld.updateBlock(blockBreak.position.x, blockBreak.position.y, blockBreak.position.z, 0);
+            player.compensatedWorld.stopPredicting(packet);
+        }
+
+        if (action == DiggingAction.START_DIGGING) {
+            double damage = BlockBreakSpeed.getBlockDamage(player, blockBreak.block);
+
+            // Instant breaking, no damage means it is unbreakable by creative players (with swords)
+            if (damage >= 1) {
+                player.compensatedWorld.startPredicting();
+                player.blockHistory.add(
+                        new BlockModification(
+                                player.compensatedWorld.getBlock(blockBreak.position),
+                                WrappedBlockState.getByGlobalId(0),
+                                blockBreak.position,
+                                EdGrimAPI.INSTANCE.getTickManager().currentTick,
+                                BlockModification.Cause.START_DIGGING
+                        )
+                );
+                if (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_13) && Materials.isWaterSource(player.getClientVersion(), blockBreak.block)) {
+                    // Vanilla uses a method to grab water flowing, but as you can't break flowing water
+                    // We can simply treat all waterlogged blocks or source blocks as source blocks
+                    player.compensatedWorld.updateBlock(blockBreak.position, StateTypes.WATER.createBlockState(CompensatedWorld.blockVersion));
+                } else {
+                    player.compensatedWorld.updateBlock(blockBreak.position.x, blockBreak.position.y, blockBreak.position.z, 0);
+                }
+                player.compensatedWorld.stopPredicting(packet);
+            }
+        }
+
+        player.compensatedWorld.handleBlockBreakPrediction(packet);
+    }
+
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
         PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
@@ -600,217 +812,5 @@ public class CheckManagerListener extends PacketListenerAbstract {
         }
 
         player.checkManager.onPacketSend(event);
-    }
-
-    private static boolean isMojangStupid(PlayerData player, PacketReceiveEvent event, WrapperPlayClientPlayerFlying flying) {
-        // Teleports are not stupidity packets.
-        if (player.packetStateData.lastPacketWasTeleport) return false;
-        // Mojang has become less stupid!
-        if (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_21)) return false;
-
-        final Location location = flying.getLocation();
-        final double threshold = player.getMovementThreshold();
-
-        // Don't check duplicate 1.17 packets (Why would you do this mojang?)
-        // Don't check rotation since it changes between these packets, with the second being irrelevant.
-        //
-        // removed a large rant, but I'm keeping this out of context insult below
-        // EVEN A BUNCH OF MONKEYS ON A TYPEWRITER COULDNT WRITE WORSE NETCODE THAN MOJANG
-        if (!player.packetStateData.lastPacketWasTeleport && flying.hasPositionChanged() && flying.hasRotationChanged() &&
-                // Ground status will never change in this stupidity packet
-                ((flying.isOnGround() == player.packetStateData.packetPlayerOnGround
-                        // Mojang added this stupid mechanic in 1.17
-                        && (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_17) &&
-                        // Due to 0.03, we can't check exact position, only within 0.03
-                        player.filterMojangStupidityOnMojangStupidity.distanceSquared(location.getPosition()) < threshold * threshold))
-                        // If the player was in a vehicle, has position and look, and wasn't a teleport, then it was this stupid packet
-                        || player.inVehicle())) {
-
-            // Mark that we want this packet to be cancelled from reaching the server
-            // Additionally, only yaw/pitch matters: https://github.com/edgrimAnticheat/edgrim/issues/1275#issuecomment-1872444018
-            // 1.9+ isn't impacted by this packet as much.
-            if (PacketEvents.getAPI().getServerManager().getVersion().isOlderThanOrEquals(ServerVersion.V_1_9)) {
-                if (player.isCancelDuplicatePacket()) {
-                    player.packetStateData.cancelDuplicatePacket = true;
-                }
-            } else {
-                // Override location to force it to use the last real position of the player. Prevents position-related bypasses like nofall.
-                flying.setLocation(new Location(player.filterMojangStupidityOnMojangStupidity.getX(), player.filterMojangStupidityOnMojangStupidity.getY(), player.filterMojangStupidityOnMojangStupidity.getZ(), location.getYaw(), location.getPitch()));
-                event.markForReEncode(true);
-            }
-
-            player.packetStateData.lastPacketWasOnePointSeventeenDuplicate = true;
-
-            if (!player.isIgnoreDuplicatePacketRotation()) {
-                if (player.xRot != location.getYaw() || player.yRot != location.getPitch()) {
-                    player.lastXRot = player.xRot;
-                    player.lastYRot = player.yRot;
-                }
-
-                // Take the pitch and yaw, just in case we were wrong about this being a stupidity packet
-                player.xRot = location.getYaw();
-                player.yRot = location.getPitch();
-            }
-
-            player.packetStateData.lastClaimedPosition = location.getPosition();
-            return true;
-        }
-        return false;
-    }
-
-    private static void handleFlying(PlayerData player, double x, double y, double z, float yaw, float pitch, boolean hasPosition, boolean hasLook, boolean onGround, TeleportAcceptData teleportData, PacketReceiveEvent event) {
-        long now = System.currentTimeMillis();
-
-        if (!hasPosition) {
-            // This may need to be secured later, although nothing that is very important relies on this
-            // 1.8 ghost clients can't abuse this anyway
-            player.uncertaintyHandler.lastPointThree.reset();
-        }
-
-        // We can't set the look if this is actually the stupidity packet
-        // If the last packet wasn't stupid, then ignore this logic
-        // If it was stupid, only change the look if it's different
-        // Otherwise, reach and fireworks can false
-        if (hasLook && (!player.packetStateData.lastPacketWasOnePointSeventeenDuplicate ||
-                player.xRot != yaw || player.yRot != pitch)) {
-            player.lastXRot = player.xRot;
-            player.lastYRot = player.yRot;
-        }
-
-        CheckManagerListener.handleQueuedPlaces(player, hasLook, pitch, yaw, now);
-        CheckManagerListener.handleQueuedBreaks(player, hasLook, pitch, yaw, now);
-
-        // We can set the new pos after the places
-        if (hasPosition) {
-            player.packetStateData.lastClaimedPosition = new Vector3d(x, y, z);
-        }
-
-        // This stupid mechanic has been measured with 0.03403409022229198 y velocity... DAMN IT MOJANG, use 0.06 to be safe...
-        if (!hasPosition && onGround != player.packetStateData.packetPlayerOnGround && !player.inVehicle()) {
-            // Check for blocks within 0.03 of the player's position before allowing ground to be true - if 0.03
-            // Cannot use collisions like normal because stepping messes it up :(
-            //
-            // This may need to be secured better, but limiting the new setback positions seems good enough for now...
-            boolean canFeasiblyPointThree = Collisions.slowCouldPointThreeHitGround(player, player.x, player.y, player.z);
-            if (!canFeasiblyPointThree && !player.compensatedWorld.isNearHardEntity(player.boundingBox.copy().expand(4))
-                    || player.clientVelocity.getY() > 0.06 && !player.uncertaintyHandler.wasAffectedByStuckSpeed()) {
-                // Ghost block/0.03 abuse
-                player.getSetbackTeleportUtil().executeForceResync();
-            } else {
-                // Accept the new ground status
-                player.lastOnGround = onGround;
-                player.clientClaimsLastOnGround = onGround;
-                player.uncertaintyHandler.onGroundUncertain = true;
-            }
-        }
-
-        if (!player.packetStateData.lastPacketWasTeleport) {
-            player.packetStateData.packetPlayerOnGround = onGround;
-        }
-
-        if (hasLook) {
-            player.xRot = yaw;
-            player.yRot = pitch;
-
-            float deltaXRot = player.xRot - player.lastXRot;
-            float deltaYRot = player.yRot - player.lastYRot;
-
-            final RotationUpdate update = new RotationUpdate(new HeadRotation(player.lastXRot, player.lastYRot), new HeadRotation(player.xRot, player.yRot), deltaXRot, deltaYRot);
-            player.checkManager.onRotationUpdate(update);
-        }
-
-        if (hasPosition) {
-            Vector3d position = new Vector3d(x, y, z);
-            Vector3d clampVector = VectorUtils.clampVector(position);
-            final PositionUpdate update = new PositionUpdate(new Vector3d(player.x, player.y, player.z), position, onGround, teleportData.getSetback(), teleportData.getTeleportData(), teleportData.isTeleport());
-
-            // Stupidity doesn't care about 0.03
-            if (!player.packetStateData.lastPacketWasOnePointSeventeenDuplicate) {
-                player.filterMojangStupidityOnMojangStupidity = clampVector;
-            }
-
-            if (!player.inVehicle() && !player.packetStateData.lastPacketWasOnePointSeventeenDuplicate) {
-                player.lastX = player.x;
-                player.lastY = player.y;
-                player.lastZ = player.z;
-
-                player.x = clampVector.getX();
-                player.y = clampVector.getY();
-                player.z = clampVector.getZ();
-
-                player.checkManager.onPositionUpdate(update);
-            } else if (update.isTeleport()) { // Mojang doesn't use their own exit vehicle field to leave vehicles, manually call the setback handler
-                player.getSetbackTeleportUtil().onPredictionComplete(new PredictionComplete(0, update, true));
-            }
-        }
-
-        player.packetStateData.didLastLastMovementIncludePosition = player.packetStateData.didLastMovementIncludePosition;
-        player.packetStateData.didLastMovementIncludePosition = hasPosition;
-
-        if (!player.packetStateData.lastPacketWasTeleport) {
-            player.packetStateData.didSendMovementBeforeTickEnd = true;
-        }
-
-        player.packetStateData.horseInteractCausedForcedRotation = false;
-    }
-
-    private static void handleDigging(PlayerData player, PacketReceiveEvent event) {
-        player.lastBlockBreak = System.currentTimeMillis();
-
-        final WrapperPlayClientPlayerDigging packet = new WrapperPlayClientPlayerDigging(event);
-        final DiggingAction action = packet.getAction();
-
-        if (action != DiggingAction.START_DIGGING
-                && action != DiggingAction.FINISHED_DIGGING
-                && action != DiggingAction.CANCELLED_DIGGING) {
-            return;
-        }
-
-        final BlockBreak blockBreak = new BlockBreak(player, packet.getBlockPosition(), packet.getBlockFace(), packet.getBlockFaceId(), action, packet.getSequence(), player.compensatedWorld.getBlock(packet.getBlockPosition()));
-
-        player.checkManager.onBlockBreak(blockBreak);
-
-        if (blockBreak.isCancelled()) {
-            event.setCancelled(true);
-            player.onPacketCancel();
-            player.resyncPosition(blockBreak.position, packet.getSequence());
-            return;
-        }
-
-        player.queuedBreaks.add(blockBreak);
-
-        if (action == DiggingAction.FINISHED_DIGGING && BREAKABLE.apply(blockBreak.block.getType())) {
-            player.compensatedWorld.startPredicting();
-            player.compensatedWorld.updateBlock(blockBreak.position.x, blockBreak.position.y, blockBreak.position.z, 0);
-            player.compensatedWorld.stopPredicting(packet);
-        }
-
-        if (action == DiggingAction.START_DIGGING) {
-            double damage = BlockBreakSpeed.getBlockDamage(player, blockBreak.block);
-
-            // Instant breaking, no damage means it is unbreakable by creative players (with swords)
-            if (damage >= 1) {
-                player.compensatedWorld.startPredicting();
-                player.blockHistory.add(
-                        new BlockModification(
-                                player.compensatedWorld.getBlock(blockBreak.position),
-                                WrappedBlockState.getByGlobalId(0),
-                                blockBreak.position,
-                                EdGrimAPI.INSTANCE.getTickManager().currentTick,
-                                BlockModification.Cause.START_DIGGING
-                        )
-                );
-                if (player.getClientVersion().isNewerThanOrEquals(ClientVersion.V_1_13) && Materials.isWaterSource(player.getClientVersion(), blockBreak.block)) {
-                    // Vanilla uses a method to grab water flowing, but as you can't break flowing water
-                    // We can simply treat all waterlogged blocks or source blocks as source blocks
-                    player.compensatedWorld.updateBlock(blockBreak.position, StateTypes.WATER.createBlockState(CompensatedWorld.blockVersion));
-                } else {
-                    player.compensatedWorld.updateBlock(blockBreak.position.x, blockBreak.position.y, blockBreak.position.z, 0);
-                }
-                player.compensatedWorld.stopPredicting(packet);
-            }
-        }
-
-        player.compensatedWorld.handleBlockBreakPrediction(packet);
     }
 }

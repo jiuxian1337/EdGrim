@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityType;
 import com.github.retrooper.packetevents.protocol.player.EquipmentSlot;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
 
 import java.util.UUID;
 

@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.predictionengine.predictions.rideable;
 
+import lombok.RequiredArgsConstructor;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngineWaterLegacy;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Set;

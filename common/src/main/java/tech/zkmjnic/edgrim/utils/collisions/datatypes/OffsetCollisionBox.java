@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.utils.collisions.datatypes;
 
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import com.github.retrooper.packetevents.protocol.world.states.defaulttags.BlockTags;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
 
 import java.util.HashSet;
 

@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.platform.bukkit.manager;
 
+import org.bukkit.Bukkit;
+import org.bukkit.permissions.Permission;
 import tech.zkmjnic.edgrim.platform.api.manager.PermissionRegistrationManager;
 import tech.zkmjnic.edgrim.platform.api.permissions.PermissionDefaultValue;
 import tech.zkmjnic.edgrim.platform.bukkit.utils.convert.BukkitConversionUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.permissions.Permission;
 
 public class BukkitPermissionRegistrationManager implements PermissionRegistrationManager {
     /**

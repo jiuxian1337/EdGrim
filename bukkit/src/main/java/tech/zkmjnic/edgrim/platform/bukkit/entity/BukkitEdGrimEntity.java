@@ -1,13 +1,13 @@
 package tech.zkmjnic.edgrim.platform.bukkit.entity;
 
+import org.bukkit.entity.Entity;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import tech.zkmjnic.edgrim.platform.api.entity.GrimEntity;
 import tech.zkmjnic.edgrim.platform.api.world.PlatformWorld;
 import tech.zkmjnic.edgrim.platform.bukkit.utils.convert.BukkitConversionUtils;
 import tech.zkmjnic.edgrim.platform.bukkit.utils.reflection.PaperUtils;
 import tech.zkmjnic.edgrim.platform.bukkit.world.BukkitPlatformWorld;
 import tech.zkmjnic.edgrim.utils.math.Location;
-import org.bukkit.entity.Entity;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -57,7 +57,7 @@ public class BukkitEdGrimEntity implements GrimEntity {
     // TODO replace with PlayerWorldChangeEvent listener instead of checking for equality for better performance
     @Override
     public PlatformWorld getWorld() {
-        if (bukkitPlatformWorld == null || !bukkitPlatformWorld.getBukkitWorld().equals(entity.getWorld())) {
+        if (bukkitPlatformWorld == null || !bukkitPlatformWorld.bukkitWorld().equals(entity.getWorld())) {
             bukkitPlatformWorld = new BukkitPlatformWorld(entity.getWorld());
         }
 

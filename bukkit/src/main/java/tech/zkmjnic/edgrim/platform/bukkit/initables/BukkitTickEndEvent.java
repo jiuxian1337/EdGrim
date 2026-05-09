@@ -1,12 +1,5 @@
 package tech.zkmjnic.edgrim.platform.bukkit.initables;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.manager.init.start.AbstractTickEndEvent;
-import tech.zkmjnic.edgrim.platform.api.Platform;
-import tech.zkmjnic.edgrim.platform.bukkit.utils.reflection.PaperUtils;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-import tech.zkmjnic.edgrim.utils.lists.HookedListWrapper;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.util.reflection.Reflection;
@@ -15,6 +8,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import sun.misc.Unsafe;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.manager.init.start.AbstractTickEndEvent;
+import tech.zkmjnic.edgrim.platform.api.Platform;
+import tech.zkmjnic.edgrim.platform.bukkit.utils.reflection.PaperUtils;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
+import tech.zkmjnic.edgrim.utils.lists.HookedListWrapper;
 
 import java.lang.reflect.Field;
 import java.util.Collections;

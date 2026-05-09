@@ -1,5 +1,8 @@
 package tech.zkmjnic.edgrim.predictionengine;
 
+import com.github.retrooper.packetevents.protocol.attribute.Attributes;
+import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
+import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.LastInstance;
@@ -11,9 +14,6 @@ import tech.zkmjnic.edgrim.utils.lists.EvictingQueue;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
 import tech.zkmjnic.edgrim.utils.nmsutil.BoundingBoxSize;
 import tech.zkmjnic.edgrim.utils.nmsutil.ReachUtils;
-import com.github.retrooper.packetevents.protocol.attribute.Attributes;
-import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
-import com.github.retrooper.packetevents.protocol.world.BlockFace;
 
 import java.util.ArrayList;
 import java.util.HashSet;

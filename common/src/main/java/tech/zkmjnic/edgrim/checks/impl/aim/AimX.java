@@ -41,12 +41,12 @@ public final class AimX extends Check implements RotationCheck {
                 List<Integer> xG = new ArrayList<>();
                 List<Integer> yG = new ArrayList<>();
                 for (Pair2<Double, Double> vec2 : rotations) {
-                    x.add(vec2.getX());
-                    y.add(vec2.getY());
+                    x.add(vec2.x());
+                    y.add(vec2.y());
                 }
                 for (Pair2<Integer, Integer> vec2 : rotationsG) {
-                    xG.add(vec2.getX());
-                    yG.add(vec2.getY());
+                    xG.add(vec2.x());
+                    yG.add(vec2.y());
                 }
 
                 double devX = MathUtil.getVariance(xG);

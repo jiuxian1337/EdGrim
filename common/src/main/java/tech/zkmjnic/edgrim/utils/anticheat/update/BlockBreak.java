@@ -1,14 +1,14 @@
 package tech.zkmjnic.edgrim.utils.anticheat.update;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.HitboxData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import com.github.retrooper.packetevents.protocol.player.DiggingAction;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
 import com.github.retrooper.packetevents.util.Vector3i;
 import lombok.Getter;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.HitboxData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 
 import java.util.ArrayList;
 import java.util.List;

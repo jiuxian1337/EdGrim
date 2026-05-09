@@ -1,18 +1,18 @@
 package tech.zkmjnic.edgrim.platform.bukkit.utils.convert;
 
-import tech.zkmjnic.edgrim.platform.api.permissions.PermissionDefaultValue;
-import tech.zkmjnic.edgrim.platform.bukkit.world.BukkitPlatformWorld;
-import tech.zkmjnic.edgrim.utils.math.Location;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.platform.api.permissions.PermissionDefaultValue;
+import tech.zkmjnic.edgrim.platform.bukkit.world.BukkitPlatformWorld;
+import tech.zkmjnic.edgrim.utils.math.Location;
 
 public class BukkitConversionUtils {
     @Contract("null -> null; !null -> new")
     public static org.bukkit.Location toBukkitLocation(Location location) {
         if (location == null) return null;
-        return new org.bukkit.Location(((BukkitPlatformWorld) location.getWorld()).getBukkitWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        return new org.bukkit.Location(((BukkitPlatformWorld) location.getWorld()).bukkitWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
     }
 
     /**

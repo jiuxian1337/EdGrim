@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
+import com.github.retrooper.packetevents.protocol.attribute.Attributes;
+import lombok.experimental.UtilityClass;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
-import com.github.retrooper.packetevents.protocol.attribute.Attributes;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class GetBoundingBox {

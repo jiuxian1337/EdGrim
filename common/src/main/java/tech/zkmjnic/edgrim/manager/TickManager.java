@@ -1,12 +1,12 @@
 package tech.zkmjnic.edgrim.manager;
 
+import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.ImmutableClassToInstanceMap;
 import tech.zkmjnic.edgrim.manager.tick.Tickable;
 import tech.zkmjnic.edgrim.manager.tick.impl.ClearRecentlyUpdatedBlocks;
 import tech.zkmjnic.edgrim.manager.tick.impl.ClientVersionSetter;
 import tech.zkmjnic.edgrim.manager.tick.impl.ResetTick;
 import tech.zkmjnic.edgrim.manager.tick.impl.TickInventory;
-import com.google.common.collect.ClassToInstanceMap;
-import com.google.common.collect.ImmutableClassToInstanceMap;
 
 public class TickManager {
     // Overflows after 4 years of uptime

@@ -2,14 +2,7 @@ package tech.zkmjnic.edgrim.utils.math;
 
 import tech.zkmjnic.edgrim.utils.lists.Tuple;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 public final class MathUtil {
@@ -175,8 +168,8 @@ public final class MathUtil {
         double high = q3 + 1.5 * iqr;
         Tuple<List<Double>, List<Double>> tuple = new Tuple<>(new ArrayList<>(), new ArrayList<>());
         for (double v : vals) {
-            if (v < low) tuple.getX().add(v);
-            else if (v > high) tuple.getY().add(v);
+            if (v < low) tuple.x().add(v);
+            else if (v > high) tuple.y().add(v);
         }
         return tuple;
     }
@@ -374,7 +367,7 @@ public final class MathUtil {
     }
 
     public static double getAngleInDegrees(Vec2f delta) {
-        double angleInRadians = Math.atan2(delta.getX(), delta.getY());
+        double angleInRadians = Math.atan2(delta.x(), delta.y());
         double angleInDegrees = Math.toDegrees(angleInRadians);
         if (angleInDegrees < 0) {
             angleInDegrees += 360;

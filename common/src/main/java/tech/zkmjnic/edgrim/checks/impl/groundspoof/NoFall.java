@@ -1,5 +1,8 @@
 package tech.zkmjnic.edgrim.checks.impl.groundspoof;
 
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PacketCheck;
@@ -8,9 +11,6 @@ import tech.zkmjnic.edgrim.predictionengine.GhostBlockDetector;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.nmsutil.Collisions;
 import tech.zkmjnic.edgrim.utils.nmsutil.GetBoundingBox;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
 
 import java.util.ArrayList;
 import java.util.List;

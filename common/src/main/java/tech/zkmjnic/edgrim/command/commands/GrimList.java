@@ -1,12 +1,6 @@
 package tech.zkmjnic.edgrim.command.commands;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.GrimIdentity;
-import tech.zkmjnic.edgrim.command.BuildableCommand;
-import tech.zkmjnic.edgrim.command.CommandUtils;
-import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -15,6 +9,12 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.parser.standard.StringParser;
 import org.incendo.cloud.suggestion.SuggestionProvider;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.command.BuildableCommand;
+import tech.zkmjnic.edgrim.command.CommandUtils;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -27,6 +27,8 @@ public class GrimList implements BuildableCommand {
 
     // Mainly for debugging purposes. Useful for seeing which players are exempt or not.
 
+    private final SuggestionProvider<Sender> SUGGESTIONS = CommandUtils.fromStrings("players");
+
     @Override
     public void register(CommandManager<Sender> commandManager) {
         commandManager.command(commandManager.commandBuilder("edgrim")
@@ -36,8 +38,6 @@ public class GrimList implements BuildableCommand {
                 .handler(commandContext -> handleList(commandContext.sender(), commandContext.getOrDefault("list", "?").toLowerCase()))
                 .build());
     }
-
-    private final SuggestionProvider<Sender> SUGGESTIONS = CommandUtils.fromStrings("players");
 
     private void handleList(Sender sender, String id) {
         switch (id) {

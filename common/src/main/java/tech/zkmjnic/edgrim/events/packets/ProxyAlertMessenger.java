@@ -1,8 +1,5 @@
 package tech.zkmjnic.edgrim.events.packets;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
@@ -15,6 +12,9 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import github.scarsz.configuralize.DynamicConfig;
 import net.kyori.adventure.text.Component;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
+import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 
 import java.io.*;
 

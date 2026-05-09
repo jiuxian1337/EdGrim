@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityType;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 import java.util.UUID;
 

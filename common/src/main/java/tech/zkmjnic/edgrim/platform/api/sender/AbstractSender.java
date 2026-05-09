@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.platform.api.sender;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
 import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
 
 import java.util.UUID;
 

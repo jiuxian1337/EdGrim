@@ -1,10 +1,5 @@
 package tech.zkmjnic.edgrim.checks.impl.movement;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
@@ -13,6 +8,11 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.InteractionHand;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientUseItem;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 /**
  * @Author: siuxian_baka
@@ -30,7 +30,8 @@ public class NoSlowB extends Check implements PostPredictionCheck {
 
         if (event.getPacketType() == PacketType.Play.Client.USE_ITEM) {
             final PlayerData player = EdGrimAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
-            if (player == null || !PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_9)) return;
+            if (player == null || !PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_9))
+                return;
             WrapperPlayClientUseItem wrapperPlayClientUseItem = new WrapperPlayClientUseItem(event);
             if (PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_8)
                     && player.gamemode == GameMode.SPECTATOR)

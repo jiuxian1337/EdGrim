@@ -93,5 +93,6 @@ public class CoordinationDetection implements StatisticalDetectionStrategy {
         samples.clear();
     }
 
-    private record RotationSample(double deltaYaw, double deltaPitch, long timestamp) {}
+    private record RotationSample(double deltaYaw, double deltaPitch, long timestamp) {
+    }
 }

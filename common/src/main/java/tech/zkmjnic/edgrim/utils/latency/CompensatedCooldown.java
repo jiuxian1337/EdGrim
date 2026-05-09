@@ -1,16 +1,16 @@
 package tech.zkmjnic.edgrim.utils.latency;
 
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.type.PositionCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.update.PositionUpdate;
-import tech.zkmjnic.edgrim.utils.data.CooldownData;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.component.ComponentTypes;
 import com.github.retrooper.packetevents.protocol.component.builtin.item.ItemUseCooldown;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
 import com.github.retrooper.packetevents.resources.ResourceLocation;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.type.PositionCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.update.PositionUpdate;
+import tech.zkmjnic.edgrim.utils.data.CooldownData;
 
 import java.util.Iterator;
 import java.util.Map;

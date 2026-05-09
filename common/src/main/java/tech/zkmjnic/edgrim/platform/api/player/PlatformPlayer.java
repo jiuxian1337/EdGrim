@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.platform.api.player;
 
-import tech.zkmjnic.edgrim.platform.api.entity.GrimEntity;
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.util.Vector3d;
 import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import tech.zkmjnic.edgrim.platform.api.entity.GrimEntity;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 
 public interface PlatformPlayer extends GrimEntity, OfflinePlatformPlayer {
     void kickPlayer(String textReason);
@@ -28,7 +28,8 @@ public interface PlatformPlayer extends GrimEntity, OfflinePlatformPlayer {
 
     PlatformInventory getInventory();
 
-    @Nullable GrimEntity getVehicle();
+    @Nullable
+    GrimEntity getVehicle();
 
     GameMode getGameMode();
 
@@ -44,5 +45,6 @@ public interface PlatformPlayer extends GrimEntity, OfflinePlatformPlayer {
      * Replaces native player reference in PlatformPlayer implementation with a new object
      * Vanilla MC replaces ServerPlayerEntity references on respawn and dimension change
      */
-    default void replaceNativePlayer(Object nativePlayerObject) {}
+    default void replaceNativePlayer(Object nativePlayerObject) {
+    }
 }

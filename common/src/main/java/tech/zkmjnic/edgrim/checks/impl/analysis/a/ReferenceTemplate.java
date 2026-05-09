@@ -1,11 +1,7 @@
-package tech.zkmjnic.edgrim.checks.impl.aim.analysis.a;
+package tech.zkmjnic.edgrim.checks.impl.analysis.a;
 
-final class ReferenceTemplate {
-    final String referenceName;
-    @SuppressWarnings("unused")
-    final String referenceType;
-    final WindowSignature signature;
-
+record ReferenceTemplate(String referenceName, @SuppressWarnings("unused") String referenceType,
+                         WindowSignature signature) {
     ReferenceTemplate(String referenceName, String referenceType, WindowSignature signature) {
         this.referenceName = referenceName;
         this.referenceType = referenceType;

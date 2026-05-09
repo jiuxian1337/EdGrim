@@ -1,16 +1,16 @@
 package tech.zkmjnic.edgrim.checks.impl.autoclicker;
 
 import ac.grim.grimac.api.config.ConfigManager;
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.math.MathUtil;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.DiggingAction;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerDigging;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.PacketCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.math.MathUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * Ported behaviour from MX-Project AutoClickerCheck.
- *
+ * <p>
  * This check looks for unnatural stability in swing delays (in ticks),
  * using per-window kurtosis and entropy jitter ("jiff delta") analysis.
  */
@@ -37,7 +37,7 @@ public final class AutoclickerA extends Check implements PacketCheck {
     private static final long DEFAULT_REQUIRE_ATTACK_WITHIN_MS = 7000L;
     private static final double DEFAULT_ENTROPY_JIFF_MIN = 0.04;
     private static final double DEFAULT_ENTROPY_JIFF_MAX = 0.06;
-
+    private final List<Long> stack = new ArrayList<>(DEFAULT_STACK_SIZE + 10);
     // Config
     private boolean enabled = true;
     private int maxDelayTicks = DEFAULT_MAX_DELAY_TICKS;
@@ -47,17 +47,43 @@ public final class AutoclickerA extends Check implements PacketCheck {
     private long requireAttackWithinMs = DEFAULT_REQUIRE_ATTACK_WITHIN_MS;
     private double entropyJiffMin = DEFAULT_ENTROPY_JIFF_MIN;
     private double entropyJiffMax = DEFAULT_ENTROPY_JIFF_MAX;
-
     // State
     private long oldTime = System.currentTimeMillis();
     private long lastMove = System.currentTimeMillis();
     private long lastAttack = System.currentTimeMillis();
     private boolean collectClicks;
-    private final List<Long> stack = new ArrayList<>(DEFAULT_STACK_SIZE + 10);
     private boolean entropyQuery;
 
     public AutoclickerA(final PlayerData player) {
         super(player);
+    }
+
+    private static double shannonEntropy(final List<Double> values) {
+        if (values.isEmpty()) {
+            return 0.0;
+        }
+
+        final Map<Integer, Integer> counts = new HashMap<>();
+        for (double v : values) {
+            int k = (int) v;
+            counts.put(k, counts.getOrDefault(k, 0) + 1);
+        }
+
+        final int n = values.size();
+        double entropy = 0.0;
+        for (int c : counts.values()) {
+            final double p = c / (double) n;
+            entropy -= p * (Math.log(p) / Math.log(2));
+        }
+        return entropy;
+    }
+
+    private static int clamp(int v, int min, int max) {
+        return Math.max(min, Math.min(max, v));
+    }
+
+    private static long clamp(long v, long min, long max) {
+        return Math.max(min, Math.min(max, v));
     }
 
     @Override
@@ -152,10 +178,12 @@ public final class AutoclickerA extends Check implements PacketCheck {
 
         final double maxKurtosis = MathUtil.getMax(kurtosisStack);
         if (maxKurtosis < 0.0) {
-            flagAndAlert(String.format("t=mx-kurtosis max=%.3f n=%d", maxKurtosis, stack.size()));
-            stack.clear();
-            entropyQuery = false;
-            return;
+            if (flagAndAlert(String.format("t=mx-kurtosis max=%.3f n=%d", maxKurtosis, stack.size()))) {
+                player.mitigateDamage();
+                stack.clear();
+                entropyQuery = false;
+                return;
+            }
         }
 
         final List<Float> jiff = MathUtil.getJiffDelta(shannonStack, 2);
@@ -167,8 +195,10 @@ public final class AutoclickerA extends Check implements PacketCheck {
                 if (!entropyQuery) {
                     entropyQuery = true;
                 } else {
-                    flagAndAlert(String.format("t=mx-entropy min=%.3f max=%.3f n=%d", min, max, stack.size()));
-                    entropyQuery = false;
+                    if (flagAndAlert(String.format("t=mx-entropy min=%.3f max=%.3f n=%d", min, max, stack.size()))) {
+                        player.mitigateDamage();
+                        entropyQuery = false;
+                    }
                 }
             } else {
                 entropyQuery = false;
@@ -178,33 +208,5 @@ public final class AutoclickerA extends Check implements PacketCheck {
         }
 
         stack.clear();
-    }
-
-    private static double shannonEntropy(final List<Double> values) {
-        if (values.isEmpty()) {
-            return 0.0;
-        }
-
-        final Map<Integer, Integer> counts = new HashMap<>();
-        for (double v : values) {
-            int k = (int) v;
-            counts.put(k, counts.getOrDefault(k, 0) + 1);
-        }
-
-        final int n = values.size();
-        double entropy = 0.0;
-        for (int c : counts.values()) {
-            final double p = c / (double) n;
-            entropy -= p * (Math.log(p) / Math.log(2));
-        }
-        return entropy;
-    }
-
-    private static int clamp(int v, int min, int max) {
-        return Math.max(min, Math.min(max, v));
-    }
-
-    private static long clamp(long v, long min, long max) {
-        return Math.max(min, Math.min(max, v));
     }
 }

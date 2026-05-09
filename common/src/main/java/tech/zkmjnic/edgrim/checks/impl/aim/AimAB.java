@@ -8,7 +8,8 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.RotationUpdate;
 import tech.zkmjnic.edgrim.utils.math.Statistics;
 import tech.zkmjnic.edgrim.utils.math.Vec2f;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
@@ -44,8 +45,8 @@ public final class AimAB extends Check implements RotationCheck {
         {
             List<Float> x = new ArrayList<>(), y = new ArrayList<>();
             for (Vec2f vec2 : this.rawRotations) {
-                x.add(vec2.getX());
-                y.add(vec2.getY());
+                x.add(vec2.x());
+                y.add(vec2.y());
             }
             final List<Double> zFactorYaw = Statistics.getZScoreOutliers(x, 2.0);
             final List<Float> jiffYaw = Statistics.getJiffDelta(x, 5);

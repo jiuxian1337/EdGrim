@@ -1,13 +1,5 @@
 package tech.zkmjnic.edgrim.manager.init.start;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.command.SenderRequirement;
-import tech.zkmjnic.edgrim.command.commands.*;
-import tech.zkmjnic.edgrim.command.commands.*;
-import tech.zkmjnic.edgrim.command.commands.*;
-import tech.zkmjnic.edgrim.command.handler.GrimCommandFailureHandler;
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import io.leangen.geantyref.TypeToken;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -17,6 +9,12 @@ import org.incendo.cloud.key.CloudKey;
 import org.incendo.cloud.processors.requirements.RequirementApplicable;
 import org.incendo.cloud.processors.requirements.RequirementPostprocessor;
 import org.incendo.cloud.processors.requirements.Requirements;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.command.SenderRequirement;
+import tech.zkmjnic.edgrim.command.commands.*;
+import tech.zkmjnic.edgrim.command.handler.GrimCommandFailureHandler;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
+import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -26,7 +24,8 @@ public class CommandRegister implements StartableInitable {
     public static final CloudKey<Requirements<Sender, SenderRequirement>>
             REQUIREMENT_KEY = CloudKey.of(
             "requirements",
-            new TypeToken<>() {}
+            new TypeToken<>() {
+            }
     );
 
     public static final RequirementApplicable.RequirementApplicableFactory<Sender,

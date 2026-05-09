@@ -1,0 +1,5 @@
+name: RotationRecorder
+version: 1.0
+main: dev.jiuxian.edgrim.RotationRecorder
+api-version: 1.13
+depend: [packetevents]

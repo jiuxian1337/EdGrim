@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.manager.tick.impl;
 
+import com.github.retrooper.packetevents.netty.channel.ChannelHelper;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.manager.tick.Tickable;
 import tech.zkmjnic.edgrim.player.PlayerData;
-import com.github.retrooper.packetevents.netty.channel.ChannelHelper;
 
 public class ClientVersionSetter implements Tickable {
     @Override

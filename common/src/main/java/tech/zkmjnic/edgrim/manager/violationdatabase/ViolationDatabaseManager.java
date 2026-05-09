@@ -1,16 +1,16 @@
 package tech.zkmjnic.edgrim.manager.violationdatabase;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.config.ConfigManager;
 import ac.grim.grimac.api.plugin.GrimPlugin;
+import lombok.Getter;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.manager.init.ReloadableInitable;
 import tech.zkmjnic.edgrim.manager.init.start.StartableInitable;
 import tech.zkmjnic.edgrim.manager.violationdatabase.mysql.MySQLViolationDatabase;
 import tech.zkmjnic.edgrim.manager.violationdatabase.sqlite.SQLiteViolationDatabase;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-import lombok.Getter;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -19,8 +19,10 @@ import java.util.UUID;
 public class ViolationDatabaseManager implements StartableInitable, ReloadableInitable {
 
     private final GrimPlugin plugin;
-    @Getter private boolean enabled = false;
-    @Getter private boolean loaded = false;
+    @Getter
+    private boolean enabled = false;
+    @Getter
+    private boolean loaded = false;
 
     private @NonNull ViolationDatabase database;
 
@@ -72,10 +74,10 @@ public class ViolationDatabaseManager implements StartableInitable, ReloadableIn
             }
 
             case "MYSQL" -> {
-                String host = cfg.getStringElse("history.database.host",     "localhost:3306");
-                String db   = cfg.getStringElse("history.database.database", "EdGrim");
+                String host = cfg.getStringElse("history.database.host", "localhost:3306");
+                String db = cfg.getStringElse("history.database.database", "EdGrim");
                 String user = cfg.getStringElse("history.database.username", "root");
-                String pwd  = cfg.getStringElse("history.database.password", "password");
+                String pwd = cfg.getStringElse("history.database.password", "password");
 
                 if (database instanceof MySQLViolationDatabase mysql
                         && mysql.sameConfig(host, db, user, pwd)) {

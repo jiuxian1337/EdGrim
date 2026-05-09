@@ -1,13 +1,13 @@
 package tech.zkmjnic.edgrim.platform.bukkit.player;
 
-import tech.zkmjnic.edgrim.platform.api.player.AbstractPlatformPlayerFactory;
-import tech.zkmjnic.edgrim.platform.api.player.OfflinePlatformPlayer;
-import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.platform.api.player.AbstractPlatformPlayerFactory;
+import tech.zkmjnic.edgrim.platform.api.player.OfflinePlatformPlayer;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
 
 import java.util.Collection;
 import java.util.UUID;

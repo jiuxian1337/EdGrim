@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 public record Violation(String server, UUID uuid, String checkName, String verbose, int vl,
-                        long createdAt, String grimVersion, String clientBrand, String clientVersion, String serverVersion) {
+                        long createdAt, String grimVersion, String clientBrand,
+                        String clientVersion, String serverVersion) {
 
     public static List<Violation> fromResultSet(ResultSet resultSet) throws SQLException {
         List<Violation> violations = new ArrayList<>();

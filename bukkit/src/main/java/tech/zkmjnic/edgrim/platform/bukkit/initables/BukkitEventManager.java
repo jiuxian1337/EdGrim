@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.platform.bukkit.initables;
 
+import org.bukkit.Bukkit;
 import tech.zkmjnic.edgrim.manager.init.start.StartableInitable;
 import tech.zkmjnic.edgrim.platform.bukkit.EdGrimBukkitLoaderPlugin;
 import tech.zkmjnic.edgrim.platform.bukkit.events.DamageMitigationEvent;
 import tech.zkmjnic.edgrim.platform.bukkit.events.PistonEvent;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-import org.bukkit.Bukkit;
 
 public class BukkitEventManager implements StartableInitable {
     public void start() {

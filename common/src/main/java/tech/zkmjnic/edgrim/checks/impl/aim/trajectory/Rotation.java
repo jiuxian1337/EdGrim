@@ -13,6 +13,10 @@ public class Rotation {
         this.timestamp = System.currentTimeMillis();
     }
 
+    public static float getAngleDifference(final float a, final float b) {
+        return MathUtil.wrapAngleTo180_float(MathUtil.wrapAngleTo180_float(a) - MathUtil.wrapAngleTo180_float(b));
+    }
+
     public float getYaw() {
         return yaw;
     }
@@ -23,9 +27,5 @@ public class Rotation {
 
     public long getTimestamp() {
         return timestamp;
-    }
-
-    public static float getAngleDifference(final float a, final float b) {
-        return MathUtil.wrapAngleTo180_float(MathUtil.wrapAngleTo180_float(a) - MathUtil.wrapAngleTo180_float(b));
     }
 }

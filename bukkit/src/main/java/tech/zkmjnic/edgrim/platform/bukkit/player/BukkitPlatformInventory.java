@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.platform.bukkit.player;
 
-import tech.zkmjnic.edgrim.platform.api.player.PlatformInventory;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import org.bukkit.entity.Player;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformInventory;
 
 public class BukkitPlatformInventory implements PlatformInventory {
 

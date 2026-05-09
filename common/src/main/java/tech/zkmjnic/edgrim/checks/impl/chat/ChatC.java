@@ -1,29 +1,29 @@
 package tech.zkmjnic.edgrim.checks.impl.chat;
 
 import ac.grim.grimac.api.config.ConfigManager;
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.impl.multiactions.MultiActionsC;
-import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientChatCommand;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientChatCommandUnsigned;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientChatMessage;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.impl.multiactions.MultiActionsC;
+import tech.zkmjnic.edgrim.checks.type.PacketCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 @CheckData(name = "ChatC", description = "Moving while chatting", experimental = true)
 public class ChatC extends Check implements PacketCheck {
+    // optionally allow cheats like autogg
+    private @Nullable Predicate<String> exemptRegex;
+
     public ChatC(PlayerData player) {
         super(player);
     }
-
-    // optionally allow cheats like autogg
-    private @Nullable Predicate<String> exemptRegex;
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {

@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.platform.bukkit;
 
-import tech.zkmjnic.edgrim.platform.api.PlatformServer;
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 import io.github.retrooper.packetevents.util.SpigotReflectionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import tech.zkmjnic.edgrim.platform.api.PlatformServer;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 
 
 public class BukkitPlatformServer implements PlatformServer {

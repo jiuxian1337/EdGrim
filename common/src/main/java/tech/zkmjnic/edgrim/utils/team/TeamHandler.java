@@ -1,9 +1,5 @@
 package tech.zkmjnic.edgrim.utils.team;
 
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.type.PacketCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -13,6 +9,10 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.type.PacketCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,18 +21,11 @@ import java.util.UUID;
 
 // Reminder: Entities use UUIDs, players use name, for setting teams.
 public class TeamHandler extends Check implements PacketCheck {
-    private record TeamPacketData(
-            String teamName,
-            WrapperPlayServerTeams.TeamMode teamMode,
-            @Nullable WrapperPlayServerTeams.CollisionRule collisionRule,
-            Collection<String> players
-    ) {
-    }
-
     private final Map<String, EntityTeam> entityTeams = new Object2ObjectOpenHashMap<>();
     private final Map<String, EntityTeam> entityToTeam = new Object2ObjectOpenHashMap<>();
-
-    private @Getter @Setter @Nullable EntityTeam playerTeam = null;
+    private @Getter
+    @Setter
+    @Nullable EntityTeam playerTeam = null;
 
     public TeamHandler(PlayerData player) {
         super(player);
@@ -153,5 +146,13 @@ public class TeamHandler extends Check implements PacketCheck {
         } else {
             wrapper.readString(wrapper.getMaxMessageLength());
         }
+    }
+
+    private record TeamPacketData(
+            String teamName,
+            WrapperPlayServerTeams.TeamMode teamMode,
+            @Nullable WrapperPlayServerTeams.CollisionRule collisionRule,
+            Collection<String> players
+    ) {
     }
 }

@@ -1,5 +1,12 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
+import com.github.retrooper.packetevents.protocol.world.BlockFace;
+import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
+import com.github.retrooper.packetevents.protocol.world.states.defaulttags.BlockTags;
+import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
+import com.github.retrooper.packetevents.util.Vector3d;
+import com.github.retrooper.packetevents.util.Vector3i;
+import lombok.experimental.UtilityClass;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
@@ -9,13 +16,6 @@ import tech.zkmjnic.edgrim.utils.data.HitData;
 import tech.zkmjnic.edgrim.utils.data.Pair;
 import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
-import com.github.retrooper.packetevents.protocol.world.BlockFace;
-import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
-import com.github.retrooper.packetevents.protocol.world.states.defaulttags.BlockTags;
-import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
-import com.github.retrooper.packetevents.util.Vector3d;
-import com.github.retrooper.packetevents.util.Vector3i;
-import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -335,14 +335,11 @@ public class InteractVisibilityUtil {
                 }
                 return collidingAxis != Axis.X_AXIS;
             }
-            if (!mightEdgeInteraction && lastBounds != null && (dx > 0 ? lastBounds.maxX == 1.0D && nextBounds.minX == 0.0D : lastBounds.minX == 0.0D && nextBounds.maxX == 1.0D)
-                    && ((nextBounds.minY == 0.0D && lastBounds.minY == 0.0D && nextBounds.maxY == 1.0D && lastBounds.maxY == 1.0D
-                    && equal(coveredSpace(lastBounds.minZ, lastBounds.maxZ, nextBounds.minZ, nextBounds.maxZ), 1.0D, 0.001D))
-                    || (nextBounds.minZ == 0.0D && lastBounds.minZ == 0.0D && nextBounds.maxZ == 1.0D && lastBounds.maxZ == 1.0D
-                    && equal(coveredSpace(lastBounds.minY, lastBounds.maxY, nextBounds.minY, nextBounds.maxY), 1.0D, 0.001D)))) {
-                return false;
-            }
-            return true;
+            return mightEdgeInteraction || lastBounds == null || (dx > 0 ? lastBounds.maxX != 1.0D || nextBounds.minX != 0.0D : lastBounds.minX != 0.0D || nextBounds.maxX != 1.0D)
+                    || ((nextBounds.minY != 0.0D || lastBounds.minY != 0.0D || nextBounds.maxY != 1.0D || lastBounds.maxY != 1.0D
+                    || !equal(coveredSpace(lastBounds.minZ, lastBounds.maxZ, nextBounds.minZ, nextBounds.maxZ), 1.0D, 0.001D))
+                    && (nextBounds.minZ != 0.0D || lastBounds.minZ != 0.0D || nextBounds.maxZ != 1.0D || lastBounds.maxZ != 1.0D
+                    || !equal(coveredSpace(lastBounds.minY, lastBounds.maxY, nextBounds.minY, nextBounds.maxY), 1.0D, 0.001D)));
         }
 
         if (dz != 0) {
@@ -353,14 +350,11 @@ public class InteractVisibilityUtil {
                 }
                 return collidingAxis != Axis.Z_AXIS;
             }
-            if (!mightEdgeInteraction && lastBounds != null && (dz > 0 ? lastBounds.maxZ == 1.0D && nextBounds.minZ == 0.0D : lastBounds.minZ == 0.0D && nextBounds.maxZ == 1.0D)
-                    && ((nextBounds.minY == 0.0D && lastBounds.minY == 0.0D && nextBounds.maxY == 1.0D && lastBounds.maxY == 1.0D
-                    && equal(coveredSpace(lastBounds.minX, lastBounds.maxX, nextBounds.minX, nextBounds.maxX), 1.0D, 0.001D))
-                    || (nextBounds.minX == 0.0D && lastBounds.minX == 0.0D && nextBounds.maxX == 1.0D && lastBounds.maxX == 1.0D
-                    && equal(coveredSpace(lastBounds.minY, lastBounds.maxY, nextBounds.minY, nextBounds.maxY), 1.0D, 0.001D)))) {
-                return false;
-            }
-            return true;
+            return mightEdgeInteraction || lastBounds == null || (dz > 0 ? lastBounds.maxZ != 1.0D || nextBounds.minZ != 0.0D : lastBounds.minZ != 0.0D || nextBounds.maxZ != 1.0D)
+                    || ((nextBounds.minY != 0.0D || lastBounds.minY != 0.0D || nextBounds.maxY != 1.0D || lastBounds.maxY != 1.0D
+                    || !equal(coveredSpace(lastBounds.minX, lastBounds.maxX, nextBounds.minX, nextBounds.maxX), 1.0D, 0.001D))
+                    && (nextBounds.minX != 0.0D || lastBounds.minX != 0.0D || nextBounds.maxX != 1.0D || lastBounds.maxX != 1.0D
+                    || !equal(coveredSpace(lastBounds.minY, lastBounds.maxY, nextBounds.minY, nextBounds.maxY), 1.0D, 0.001D)));
         }
 
         return false;
@@ -451,20 +445,26 @@ public class InteractVisibilityUtil {
 
         if (priorityAxis == Axis.X_AXIS) {
             neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
-            if (allowZ) neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
-            if (allowY) neighbors.add(new Vector3i(source.getX(), source.getY() + stepY, source.getZ()));
+            if (allowZ)
+                neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
+            if (allowY)
+                neighbors.add(new Vector3i(source.getX(), source.getY() + stepY, source.getZ()));
             return neighbors;
         }
         if (priorityAxis == Axis.Y_AXIS) {
             neighbors.add(new Vector3i(source.getX(), source.getY() + stepY, source.getZ()));
-            if (allowX) neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
-            if (allowZ) neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
+            if (allowX)
+                neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
+            if (allowZ)
+                neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
             return neighbors;
         }
         if (priorityAxis == Axis.Z_AXIS) {
             neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
-            if (allowX) neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
-            if (allowY) neighbors.add(new Vector3i(source.getX(), source.getY() + stepY, source.getZ()));
+            if (allowX)
+                neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
+            if (allowY)
+                neighbors.add(new Vector3i(source.getX(), source.getY() + stepY, source.getZ()));
             return neighbors;
         }
 
@@ -473,25 +473,36 @@ public class InteractVisibilityUtil {
         final double manhattanX = manhattan(source.getX() + stepX, source.getY(), source.getZ(), eyeX, eyeY, eyeZ);
 
         if (manhattanY <= manhattanX && manhattanY <= manhattanZ && Math.abs(direction.getY()) >= 0.5D) {
-            if (allowY) neighbors.add(new Vector3i(source.getX(), source.getY() + stepY, source.getZ()));
+            if (allowY)
+                neighbors.add(new Vector3i(source.getX(), source.getY() + stepY, source.getZ()));
             if (manhattanX < manhattanZ) {
-                if (allowX) neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
-                if (allowZ) neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
+                if (allowX)
+                    neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
+                if (allowZ)
+                    neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
             } else {
-                if (allowZ) neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
-                if (allowX) neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
+                if (allowZ)
+                    neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
+                if (allowX)
+                    neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
             }
             return neighbors;
         }
 
         if (manhattanX < manhattanZ) {
-            if (allowX) neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
-            if (allowZ) neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
-            if (allowY) neighbors.add(new Vector3i(source.getX(), source.getY() + stepY, source.getZ()));
+            if (allowX)
+                neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
+            if (allowZ)
+                neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
+            if (allowY)
+                neighbors.add(new Vector3i(source.getX(), source.getY() + stepY, source.getZ()));
         } else {
-            if (allowZ) neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
-            if (allowX) neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
-            if (allowY) neighbors.add(new Vector3i(source.getX(), source.getY() + stepY, source.getZ()));
+            if (allowZ)
+                neighbors.add(new Vector3i(source.getX(), source.getY(), source.getZ() + stepZ));
+            if (allowX)
+                neighbors.add(new Vector3i(source.getX() + stepX, source.getY(), source.getZ()));
+            if (allowY)
+                neighbors.add(new Vector3i(source.getX(), source.getY() + stepY, source.getZ()));
         }
 
         return neighbors;
@@ -633,7 +644,9 @@ public class InteractVisibilityUtil {
         NONE
     }
 
-    private record Bounds(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {}
+    private record Bounds(double minX, double minY, double minZ, double maxX, double maxY,
+                          double maxZ) {
+    }
 
     private static final class RichAxisData {
         private Axis priority;

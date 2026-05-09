@@ -57,8 +57,8 @@ public final class AimT extends Check implements RotationCheck {
         for (int i = 1; i < SAMPLE_SIZE; i++) {
             Vec2f prev = sample.get(i - 1);
             Vec2f curr = sample.get(i);
-            float absX = Math.abs(curr.getX());
-            float diff = Math.abs(Math.abs(curr.getX()) - Math.abs(prev.getY()));
+            float absX = Math.abs(curr.x());
+            float diff = Math.abs(Math.abs(curr.x()) - Math.abs(prev.y()));
             if (absX > 1.0 && diff < 1e-4) {
                 if (++filterCount > 3 && buffer++ >= 3) {
                     flagged = flagAndAlert("(Filter)\np= " + diff);
@@ -83,8 +83,8 @@ public final class AimT extends Check implements RotationCheck {
 
         if (!flagged) {
             for (Vec2f vec : patterns) {
-                float x = Math.abs(vec.getX());
-                float y = Math.abs(vec.getY());
+                float x = Math.abs(vec.x());
+                float y = Math.abs(vec.y());
                 if ((x > 1.0 || y > 1.0) && x > 0.26 && y > 0.26) {
                     if (buffer2++ > 6) {
                         if (flagAndAlert("(Offset)\np= " + vec)) {

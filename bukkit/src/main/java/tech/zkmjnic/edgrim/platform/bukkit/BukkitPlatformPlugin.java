@@ -1,7 +1,7 @@
 package tech.zkmjnic.edgrim.platform.bukkit;
 
-import tech.zkmjnic.edgrim.platform.api.PlatformPlugin;
 import org.bukkit.plugin.Plugin;
+import tech.zkmjnic.edgrim.platform.api.PlatformPlugin;
 
 public class BukkitPlatformPlugin implements PlatformPlugin {
     private final Plugin plugin;

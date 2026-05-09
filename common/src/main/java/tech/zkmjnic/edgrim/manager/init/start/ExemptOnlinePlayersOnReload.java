@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.manager.init.start;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.player.User;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
 
 public class ExemptOnlinePlayersOnReload implements StartableInitable {
 

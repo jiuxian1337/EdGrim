@@ -1,12 +1,12 @@
 package tech.zkmjnic.edgrim.predictionengine;
 
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 
 public class GhostBlockDetector extends Check implements PostPredictionCheck {
 

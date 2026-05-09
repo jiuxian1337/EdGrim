@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.utils.math;
 
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import com.github.retrooper.packetevents.util.Vector3d;
 import lombok.experimental.UtilityClass;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 
 @UtilityClass
 public class VectorUtils {

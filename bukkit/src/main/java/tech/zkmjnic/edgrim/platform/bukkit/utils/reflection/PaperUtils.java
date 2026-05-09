@@ -1,13 +1,13 @@
 package tech.zkmjnic.edgrim.platform.bukkit.utils.reflection;
 
-import tech.zkmjnic.edgrim.platform.bukkit.EdGrimBukkitLoaderPlugin;
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-import tech.zkmjnic.edgrim.utils.reflection.ReflectionUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import tech.zkmjnic.edgrim.platform.bukkit.EdGrimBukkitLoaderPlugin;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
+import tech.zkmjnic.edgrim.utils.reflection.ReflectionUtils;
 
 import java.util.concurrent.CompletableFuture;
 

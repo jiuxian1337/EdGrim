@@ -1,22 +1,22 @@
 package tech.zkmjnic.edgrim.manager;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.AbstractCheck;
 import ac.grim.grimac.api.config.ConfigManager;
 import ac.grim.grimac.api.config.ConfigReloadable;
 import ac.grim.grimac.api.event.events.CommandExecuteEvent;
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.events.packets.ProxyAlertMessenger;
-import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.events.packets.ProxyAlertMessenger;
+import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
+import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
 
 import java.util.*;
 
@@ -179,7 +179,8 @@ public class PunishmentManager implements ConfigReloadable {
                             if (executeEvent.isCancelled()) continue;
 
                             switch (command.command) {
-                                case "[webhook]" -> EdGrimAPI.INSTANCE.getDiscordManager().sendAlert(player, verbose, check.getDisplayName(), violationCount);
+                                case "[webhook]" ->
+                                        EdGrimAPI.INSTANCE.getDiscordManager().sendAlert(player, verbose, check.getDisplayName(), violationCount);
                                 case "[log]" -> {
                                     String verboseWithoutGl = verbose.replaceAll(" /gl .*", "");
                                     EdGrimAPI.INSTANCE.getViolationDatabaseManager().logAlert(player, verboseWithoutGl, check.getDisplayName(), vl);
@@ -195,12 +196,13 @@ public class PunishmentManager implements ConfigReloadable {
                                         EdGrimAPI.INSTANCE.getAlertManager().sendAlert(interactive, verboseListeners);
                                     }
                                 }
-                                default -> EdGrimAPI.INSTANCE.getScheduler().getGlobalRegionScheduler().run(EdGrimAPI.INSTANCE.getGrimPlugin(), () ->
-                                        EdGrimAPI.INSTANCE.getPlatformServer().dispatchCommand(
-                                                EdGrimAPI.INSTANCE.getPlatformServer().getConsoleSender(),
-                                                cmd
-                                        )
-                                );
+                                default ->
+                                        EdGrimAPI.INSTANCE.getScheduler().getGlobalRegionScheduler().run(EdGrimAPI.INSTANCE.getGrimPlugin(), () ->
+                                                EdGrimAPI.INSTANCE.getPlatformServer().dispatchCommand(
+                                                        EdGrimAPI.INSTANCE.getPlatformServer().getConsoleSender(),
+                                                        cmd
+                                                )
+                                        );
                             }
                         }
 

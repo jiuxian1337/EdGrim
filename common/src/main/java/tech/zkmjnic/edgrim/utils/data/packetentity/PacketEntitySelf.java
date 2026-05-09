@@ -1,11 +1,5 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity;
 
-import tech.zkmjnic.edgrim.checks.impl.sprint.SprintD;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
-import tech.zkmjnic.edgrim.utils.inventory.EnchantmentHelper;
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
@@ -16,6 +10,12 @@ import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.potion.PotionType;
 import com.github.retrooper.packetevents.protocol.potion.PotionTypes;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateAttributes;
+import tech.zkmjnic.edgrim.checks.impl.sprint.SprintD;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
+import tech.zkmjnic.edgrim.utils.inventory.EnchantmentHelper;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
 
 import java.util.ArrayList;
 

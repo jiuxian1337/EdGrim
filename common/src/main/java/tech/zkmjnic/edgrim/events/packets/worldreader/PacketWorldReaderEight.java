@@ -1,6 +1,5 @@
 package tech.zkmjnic.edgrim.events.packets.worldreader;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.world.chunk.impl.v1_16.Chunk_v1_9;
 import com.github.retrooper.packetevents.protocol.world.chunk.palette.DataPalette;
@@ -9,6 +8,7 @@ import com.github.retrooper.packetevents.protocol.world.chunk.palette.PaletteTyp
 import com.github.retrooper.packetevents.protocol.world.chunk.storage.BitStorage;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import io.netty.buffer.ByteBuf;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 import java.util.BitSet;
 

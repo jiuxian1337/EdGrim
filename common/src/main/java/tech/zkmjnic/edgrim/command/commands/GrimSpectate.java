@@ -1,5 +1,9 @@
 package tech.zkmjnic.edgrim.command.commands;
 
+import com.github.retrooper.packetevents.protocol.player.GameMode;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.context.CommandContext;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.command.BuildableCommand;
 import tech.zkmjnic.edgrim.command.requirements.PlayerSenderRequirement;
@@ -8,10 +12,6 @@ import tech.zkmjnic.edgrim.platform.api.command.PlayerSelector;
 import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayer;
 import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 import tech.zkmjnic.edgrim.utils.anticheat.MessageUtil;
-import com.github.retrooper.packetevents.protocol.player.GameMode;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.incendo.cloud.CommandManager;
-import org.incendo.cloud.context.CommandContext;
 
 import java.util.Objects;
 

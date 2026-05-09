@@ -1,15 +1,15 @@
 package tech.zkmjnic.edgrim.manager.player.features;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.config.ConfigManager;
 import ac.grim.grimac.api.feature.FeatureManager;
 import ac.grim.grimac.api.feature.FeatureState;
-import tech.zkmjnic.edgrim.manager.player.features.types.*;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.common.ConfigReloadObserver;
 import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.manager.player.features.types.*;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.common.ConfigReloadObserver;
 
 import java.util.Collection;
 import java.util.HashMap;

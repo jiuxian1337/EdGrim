@@ -1,13 +1,13 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks;
 
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
+import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
+import com.github.retrooper.packetevents.protocol.world.states.enums.Half;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.NoCollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
-import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
-import com.github.retrooper.packetevents.protocol.world.states.enums.Half;
 
 public class TrapDoorHandler implements CollisionFactory {
     @Override

@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.platform.api.manager;
 
-import tech.zkmjnic.edgrim.platform.api.command.PlayerSelector;
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 import org.incendo.cloud.parser.ParserDescriptor;
 import org.incendo.cloud.suggestion.SuggestionProvider;
+import tech.zkmjnic.edgrim.platform.api.command.PlayerSelector;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 
 /**
  * Acts as a bridge between platform-agnostic command definitions

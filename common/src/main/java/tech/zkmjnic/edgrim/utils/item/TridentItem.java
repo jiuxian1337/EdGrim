@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.utils.item;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
 import com.github.retrooper.packetevents.protocol.item.enchantment.type.EnchantmentTypes;
 import com.github.retrooper.packetevents.protocol.player.InteractionHand;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
 
 public class TridentItem extends ItemBehaviour {
 

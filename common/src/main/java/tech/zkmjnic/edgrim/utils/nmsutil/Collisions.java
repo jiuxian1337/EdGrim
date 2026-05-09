@@ -1,19 +1,5 @@
 package tech.zkmjnic.edgrim.utils.nmsutil;
 
-import tech.zkmjnic.edgrim.events.packets.PacketWorldBorder;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.chunks.Column;
-import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
-import tech.zkmjnic.edgrim.utils.data.Pair;
-import tech.zkmjnic.edgrim.utils.data.VectorData;
-import tech.zkmjnic.edgrim.utils.data.tags.SyncedTags;
-import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
-import tech.zkmjnic.edgrim.utils.math.Location;
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
-import tech.zkmjnic.edgrim.utils.math.VectorUtils;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
@@ -34,19 +20,30 @@ import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import lombok.experimental.UtilityClass;
+import tech.zkmjnic.edgrim.events.packets.PacketWorldBorder;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.chunks.Column;
+import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
+import tech.zkmjnic.edgrim.utils.data.Pair;
+import tech.zkmjnic.edgrim.utils.data.VectorData;
+import tech.zkmjnic.edgrim.utils.data.tags.SyncedTags;
+import tech.zkmjnic.edgrim.utils.latency.CompensatedWorld;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
+import tech.zkmjnic.edgrim.utils.math.Location;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
+import tech.zkmjnic.edgrim.utils.math.VectorUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @UtilityClass
 public final class Collisions {
+    public static final ImmutableList<Axis> YXZ_AXIS_ORDER = ImmutableList.of(Collisions.Axis.Y, Collisions.Axis.X, Collisions.Axis.Z);
+    public static final ImmutableList<Collisions.Axis> YZX_AXIS_ORDER = ImmutableList.of(Collisions.Axis.Y, Collisions.Axis.Z, Collisions.Axis.X);
     private static final double COLLISION_EPSILON = 1.0E-7;
-
     private static final boolean IS_FOURTEEN = PacketEvents.getAPI().getServerManager().getVersion().isNewerThanOrEquals(ServerVersion.V_1_14); // Optimization for chunks with empty block count
     private static final List<List<Axis>> allAxisCombinations = Arrays.asList(
             Arrays.asList(Axis.Y, Axis.X, Axis.Z),
@@ -754,9 +751,6 @@ public final class Collisions {
             return prevDirection;
         }
     }
-
-    public static final ImmutableList<Axis> YXZ_AXIS_ORDER = ImmutableList.of(Collisions.Axis.Y, Collisions.Axis.X, Collisions.Axis.Z);
-    public static final ImmutableList<Collisions.Axis> YZX_AXIS_ORDER = ImmutableList.of(Collisions.Axis.Y, Collisions.Axis.Z, Collisions.Axis.X);
 
     public static Iterable<Collisions.Axis> axisStepOrder(Vector3d vector) {
         return Math.abs(vector.getX()) < Math.abs(vector.getZ()) ? YZX_AXIS_ORDER : YXZ_AXIS_ORDER;

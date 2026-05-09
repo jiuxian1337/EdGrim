@@ -96,10 +96,9 @@ public interface PlatformScheduler {
      * // seconds == 5
      * </pre>
      *
-     * @param ticks     The number of ticks to convert.
-     * @param timeUnit  The unit in which you want the result.
-     * @return          The converted time value in the requested unit.
-     *
+     * @param ticks    The number of ticks to convert.
+     * @param timeUnit The unit in which you want the result.
+     * @return The converted time value in the requested unit.
      * @see #convertTimeToTicks(long, TimeUnit)
      */
     static long convertTicksToTime(long ticks, TimeUnit timeUnit) {
@@ -133,7 +132,8 @@ public interface PlatformScheduler {
      *
      * @return The async task scheduler.
      */
-    @NonNull AsyncScheduler getAsyncScheduler();
+    @NonNull
+    AsyncScheduler getAsyncScheduler();
 
     /**
      * Returns the global region task scheduler.
@@ -163,7 +163,8 @@ public interface PlatformScheduler {
      *
      * @return The global region scheduler.
      */
-    @NonNull GlobalRegionScheduler getGlobalRegionScheduler();
+    @NonNull
+    GlobalRegionScheduler getGlobalRegionScheduler();
 
     /**
      * Returns the entity task scheduler.
@@ -200,7 +201,8 @@ public interface PlatformScheduler {
      *
      * @return The entity task scheduler.
      */
-    @NonNull EntityScheduler getEntityScheduler();
+    @NonNull
+    EntityScheduler getEntityScheduler();
 
     /**
      * Returns the region task scheduler.
@@ -238,5 +240,6 @@ public interface PlatformScheduler {
      *
      * @return The region task scheduler.
      */
-    @NonNull RegionScheduler getRegionScheduler();
+    @NonNull
+    RegionScheduler getRegionScheduler();
 }

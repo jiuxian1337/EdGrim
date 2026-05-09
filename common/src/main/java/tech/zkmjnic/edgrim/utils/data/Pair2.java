@@ -1,19 +1,4 @@
 package tech.zkmjnic.edgrim.utils.data;
 
-public class Pair2<X, Y> {
-    private final X x;
-    private final Y y;
-
-    public Pair2(X x, Y y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public X getX() {
-        return x;
-    }
-
-    public Y getY() {
-        return y;
-    }
+public record Pair2<X, Y>(X x, Y y) {
 }

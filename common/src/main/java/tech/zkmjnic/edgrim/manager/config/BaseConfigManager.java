@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.manager.config;
 
 import ac.grim.grimac.api.config.ConfigManager;
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import lombok.Getter;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;

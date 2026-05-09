@@ -1,8 +1,8 @@
 package tech.zkmjnic.edgrim.utils.inventory.slot;
 
+import com.github.retrooper.packetevents.protocol.item.ItemStack;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.inventory.InventoryStorage;
-import com.github.retrooper.packetevents.protocol.item.ItemStack;
 
 import java.util.Optional;
 

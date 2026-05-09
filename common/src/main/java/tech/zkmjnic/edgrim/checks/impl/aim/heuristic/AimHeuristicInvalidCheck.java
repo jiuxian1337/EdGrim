@@ -7,11 +7,11 @@ import tech.zkmjnic.edgrim.utils.math.Statistics;
 import tech.zkmjnic.edgrim.utils.math.Vec2f;
 
 public final class AimHeuristicInvalidCheck implements HeuristicComponent {
-    private final AimAA check;
-    private int buffer;
     private static final float INVALID_PITCH = 90f + 1e-6f;
     private static final int BUFFER_LIMIT = 70;
     private static final int ADD_BUFFER = 20;
+    private final AimAA check;
+    private int buffer;
 
     public AimHeuristicInvalidCheck(final AimAA check) {
         this.check = check;
@@ -30,7 +30,7 @@ public final class AimHeuristicInvalidCheck implements HeuristicComponent {
                 && absDeltaX > 0.5f) {
             buffer += ADD_BUFFER;
             if (buffer > BUFFER_LIMIT) {
-                if (check.flagAndAlert("* Invalid Pitch " + delta.getY())) {
+                if (check.flagAndAlert("* Invalid Pitch " + delta.y())) {
                     check.getPlayer().mitigateDamage();
                 }
                 buffer = BUFFER_LIMIT - 1;
@@ -40,7 +40,7 @@ public final class AimHeuristicInvalidCheck implements HeuristicComponent {
         }
 
         if (event.getTo().getPitch() > INVALID_PITCH) {
-            if (check.flagAndAlert("* Unlimited Pitch " + delta.getY())) {
+            if (check.flagAndAlert("* Unlimited Pitch " + delta.y())) {
                 check.getPlayer().mitigateDamage();
             }
         }

@@ -1,7 +1,13 @@
 package tech.zkmjnic.edgrim.checks.impl.velocity;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.config.ConfigManager;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.util.Vector3d;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityVelocity;
+import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
@@ -11,12 +17,6 @@ import tech.zkmjnic.edgrim.utils.data.Pair;
 import tech.zkmjnic.edgrim.utils.data.VectorData;
 import tech.zkmjnic.edgrim.utils.data.VelocityData;
 import tech.zkmjnic.edgrim.utils.math.Vector3dm;
-import com.github.retrooper.packetevents.event.PacketSendEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.util.Vector3d;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityVelocity;
-import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -214,6 +214,7 @@ public class VelocityA extends Check implements PostPredictionCheck {
                         : "o: " + formatOffset(player.likelyKB.offset))) { // This velocity was sent by the server.
                     if (player.likelyKB.offset >= immediate || threshold >= maxAdv) {
                         setbackIfAboveSetbackVL();
+                        player.mitigateDamage();
                     }
                 } else {
                     reward();

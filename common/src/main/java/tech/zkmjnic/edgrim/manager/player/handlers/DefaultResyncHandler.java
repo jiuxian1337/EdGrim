@@ -1,10 +1,6 @@
 package tech.zkmjnic.edgrim.manager.player.handlers;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.handler.ResyncHandler;
-import tech.zkmjnic.edgrim.platform.api.world.PlatformChunk;
-import tech.zkmjnic.edgrim.platform.api.world.PlatformWorld;
-import tech.zkmjnic.edgrim.player.PlayerData;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.util.Vector3d;
@@ -13,6 +9,10 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerAc
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerBlockChange;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerMultiBlockChange;
 import lombok.RequiredArgsConstructor;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.platform.api.world.PlatformChunk;
+import tech.zkmjnic.edgrim.platform.api.world.PlatformWorld;
+import tech.zkmjnic.edgrim.player.PlayerData;
 
 @RequiredArgsConstructor
 public class DefaultResyncHandler implements ResyncHandler {

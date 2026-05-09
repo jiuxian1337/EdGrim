@@ -1,15 +1,15 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
 import com.github.retrooper.packetevents.protocol.world.states.enums.Type;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
 
 // In 1.12, chests don't have data that say what type of chest they are, other than direction
 // In 1.13, chests store whether they are left or right

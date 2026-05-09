@@ -1,9 +1,5 @@
 package tech.zkmjnic.edgrim.platform.bukkit.sender;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
-import tech.zkmjnic.edgrim.platform.api.sender.SenderFactory;
-import tech.zkmjnic.edgrim.platform.bukkit.EdGrimBukkitLoaderPlugin;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
@@ -14,6 +10,10 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.SenderMapper;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
+import tech.zkmjnic.edgrim.platform.api.sender.SenderFactory;
+import tech.zkmjnic.edgrim.platform.bukkit.EdGrimBukkitLoaderPlugin;
 
 import java.util.UUID;
 

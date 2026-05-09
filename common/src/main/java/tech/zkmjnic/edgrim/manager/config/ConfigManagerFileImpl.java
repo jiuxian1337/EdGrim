@@ -1,12 +1,12 @@
 package tech.zkmjnic.edgrim.manager.config;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
 import ac.grim.grimac.api.common.BasicReloadable;
 import ac.grim.grimac.api.config.ConfigManager;
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import github.scarsz.configuralize.DynamicConfig;
 import github.scarsz.configuralize.Language;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 
 import java.io.File;
 import java.io.IOException;

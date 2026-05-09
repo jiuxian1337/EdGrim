@@ -1,10 +1,5 @@
 package tech.zkmjnic.edgrim.predictionengine.movementtick;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityStrider;
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
-import tech.zkmjnic.edgrim.utils.nmsutil.BlockProperties;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.protocol.world.states.defaulttags.BlockTags;
@@ -12,6 +7,11 @@ import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.resources.ResourceLocation;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateAttributes;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.data.attribute.ValuedAttribute;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntityStrider;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
+import tech.zkmjnic.edgrim.utils.nmsutil.BlockProperties;
 
 import java.util.ArrayList;
 

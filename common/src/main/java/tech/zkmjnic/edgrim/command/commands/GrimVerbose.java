@@ -1,11 +1,11 @@
 package tech.zkmjnic.edgrim.command.commands;
 
-import tech.zkmjnic.edgrim.EdGrimAPI;
-import tech.zkmjnic.edgrim.command.BuildableCommand;
-import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.context.CommandContext;
+import tech.zkmjnic.edgrim.EdGrimAPI;
+import tech.zkmjnic.edgrim.command.BuildableCommand;
+import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 
 public class GrimVerbose implements BuildableCommand {
     @Override

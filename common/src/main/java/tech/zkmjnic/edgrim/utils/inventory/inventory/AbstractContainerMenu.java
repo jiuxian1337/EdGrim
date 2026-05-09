@@ -1,12 +1,5 @@
 package tech.zkmjnic.edgrim.utils.inventory.inventory;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
-import tech.zkmjnic.edgrim.utils.inventory.ClickAction;
-import tech.zkmjnic.edgrim.utils.inventory.Inventory;
-import tech.zkmjnic.edgrim.utils.inventory.slot.ResultSlot;
-import tech.zkmjnic.edgrim.utils.inventory.slot.Slot;
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientClickWindow;
@@ -15,6 +8,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
+import tech.zkmjnic.edgrim.utils.inventory.ClickAction;
+import tech.zkmjnic.edgrim.utils.inventory.Inventory;
+import tech.zkmjnic.edgrim.utils.inventory.slot.ResultSlot;
+import tech.zkmjnic.edgrim.utils.inventory.slot.Slot;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -24,17 +24,17 @@ import java.util.Set;
 
 public abstract class AbstractContainerMenu {
     protected final PlayerData player;
-    // Quick crafting/dragging
-    private int quickcraftStatus = 0;
-    private int quickcraftType = -1;
     private final Set<Slot> quickcraftSlots = Sets.newHashSet();
-    @Setter(AccessLevel.PROTECTED)
-    private Inventory playerInventory;
     @Getter
     List<Slot> slots = new ArrayList<>();
     @Getter
     @NotNull
     ItemStack carriedItem = ItemStack.EMPTY;
+    // Quick crafting/dragging
+    private int quickcraftStatus = 0;
+    private int quickcraftType = -1;
+    @Setter(AccessLevel.PROTECTED)
+    private Inventory playerInventory;
 
     public AbstractContainerMenu(PlayerData player, Inventory playerInventory) {
         this.player = player;

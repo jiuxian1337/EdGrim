@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.utils.collisions;
 
-import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.utils.collisions.datatypes.SimpleCollisionBox;
 
 public enum AxisSelect {
     EAST {
@@ -43,8 +43,6 @@ public enum AxisSelect {
         }
     };
 
-    public abstract SimpleCollisionBox modify(SimpleCollisionBox box);
-
     @Contract(pure = true)
     public static AxisSelect byFace(@NotNull BlockFace face) {
         return switch (face) {
@@ -56,4 +54,6 @@ public enum AxisSelect {
             default -> DOWN;
         };
     }
+
+    public abstract SimpleCollisionBox modify(SimpleCollisionBox box);
 }

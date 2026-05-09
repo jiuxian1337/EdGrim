@@ -12,9 +12,9 @@ import org.jetbrains.annotations.Nullable;
 import java.time.Instant;
 import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
 import static tech.zkmjnic.edgrim.utils.webhook.JsonSerializable.deserializeArray;
 import static tech.zkmjnic.edgrim.utils.webhook.JsonSerializable.serializeArray;
-import static java.util.Objects.requireNonNull;
 
 @Getter
 @Setter
@@ -46,13 +46,17 @@ public class Embed implements JsonSerializable {
         JsonElement element;
         if ((element = json.get("title")) != null) title(element.getAsString());
         if ((element = json.get("url")) != null) titleURL(element.getAsString());
-        if ((element = json.get("timestamp")) != null) timestamp(Instant.parse(element.getAsString()));
+        if ((element = json.get("timestamp")) != null)
+            timestamp(Instant.parse(element.getAsString()));
         if ((element = json.get("color")) != null) color(element.getAsInt());
         if ((element = json.get("footer")) != null) footer(new EmbedFooter(element));
-        if ((element = json.get("image")) != null) imageURL(element.getAsJsonObject().get("url").getAsString());
-        if ((element = json.get("thumbnail")) != null) imageURL(element.getAsJsonObject().get("url").getAsString());
+        if ((element = json.get("image")) != null)
+            imageURL(element.getAsJsonObject().get("url").getAsString());
+        if ((element = json.get("thumbnail")) != null)
+            imageURL(element.getAsJsonObject().get("url").getAsString());
         if ((element = json.get("author")) != null) author(new EmbedAuthor(element));
-        if ((element = json.get("fields")) != null) fields(deserializeArray(element.getAsJsonArray(), EmbedField[]::new, EmbedField::new));
+        if ((element = json.get("fields")) != null)
+            fields(deserializeArray(element.getAsJsonArray(), EmbedField[]::new, EmbedField::new));
     }
 
     @Contract(value = "_ -> this", mutates = "this")

@@ -1,10 +1,10 @@
 package tech.zkmjnic.edgrim.utils.data.packetentity.dragon;
 
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Getter;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.data.packetentity.PacketEntity;
 
 import java.util.ArrayList;
 import java.util.List;

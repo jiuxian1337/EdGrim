@@ -1,20 +1,20 @@
 package tech.zkmjnic.edgrim.checks.impl.packetorder;
 
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import tech.zkmjnic.edgrim.checks.Check;
 import tech.zkmjnic.edgrim.checks.CheckData;
 import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
-import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 
 @CheckData(name = "PacketOrderJ", experimental = true)
 public class PacketOrderJ extends Check implements PostPredictionCheck {
+    private int invalid;
+
     public PacketOrderJ(final PlayerData player) {
         super(player);
     }
-
-    private int invalid;
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {

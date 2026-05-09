@@ -1,9 +1,5 @@
 package tech.zkmjnic.edgrim.utils.collisions.datatypes;
 
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
-import tech.zkmjnic.edgrim.utils.math.Location;
-import tech.zkmjnic.edgrim.utils.math.Vector3dm;
-import tech.zkmjnic.edgrim.utils.nmsutil.Ray;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.util.Vector3i;
@@ -11,6 +7,10 @@ import com.google.common.collect.AbstractIterator;
 import it.unimi.dsi.fastutil.doubles.AbstractDoubleList;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
+import tech.zkmjnic.edgrim.utils.math.Location;
+import tech.zkmjnic.edgrim.utils.math.Vector3dm;
+import tech.zkmjnic.edgrim.utils.nmsutil.Ray;
 
 import java.util.List;
 
@@ -101,6 +101,51 @@ public class SimpleCollisionBox implements CollisionBox {
 
     public SimpleCollisionBox(BoundingBox box) {
         this(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ);
+    }
+
+    public static Iterable<Vector3i> betweenClosed(SimpleCollisionBox box) {
+        Vector3i startBlockPos = containing(box.minX, box.minY, box.minZ);
+        Vector3i endBlockPos = containing(box.maxX, box.maxY, box.maxZ);
+        return betweenClosed(startBlockPos, endBlockPos);
+    }
+
+    public static Vector3i containing(double x, double y, double z) {
+        return new Vector3i(GrimMath.floor(x), GrimMath.floor(y), GrimMath.floor(z));
+    }
+
+    public static Iterable<Vector3i> betweenClosed(Vector3i firstPos, Vector3i secondPos) {
+        return betweenClosed(
+                Math.min(firstPos.getX(), secondPos.getX()),
+                Math.min(firstPos.getY(), secondPos.getY()),
+                Math.min(firstPos.getZ(), secondPos.getZ()),
+                Math.max(firstPos.getX(), secondPos.getX()),
+                Math.max(firstPos.getY(), secondPos.getY()),
+                Math.max(firstPos.getZ(), secondPos.getZ())
+        );
+    }
+
+    public static Iterable<Vector3i> betweenClosed(int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd) {
+        int xRange = xEnd - xStart + 1;
+        int yRange = yEnd - yStart + 1;
+        int zRange = zEnd - zStart + 1;
+        int totalVectors = xRange * yRange * zRange;
+        return () -> new AbstractIterator<>() {
+            private int index;
+
+            @Override
+            protected Vector3i computeNext() {
+                if (this.index == totalVectors) {
+                    return this.endOfData();
+                } else {
+                    int xOffset = this.index % xRange;
+                    int yOffset = this.index / xRange;
+                    int yOffsetMod = yOffset % yRange;
+                    int zOffset = yOffset / yRange;
+                    this.index++;
+                    return new Vector3i(xStart + xOffset, yStart + yOffsetMod, zStart + zOffset);
+                }
+            }
+        };
     }
 
     public SimpleCollisionBox expand(double x, double y, double z) {
@@ -409,16 +454,16 @@ public class SimpleCollisionBox implements CollisionBox {
     // Copied from hawk lol
     // I would like to point out that this is magic to me and I have not attempted to understand this code
     public Vector3dm intersectsRay(Ray ray, float minDist, float maxDist) {
-        Vector3dm invDir = new Vector3dm(1f / ray.getDirection().getX(), 1f / ray.getDirection().getY(), 1f / ray.getDirection().getZ());
+        Vector3dm invDir = new Vector3dm(1f / ray.direction().getX(), 1f / ray.direction().getY(), 1f / ray.direction().getZ());
 
         boolean signDirX = invDir.getX() < 0;
         boolean signDirY = invDir.getY() < 0;
         boolean signDirZ = invDir.getZ() < 0;
 
-        double tmin = ((signDirX ? maxX : minX) - ray.getOrigin().getX()) * invDir.getX();
-        double tmax = ((signDirX ? minX : maxX) - ray.getOrigin().getX()) * invDir.getX();
-        double tymin = ((signDirY ? maxY : minY) - ray.getOrigin().getY()) * invDir.getY();
-        double tymax = ((signDirY ? minY : maxY) - ray.getOrigin().getY()) * invDir.getY();
+        double tmin = ((signDirX ? maxX : minX) - ray.origin().getX()) * invDir.getX();
+        double tmax = ((signDirX ? minX : maxX) - ray.origin().getX()) * invDir.getX();
+        double tymin = ((signDirY ? maxY : minY) - ray.origin().getY()) * invDir.getY();
+        double tymax = ((signDirY ? minY : maxY) - ray.origin().getY()) * invDir.getY();
 
         if (tmin > tymax || tymin > tmax) {
             return null;
@@ -427,8 +472,8 @@ public class SimpleCollisionBox implements CollisionBox {
         if (tymin > tmin) tmin = tymin;
         if (tymax < tmax) tmax = tymax;
 
-        double tzmin = ((signDirZ ? maxZ : minZ) - ray.getOrigin().getZ()) * invDir.getZ();
-        double tzmax = ((signDirZ ? minZ : maxZ) - ray.getOrigin().getZ()) * invDir.getZ();
+        double tzmin = ((signDirZ ? maxZ : minZ) - ray.origin().getZ()) * invDir.getZ();
+        double tzmax = ((signDirZ ? minZ : maxZ) - ray.origin().getZ()) * invDir.getZ();
 
         if ((tmin > tzmax) || (tzmin > tmax)) {
             return null;
@@ -507,51 +552,6 @@ public class SimpleCollisionBox implements CollisionBox {
 
     public double getZSize() {
         return maxZ - minZ;
-    }
-
-    public static Iterable<Vector3i> betweenClosed(SimpleCollisionBox box) {
-        Vector3i startBlockPos = containing(box.minX, box.minY, box.minZ);
-        Vector3i endBlockPos = containing(box.maxX, box.maxY, box.maxZ);
-        return betweenClosed(startBlockPos, endBlockPos);
-    }
-
-    public static Vector3i containing(double x, double y, double z) {
-        return new Vector3i(GrimMath.floor(x), GrimMath.floor(y), GrimMath.floor(z));
-    }
-
-    public static Iterable<Vector3i> betweenClosed(Vector3i firstPos, Vector3i secondPos) {
-        return betweenClosed(
-                Math.min(firstPos.getX(), secondPos.getX()),
-                Math.min(firstPos.getY(), secondPos.getY()),
-                Math.min(firstPos.getZ(), secondPos.getZ()),
-                Math.max(firstPos.getX(), secondPos.getX()),
-                Math.max(firstPos.getY(), secondPos.getY()),
-                Math.max(firstPos.getZ(), secondPos.getZ())
-        );
-    }
-
-    public static Iterable<Vector3i> betweenClosed(int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd) {
-        int xRange = xEnd - xStart + 1;
-        int yRange = yEnd - yStart + 1;
-        int zRange = zEnd - zStart + 1;
-        int totalVectors = xRange * yRange * zRange;
-        return () -> new AbstractIterator<>() {
-            private int index;
-
-            @Override
-            protected Vector3i computeNext() {
-                if (this.index == totalVectors) {
-                    return this.endOfData();
-                } else {
-                    int xOffset = this.index % xRange;
-                    int yOffset = this.index / xRange;
-                    int yOffsetMod = yOffset % yRange;
-                    int zOffset = yOffset / yRange;
-                    this.index++;
-                    return new Vector3i(xStart + xOffset, yStart + yOffsetMod, zStart + zOffset);
-                }
-            }
-        };
     }
 
     @Override

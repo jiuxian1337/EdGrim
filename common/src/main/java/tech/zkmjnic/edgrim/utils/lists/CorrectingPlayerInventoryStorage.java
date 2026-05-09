@@ -1,17 +1,12 @@
 package tech.zkmjnic.edgrim.utils.lists;
 
+import com.github.retrooper.packetevents.protocol.item.ItemStack;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.inventory.Inventory;
 import tech.zkmjnic.edgrim.utils.inventory.InventoryStorage;
-import com.github.retrooper.packetevents.protocol.item.ItemStack;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -93,6 +88,7 @@ public class CorrectingPlayerInventoryStorage extends InventoryStorage {
 
     /**
      * Checks that the specified slot is in sync with the server's and resyncs if needed.
+     *
      * @param slot the slot to check
      */
     private void checkThatBukkitIsSynced(int slot) {

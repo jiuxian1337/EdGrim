@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.utils.lists;
 
-import tech.zkmjnic.edgrim.utils.data.Pair;
 import it.unimi.dsi.fastutil.doubles.Double2IntMap;
 import it.unimi.dsi.fastutil.doubles.Double2IntOpenHashMap;
 import lombok.Getter;
+import tech.zkmjnic.edgrim.utils.data.Pair;
 
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -15,7 +15,8 @@ public class RunningMode {
     private static final double threshold = 1e-3;
     private final Queue<Double> addList;
     private final Double2IntMap popularityMap = new Double2IntOpenHashMap();
-    @Getter private final int maxSize;
+    @Getter
+    private final int maxSize;
 
     public RunningMode(int maxSize) {
         if (maxSize == 0) throw new IllegalArgumentException("There's no mode to a size 0 list!");

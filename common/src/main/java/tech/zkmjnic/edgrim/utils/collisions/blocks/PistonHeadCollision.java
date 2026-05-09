@@ -1,14 +1,14 @@
 package tech.zkmjnic.edgrim.utils.collisions.blocks;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.manager.server.ServerVersion;
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
+import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.CollisionFactory;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.ComplexCollisionBox;
 import tech.zkmjnic.edgrim.utils.collisions.datatypes.HexCollisionBox;
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.manager.server.ServerVersion;
-import com.github.retrooper.packetevents.protocol.player.ClientVersion;
-import com.github.retrooper.packetevents.protocol.world.states.WrappedBlockState;
 
 public class PistonHeadCollision implements CollisionFactory {
     // 1.12- servers are not capable of sending persistent (non-block event) piston move

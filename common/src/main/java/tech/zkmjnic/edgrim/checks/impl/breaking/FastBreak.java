@@ -1,13 +1,5 @@
 package tech.zkmjnic.edgrim.checks.impl.breaking;
 
-import tech.zkmjnic.edgrim.checks.Check;
-import tech.zkmjnic.edgrim.checks.CheckData;
-import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
-import tech.zkmjnic.edgrim.player.PlayerData;
-import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
-import tech.zkmjnic.edgrim.utils.math.GrimMath;
-import tech.zkmjnic.edgrim.utils.nmsutil.BlockBreakSpeed;
-import tech.zkmjnic.edgrim.utils.reflection.ViaVersionUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
@@ -18,6 +10,14 @@ import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import com.github.retrooper.packetevents.util.Vector3i;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
+import tech.zkmjnic.edgrim.checks.Check;
+import tech.zkmjnic.edgrim.checks.CheckData;
+import tech.zkmjnic.edgrim.checks.type.BlockBreakCheck;
+import tech.zkmjnic.edgrim.player.PlayerData;
+import tech.zkmjnic.edgrim.utils.anticheat.update.BlockBreak;
+import tech.zkmjnic.edgrim.utils.math.GrimMath;
+import tech.zkmjnic.edgrim.utils.nmsutil.BlockBreakSpeed;
+import tech.zkmjnic.edgrim.utils.reflection.ViaVersionUtil;
 
 import java.util.Set;
 
@@ -31,11 +31,6 @@ public class FastBreak extends Check implements BlockBreakCheck {
     // Better to just exempt to not annoy legit players.
     private static final Set<StateType> EXEMPT_STATES = Set.of();
     private final boolean clientOlderThanServer = PacketEvents.getAPI().getServerManager().getVersion().getProtocolVersion() > player.getClientVersion().getProtocolVersion();
-
-    public FastBreak(PlayerData playerData) {
-        super(playerData);
-    }
-
     // The block the player is currently breaking
     Vector3i targetBlockPosition = null;
     // The maximum amount of damage the player deals to the block
@@ -45,10 +40,12 @@ public class FastBreak extends Check implements BlockBreakCheck {
     long lastFinishBreak = 0;
     // The time the player started to break the block, to know how long the player waited until they finished breaking the block
     long startBreak = 0;
-
     // The buffer to this check
     double blockBreakBalance = 0;
     double blockDelayBalance = 0;
+    public FastBreak(PlayerData playerData) {
+        super(playerData);
+    }
 
     @Override
     public void onBlockBreak(BlockBreak blockBreak) {

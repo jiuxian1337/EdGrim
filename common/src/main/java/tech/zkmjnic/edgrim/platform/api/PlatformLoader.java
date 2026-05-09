@@ -1,18 +1,14 @@
 package tech.zkmjnic.edgrim.platform.api;
 
 import ac.grim.grimac.api.plugin.GrimPlugin;
-import tech.zkmjnic.edgrim.platform.api.manager.ItemResetHandler;
-import tech.zkmjnic.edgrim.platform.api.manager.MessagePlaceHolderManager;
-import tech.zkmjnic.edgrim.platform.api.manager.CommandAdapter;
-import tech.zkmjnic.edgrim.platform.api.manager.PermissionRegistrationManager;
-import tech.zkmjnic.edgrim.platform.api.manager.PlatformPluginManager;
+import com.github.retrooper.packetevents.PacketEventsAPI;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.incendo.cloud.CommandManager;
+import tech.zkmjnic.edgrim.platform.api.manager.*;
 import tech.zkmjnic.edgrim.platform.api.player.PlatformPlayerFactory;
 import tech.zkmjnic.edgrim.platform.api.scheduler.PlatformScheduler;
 import tech.zkmjnic.edgrim.platform.api.sender.Sender;
 import tech.zkmjnic.edgrim.platform.api.sender.SenderFactory;
-import com.github.retrooper.packetevents.PacketEventsAPI;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.incendo.cloud.CommandManager;
 
 public interface PlatformLoader {
     PlatformScheduler getScheduler();

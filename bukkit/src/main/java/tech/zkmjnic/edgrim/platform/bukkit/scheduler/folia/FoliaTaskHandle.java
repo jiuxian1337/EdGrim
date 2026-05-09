@@ -1,9 +1,9 @@
 package tech.zkmjnic.edgrim.platform.bukkit.scheduler.folia;
 
-import tech.zkmjnic.edgrim.platform.api.scheduler.TaskHandle;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.platform.api.scheduler.TaskHandle;
 
 import java.util.Objects;
 

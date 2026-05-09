@@ -72,7 +72,7 @@ public class AimE extends Check implements RotationCheck {
         if (rawRotations.size() >= RAW_ROTATIONS_THRESHOLD) {
             checkRotationData();
         }
-        if ((player.calculateSensitivity() > 50 && Math.abs(delta.getX()) > 1.35) || (Math.abs(delta.getY()) > 1.35 && Math.abs(delta.getX()) > 0.32)) {
+        if ((player.calculateSensitivity() > 50 && Math.abs(delta.x()) > 1.35) || (Math.abs(delta.y()) > 1.35 && Math.abs(delta.x()) > 0.32)) {
             limitedRotations.add(delta);
             if (limitedRotations.size() >= 100) {
                 checkLimited();
@@ -88,10 +88,10 @@ public class AimE extends Check implements RotationCheck {
         final float gcdValue = sens > 0 ? MathUtil.getGCDValue(AimProcessor.getSENSITIVITY_MCP_VALUES()[sens - 1]) : 0;
 
         for (Vec2f vec : rawRotations) {
-            yawChanges.add(vec.getX());
-            pitchChanges.add(vec.getY());
+            yawChanges.add(vec.x());
+            pitchChanges.add(vec.y());
             if (gcdValue != 0) {
-                xGcd.add((long) (vec.getX() / gcdValue));
+                xGcd.add((long) (vec.x() / gcdValue));
             }
         }
 
@@ -105,8 +105,8 @@ public class AimE extends Check implements RotationCheck {
         final List<Float> y = new ArrayList<>();
         final int sens = player.calculateSensitivity();
         for (Vec2f vec2 : rawRotations) {
-            x.add(vec2.getX());
-            y.add(vec2.getY());
+            x.add(vec2.x());
+            y.add(vec2.y());
         }
 
         List<Float> yawStack = new ArrayList<>();
@@ -154,7 +154,7 @@ public class AimE extends Check implements RotationCheck {
     private void checkLimited() {
         final List<Float> x = new ArrayList<>();
         for (Vec2f vec2 : limitedRotations) {
-            x.add(vec2.getX());
+            x.add(vec2.x());
         }
 
         final List<Float> yawStack = new ArrayList<>();
