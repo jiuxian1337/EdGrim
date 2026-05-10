@@ -9,9 +9,6 @@ import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 @CheckData(name = "VelocityC (JumpReset)", configName = "VelocityC")
 public class VelocityC extends Check implements PostPredictionCheck {
 
-    private int velocitys;
-    private int jumpReset;
-
     public VelocityC(PlayerData player) {
         super(player);
     }
@@ -19,19 +16,19 @@ public class VelocityC extends Check implements PostPredictionCheck {
     @Override
     public void onPredictionComplete(PredictionComplete predictionComplete) {
         if (!player.actionManager.hasAttackedSince(3500)) {
-            velocitys = 0;
-            jumpReset = 0;
+            buffer = 0;
             return;
         }
         if (player.predictedVelocity.isKnockback() && player.lastOnGround) {
-            velocitys++;
             if (player.predictedVelocity.isJump()) {
-                jumpReset++;
+                buffer++;
+            } else {
+                buffer = Math.max(0, buffer - 1);
             }
-            double rate = (double) jumpReset / (double) velocitys;
-            if (velocitys >= 10 && rate >= 0.5) {
-                if (flagAndAlert("rate=" + rate)) {
+            if (buffer >= 10) {
+                if (flagAndAlert()) {
                     player.mitigateDamage();
+                    buffer = 4;
                 }
             }
         }

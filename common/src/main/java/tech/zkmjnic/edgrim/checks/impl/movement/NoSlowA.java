@@ -8,12 +8,11 @@ import tech.zkmjnic.edgrim.checks.type.PostPredictionCheck;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 
-@CheckData(name = "NoSlowA (Prediction)", configName = "NoSlowA", description = "Was not slowed while using an item", setback = 5)
+@CheckData(name = "NoSlowA (Prediction)", configName = "NoSlowA", description = "Was not slowed while using an item", setback = 0)
 public class NoSlowA extends Check implements PostPredictionCheck {
     // The player sends that they switched items the next tick if they switch from an item that can be used
     // to another item that can be used.  What the fuck mojang.  Affects 1.8 (and most likely 1.7) clients.
     public boolean didSlotChangeLastTick = false;
-    public boolean flaggedLastTick = false;
     double offsetToFlag;
     double bestOffset = 1;
 
@@ -30,24 +29,24 @@ public class NoSlowA extends Check implements PostPredictionCheck {
             // 1.8 users are not slowed the first tick they use an item, strangely
             if (player.getClientVersion().isOlderThanOrEquals(ClientVersion.V_1_8) && didSlotChangeLastTick) {
                 didSlotChangeLastTick = false;
-                flaggedLastTick = false;
+                return;
             }
 
-            if (flaggedLastTick) {
+            if (buffer >= 2) {
                 if (flagAndAlertWithSetback()) {
                     player.mitigateDamage();
+                    buffer = 1;
                 }
             }
 
             if (bestOffset > offsetToFlag) {
-                flaggedLastTick = true;
+                buffer++;
             } else {
                 reward();
-                flaggedLastTick = false;
+                buffer = Math.max(0, buffer - 0.25);
             }
         } else {
-            flaggedLastTick = false;
-            didSlotChangeLastTick = true;
+            buffer = 0;
         }
 
         bestOffset = 1;
