@@ -9,6 +9,7 @@ import com.github.retrooper.packetevents.protocol.world.states.defaulttags.ItemT
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
+import tech.zkmjnic.edgrim.checks.impl.velocity.VelocityA;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.collisions.AxisUtil;
@@ -19,6 +20,8 @@ import tech.zkmjnic.edgrim.utils.nmsutil.Materials;
 @UtilityClass
 public class ConsumesBlockPlace {
     public static boolean consumesPlace(@NotNull PlayerData player, @NotNull WrappedBlockState state, @NotNull BlockPlace place) {
+        VelocityA velocityA = player.checkManager.getKnockbackHandler();
+        velocityA.interacted = true;
         // Hey look, it's another DESYNC MOJANG
         if (state.getType() == StateTypes.BELL) {
             return goodBellHit(state, place);

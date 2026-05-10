@@ -49,7 +49,6 @@ import tech.zkmjnic.edgrim.checks.impl.timer.*;
 import tech.zkmjnic.edgrim.checks.impl.vehicle.*;
 import tech.zkmjnic.edgrim.checks.impl.velocity.VelocityA;
 import tech.zkmjnic.edgrim.checks.impl.velocity.VelocityB;
-import tech.zkmjnic.edgrim.checks.impl.velocity.VelocityC;
 import tech.zkmjnic.edgrim.checks.type.*;
 import tech.zkmjnic.edgrim.events.packets.PacketChangeGameState;
 import tech.zkmjnic.edgrim.events.packets.PacketEntityReplication;
@@ -195,7 +194,6 @@ public class CheckManager {
                 .put(NegativeTimer.class, new NegativeTimer(player))
                 .put(VelocityB.class, new VelocityB(player))
                 .put(VelocityA.class, new VelocityA(player))
-                .put(VelocityC.class, new VelocityC(player))
                 .put(GhostBlockDetector.class, new GhostBlockDetector(player))
                 .put(Phase.class, new Phase(player))
                 .put(Post.class, new Post(player))

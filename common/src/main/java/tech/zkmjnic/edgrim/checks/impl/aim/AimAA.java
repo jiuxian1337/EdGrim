@@ -30,6 +30,13 @@ public final class AimAA extends Check implements RotationCheck {
 
     @Override
     public void process(RotationUpdate rotationUpdate) {
+        if (getPlayer().packetStateData.lastPacketWasTeleport
+                || getPlayer().vehicleData.wasVehicleSwitch
+                || getPlayer().packetStateData.horseInteractCausedForcedRotation
+                || getPlayer().packetStateData.lastPacketWasOnePointSeventeenDuplicate
+                || getPlayer().compensatedEntities.self.getRiding() != null) {
+            return;
+        }
         if (!player.actionManager.hasAttackedSince(3500L)) return;
 
         for (HeuristicComponent component : components) {

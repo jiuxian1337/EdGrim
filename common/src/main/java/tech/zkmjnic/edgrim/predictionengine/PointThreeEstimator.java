@@ -10,6 +10,7 @@ import com.github.retrooper.packetevents.protocol.world.states.type.StateType;
 import com.github.retrooper.packetevents.protocol.world.states.type.StateTypes;
 import lombok.Getter;
 import lombok.Setter;
+import tech.zkmjnic.edgrim.checks.impl.velocity.VelocityA;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.predictionengine.predictions.PredictionEngine;
 import tech.zkmjnic.edgrim.utils.collisions.CollisionData;
@@ -157,32 +158,35 @@ public class PointThreeEstimator {
         }
 
         if (pointThreeBox.isIntersected(new SimpleCollisionBox(x, y, z))) {
-            // https://github.com/MWHunter/edgrim/issues/613
-            int controllingEntityId = player.inVehicle() ? player.getRidingVehicleId() : player.entityID;
+            VelocityA velocityA = player.checkManager.getKnockbackHandler();
+            if (!velocityA.interacted) {
+                // https://github.com/MWHunter/edgrim/issues/613
+                int controllingEntityId = player.inVehicle() ? player.getRidingVehicleId() : player.entityID;
 
-            // This can allow a player to ignore knockback and explosions within 0.03 (e.g. if standing still)
-            // But I'm not sure there's a way to fix that without falses
-            // Doesn't matter too much, would only work for 1.9-1.18.1 too
-            final VelocityData oldFirstBreadKB = player.firstBreadKB;
-            final VelocityData oldLikelyKB = player.likelyKB;
-            player.firstBreadKB = player.checkManager.getKnockbackHandler().calculateFirstBreadKnockback(controllingEntityId, player.lastTransactionReceived.get());
-            player.likelyKB = player.checkManager.getKnockbackHandler().calculateRequiredKB(controllingEntityId, player.lastTransactionReceived.get(), true);
+                // This can allow a player to ignore knockback and explosions within 0.03 (e.g. if standing still)
+                // But I'm not sure there's a way to fix that without falses
+                // Doesn't matter too much, would only work for 1.9-1.18.1 too
+                final VelocityData oldFirstBreadKB = player.firstBreadKB;
+                final VelocityData oldLikelyKB = player.likelyKB;
+                player.firstBreadKB = player.checkManager.getKnockbackHandler().calculateFirstBreadKnockback(controllingEntityId, player.lastTransactionReceived.get());
+                player.likelyKB = player.checkManager.getKnockbackHandler().calculateRequiredKB(controllingEntityId, player.lastTransactionReceived.get(), true);
 
-            final VelocityData oldFirstBreadEx = player.firstBreadExplosion;
-            final VelocityData oldLikelyEx = player.likelyExplosions;
-            player.firstBreadExplosion = player.checkManager.getExplosionHandler().getFirstBreadAddedExplosion(player.lastTransactionReceived.get());
-            player.likelyExplosions = player.checkManager.getExplosionHandler().getPossibleExplosions(player.lastTransactionReceived.get(), true);
+                final VelocityData oldFirstBreadEx = player.firstBreadExplosion;
+                final VelocityData oldLikelyEx = player.likelyExplosions;
+                player.firstBreadExplosion = player.checkManager.getExplosionHandler().getFirstBreadAddedExplosion(player.lastTransactionReceived.get());
+                player.likelyExplosions = player.checkManager.getExplosionHandler().getPossibleExplosions(player.lastTransactionReceived.get(), true);
 
-            player.updateVelocityMovementSkipping();
+                player.updateVelocityMovementSkipping();
 
-            if (player.couldSkipTick) {
-                player.uncertaintyHandler.lastPointThree.reset();
-            } else {
-                // Player could not skip this tick, so restore the old values (mimics what happens in CheckManagerListener)
-                player.firstBreadKB = oldFirstBreadKB;
-                player.likelyKB = oldLikelyKB;
-                player.firstBreadExplosion = oldFirstBreadEx;
-                player.likelyExplosions = oldLikelyEx;
+                if (player.couldSkipTick) {
+                    player.uncertaintyHandler.lastPointThree.reset();
+                } else {
+                    // Player could not skip this tick, so restore the old values (mimics what happens in CheckManagerListener)
+                    player.firstBreadKB = oldFirstBreadKB;
+                    player.likelyKB = oldLikelyKB;
+                    player.firstBreadExplosion = oldFirstBreadEx;
+                    player.likelyExplosions = oldLikelyEx;
+                }
             }
         }
 

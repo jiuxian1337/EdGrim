@@ -36,6 +36,8 @@ public class VelocityA extends Check implements PostPredictionCheck {
 
     double threshold;
 
+    public boolean interacted;
+
     public VelocityA(PlayerData player) {
         super(player);
     }
@@ -173,6 +175,7 @@ public class VelocityA extends Check implements PostPredictionCheck {
 
     @Override
     public void onPredictionComplete(final PredictionComplete predictionComplete) {
+        interacted = false;
         double offset = predictionComplete.getOffset();
         if (!predictionComplete.isChecked() || predictionComplete.getData().isTeleport()) {
             forceExempt();

@@ -183,12 +183,7 @@ VelocityA:
 
 VelocityB:
     threshold: 0.01
-    setbackvl: 1
-
-VelocityC:
-    allowed-jump-reset: true
-    min-velocity: 90
-    setbackvl: 1
+    setbackvl: 0
 
 TimerA:
     setbackvl: 10

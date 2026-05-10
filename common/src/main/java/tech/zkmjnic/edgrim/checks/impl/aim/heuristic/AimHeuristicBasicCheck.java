@@ -39,13 +39,6 @@ public final class AimHeuristicBasicCheck implements HeuristicComponent {
 
     @Override
     public void process(final RotationUpdate event) {
-        if (check.getPlayer().packetStateData.lastPacketWasTeleport
-                || check.getPlayer().vehicleData.wasVehicleSwitch
-                || check.getPlayer().packetStateData.horseInteractCausedForcedRotation
-                || check.getPlayer().packetStateData.lastPacketWasOnePointSeventeenDuplicate
-                || check.getPlayer().compensatedEntities.self.getRiding() != null) {
-            return;
-        }
         if (event.isCinematic2()) return;
         float absDeltaY = Math.abs(Math.abs(event.getTo().getPitch()) - Math.abs(event.getFrom().getPitch()));
         float absDeltaX = Math.abs(Math.abs(event.getTo().getYaw()) - Math.abs(event.getFrom().getYaw()));

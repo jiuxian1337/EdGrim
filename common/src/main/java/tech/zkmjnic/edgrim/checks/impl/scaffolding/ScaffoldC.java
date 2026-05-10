@@ -17,7 +17,7 @@ public final class ScaffoldC extends ScaffoldCheck {
 
     private float dYaw;
     private float dPitch;
-    private int lastPlace;
+    private int lastPlace = 4;
 
     public ScaffoldC(PlayerData player) {
         super(player);

@@ -18,6 +18,7 @@ import com.github.retrooper.packetevents.util.Vector3f;
 import com.github.retrooper.packetevents.util.Vector3i;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
+import tech.zkmjnic.edgrim.checks.impl.velocity.VelocityA;
 import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.LogUtil;
 import tech.zkmjnic.edgrim.utils.collisions.AxisSelect;
@@ -597,6 +598,8 @@ public class BlockPlace {
         }
 
         player.inventory.onBlockPlace(this);
+        VelocityA velocityA = player.checkManager.getKnockbackHandler();
+        velocityA.interacted = true;
         player.compensatedWorld.updateBlock(position.getX(), position.getY(), position.getZ(), state.getGlobalId());
     }
 
