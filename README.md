@@ -6,7 +6,7 @@
 
 ## Languages
 
-[English](README.md) | [中文](README_zh.md) | [Русский](README_ru.md) | [한국어](README_ko.md) | [日本語](README_ja.md) | [Deutsch](README_de.md) | [Français](README_fr.md) | [Español](README_es.md) | [العربية](README_ar.md) | [ئۇيغۇرچە](README_ug.md)
+[English](README.md) | [中文](README_zh.md) | [繁體中文（中国香港）](README_zh_HK.md) | [Русский](README_ru.md) | [한국어](README_ko.md) | [日本語](README_ja.md) | [Deutsch](README_de.md) | [Français](README_fr.md) | [Español](README_es.md) | [العربية](README_ar.md) | [ئۇيغۇرچە](README_ug.md)
 
 ## Fork Base
 

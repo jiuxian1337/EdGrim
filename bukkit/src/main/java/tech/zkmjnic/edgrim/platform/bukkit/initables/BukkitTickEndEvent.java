@@ -7,7 +7,7 @@ import io.github.retrooper.packetevents.util.SpigotReflectionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import sun.misc .Unsafe;
+import sun.misc.Unsafe;
 import tech.zkmjnic.edgrim.EdGrimAPI;
 import tech.zkmjnic.edgrim.manager.init.start.AbstractTickEndEvent;
 import tech.zkmjnic.edgrim.platform.api.Platform;
