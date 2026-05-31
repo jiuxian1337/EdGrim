@@ -7,6 +7,9 @@ import tech.zkmjnic.edgrim.player.PlayerData;
 import tech.zkmjnic.edgrim.utils.anticheat.update.BlockPlace;
 import tech.zkmjnic.edgrim.utils.anticheat.update.PredictionComplete;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @CheckData(
         name = "ScaffoldE",
         configName = "ScaffoldE",
@@ -17,7 +20,7 @@ public final class ScaffoldE extends ScaffoldCheck {
 
     private boolean sneak;
     private boolean lastSneak;
-    private int placeCount;
+    private List<Boolean> place = new ArrayList<>();
 
     public ScaffoldE(PlayerData player) {
         super(player);
@@ -31,22 +34,28 @@ public final class ScaffoldE extends ScaffoldCheck {
         final BlockFace face = place.getFace();
         if (face == BlockFace.OTHER || face == BlockFace.UP || face == BlockFace.DOWN) return;
 
-        placeCount++;
         if (lastSneak != sneak) {
-            buffer++;
+            this.place.add(true);
+        } else {
+            this.place.add(false);
         }
 
-        double v = buffer / placeCount;
-        if (v > 0.4 && placeCount > 4) {
-            if (flagAndAlert("s=" + lastSneak + "\ns=" + sneak + "\nf/pc=" + v)) {
-                placeCount = 0;
-                buffer = 0;
-                if (shouldCancel()) {
-                    cancel();
-                    player.mitigateDamage();
-                    place.resync();
-                }
+        if (this.place.size() >= 10) {
+            int trueCount = 0;
+            int falseCount = 0;
+            for (Boolean changed : this.place) {
+                if (changed) trueCount++;
+                else falseCount++;
             }
+
+            double v = (falseCount == 0) ? Double.MAX_VALUE : (double) trueCount / falseCount;
+
+            if (v > 0.6 && flagAndAlert("s=" + lastSneak + "\ns=" + sneak + "\nf/pc=" + v) && shouldCancel()) {
+                cancel();
+                player.mitigateDamage();
+                place.resync();
+            }
+            this.place.remove(0);
         }
     }
 

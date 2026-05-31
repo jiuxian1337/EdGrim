@@ -230,7 +230,7 @@ PingSpoofC:
 PingSpoofD:
     cancelVL: 0
     # Base number of pending entity transactions allowed before ping-based allowance is added.
-    basePendingAllowance: 2
+    basePendingAllowance: 8
     # Cap the ping-derived allowance at this many 50ms ticks.
     maxPingTicks: 20
 
@@ -273,7 +273,7 @@ AimS:
     ratio-threshold: 1000.0
     window-size: 5
 
-ClickJitterAnalysis:
+AnalysisA:
     # Attack-centered heuristic analysis. Samples 11 ticks around each entity attack and evaluates 10 attacks as a window.
     # When enabled, record mode only writes samples and does not run detection or alerts.
     record-mode: false

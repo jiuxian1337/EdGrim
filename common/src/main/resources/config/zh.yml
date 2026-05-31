@@ -235,7 +235,7 @@ PingSpoofC:
 PingSpoofD:
     cancelVL: 0
     # 在叠加基于 ping 的容错前，基础允许的实体待确认事务数。
-    basePendingAllowance: 2
+    basePendingAllowance: 8
     # 将基于 ping 推导出的额外容错限制为最多这么多个 50ms tick。
     maxPingTicks: 20
 
@@ -278,7 +278,7 @@ AimS:
     ratio-threshold: 1000.0
     window-size: 5
 
-ClickJitterAnalysis:
+AnalysisA:
     # 点击抖动分析：以攻击实体为中心采样 11 tick 转头，并按 10 次攻击窗口分析更像 legit 还是 cheat。
     # 开启后只记录，不分析，也不会触发告警。
     record-mode: false
