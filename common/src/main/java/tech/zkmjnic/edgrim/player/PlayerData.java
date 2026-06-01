@@ -244,6 +244,9 @@ public class PlayerData implements GrimUser {
     public MainSupportingBlockData mainSupportingBlockData = new MainSupportingBlockData(null, false);
     public int totalFlyingPacketsSent;
     public boolean serverOpenedInventoryThisTick;
+    public boolean hasInventoryOpen;
+    public long lastInventoryOpen;
+    public String inventoryDesyncStatus = "NOT_DESYNCED";
     // end config
     public boolean noModifyPacketPermission = false;
     public boolean noSetbackPermission = false;

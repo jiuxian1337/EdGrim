@@ -108,6 +108,7 @@ public class PointThreeEstimator {
     private boolean isNearHorizontalFlowingLiquid = false; // We can't calculate the direction, only a toggle
     private boolean isNearVerticalFlowingLiquid = false; // We can't calculate exact values, once again a toggle
     private boolean isNearBubbleColumn = false; // We can't calculate exact values once again
+    public boolean isNearNetherPortal = false; // We can't calculate exact values once again
 
     private int maxPositiveLevitation = Integer.MIN_VALUE; // Positive potion effects [0, 128]
     private int minNegativeLevitation = Integer.MAX_VALUE; // Negative potion effects [-127, -1]r
@@ -243,6 +244,7 @@ public class PointThreeEstimator {
         SimpleCollisionBox oldBB = player.boundingBox;
 
         headHitter = false;
+        isNearNetherPortal = false;
         // Can we trust the pose height?
         for (float sizes : (player.skippedTickInActualMovement ? new float[]{0.6f, 1.5f, 1.8f} : new float[]{player.pose.height})) {
             // Try to limit collisions to be as small as possible, for maximum performance
@@ -269,6 +271,7 @@ public class PointThreeEstimator {
         isNearVerticalFlowingLiquid = false;
         isNearClimbable = false;
         isNearBubbleColumn = false;
+        isNearNetherPortal = false;
         isNearFluid = false;
 
         // Check for flowing water
@@ -289,6 +292,10 @@ public class PointThreeEstimator {
 
             if (Materials.isWater(player.getClientVersion(), pair.first()) || pair.first().getType() == StateTypes.LAVA) {
                 isNearFluid = true;
+            }
+
+            if (state.getType() == StateTypes.NETHER_PORTAL) {
+                isNearNetherPortal = true;
             }
 
             return false;

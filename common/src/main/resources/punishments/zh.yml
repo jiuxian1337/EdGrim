@@ -232,7 +232,13 @@ Punishments:
   Inventory:
     remove-violations-after: 300
     checks:
-      - "Inventory"
+      - "InventoryA"
+      - "InventoryB"
+      - "InventoryC"
+      - "InventoryD"
+      - "InventoryE"
+      - "InventoryF"
+      - "InventoryG"
     commands:
       - "1:1 [log]"
       - "5:5 [alert]"

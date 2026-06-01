@@ -81,6 +81,30 @@ public class VectorData {
             case Flip_Use_Item -> isFlipItem = true;
             case Jump -> isJump = true;
             case AttackSlow -> isAttackSlow = true;
+            case WithInput -> {}
+        }
+    }
+
+    public static final class MoveVectorData extends VectorData {
+        public int x;
+        public int z;
+
+        public MoveVectorData(Vector3dm vector, VectorData lastVector, VectorType vectorType, int x, int z) {
+            super(vector, lastVector, vectorType);
+            this.x = x;
+            this.z = z;
+            if (x != 0 || z != 0) {
+                addVectorType(VectorType.WithInput);
+            }
+        }
+
+        public MoveVectorData(Vector3dm vector, VectorType vectorType, int x, int z) {
+            super(vector, vectorType);
+            this.x = x;
+            this.z = z;
+            if (x != 0 || z != 0) {
+                addVectorType(VectorType.WithInput);
+            }
         }
     }
 
@@ -123,6 +147,7 @@ public class VectorData {
         AttackSlow,
         Flip_Sneaking,
         Flip_Use_Item,
-        EntityPushing
+        EntityPushing,
+        WithInput
     }
 }

@@ -37,6 +37,13 @@ import tech.zkmjnic.edgrim.checks.impl.multiactions.*;
 import tech.zkmjnic.edgrim.checks.impl.packetorder.*;
 import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofA;
 import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofB;
+import tech.zkmjnic.edgrim.checks.impl.inventory.InventoryA;
+import tech.zkmjnic.edgrim.checks.impl.inventory.InventoryB;
+import tech.zkmjnic.edgrim.checks.impl.inventory.InventoryC;
+import tech.zkmjnic.edgrim.checks.impl.inventory.InventoryD;
+import tech.zkmjnic.edgrim.checks.impl.inventory.InventoryE;
+import tech.zkmjnic.edgrim.checks.impl.inventory.InventoryF;
+import tech.zkmjnic.edgrim.checks.impl.inventory.InventoryG;
 import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofC;
 import tech.zkmjnic.edgrim.checks.impl.pingspoof.PingSpoofD;
 import tech.zkmjnic.edgrim.checks.impl.prediction.DebugHandler;
@@ -94,6 +101,13 @@ public class CheckManager {
                 .put(PingSpoofC.class, new PingSpoofC(player))
                 .put(PingSpoofD.class, new PingSpoofD(player))
                 .put(StuckA.class, new StuckA(player))
+                .put(InventoryA.class, new InventoryA(player))
+                .put(InventoryB.class, new InventoryB(player))
+                .put(InventoryC.class, new InventoryC(player))
+                .put(InventoryD.class, new InventoryD(player))
+                .put(InventoryE.class, new InventoryE(player))
+                .put(InventoryF.class, new InventoryF(player))
+                .put(InventoryG.class, new InventoryG(player))
                 .put(PacketEntityReplication.class, new PacketEntityReplication(player))
                 .put(PacketChangeGameState.class, new PacketChangeGameState(player))
                 .put(CompensatedInventory.class, player.inventory)

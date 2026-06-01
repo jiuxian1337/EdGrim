@@ -81,6 +81,10 @@ public class Check extends GrimProcessor implements AbstractCheck {
         return null;
     }
 
+    public boolean isNoSetbackPermission() {
+        return noSetbackPermission;
+    }
+
     public boolean shouldModifyPackets() {
         return isEnabled && !player.disableGrim && !player.noModifyPacketPermission && !exemptPermission;
     }
