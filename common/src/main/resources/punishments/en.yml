@@ -219,6 +219,16 @@ Punishments:
       - "5:5 [webhook]"
       - "5:5 [proxy]"
       - "25:0 kick %player% cheating"
+  Stuck:
+    remove-violations-after: 300
+    checks:
+      - "Stuck"
+    commands:
+      - "1:1 [log]"
+      - "5:5 [alert]"
+      - "5:5 [webhook]"
+      - "5:5 [proxy]"
+      - "25:0 kick %player% cheating"
   Inventory:
     remove-violations-after: 300
     checks:

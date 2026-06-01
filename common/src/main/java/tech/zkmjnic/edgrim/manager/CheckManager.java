@@ -45,6 +45,7 @@ import tech.zkmjnic.edgrim.checks.impl.prediction.OffsetHandler;
 import tech.zkmjnic.edgrim.checks.impl.prediction.Phase;
 import tech.zkmjnic.edgrim.checks.impl.scaffolding.*;
 import tech.zkmjnic.edgrim.checks.impl.sprint.*;
+import tech.zkmjnic.edgrim.checks.impl.stuck.StuckA;
 import tech.zkmjnic.edgrim.checks.impl.timer.*;
 import tech.zkmjnic.edgrim.checks.impl.vehicle.*;
 import tech.zkmjnic.edgrim.checks.impl.velocity.VelocityA;
@@ -92,6 +93,7 @@ public class CheckManager {
                 .put(PingSpoofB.class, new PingSpoofB(player))
                 .put(PingSpoofC.class, new PingSpoofC(player))
                 .put(PingSpoofD.class, new PingSpoofD(player))
+                .put(StuckA.class, new StuckA(player))
                 .put(PacketEntityReplication.class, new PacketEntityReplication(player))
                 .put(PacketChangeGameState.class, new PacketChangeGameState(player))
                 .put(CompensatedInventory.class, player.inventory)
