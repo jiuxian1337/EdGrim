@@ -121,7 +121,8 @@ public class Check extends GrimProcessor implements AbstractCheck {
         EdGrimAPI.INSTANCE.getEventBus().post(event);
         if (event.isCancelled()) return false;
 
-        player.punishmentManager.handleViolation(this);
+        boolean b = player.punishmentManager.handleViolation(this);
+        if (!b) return false;
         lastViolationTime = System.currentTimeMillis();
         violations++;
         return true;

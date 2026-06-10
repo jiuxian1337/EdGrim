@@ -40,8 +40,9 @@ public final class StuckA extends Check implements PacketCheck {
         if (avgPing <= 0) {
             avgPing = currentPing;
         } else {
+            if (!player.isMoving()) return;
             long c03Delay = System.currentTimeMillis() - lastC03;
-            if (lastC03 != 0 && c03Delay > avgPing + 100 && flagAndAlert("avg=" + avgPing + "\ncurrent=" + c03Delay)) {
+            if (lastC03 != 0 && c03Delay > avgPing + 250 && flagAndAlert("avg=" + avgPing + "\ncurrent=" + c03Delay)) {
                 event.setCancelled(true);
                 player.mitigateDamage();
             }

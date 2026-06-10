@@ -215,7 +215,8 @@ public class PunishmentManager implements ConfigReloadable {
         return sentDebug;
     }
 
-    public void handleViolation(Check check) {
+    public boolean handleViolation(Check check) {
+        boolean containsCheck = false;
         for (PunishGroup group : groups) {
             if (group.checks.contains(check)) {
                 long currentTime = System.currentTimeMillis();
@@ -223,8 +224,10 @@ public class PunishmentManager implements ConfigReloadable {
                 group.violations.put(currentTime, check);
                 // Remove violations older than the defined time in the config
                 group.violations.entrySet().removeIf(time -> currentTime - time.getKey() > group.removeViolationsAfter);
+                containsCheck = true;
             }
         }
+        return containsCheck;
     }
 
     private int getViolations(PunishGroup group, Check check) {

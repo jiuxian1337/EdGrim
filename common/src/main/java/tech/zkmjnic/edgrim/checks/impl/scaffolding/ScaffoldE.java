@@ -42,15 +42,13 @@ public final class ScaffoldE extends ScaffoldCheck {
 
         if (this.place.size() >= 10) {
             int trueCount = 0;
-            int falseCount = 0;
             for (Boolean changed : this.place) {
                 if (changed) trueCount++;
-                else falseCount++;
             }
 
-            double v = (falseCount == 0) ? Double.MAX_VALUE : (double) trueCount / falseCount;
+            double v = (double) trueCount / this.place.size();
 
-            if (v > 0.6 && flagAndAlert("s=" + lastSneak + "\ns=" + sneak + "\nf/pc=" + v) && shouldCancel()) {
+            if (v > 0.6 && flagAndAlert("s=" + lastSneak + "\ns=" + sneak + "\nt/c=" + v) && shouldCancel()) {
                 cancel();
                 player.mitigateDamage();
                 place.resync();

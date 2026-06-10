@@ -151,7 +151,10 @@ publishing.publications.create<MavenPublication>("maven") {
 
 tasks {
     runServer {
-        minecraftVersion("1.21.4")
+        minecraftVersion("1.8.8")
+        systemProperty("com.mojang.eula.agree", "true")
+        jvmArgs("-Xmx2G", "-Xms2G")
+        runDirectory(file("run"))
     }
 
     shadowJar {
