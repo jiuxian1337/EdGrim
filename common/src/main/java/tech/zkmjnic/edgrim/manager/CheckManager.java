@@ -273,7 +273,6 @@ public class CheckManager {
                 .put(ScaffoldB.class, new ScaffoldB(player))
                 .put(ScaffoldC.class, new ScaffoldC(player))
                 .put(ScaffoldD.class, new ScaffoldD(player))
-                .put(ScaffoldE.class, new ScaffoldE(player))
                 .put(ScaffoldProcessor.class, new ScaffoldProcessor(player))
                 .put(PacketOrderN.class, new PacketOrderN(player))
                 .put(DuplicateRotPlace.class, new DuplicateRotPlace(player))
