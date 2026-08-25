@@ -1,58 +1,24 @@
 # EdGrim
 
-**EdGrim** is a fork of [Grim](https://github.com/GrimAnticheat/Grim), the libre simulation Minecraft anti-cheat. It adds a large number of checks and detection modules beyond the upstream Grim codebase.
+**EdGrim** 是 [Grim](https://github.com/GrimAnticheat/Grim) 的一个分支，Grim 是自由开源的模拟式 Minecraft 反作弊。本分支在上游 Grim 代码库之外新增了大量检测和检测模块。
 
-> **Disclaimer** — This project contains a significant amount of AI-generated code (Gemini / ChatGPT). Review and test thoroughly before deploying in production.
+> **免责声明** — 本项目包含大量 AI 生成的代码（Gemini / ChatGPT）。在生产环境部署前请务必充分审查和测试。
 
-## Languages
+## 分支基础
 
-[English](README.md) | [中文](README_zh.md) | [繁體中文（中国香港）](README_zh_HK.md) | [Русский](README_ru.md) | [한국어](README_ko.md) | [日本語](README_ja.md) | [Deutsch](README_de.md) | [Français](README_fr.md) | [Español](README_es.md) | [العربية](README_ar.md) | [ئۇيغۇرچە](README_ug.md)
+- **上游项目：** [GrimAnticheat/Grim](https://github.com/GrimAnticheat/Grim)
+- **本分支：** [jiuxian1337/EdGrim](https://github.com/jiuxian1337/EdGrim)
+- **许可证：** GPLv3
 
-## Fork Base
+## 项目描述
 
-- **Upstream:** [GrimAnticheat/Grim](https://github.com/GrimAnticheat/Grim)
-- **This fork:** [jiuxian1337/EdGrim](https://github.com/jiuxian1337/EdGrim)
-- **License:** GPLv3
+基于 PacketEvents 2.0 的自由仿真反作弊，专为 1.21 设计，同时支持 1.8–1.21。
 
-## Description
+## 第三方代码引用
 
-Libre simulation anticheat designed for 1.21 with 1.8–1.21 support, powered by PacketEvents 2.0.
+本分支从以下反作弊项目中汲取灵感和实现细节：
 
-**100+ checks across**, including:
-
-| Category | Description |
-|---|---|
-| Aim | Heuristic / trajectory-based aim detection |
-| Autoclicker | Click pattern analysis |
-| BadPackets | Malformed / invalid packet detection |
-| Baritone | Baritone bot detection |
-| Breaking | Block-breaking validity |
-| Chat | Chat / command abuse |
-| Combat | Reach, hitboxes, multi-interact |
-| Crash | Crash exploit prevention |
-| Elytra | Elytra movement validation |
-| Exploit | General exploit mitigation |
-| Flight | Flight / movement hacks |
-| GroundSpoof | NoFall / ground spoof |
-| Interact | Interaction validation |
-| Inventory | Inventory manipulation |
-| Misc | Client brand, ghost blocks, transaction order |
-| Movement | Movement pattern validation |
-| MultiActions | Combined action abuse |
-| PacketOrder | Packet sequencing checks |
-| PingSpoof | Ping / latency spoofing |
-| Prediction | Prediction-based offset & phase checks |
-| Scaffolding | Scaffold / tower detection |
-| Sprint | Sprint / omni-sprint |
-| Timer | Game timer manipulation |
-| Vehicle | Vehicle movement hacks |
-| Velocity | Knockback / velocity validation |
-
-## Third-party code references
-
-This fork draws inspiration and implementation details from the following anti-cheat projects:
-
-| Project | Source |
+| 项目 | 来源 |
 |---|---|
 | Intave | [intave/intave](https://github.com/intave/intave) |
 | AntiCheatAddition | [Photon-GitHub/AntiCheatAddition](https://github.com/Photon-GitHub/AntiCheatAddition) |
@@ -64,27 +30,27 @@ This fork draws inspiration and implementation details from the following anti-c
 | MX-Project | [kireikosasha/MX-Project](https://github.com/kireikosasha/MX-Project) |
 | NoCheatPlus | [Updated-NoCheatPlus/NoCheatPlus](https://github.com/Updated-NoCheatPlus/NoCheatPlus) |
 
-## Build
+## 构建
 
 ```bash
 ./gradlew build
 ```
 
-Requirements:
+要求：
 - JDK 21+
-- Gradle (wrapper included)
+- Gradle（包含 wrapper）
 
-## Platform support
+## 平台支持
 
 - Paper / Spigot 1.8–1.21
-- Folia scheduler support
+- Folia 调度器支持
 - PacketEvents 2.0
-- ViaVersion compatibility
+- ViaVersion 兼容
 
-## Contributing
+## 贡献
 
-This is a personal fork. Issues and PRs are not actively monitored.
+此为个人分支，不活跃关注 Issue 和 PR。
 
-## License
+## 许可证
 
-GPLv3 — see [LICENSE](LICENSE). Modified binaries or plugins with copied Grim code must be private, or provide full source code to recipients at no additional cost.
+GPLv3 — 详见 [LICENSE](LICENSE)。修改后的二进制文件或复制了 Grim 代码的插件必须保持私有，或向接收者免费提供完整源代码。

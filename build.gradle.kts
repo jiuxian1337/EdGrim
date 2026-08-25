@@ -1,8 +1,10 @@
 import versioning.BuildConfig
+import java.text.SimpleDateFormat
+import java.util.Date
 
 BuildConfig.init(project)
 
-val baseVersion = "26.06.10"
+val baseVersion = SimpleDateFormat("yy.MM.dd").format(Date())
 group = "tech.zkmjnic.edgrim"
 version = baseVersion
 description = "Libre simulation anticheat designed for 1.21 with 1.8-1.21 support, powered by PacketEvents 2.0."
