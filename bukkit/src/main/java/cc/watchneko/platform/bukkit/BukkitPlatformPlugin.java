@@ -1,0 +1,27 @@
+package cc.watchneko.platform.bukkit;
+
+import cc.watchneko.platform.api.PlatformPlugin;
+import org.bukkit.plugin.Plugin;
+
+public class BukkitPlatformPlugin implements PlatformPlugin {
+    private final Plugin plugin;
+
+    public BukkitPlatformPlugin(Plugin plugin) {
+        this.plugin = plugin;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return plugin.isEnabled();
+    }
+
+    @Override
+    public String getName() {
+        return plugin.getName();
+    }
+
+    @Override
+    public String getVersion() {
+        return plugin.getDescription().getVersion();
+    }
+}

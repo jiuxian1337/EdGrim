@@ -1,0 +1,35 @@
+package cc.watchneko.manager.init.start;
+
+import cc.watchneko.utils.anticheat.LogUtil;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class JavaVersion implements StartableInitable {
+
+    @Override
+    public void start() {
+        // Stolen from Via, stolen from Paper
+        String javaVersion = System.getProperty("java.version");
+        Matcher matcher = Pattern.compile("(?:1\\.)?(\\d+)").matcher(javaVersion);
+        if (!matcher.find()) {
+            LogUtil.error("Failed to determine Java version; could not parse: " + javaVersion);
+            return;
+        }
+
+        String versionString = matcher.group(1);
+        int version;
+        try {
+            version = Integer.parseInt(versionString);
+        } catch (NumberFormatException e) {
+            LogUtil.error("Failed to determine Java version; could not parse: " + versionString, e);
+            return;
+        }
+
+        if (version < 17) {
+            LogUtil.warn("You are running an outdated Java version, please update it to at least Java 17 (your version is " + javaVersion + ").");
+            LogUtil.warn("WatchNeko will no longer support this version of Java in a future release.");
+            LogUtil.warn("See https://github.com/grimAnticheat/grim/wiki/Updating-to-Java-17 for more information.");
+        }
+    }
+}

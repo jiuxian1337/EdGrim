@@ -7,241 +7,241 @@
 # [webhook] - 警告discord webhook 的特殊命令
 # [proxy] - 用于使用(BungeeCord/Velocity)服务器时的警报
 Punishments:
-  Simulation:
-    # 多少秒后重置VL
-    remove-violations-after: 300
-    # 这个部分将会匹配检查的名字
-    # 要关闭掉一个检查就在检查前面加感叹号
-    # 例如, !BadPacketsN
-    checks:
-      - "Simulation"
-    # 最大vl:下一次执行需要的vl
-    #
-    # 这是个例子, 当到达100VL时为了以 "incorrect movement!" 为理由踢出玩家
-    # commands:
-    # - "100:0 kick %player% incorrect movement!"
-    # 后面的数如果使用0就代表只执行一次
-    # - "100:50 say %player% is cheating"
-    # 在100vl后执行say %player% is cheating,之后的每50vl都执行一次say %player% is cheating
-    #
-    commands:
-      - "1:1 [log]"
-      - "50:10 [alert]"
-      - "50:10 [webhook]"
-      - "50:10 [proxy]"
-      - "500:0 kick %player% cheating"
-  Timer:
-    remove-violations-after: 300
-    checks:
-      - "Timer"
-      - "TimerLimit"
-    commands:
-      - "1:1 [log]"
-      - "50:10 [alert]"
-      - "50:10 [webhook]"
-      - "50:10 [proxy]"
-      - "500:0 kick %player% cheating"
-  NoFall:
-    remove-violations-after: 300
-    checks:
-      - "GroundSpoof"
-      - "NoFall"
-    commands:
-      - "1:1 [log]"
-      - "10:5 [alert]"
-      - "10:5 [webhook]"
-      - "10:5 [proxy]"
-      - "50:0 kick %player% cheating"
-  NoSlow:
-    remove-violations-after: 300
-    checks:
-      - "NoSlow"
-    commands:
-      - "1:1 [log]"
-      - "10:5 [alert]"
-      - "10:5 [webhook]"
-      - "10:5 [proxy]"
-      - "50:0 kick %player% cheating"
-  Knockback:
-    remove-violations-after: 300
-    checks:
-      - "Velocity"
-    commands:
-      - "1:1 [log]"
-      - "10:5 [alert]"
-      - "10:5 [webhook]"
-      - "10:5 [proxy]"
-      - "50:0 kick %player% cheating"
-  BadPackets:
-    remove-violations-after: 300
-    checks:
-      - "BadPackets"
-      - "PacketOrder"
-      - "Post"
-    commands:
-      - "1:1 [log]"
-      - "5:5 [alert]"
-      - "5:5 [webhook]"
-      - "5:5 [proxy]"
-      - "25:0 kick %player% cheating"
-  Crash:
-    remove-violations-after: 300
-    checks:
-      - "Crash"
-    commands:
-      - "1:1 [log]"
-      - "1:1 [alert]"
-      - "1:1 [webhook]"
-      - "1:1 [proxy]"
-      - "1:0 kick %player% cheating"
-  Hitboxes:
-    remove-violations-after: 300
-    checks:
-      - "Reach"
-      - "Hitboxes"
-    commands:
-      - "1:1 [log]"
-      - "2:2 [alert]"
-      - "2:2 [webhook]"
-      - "2:2 [proxy]"
-      - "10:0 kick %player% cheating"
-  Scaffold:
-    remove-violations-after: 300
-    checks:
-      - "Scaffold"
-    commands:
-      - "1:1 [log]"
-      - "5:5 [alert]"
-      - "5:5 [webhook]"
-      - "5:5 [proxy]"
-      - "25:0 kick %player% cheating"
-  Place:
-    remove-violations-after: 300
-    checks:
-      - "Place"
-    commands:
-      - "1:1 [log]"
-      - "5:5 [alert]"
-      - "5:5 [webhook]"
-      - "5:5 [proxy]"
-      - "25:0 kick %player% cheating"
-  Break:
-    remove-violations-after: 300
-    checks:
-      - "Break"
-    commands:
-      - "1:1 [log]"
-      - "5:5 [alert]"
-      - "5:5 [webhook]"
-      - "5:5 [proxy]"
-      - "25:0 kick %player% cheating"
-  TransactionOrder:
-    remove-violations-after: 300
-    checks:
-      - "TransactionOrder"
-    commands:
-      - "1:1 [log]"
-      - "5:5 [alert]"
-      - "5:5 [webhook]"
-      - "5:5 [proxy]"
-      - "25:0 kick %player% cheating"
-  MultiActions:
-    remove-violations-after: 300
-    checks:
-      - "MultiActions"
-    commands:
-      - "1:1 [log]"
-      - "5:5 [alert]"
-      - "5:5 [webhook]"
-      - "5:5 [proxy]"
-      - "25:0 kick %player% cheating"
-  Misc:
-    remove-violations-after: 300
-    checks:
-      - "Vehicle"
-      - "Sprint"
-      - "Baritone"
-      - "Elytra"
-      - "Chat"
-      - "Exploit"
-    commands:
-      - "1:1 [log]"
-      - "5:5 [alert]"
-      - "5:5 [webhook]"
-      - "5:5 [proxy]"
-      - "25:0 kick %player% cheating"
-  Interact:
-    remove-violations-after: 300
-    checks:
-      - "Interact"
-    commands:
-      - "1:1 [log]"
-      - "50:10 [alert]"
-      - "50:10 [webhook]"
-      - "50:10 [proxy]"
-  Aim:
-    remove-violations-after: 300
-    checks:
-      - "Aim"
-    commands:
-      - "1:1 [log]"
-      - "3:3 [alert]"
-      - "3:3 [webhook]"
-      - "3:3 [proxy]"
-      - "15:0 kick %player% cheating"
-  Analysis:
-    remove-violations-after: 300
-    checks:
-      - "Analysis"
-    commands:
-      - "1:1 [log]"
-      - "5:5 [alert]"
-      - "5:5 [webhook]"
-      - "5:5 [proxy]"
-      - "25:0 kick %player% cheating"
-  Autoclicker:
-    remove-violations-after: 300
-    checks:
-      - "Autoclicker"
-    commands:
-      - "1:1 [log]"
-      - "1:1 [alert]"
-      - "1:1 [webhook]"
-      - "1:1 [proxy]"
-      - "5:0 kick %player% cheating"
-  PingSpoof:
-    remove-violations-after: 300
-    checks:
-      - "PingSpoof"
-    commands:
-      - "1:1 [log]"
-      - "5:5 [alert]"
-      - "5:5 [webhook]"
-      - "5:5 [proxy]"
-      - "25:0 kick %player% cheating"
-  Stuck:
-    remove-violations-after: 300
-    checks:
-      - "Stuck"
-    commands:
-      - "1:1 [log]"
-      - "5:5 [alert]"
-      - "5:5 [webhook]"
-      - "5:5 [proxy]"
-      - "25:0 kick %player% cheating"
-  Inventory:
-    remove-violations-after: 300
-    checks:
-      - "InventoryA"
-      - "InventoryB"
-      - "InventoryC"
-      - "InventoryD"
-      - "InventoryE"
-      - "InventoryF"
-      - "InventoryG"
-    commands:
-      - "1:1 [log]"
-      - "5:5 [alert]"
-      - "5:5 [webhook]"
-      - "5:5 [proxy]"
-      - "25:0 kick %player% cheating"
+    Simulation:
+        # 多少秒后重置VL
+        remove-violations-after: 300
+        # 这个部分将会匹配检查的名字
+        # 要关闭掉一个检查就在检查前面加感叹号
+        # 例如, !BadPacketsN
+        checks:
+            - "Simulation"
+        # 最大vl:下一次执行需要的vl
+        #
+        # 这是个例子, 当到达100VL时为了以 "incorrect movement!" 为理由踢出玩家
+        # commands:
+        # - "100:0 kick %player% incorrect movement!"
+        # 后面的数如果使用0就代表只执行一次
+        # - "100:50 say %player% is cheating"
+        # 在100vl后执行say %player% is cheating,之后的每50vl都执行一次say %player% is cheating
+        #
+        commands:
+            - "1:1 [log]"
+            - "50:10 [alert]"
+            - "50:10 [webhook]"
+            - "50:10 [proxy]"
+            - "500:0 kick %player% cheating"
+    Timer:
+        remove-violations-after: 300
+        checks:
+            - "Timer"
+            - "TimerLimit"
+        commands:
+            - "1:1 [log]"
+            - "50:10 [alert]"
+            - "50:10 [webhook]"
+            - "50:10 [proxy]"
+            - "500:0 kick %player% cheating"
+    NoFall:
+        remove-violations-after: 300
+        checks:
+            - "GroundSpoof"
+            - "NoFall"
+        commands:
+            - "1:1 [log]"
+            - "10:5 [alert]"
+            - "10:5 [webhook]"
+            - "10:5 [proxy]"
+            - "50:0 kick %player% cheating"
+    NoSlow:
+        remove-violations-after: 300
+        checks:
+            - "NoSlow"
+        commands:
+            - "1:1 [log]"
+            - "10:5 [alert]"
+            - "10:5 [webhook]"
+            - "10:5 [proxy]"
+            - "50:0 kick %player% cheating"
+    Knockback:
+        remove-violations-after: 300
+        checks:
+            - "Velocity"
+        commands:
+            - "1:1 [log]"
+            - "10:5 [alert]"
+            - "10:5 [webhook]"
+            - "10:5 [proxy]"
+            - "50:0 kick %player% cheating"
+    BadPackets:
+        remove-violations-after: 300
+        checks:
+            - "BadPackets"
+            - "PacketOrder"
+            - "Post"
+        commands:
+            - "1:1 [log]"
+            - "5:5 [alert]"
+            - "5:5 [webhook]"
+            - "5:5 [proxy]"
+            - "25:0 kick %player% cheating"
+    Crash:
+        remove-violations-after: 300
+        checks:
+            - "Crash"
+        commands:
+            - "1:1 [log]"
+            - "1:1 [alert]"
+            - "1:1 [webhook]"
+            - "1:1 [proxy]"
+            - "1:0 kick %player% cheating"
+    Hitboxes:
+        remove-violations-after: 300
+        checks:
+            - "Reach"
+            - "Hitboxes"
+        commands:
+            - "1:1 [log]"
+            - "2:2 [alert]"
+            - "2:2 [webhook]"
+            - "2:2 [proxy]"
+            - "10:0 kick %player% cheating"
+    Scaffold:
+        remove-violations-after: 300
+        checks:
+            - "Scaffold"
+        commands:
+            - "1:1 [log]"
+            - "5:5 [alert]"
+            - "5:5 [webhook]"
+            - "5:5 [proxy]"
+            - "25:0 kick %player% cheating"
+    Place:
+        remove-violations-after: 300
+        checks:
+            - "Place"
+        commands:
+            - "1:1 [log]"
+            - "5:5 [alert]"
+            - "5:5 [webhook]"
+            - "5:5 [proxy]"
+            - "25:0 kick %player% cheating"
+    Break:
+        remove-violations-after: 300
+        checks:
+            - "Break"
+        commands:
+            - "1:1 [log]"
+            - "5:5 [alert]"
+            - "5:5 [webhook]"
+            - "5:5 [proxy]"
+            - "25:0 kick %player% cheating"
+    TransactionOrder:
+        remove-violations-after: 300
+        checks:
+            - "TransactionOrder"
+        commands:
+            - "1:1 [log]"
+            - "5:5 [alert]"
+            - "5:5 [webhook]"
+            - "5:5 [proxy]"
+            - "25:0 kick %player% cheating"
+    MultiActions:
+        remove-violations-after: 300
+        checks:
+            - "MultiActions"
+        commands:
+            - "1:1 [log]"
+            - "5:5 [alert]"
+            - "5:5 [webhook]"
+            - "5:5 [proxy]"
+            - "25:0 kick %player% cheating"
+    Misc:
+        remove-violations-after: 300
+        checks:
+            - "Vehicle"
+            - "Sprint"
+            - "Baritone"
+            - "Elytra"
+            - "Chat"
+            - "Exploit"
+        commands:
+            - "1:1 [log]"
+            - "5:5 [alert]"
+            - "5:5 [webhook]"
+            - "5:5 [proxy]"
+            - "25:0 kick %player% cheating"
+    Interact:
+        remove-violations-after: 300
+        checks:
+            - "Interact"
+        commands:
+            - "1:1 [log]"
+            - "50:10 [alert]"
+            - "50:10 [webhook]"
+            - "50:10 [proxy]"
+    Aim:
+        remove-violations-after: 300
+        checks:
+            - "Aim"
+        commands:
+            - "1:1 [log]"
+            - "3:3 [alert]"
+            - "3:3 [webhook]"
+            - "3:3 [proxy]"
+            - "15:0 kick %player% cheating"
+    Analysis:
+        remove-violations-after: 300
+        checks:
+            - "Analysis"
+        commands:
+            - "1:1 [log]"
+            - "5:5 [alert]"
+            - "5:5 [webhook]"
+            - "5:5 [proxy]"
+            - "25:0 kick %player% cheating"
+    Autoclicker:
+        remove-violations-after: 300
+        checks:
+            - "Autoclicker"
+        commands:
+            - "1:1 [log]"
+            - "1:1 [alert]"
+            - "1:1 [webhook]"
+            - "1:1 [proxy]"
+            - "5:0 kick %player% cheating"
+    PingSpoof:
+        remove-violations-after: 300
+        checks:
+            - "PingSpoof"
+        commands:
+            - "1:1 [log]"
+            - "5:5 [alert]"
+            - "5:5 [webhook]"
+            - "5:5 [proxy]"
+            - "25:0 kick %player% cheating"
+    Stuck:
+        remove-violations-after: 300
+        checks:
+            - "Stuck"
+        commands:
+            - "1:1 [log]"
+            - "5:5 [alert]"
+            - "5:5 [webhook]"
+            - "5:5 [proxy]"
+            - "25:0 kick %player% cheating"
+    Inventory:
+        remove-violations-after: 300
+        checks:
+            - "InventoryA"
+            - "InventoryB"
+            - "InventoryC"
+            - "InventoryD"
+            - "InventoryE"
+            - "InventoryF"
+            - "InventoryG"
+        commands:
+            - "1:1 [log]"
+            - "5:5 [alert]"
+            - "5:5 [webhook]"
+            - "5:5 [proxy]"
+            - "25:0 kick %player% cheating"

@@ -1,13 +1,14 @@
-# EdGrim
+# WatchNeko
 
-**EdGrim** 是 [Grim](https://github.com/GrimAnticheat/Grim) 的一个分支，Grim 是自由开源的模拟式 Minecraft 反作弊。本分支在上游 Grim 代码库之外新增了大量检测和检测模块。
+**WatchNeko** 是 [Grim](https://github.com/GrimAnticheat/Grim) 的一个分支，Grim 是自由开源的模拟式
+Minecraft 反作弊。本分支在上游 Grim 代码库之外新增了大量检测和检测模块。
 
 > **免责声明** — 本项目包含大量 AI 生成的代码（Gemini / ChatGPT）。在生产环境部署前请务必充分审查和测试。
 
 ## 分支基础
 
 - **上游项目：** [GrimAnticheat/Grim](https://github.com/GrimAnticheat/Grim)
-- **本分支：** [jiuxian1337/EdGrim](https://github.com/jiuxian1337/EdGrim)
+- **本分支：** [jiuxian1337/WatchNeko](https://github.com/jiuxian1337/WatchNeko)
 - **许可证：** GPLv3
 
 ## 项目描述
@@ -18,17 +19,17 @@
 
 本分支从以下反作弊项目中汲取灵感和实现细节：
 
-| 项目 | 来源 |
-|---|---|
-| Intave | [intave/intave](https://github.com/intave/intave) |
-| AntiCheatAddition | [Photon-GitHub/AntiCheatAddition](https://github.com/Photon-GitHub/AntiCheatAddition) |
-| Artemis | [artemisac/artemis-minecraft-anticheat](https://github.com/artemisac/artemis-minecraft-anticheat) |
-| FairFight | [dw1e/FairFight](https://github.com/dw1e/FairFight) |
-| Karhu Fixed | [Dg32z/Karhu-Fixed](https://github.com/Dg32z/Karhu-Fixed) |
-| LonAntiCheat | [Araykal/LonAntiCheat](https://github.com/Araykal/LonAntiCheat) |
-| Medusa | [infiniteSM/Medusa](https://github.com/infiniteSM/Medusa) |
-| MX-Project | [kireikosasha/MX-Project](https://github.com/kireikosasha/MX-Project) |
-| NoCheatPlus | [Updated-NoCheatPlus/NoCheatPlus](https://github.com/Updated-NoCheatPlus/NoCheatPlus) |
+| 项目              | 来源                                                                                              |
+|-------------------|---------------------------------------------------------------------------------------------------|
+| Intave            | [intave/intave](https://github.com/intave/intave)                                                 |
+| AntiCheatAddition | [Photon-GitHub/AntiCheatAddition](https://github.com/Photon-GitHub/AntiCheatAddition)             |
+| Artemis           | [artemisac/artemis-minecraft-anticheat](https://github.com/artemisac/artemis-minecraft-anticheat) |
+| FairFight         | [dw1e/FairFight](https://github.com/dw1e/FairFight)                                               |
+| Karhu Fixed       | [Dg32z/Karhu-Fixed](https://github.com/Dg32z/Karhu-Fixed)                                         |
+| LonAntiCheat      | [Araykal/LonAntiCheat](https://github.com/Araykal/LonAntiCheat)                                   |
+| Medusa            | [infiniteSM/Medusa](https://github.com/infiniteSM/Medusa)                                         |
+| MX-Project        | [kireikosasha/MX-Project](https://github.com/kireikosasha/MX-Project)                             |
+| NoCheatPlus       | [Updated-NoCheatPlus/NoCheatPlus](https://github.com/Updated-NoCheatPlus/NoCheatPlus)             |
 
 ## 构建
 
@@ -37,6 +38,7 @@
 ```
 
 要求：
+
 - JDK 21+
 - Gradle（包含 wrapper）
 

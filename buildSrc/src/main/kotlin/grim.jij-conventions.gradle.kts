@@ -19,7 +19,8 @@ data class DependencyIdentifier(
     val version: String,
     val classifier: String = "" // Add classifier field, default to empty string
 ) {
-    override fun toString() = "$group:$name:$version${if (classifier.isNotEmpty()) ":$classifier" else ""}"
+    override fun toString() =
+        "$group:$name:$version${if (classifier.isNotEmpty()) ":$classifier" else ""}"
 }
 
 // Does not support extracting classifiers but while the fabric standard is ambiguous on whether they can be included
@@ -63,7 +64,12 @@ fun parseFabricModJson(jarFile: File, project: Project): Set<DependencyIdentifie
 
 fun extractEmbeddedJars(jarFile: File, project: Project): Set<DependencyIdentifier> {
     val embeddedJars = mutableSetOf<DependencyIdentifier>()
-    embeddedJars.addAll(parseFabricModJson(jarFile, project)) // Retain existing logic for top-level fabric.mod.json parsing
+    embeddedJars.addAll(
+        parseFabricModJson(
+            jarFile,
+            project
+        )
+    ) // Retain existing logic for top-level fabric.mod.json parsing
     try {
         JarFile(jarFile).use { jar ->
             val entries = jar.entries()
@@ -85,30 +91,41 @@ fun extractEmbeddedJars(jarFile: File, project: Project): Set<DependencyIdentifi
                     JarFile(tempFile).use { embeddedJar ->
                         val fabricModJsonEntry: ZipEntry? = embeddedJar.getEntry("fabric.mod.json")
                         if (fabricModJsonEntry != null) {
-                            embeddedJar.getInputStream(fabricModJsonEntry).bufferedReader().use { reader ->
-                                val jsonContent = reader.readText()
-                                val jsonElement = Json.parseToJsonElement(jsonContent)
-                                val jsonObject = jsonElement.jsonObject
+                            embeddedJar.getInputStream(fabricModJsonEntry).bufferedReader()
+                                .use { reader ->
+                                    val jsonContent = reader.readText()
+                                    val jsonElement = Json.parseToJsonElement(jsonContent)
+                                    val jsonObject = jsonElement.jsonObject
 
-                                // Extract id and parse into group
-                                val id = jsonObject["id"]?.jsonPrimitive?.content
-                                    ?: throw IllegalStateException("Missing 'id' in fabric.mod.json of embedded JAR: $entryName")
-                                val idWithDots = id.replace("_", ".")
-                                val lastDotIndex = idWithDots.lastIndexOf(".")
-                                val group = if (lastDotIndex != -1) idWithDots.substring(0, lastDotIndex) else ""
+                                    // Extract id and parse into group
+                                    val id = jsonObject["id"]?.jsonPrimitive?.content
+                                        ?: throw IllegalStateException("Missing 'id' in fabric.mod.json of embedded JAR: $entryName")
+                                    val idWithDots = id.replace("_", ".")
+                                    val lastDotIndex = idWithDots.lastIndexOf(".")
+                                    val group = if (lastDotIndex != -1) idWithDots.substring(
+                                        0,
+                                        lastDotIndex
+                                    ) else ""
 
-                                // Extract name and version from the JAR filename
-                                val jarName = entryName.substringAfterLast("/").removeSuffix(".jar")
-                                val (name, version) = parseNameAndVersionFromJarName(jarName)
-                                    ?: throw IllegalStateException("Could not parse name and version from JAR filename: $jarName")
+                                    // Extract name and version from the JAR filename
+                                    val jarName =
+                                        entryName.substringAfterLast("/").removeSuffix(".jar")
+                                    val (name, version) = parseNameAndVersionFromJarName(jarName)
+                                        ?: throw IllegalStateException("Could not parse name and version from JAR filename: $jarName")
 
-                                // Create DependencyIdentifier (classifier is empty for now)
-                                val depId = DependencyIdentifier(group, name, version)
-                                embeddedJars.add(depId)
-                                project.logger.debug("Identified embedded dependency from fabric.mod.json and filename: {}", depId)
-                            }
+                                    // Create DependencyIdentifier (classifier is empty for now)
+                                    val depId = DependencyIdentifier(group, name, version)
+                                    embeddedJars.add(depId)
+                                    project.logger.debug(
+                                        "Identified embedded dependency from fabric.mod.json and filename: {}",
+                                        depId
+                                    )
+                                }
                         } else {
-                            project.logger.error("No fabric.mod.json found in embedded JAR: {}. Skipping.", entryName)
+                            project.logger.error(
+                                "No fabric.mod.json found in embedded JAR: {}. Skipping.",
+                                entryName
+                            )
                         }
                     }
                 }
@@ -232,8 +249,10 @@ fun processDependencies(
 ) {
     dependencies.forEach { dep: ResolvedDependency ->
         val classifier = dep.moduleArtifacts.firstOrNull()?.classifier ?: ""
-        val depKey = "${dep.moduleGroup}:${dep.moduleName}:${dep.moduleVersion}${if (classifier.isNotEmpty()) ":$classifier" else ""}"
-        val depId = DependencyIdentifier(dep.moduleGroup, dep.moduleName, dep.moduleVersion, classifier)
+        val depKey =
+            "${dep.moduleGroup}:${dep.moduleName}:${dep.moduleVersion}${if (classifier.isNotEmpty()) ":$classifier" else ""}"
+        val depId =
+            DependencyIdentifier(dep.moduleGroup, dep.moduleName, dep.moduleVersion, classifier)
         if (!processed.contains(depKey)) {
             processed.add(depKey)
             project.logger.debug("Resolved dependency: {}", depId)
@@ -299,7 +318,8 @@ project.afterEvaluate {
     fun collectAllEmbeddedDependenciesForAfterEvaluate(dependencies: Set<ResolvedDependency>) {
         dependencies.forEach { dep ->
             val classifier = dep.moduleArtifacts.firstOrNull()?.classifier ?: ""
-            val depKey = "${dep.moduleGroup}:${dep.moduleName}:${dep.moduleVersion}${if (classifier.isNotEmpty()) ":$classifier" else ""}"
+            val depKey =
+                "${dep.moduleGroup}:${dep.moduleName}:${dep.moduleVersion}${if (classifier.isNotEmpty()) ":$classifier" else ""}"
             if (!processed.contains(depKey)) {
                 processed.add(depKey)
                 val jarFile = dep.moduleArtifacts.firstOrNull()?.file

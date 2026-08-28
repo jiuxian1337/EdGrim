@@ -34,12 +34,17 @@ develocity {
         // Automatically add useful tags and links to the scan
         if (System.getenv("CI") == "true") {
             tag("CI")
-            link("GitHub Actions build", System.getenv("GITHUB_SERVER_URL") + "/" + System.getenv("GITHUB_REPOSITORY") + "/actions/runs/" + System.getenv("GITHUB_RUN_ID"))
+            link(
+                "GitHub Actions build",
+                System.getenv("GITHUB_SERVER_URL") + "/" + System.getenv("GITHUB_REPOSITORY") + "/actions/runs/" + System.getenv(
+                    "GITHUB_RUN_ID"
+                )
+            )
         }
     }
 }
 
-rootProject.name = "edgrimac"
+rootProject.name = "WatchNeko"
 include("common")
 include("bukkit")
 include("RotationRecorder")

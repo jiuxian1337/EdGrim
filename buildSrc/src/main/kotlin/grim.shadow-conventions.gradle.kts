@@ -12,9 +12,18 @@ tasks.named<ShadowJar>("shadowJar") {
 
     if (BuildConfig.relocate) {
         if (BuildConfig.shadePE) {
-            relocate("io.github.retrooper.packetevents", "ac.grim.grimac.shaded.io.github.retrooper.packetevents")
-            relocate("com.github.retrooper.packetevents", "ac.grim.grimac.shaded.com.github.retrooper.packetevents")
-            relocate("net.kyori", "ac.grim.grimac.shaded.kyori") // use PE's built-in adventure instead when not shading PE
+            relocate(
+                "io.github.retrooper.packetevents",
+                "ac.grim.grimac.shaded.io.github.retrooper.packetevents"
+            )
+            relocate(
+                "com.github.retrooper.packetevents",
+                "ac.grim.grimac.shaded.com.github.retrooper.packetevents"
+            )
+            relocate(
+                "net.kyori",
+                "ac.grim.grimac.shaded.kyori"
+            ) // use PE's built-in adventure instead when not shading PE
         }
         relocate("club.minnced", "ac.grim.grimac.shaded.discord-webhooks")
         relocate("org.slf4j", "ac.grim.grimac.shaded.slf4j") // Required by discord-webhooks

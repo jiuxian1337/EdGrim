@@ -1,0 +1,260 @@
+package cc.watchneko.checks.impl.velocity;
+
+import ac.grim.grimac.api.config.ConfigManager;
+import cc.watchneko.WatchNekoAPI;
+import cc.watchneko.checks.Check;
+import cc.watchneko.checks.CheckData;
+import cc.watchneko.checks.type.PostPredictionCheck;
+import cc.watchneko.player.PlayerData;
+import cc.watchneko.utils.anticheat.update.PredictionComplete;
+import cc.watchneko.utils.data.Pair;
+import cc.watchneko.utils.data.VectorData;
+import cc.watchneko.utils.data.VelocityData;
+import cc.watchneko.utils.math.Vector3dm;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.util.Vector3d;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityVelocity;
+import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Deque;
+import java.util.LinkedList;
+
+// We are making a velocity sandwich between two pieces of transaction packets (bread)
+@CheckData(name = "VelocityA (Prediction)", configName = "VelocityA", setback = 0, decay = 0.025)
+public class VelocityA extends Check implements PostPredictionCheck {
+    Deque<VelocityData> firstBreadMap = new LinkedList<>();
+
+    Deque<VelocityData> lastKnockbackKnownTaken = new LinkedList<>();
+    VelocityData firstBreadOnlyKnockback = null;
+    @Getter
+    boolean knockbackPointThree = false;
+
+    double offsetToFlag;
+    double maxAdv, immediate, ceiling, multiplier;
+
+    double threshold;
+
+    public boolean interacted;
+
+    public VelocityA(PlayerData player) {
+        super(player);
+    }
+
+    @Override
+    public void onPacketSend(final PacketSendEvent event) {
+        if (event.getPacketType() == PacketType.Play.Server.ENTITY_VELOCITY) {
+            WrapperPlayServerEntityVelocity velocity = new WrapperPlayServerEntityVelocity(event);
+            int entityId = velocity.getEntityId();
+
+            PlayerData player = WatchNekoAPI.INSTANCE.getPlayerDataManager().getPlayer(event.getUser());
+            if (player == null) return;
+
+            // Detect whether this knockback packet affects the player or if it is useless
+            // Mojang sends extra useless knockback packets for no apparent reason
+            if (player.compensatedEntities.serverPlayerVehicle != null && entityId != player.compensatedEntities.serverPlayerVehicle) {
+                return;
+            }
+            if (player.compensatedEntities.serverPlayerVehicle == null && entityId != player.entityID) {
+                return;
+            }
+
+            // If the player isn't in a vehicle and the ID is for the player, the player will take kb
+            // If the player is in a vehicle and the ID is for the player's vehicle, the player will take kb
+            Vector3d playerVelocity = velocity.getVelocity();
+
+            // Blacklist problemated vector until mojang fixes a client-sided bug
+            if (playerVelocity.getY() == -0.04) {
+                velocity.setVelocity(playerVelocity.add(new Vector3d(0, 1 / 8000D, 0)));
+                playerVelocity = velocity.getVelocity();
+                event.markForReEncode(true);
+            }
+
+            // Wrap velocity between two transactions
+            player.sendTransaction();
+            addPlayerKnockback(entityId, player.lastTransactionSent.get(), new Vector3dm(playerVelocity.getX(), playerVelocity.getY(), playerVelocity.getZ()));
+            event.getTasksAfterSend().add(player::sendTransaction);
+        }
+    }
+
+    @NotNull
+    public Pair<VelocityData, Vector3dm> getFutureKnockback() {
+        // Chronologically in the future
+        if (!firstBreadMap.isEmpty()) {
+            VelocityData data = firstBreadMap.peek();
+            return new Pair<>(data, data != null ? data.vector : null);
+        }
+
+        // Less in the future
+        if (!lastKnockbackKnownTaken.isEmpty()) {
+            VelocityData data = lastKnockbackKnownTaken.peek();
+            return new Pair<>(data, data != null ? data.vector : null);
+        }
+
+        // Uncertain, might be in the future
+        if (player.firstBreadKB != null && player.likelyKB == null) {
+            VelocityData data = player.firstBreadKB;
+            return new Pair<>(data, data.vector.clone());
+        } else if (player.likelyKB != null) { // Known to be in the present
+            VelocityData data = player.likelyKB;
+            return new Pair<>(data, data.vector.clone());
+        }
+        return new Pair<>(null, null);
+    }
+
+    private void addPlayerKnockback(int entityID, int breadOne, Vector3dm knockback) {
+        firstBreadMap.add(new VelocityData(entityID, breadOne, player.getSetbackTeleportUtil().isSendingSetback, knockback));
+    }
+
+    public VelocityData calculateRequiredKB(int entityID, int transaction, boolean isJustTesting) {
+        tickKnockback(transaction);
+
+        VelocityData returnLastKB = null;
+        for (VelocityData data : lastKnockbackKnownTaken) {
+            if (data.entityID == entityID)
+                returnLastKB = data;
+        }
+
+        if (!isJustTesting) {
+            lastKnockbackKnownTaken.clear();
+        }
+        return returnLastKB;
+    }
+
+    private void tickKnockback(int transactionID) {
+        firstBreadOnlyKnockback = null;
+        if (firstBreadMap.isEmpty()) return;
+        VelocityData data = firstBreadMap.peek();
+        while (data != null) {
+            if (data.transaction == transactionID) { // First bread knockback
+                firstBreadOnlyKnockback = new VelocityData(data.entityID, data.transaction, data.isSetback, data.vector);
+                //firstBreadMap.poll();
+                break; // All knockback after this will have not been applied
+            } else if (data.transaction < transactionID) { // This kb has 100% arrived to the player
+                if (firstBreadOnlyKnockback != null) { // Don't require kb twice
+                    lastKnockbackKnownTaken.add(new VelocityData(data.entityID, data.transaction, data.vector, data.isSetback, data.offset));
+                } else {
+                    lastKnockbackKnownTaken.add(new VelocityData(data.entityID, data.transaction, data.isSetback, data.vector));
+                }
+
+                // Knockback has been applied and is now required, remove it from first bread
+                firstBreadOnlyKnockback = null;
+                firstBreadMap.poll();
+                data = firstBreadMap.peek();
+            } else { // We are too far ahead in the future
+                break;
+            }
+        }
+    }
+
+    public void forceExempt() {
+        // Unsure knockback was taken
+        if (player.firstBreadKB != null) {
+            player.firstBreadKB.offset = 0;
+        }
+
+        if (player.likelyKB != null) {
+            player.likelyKB.offset = 0;
+        }
+    }
+
+    public void setPointThree(boolean isPointThree) {
+        knockbackPointThree = knockbackPointThree || isPointThree;
+    }
+
+    public void handlePredictionAnalysis(double offset) {
+        if (player.firstBreadKB != null) {
+            player.firstBreadKB.offset = Math.min(player.firstBreadKB.offset, offset);
+        }
+
+        if (player.likelyKB != null) {
+            player.likelyKB.offset = Math.min(player.likelyKB.offset, offset);
+        }
+    }
+
+    @Override
+    public void onPredictionComplete(final PredictionComplete predictionComplete) {
+        interacted = false;
+        double offset = predictionComplete.getOffset();
+        if (!predictionComplete.isChecked() || predictionComplete.getData().isTeleport()) {
+            forceExempt();
+            return;
+        }
+
+        boolean wasZero = knockbackPointThree;
+        knockbackPointThree = false;
+
+        if (player.likelyKB == null && player.firstBreadKB == null) {
+            return;
+        }
+
+        if (player.predictedVelocity.isFirstBreadKb()) {
+            firstBreadOnlyKnockback = null;
+            firstBreadMap.poll(); // Remove from map so we don't pull it again
+        }
+
+        if (wasZero || player.predictedVelocity.isKnockback()) {
+            // Unsure knockback was taken
+            if (player.firstBreadKB != null) {
+                player.firstBreadKB.offset = Math.min(player.firstBreadKB.offset, offset);
+            }
+
+            // 100% known kb was taken
+            if (player.likelyKB != null) {
+                player.likelyKB.offset = Math.min(player.likelyKB.offset, offset);
+            }
+        }
+
+        if (player.likelyKB != null) {
+            if (player.likelyKB.offset > offsetToFlag) {
+                threshold = Math.min(threshold + player.likelyKB.offset, ceiling);
+                if (player.likelyKB.isSetback) { // Don't increase violations if this velocity was setback, just teleport and resend them velocity.
+                    if (!isNoSetbackPermission()) {
+                        player.getSetbackTeleportUtil().executeViolationSetback();
+                    }
+                } else if (flagAndAlert(player.likelyKB.offset == Integer.MAX_VALUE ? "ignored knockback"
+                        : "o: " + formatOffset(player.likelyKB.offset))) { // This velocity was sent by the server.
+                    if (player.likelyKB.offset >= immediate || threshold >= maxAdv) {
+                        setbackIfAboveSetbackVL();
+                        player.mitigateDamage();
+                    }
+                } else {
+                    reward();
+                }
+            } else if (threshold > 0.05) {
+                threshold *= multiplier;
+            }
+        }
+    }
+
+    public boolean shouldIgnoreForPrediction(VectorData data) {
+        if (data.isKnockback() && data.isFirstBreadKb()) {
+            return player.firstBreadKB.offset > offsetToFlag;
+        }
+        return false;
+    }
+
+    public boolean wouldFlag() {
+        return (player.likelyKB != null && player.likelyKB.offset > offsetToFlag) || (player.firstBreadKB != null && player.firstBreadKB.offset > offsetToFlag);
+    }
+
+    public VelocityData calculateFirstBreadKnockback(int entityID, int transaction) {
+        tickKnockback(transaction);
+        if (firstBreadOnlyKnockback != null && firstBreadOnlyKnockback.entityID == entityID)
+            return firstBreadOnlyKnockback;
+        return null;
+    }
+
+    @Override
+    public void onReload(ConfigManager config) {
+        offsetToFlag = config.getDoubleElse("Knockback.threshold", 0.001);
+        maxAdv = config.getDoubleElse("Knockback.max-advantage", 1);
+        immediate = config.getDoubleElse("Knockback.immediate-setback-threshold", 0.1);
+        multiplier = config.getDoubleElse("Knockback.setback-decay-multiplier", 0.999);
+        ceiling = config.getDoubleElse("Knockback.max-ceiling", 4);
+        if (maxAdv < 0) maxAdv = Double.MAX_VALUE;
+        if (immediate < 0) immediate = Double.MAX_VALUE;
+    }
+
+}

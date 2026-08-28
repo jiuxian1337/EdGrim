@@ -67,7 +67,7 @@ tasks {
             listOf(
                 "bungee.yml",
                 "velocity-plugin.json",
-                "grimac.properties"
+                "watchneko.properties"
             )
         ) {
             expand(properties)

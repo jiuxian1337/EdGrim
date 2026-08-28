@@ -50,9 +50,9 @@ dependencies {
 }
 
 bukkit {
-    name = "EdGrim"
-    author = "EdGrim"
-    main = "tech.zkmjnic.edgrim.platform.bukkit.EdGrimBukkitLoaderPlugin"
+    name = "WatchNeko"
+    author = "P01_4rU5er"
+    main = "cc.watchneko.platform.bukkit.WatchNekoBukkitLoaderPlugin"
     website = "https://grim.ac/"
     apiVersion = "1.13"
     foliaSupported = true
@@ -75,68 +75,68 @@ bukkit {
     )
 
     permissions {
-        register("edgrim.alerts") {
+        register("watchneko.alerts") {
             description = "Receive alerts for violations"
             default = Permission.Default.OP
         }
 
-        register("edgrim.alerts.enable-on-join") {
+        register("watchneko.alerts.enable-on-join") {
             description = "Enable alerts on join"
             default = Permission.Default.OP
         }
 
-        register("edgrim.performance") {
+        register("watchneko.performance") {
             description = "Check performance metrics"
             default = Permission.Default.OP
         }
 
-        register("edgrim.profile") {
+        register("watchneko.profile") {
             description = "Check user profile"
             default = Permission.Default.OP
         }
 
-        register("edgrim.brand") {
+        register("watchneko.brand") {
             description = "Show client brands on join"
             default = Permission.Default.OP
         }
 
-        register("edgrim.brand.enable-on-join") {
+        register("watchneko.brand.enable-on-join") {
             description = "Enable showing client brands on join"
             default = Permission.Default.OP
         }
 
-        register("edgrim.sendalert") {
+        register("watchneko.sendalert") {
             description = "Send cheater alert"
             default = Permission.Default.OP
         }
 
-        register("edgrim.nosetback") {
+        register("watchneko.nosetback") {
             description = "Disable setback"
             default = Permission.Default.FALSE
         }
 
-        register("edgrim.nomodifypacket") {
+        register("watchneko.nomodifypacket") {
             description = "Disable modifying packets"
             default = Permission.Default.FALSE
         }
 
-        register("edgrim.exempt") {
+        register("watchneko.exempt") {
             description = "Exempt from all checks"
             default = Permission.Default.FALSE
         }
 
-        register("edgrim.verbose") {
+        register("watchneko.verbose") {
             description = "Receive verbose alerts for violations"
             default = Permission.Default.OP
         }
 
-        register("edgrim.verbose.enable-on-join") {
+        register("watchneko.verbose.enable-on-join") {
             description =
                 "Enable verbose alerts on join"
             default = Permission.Default.FALSE
         }
 
-        register("edgrim.list") {
+        register("watchneko.list") {
             description =
                 "Shows lists of specific data"
             default = Permission.Default.FALSE

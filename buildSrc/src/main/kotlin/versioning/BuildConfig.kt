@@ -2,11 +2,6 @@ package versioning
 
 import org.gradle.api.Project
 import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
-import versioning.BuildConfig.init
-import versioning.BuildConfig.mavenLocalOverride
-import versioning.BuildConfig.release
-import versioning.BuildConfig.relocate
-import versioning.BuildConfig.shadePE
 
 /**
  * BuildConfig provides access to user-defined build flags that control how a Grim
@@ -65,14 +60,20 @@ object BuildConfig {
             ?: project.findProperty(key)?.toString()  // ② Gradle (-Pkey=value or gradle.properties)
             ?: System.getenv(key.uppercase())         // ③ ENV   (KEY=value)
 
-    private fun resolveBool(project: Project, key: String, altKey: String? = null, default: Boolean): Boolean {
+    private fun resolveBool(
+        project: Project,
+        key: String,
+        altKey: String? = null,
+        default: Boolean
+    ): Boolean {
         val primaryValue = resolveRaw(project, key)?.toDefaultLowerCase()?.toBooleanStrictOrNull()
         if (primaryValue != null) {
             return primaryValue
         }
 
         if (altKey != null) {
-            val altValue = resolveRaw(project, altKey)?.toDefaultLowerCase()?.toBooleanStrictOrNull()
+            val altValue =
+                resolveRaw(project, altKey)?.toDefaultLowerCase()?.toBooleanStrictOrNull()
             if (altValue != null) {
                 return altValue
             }
@@ -88,18 +89,22 @@ object BuildConfig {
     private var _mavenLocalOverride: Boolean? = null
 
     /** If true, shades PacketEvents into the jar. Default: true. */
-    val shadePE: Boolean get() = _shadePE
-        ?: error("BuildConfig.shadePE accessed before init() was called")
+    val shadePE: Boolean
+        get() = _shadePE
+            ?: error("BuildConfig.shadePE accessed before init() was called")
 
     /** If true, relocates shaded dependencies to avoid conflicts. Default: true. */
-    val relocate: Boolean get() = _relocate
-        ?: error("BuildConfig.relocate accessed before init() was called")
+    val relocate: Boolean
+        get() = _relocate
+            ?: error("BuildConfig.relocate accessed before init() was called")
 
     /** If true, omits commit hash and modifiers from version string. Default: false. */
-    val release: Boolean get() = _release
-        ?: error("BuildConfig.release accessed before init() was called")
+    val release: Boolean
+        get() = _release
+            ?: error("BuildConfig.release accessed before init() was called")
 
-    val mavenLocalOverride: Boolean get() = _mavenLocalOverride
-        ?: error("BuildConfig.release accessed before init() was called")
+    val mavenLocalOverride: Boolean
+        get() = _mavenLocalOverride
+            ?: error("BuildConfig.release accessed before init() was called")
 
 }

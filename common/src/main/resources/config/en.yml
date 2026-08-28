@@ -1,5 +1,5 @@
-# EdGrim main configuration
-# Source code: https://github.com/MWHunter/edgrim
+# WatchNeko main configuration
+# Source code: https://github.com/jiuxian1337/WatchNeko
 # Copyright 2025 DefineOutside and contributors, Licensed under GPLv3.
 # Modified binaries, or plugins with copied grim code, must be private,
 # or with full source code available to buyers at no additional cost.
@@ -20,7 +20,7 @@ alerts:
 
     click:
         enabled: true
-        command: "/edgrim spectate %player%"
+        command: "/watchneko spectate %player%"
 
 verbose:
     print-to-console: false
@@ -40,7 +40,7 @@ client-brand:
     disconnect-blacklisted-forge-versions: true
 
 spectators:
-    # Hide all spectators with the edgrim.spectator permission regardless if they are actually actively spectating
+    # Hide all spectators with the watchneko.spectator permission regardless if they are actually actively spectating
     hide-regardless: false
     # Will make spectators hidden only in these worlds, keep blank to allow all worlds
     allowed-worlds:
@@ -73,13 +73,13 @@ Simulation:
     # Measured in blocks from the possible movement
     # We account for Optifine by switching trig tables but dropping this to 0.001 will reduce FastMath
     # flagging the anticheat if this compensation doesn't work...
-    threshold: 0.01
+    threshold: 0.03
     # How large of a violation in a tick before the player gets immediately setback?
     # -1 to disable
-    immediate-setback-threshold: 0.1
+    immediate-setback-threshold: -1
     # How large of an advantage over all ticks before we start to setback?
     # -1 to disable
-    max-advantage: 1
+    max-advantage: 3
     # After 50 seconds with default config, the player will go from 4 blocks -> 1 block of advantage
     # This is to stop the player from gathering too many violations and never being able to clear them all
     # Default advantage ceiling (x axis = seconds, y axis = 1/1000 block): https://www.desmos.com/calculator/4lovswdarj
@@ -143,10 +143,6 @@ ScaffoldD:
     cancelvl: 5
     cancel-for-ms: 500
 
-ScaffoldE:
-    cancelvl: 5
-    cancel-for-ms: 500
-
 # Prediction-based no slow check
 # Grim accounts for buggy netcode here... hard to false even when spamming right click and offhand button
 # Much more stable than other anticheats, but please report any falses... I have fixed a ton of netcode issues here.
@@ -154,7 +150,7 @@ NoSlowA:
     # How much of an offset is "cheating"
     # By default this is lower than other offs
     # Flags by 0.03-0.2 consistently with NoSlow on
-    threshold: 0.01
+    threshold: 0.03
     # Setback fast on the first item to remove any advantage NoSlow gives
     setbackvl: 0
     # Decay's when the player uses an item AND is slowed by it
@@ -165,7 +161,7 @@ VelocityA:
     setback-decay-multiplier: 0.999
     # How large of an offset from the player's velocity should we create a violation for?
     # Measured in blocks from the possible velocity
-    threshold: 0.01
+    threshold: 0.03
     # How large of a violation in a tick before the player gets immediately setback?
     # -1 to disable
     immediate-setback-threshold: 0.1
@@ -174,11 +170,9 @@ VelocityA:
     max-advantage: 1
     # This is to stop the player from gathering too many violations and never being able to clear them all
     max-ceiling: 4
-    setbackvl: 0
 
 VelocityB:
-    threshold: 0.01
-    setbackvl: 0
+    threshold: 0.03
 
 TimerA:
     setbackvl: 10
@@ -207,7 +201,7 @@ Reach:
     #
     # There is 0.03 forced expansion with 1.9-1.18.1 (not 1.18.2), or some client/server combinations due to
     # protocol changes and limitations. This check is most powerful with 1.7/1.8 clients on 1.8 servers.
-    threshold: 0.0005
+    threshold: 0.03
     # Should we cancel hits that we know are impossible?
     # 3.00-3.03 hits may go through but still be flagged, due to packet order limitations
     block-impossible-hits: true
@@ -311,7 +305,7 @@ max-ping-firework-boost: 1000
 
 history:
     enabled: true
-    # How many entries should be shown for each page with /edgrim history <player>
+    # How many entries should be shown for each page with /watchneko history <player>
     entries-per-page: 15
     # What should the inserted server name be for the history command? This is useful if you use the same database for multiple servers
     server-name: Prison
