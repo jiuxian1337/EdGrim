@@ -273,23 +273,6 @@ AimS:
     ratio-threshold: 1000.0
     window-size: 5
 
-AnalysisA:
-    # Attack-centered heuristic analysis. Samples 11 ticks around each entity attack and evaluates 10 attacks as a window.
-    # When enabled, record mode only writes samples and does not run detection or alerts.
-    record-mode: false
-    # Radius around the attack tick. 5 means an 11-tick sample with the attack tick in the middle.
-    sample-radius: 5
-    # Number of attack samples kept in one analysis window.
-    analysis-window-size: 10
-    # Minimum number of cheat-like samples required inside the window.
-    min-cheat-votes: 6
-    # Minimum average cheat similarity required for the whole window.
-    min-average-cheat-similarity: 0.89
-    # Minimum average similarity margin between cheat and legit scores.
-    min-average-margin: 0.02
-    # Print sample-drop and other debug information to the console.
-    debug-log: false
-
 exploit:
     # You can gain high speeds when sprint jumping with an elytra, this prevents the exploit when set to false
     # Mojang screwed up netcode by making elytra start client sided and elytra end server sided

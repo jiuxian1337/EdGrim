@@ -278,23 +278,6 @@ AimS:
     ratio-threshold: 1000.0
     window-size: 5
 
-AnalysisA:
-    # 点击抖动分析：以攻击实体为中心采样 11 tick 转头，并按 10 次攻击窗口分析更像 legit 还是 cheat。
-    # 开启后只记录，不分析，也不会触发告警。
-    record-mode: false
-    # 单次攻击样本半径。5 表示总样本大小为 11 tick，攻击 tick 在正中间。
-    sample-radius: 5
-    # 多少个攻击样本组成一个分析窗口。
-    analysis-window-size: 10
-    # 分析窗口内至少多少个样本需要表现为 cheat-like 才会命中。
-    min-cheat-votes: 6
-    # 分析窗口的平均 cheat 相似度下限。
-    min-average-cheat-similarity: 0.89
-    # 分析窗口的平均 cheat/legit 相似度差值下限。
-    min-average-margin: 0.02
-    # 是否在控制台打印样本丢弃等调试信息。
-    debug-log: false
-
 exploit:
     #是否允许玩家在使用鞘翅时候进行的疾跑跳跃
     allow-sprint-jumping-when-using-elytra: true
